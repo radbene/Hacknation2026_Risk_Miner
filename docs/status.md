@@ -45,6 +45,17 @@ committed on their branches first). Main session wired the missing CLI/jobs/rout
   na żywo – zachowanie pochodzenia „BZP API”).
 - `riskminer classify`: podsektor / rodzaj robót / formuła / skala z tytułu i opisu (reguły), CPV jako zapas.
 
+**Lokalny Bielik (21.11 ~21:00)**
+- Model lokalny jest pierwszym wyborem dla wszystkich zadań LLM (`[local_bielik, claude, rules]`): dokumenty nie opuszczają
+  serwera; baner „Przetwarzanie LLM: lokalnie”. Model `riskminer-bielik` = Bielik 11B v3.0 Q4_K_M + kontekst 8k
+  (`deploy/ollama/Modelfile`), Ollama na GPU; `docker compose --profile bielik` / `deploy.sh --bielik` na serwerze z GPU.
+- Sprawdzone na żywo (RTX 4060 8 GB, 70% na GPU, ~15 tok/s): przyczyny zdarzeń ~12–14 s/zdarzenie (Nowogard: R03 i R02
+  zgodne z regułami, cytaty dosłowne); cechy inwestycji ~1–1,5 min (wartości tylko z cytatem; przy niezgodności z regułami
+  zostają reguły + notatka); podsumowanie analizy i 5 działań ~1 min – wszystkie liczby zgodne z obliczeniami.
+- `riskminer extract --llm` na warstwie pogłębionej: 42 wywołania Bielika, 0 błędów (~15 s/zdarzenie); 36 zdarzeń z
+  klasyfikacją modelu (dowód: model, wersja promptu, zweryfikowany cytat), 6 zostało przy regułach (bramka cytatu).
+- Hosting: `docs/hosting.md` (rekomendacja: Scaleway L4 w Warszawie na czas oceny; zapas: Hetzner CX + pamięć odpowiedzi).
+
 **Frontend (21.11 ~20:00)** – wszystkie obszary na prawdziwym API:
 - Karta projektu: przegląd z komórkami xlsx, oś czasu plan vs wykonanie, powiązania (składowe ze źródłami, alternatywy,
   kandydaci, „Wskaż inne postępowanie”), umowy i zmiany, zdarzenia z cytatami i decyzją eksperta, ogłoszenia z sekcjami,
