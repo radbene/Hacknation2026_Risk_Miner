@@ -2,10 +2,10 @@ import { api, unwrap } from '@/api/client'
 import { useApi } from '@/api/hooks'
 
 const WHERE: Record<string, string> = {
-  local: 'działa na naszym serwerze – dokumenty nie opuszczają systemu',
+  local: 'działa na naszym serwerze, dokumenty nie opuszczają systemu',
   eu: 'działa w chmurze w UE',
   non_eu: 'działa w usłudze poza UE',
-  none: 'wyłączony – system używa wyłącznie reguł',
+  none: 'wyłączony, system używa samych reguł',
 }
 
 /** One sentence: which language model answers first and where the data is processed. */
@@ -19,7 +19,7 @@ export function DataLocationBanner() {
   const warn = loc === 'non_eu'
   return (
     <div className={`px-6 py-1.5 text-xs ${warn ? 'bg-amber-50 text-amber-900' : 'bg-emerald-50 text-emerald-900'}`}>
-      Model językowy: <b>{(p?.display_name ?? p?.name ?? 'brak').replace(/\s*\(.*\)$/, '')}</b> – {WHERE[loc] ?? loc}. Każdy wniosek modelu jest oznaczony i czeka na decyzję eksperta.
+      Model językowy <b>{(p?.display_name ?? p?.name ?? 'brak').replace(/\s*\(.*\)$/, '')}</b> {WHERE[loc] ?? loc}.
     </div>
   )
 }

@@ -24,7 +24,7 @@ const TABLE_HELP: Record<string, { what: string; used: string; source: 'eksperci
   art455_map: { what: 'Która podstawa zmiany umowy oznacza jaki typ zmiany i jakie kategorie ryzyka.', used: 'Automatyczne kategoryzowanie zmian umów.', source: 'zespół' },
   checklist: { what: 'Lista kontrolna 9 punktów przygotowania inwestycji wodociągowej.', used: 'Flaga „brak informacji” w analizie nowej inwestycji.', source: 'eksperci' },
   checklist_rcodes: { what: 'Do jakich kategorii ryzyka odnosi się każdy punkt listy kontrolnej.', used: 'Łączenie braków na liście z kategoriami ryzyka.', source: 'zespół' },
-  clauses: { what: 'Proponowane zapisy umowne i działania zapobiegawcze – po jednym dla każdej kategorii ryzyka.', used: 'Rekomendacje w analizie nowej inwestycji (sekcja „Działania i klauzule”).', source: 'zespół' },
+  clauses: { what: 'Proponowane zapisy umowne i działania zapobiegawcze, po jednym na kategorię ryzyka.', used: 'Rekomendacje w analizie nowej inwestycji (sekcja „Działania i klauzule”).', source: 'zespół' },
   completeness_states: { what: 'Cztery stany kompletności danych (np. „nie ma w zebranych materiałach” ≠ „potwierdzono, że nie wykonano”).', used: 'Zakładka „Braki w danych” na karcie projektu.', source: 'eksperci' },
   doc_fragments: { what: 'Wzorce fragmentów dokumentów wskazujących ryzyko.', used: 'Wyszukiwanie ryzykownych zapisów w wgranych dokumentach.', source: 'zespół' },
   event_rules: { what: 'Reguły rozpoznawania zdarzeń z danych BZP (opóźnienie, wypłata ponad wartość, kary…).', used: 'Wyliczanie zdarzeń dla każdej inwestycji.', source: 'zespół' },
@@ -67,12 +67,9 @@ function KnowledgeInner() {
   return (
     <div>
       <PageHeader title="Wiedza ekspercka"
-        actions={<Button variant="outline" loading={reimport.isPending} onClick={() => reimport.mutate()} title="Wczytuje tabele z plików w katalogu knowledge/ (np. po imporcie nowego dokumentu eksperckiego)"><Upload size={14} />Wczytaj z plików</Button>} />
-      <Intro can={['wybrać tabelę z listy po lewej – nad edytorem zobaczysz, co zawiera i do czego system jej używa',
-        'zmieniać wartości, dodawać i usuwać wiersze; każdą zmianę możesz cofnąć przyciskiem „Cofnij”',
-        'zapisać zmiany jako nową wersję – dopiero wtedy stają się obowiązujące; wyjście bez zapisu porzuca zmiany',
-        'przejrzeć poprzednie wersje i przywrócić dowolną z nich']}>
-        Wiedza, z której system korzysta przy każdej analizie: katalog ryzyk, podsektory, listy kontrolne, zapisy umowne, reguły rozpoznawania zdarzeń i wagi podobieństwa. Część tabel pochodzi z materiałów eksperckich MFiPR, część to robocze propozycje zespołu do zatwierdzenia. Dodanie nowego sektora (np. drogi) to nowy zestaw takich tabel – bez zmian w programie.
+        actions={<Button variant="outline" loading={reimport.isPending} onClick={() => reimport.mutate()} title="Tabele z katalogu knowledge/, np. po imporcie nowego dokumentu eksperckiego"><Upload size={14} aria-hidden />Wczytaj z plików</Button>} />
+      <Intro can={['zmieniać wartości, dodawać i usuwać wiersze; każdą zmianę cofniesz przyciskiem „Cofnij”', 'zapisać zmiany jako nową wersję; dopiero wtedy obowiązują, a wyjście bez zapisu je porzuca', 'przywrócić poprzednią wersję']}>
+        Wiedza, której system używa w każdej analizie: katalog ryzyk, podsektory, listy kontrolne, zapisy umowne, reguły rozpoznawania zdarzeń i wagi podobieństwa. Część tabel pochodzi z materiałów eksperckich MFiPR, część to propozycje zespołu do zatwierdzenia. Nowy sektor to nowy zestaw tabel, bez zmian w programie.
       </Intro>
       <QueryState q={tables} empty={(t) => t.length === 0}>{(ts) => {
         const cur = s.table ?? 'risks'
@@ -82,12 +79,12 @@ function KnowledgeInner() {
             <nav aria-label="Tabele wiedzy" className="space-y-3">
               {(['eksperci', 'zespół'] as const).map((src) => (
                 <div key={src}>
-                  <div className="mb-1 px-1 text-xs font-semibold uppercase tracking-wide text-slate-500">{src === 'eksperci' ? 'Z materiałów eksperckich MFiPR' : 'Robocze tabele zespołu'}</div>
+                  <div className="mb-1 px-1 text-xs font-medium text-slate-500">{src === 'eksperci' ? 'Z materiałów eksperckich MFiPR' : 'Propozycje zespołu'}</div>
                   <div className="space-y-1">{group(src).map((t) => (
                     <button key={t.name} onClick={() => navigate({ search: { table: t.name }, replace: true })}
                       className={cn('w-full cursor-pointer rounded border px-2 py-1.5 text-left text-xs', cur === t.name ? 'border-brand bg-brand-soft' : 'border-slate-200 bg-white hover:bg-slate-50')}>
                       <div className="font-medium">{t.title && t.title !== t.name ? t.title : TABLE_HELP[t.name]?.what.split('.')[0] ?? t.name}</div>
-                      <div className="text-slate-500">wersja {t.version} · {t.n_rows} {t.n_rows === 1 ? 'wiersz' : 'wierszy'}</div>
+                      <div className="text-slate-500">{t.n_rows} {t.n_rows === 1 ? 'wiersz' : 'wierszy'}</div>
                     </button>))}</div>
                 </div>))}
             </nav>
@@ -128,12 +125,12 @@ function TableEditor({ name }: { name: string }) {
       <div className="min-w-0 space-y-3">
         <Card>
           <CardHeader title={d.title && d.title !== d.name ? d.title : help?.what.split('.')[0] ?? d.name}
-            description={<>Obowiązuje wersja {d.version}{d.edited_by ? `, zapisana przez ${d.edited_by}` : ''}{d.updated_at ? ` ${fmtDateTime(d.updated_at)}` : ''}{d.comment ? ` – „${d.comment}”` : ''}</>}
+            description={<>Wersja {d.version}{d.edited_by ? `, ${d.edited_by}` : ''}{d.updated_at ? `, ${fmtDateTime(d.updated_at)}` : ''}</>}
             actions={<Button size="sm" variant="outline" onClick={() => setVersions(true)}><History size={14} />Poprzednie wersje</Button>} />
           {help && <CardContent className="space-y-1 text-sm">
             <p><b>Co zawiera:</b> {help.what}</p>
             <p><b>Do czego system jej używa:</b> {help.used}</p>
-            <p className="text-xs text-slate-500">{help.source === 'eksperci' ? 'Pochodzi z materiałów eksperckich MFiPR.' : 'Robocza propozycja zespołu – do weryfikacji przez eksperta.'}</p>
+            {help.source === 'zespół' && <p className="text-xs text-slate-500">Propozycja zespołu do weryfikacji przez eksperta.</p>}
           </CardContent>}
         </Card>
         <div className="sticky top-0 z-10 flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-white/95 p-2 backdrop-blur">
@@ -145,7 +142,7 @@ function TableEditor({ name }: { name: string }) {
           {dirty ? <Badge variant="warning">{idx} {idx === 1 ? 'niezapisana zmiana' : 'niezapisanych zmian'}</Badge> : <Badge variant="success">bez zmian</Badge>}
           <Button size="sm" disabled={!dirty} onClick={() => setSave(true)}><Save size={14} />Zapisz jako nową wersję</Button>
         </div>
-        {dirty && <p className="text-xs text-slate-500">Zmiany w tej sesji (ostatnia na górze): {hist.slice(1, idx + 1).reverse().map((h) => h.note).slice(0, 5).join(' · ')}{idx > 5 ? ' …' : ''}</p>}
+        {dirty && <p className="text-xs text-slate-500">Ostatnia zmiana: {hist[idx]?.note}</p>}
         <div className="space-y-2">{shown.map(({ r, i }) => (
           <Card key={r._k} className="p-3">
             <div className="mb-2 flex items-center justify-between gap-2">
@@ -196,13 +193,13 @@ function SaveDialog({ open, onClose, name, rows, onSaved }: { open: boolean; onC
   const m = useApiMutation<Schemas['KnowledgeTableIn'], Schemas['KnowledgeTableOut']>({
     fn: async (body) => unwrap(await api.PUT('/api/knowledge/{sector}/tables/{name}', { params: { path: { sector: SECTOR, name } }, body })),
     invalidate: [['knowledge']],
-    onSuccess: (t) => { toast({ kind: 'success', title: `Zapisano wersję ${t.version}`, description: 'Od teraz system używa tej wersji w analizach i przeliczeniach.' }); onSaved(); onClose(); setComment('') },
+    onSuccess: (t) => { toast({ kind: 'success', title: `Zapisano wersję ${t.version}` }); onSaved(); onClose(); setComment('') },
     onError: (e) => toast({ kind: 'error', title: 'Nie udało się zapisać', description: String(e) }),
   })
   return (
-    <Dialog open={open} onClose={onClose} title="Zapisz nową wersję tabeli" description="Zapisana wersja zacznie obowiązywać. Poprzednia zostaje w historii i można ją przywrócić."
+    <Dialog open={open} onClose={onClose} title="Zapisz nową wersję tabeli" description="Poprzednia wersja zostaje w historii."
       footer={<><Button variant="outline" onClick={onClose}>Anuluj</Button><Button loading={m.isPending} disabled={!comment.trim()} onClick={() => m.mutate({ rows, comment, columns: null })}>Zapisz</Button></>}>
-      <Label htmlFor="kc">Co i dlaczego zmieniono (wymagane – trafi do historii)</Label>
+      <Label htmlFor="kc">Co i dlaczego zmieniono (wymagane)</Label>
       <Textarea id="kc" rows={3} value={comment} onChange={(e) => setComment(e.target.value)} />
     </Dialog>
   )
@@ -215,14 +212,14 @@ function VersionsDialog({ open, onClose, name, current }: { open: boolean; onClo
   const m = useApiMutation<number, Schemas['KnowledgeTableOut']>({
     fn: async (version) => unwrap(await api.POST('/api/knowledge/{sector}/tables/{name}/restore/{version}', { params: { path: { sector: SECTOR, name, version } } })),
     invalidate: [['knowledge']],
-    onSuccess: (t) => { toast({ kind: 'success', title: `Przywrócono – obowiązuje wersja ${t.version}`, description: 'Przywrócenie zapisuje starą treść jako nową wersję; historia zostaje.' }); onClose() },
+    onSuccess: (t) => { toast({ kind: 'success', title: `Przywrócono, obowiązuje wersja ${t.version}` }); onClose() },
   })
   return (
-    <Dialog open={open} onClose={onClose} title="Poprzednie wersje tabeli" description="Przywrócenie nie usuwa historii – stara treść staje się nową, obowiązującą wersją.">
+    <Dialog open={open} onClose={onClose} title="Poprzednie wersje tabeli" description="Przywrócona treść staje się nową wersją. Historia zostaje.">
       <QueryState q={v}>{(vs) => (
         <ul className="space-y-1 text-sm">{vs.map((x) => (
           <li key={x.version} className="flex items-center justify-between gap-2 rounded border border-slate-200 p-2">
-            <span>Wersja {x.version} · {x.n_rows} wierszy · {x.edited_by ?? '—'} · {fmtDateTime(x.updated_at)}</span>
+            <span>Wersja {x.version}, {fmtDateTime(x.updated_at)}{x.edited_by ? `, ${x.edited_by}` : ''}</span>
             {x.version === current ? <Badge variant="success">obowiązuje</Badge>
               : <Button size="sm" variant="outline" loading={m.isPending} onClick={() => m.mutate(x.version)}><RotateCcw size={12} />Przywróć</Button>}
           </li>))}</ul>

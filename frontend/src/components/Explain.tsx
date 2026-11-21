@@ -1,5 +1,5 @@
 /** Plain-language explanations: a section intro, glossary terms with a popover, and "how was it calculated". */
-import { ChevronDown, HelpCircle, Info } from 'lucide-react'
+import { ChevronDown, HelpCircle } from 'lucide-react'
 import { useId, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -11,20 +11,19 @@ export const GLOSSARY: Record<string, string> = {
   'percentyl': 'Pozycja na tle innych: P70 oznacza, że wartość jest wyższa niż w 70 na 100 podobnych przypadków.',
   'n': 'Liczba przypadków, na których policzono wynik. Przy małym n traktuj wynik ostrożnie.',
   'waga': 'Jak bardzo dana cecha liczy się przy ocenie podobieństwa (suma wag = 100%). Wagi ustawia ekspert w „Wiedzy eksperckiej”.',
-  'podobieństwo': 'Od 0% do 100%: jak bardzo inna inwestycja przypomina opisaną – liczone z cech (podsektor, skala, formuła, województwo) i ze słów w opisie.',
+  'podobieństwo': 'Od 0% do 100%: jak bardzo inna inwestycja przypomina opisaną. Liczymy je z cech (podsektor, skala, formuła, województwo) i ze słów w opisie.',
   'wygładzenie': 'Gdy podobnych przypadków jest mało, wynik łączymy z wynikiem szerszej grupy (np. całego podsektora), żeby kilka nietypowych inwestycji nie dawało skrajnych liczb.',
-  'poziom odniesienia': 'Na jakiej grupie policzono wynik: najbardziej podobne inwestycje, a gdy jest ich za mało – cały podsektor albo wszystkie inwestycje wod-kan.',
+  'poziom odniesienia': 'Na jakiej grupie policzono wynik: najbardziej podobne inwestycje, a gdy jest ich za mało, cały podsektor albo wszystkie inwestycje wod-kan.',
   'pewność': 'Jak bardzo system jest pewny swojej propozycji (0–100%). Pozycje mniej pewne są wyżej w kolejce eksperta.',
   'rezerwa P80': 'Ile warto zarezerwować, żeby pokryć koszt w 8 na 10 podobnych przypadków: budżet × typowy stosunek wypłaty do wartości umowy (P80).',
-  'kategoria ryzyka': 'Kod R01–R15 z katalogu ekspertów MFiPR (np. R03 – dostęp do terenu, R06 – nierealny harmonogram).',
+  'kategoria ryzyka': 'Kod R01–R15 z katalogu ekspertów MFiPR, np. R03: dostęp do terenu, R06: nierealny harmonogram.',
 }
 
 /** Box at the top of every section/tab: what it shows and what you can do here. */
 export function Intro({ title, children, can, className }: { title?: ReactNode; children: ReactNode; can?: ReactNode[]; className?: string }) {
   return (
     <div className={cn('mb-4 rounded-lg border border-sky-200 bg-sky-50/60 px-4 py-3 text-sm text-slate-700', className)}>
-      <div className="flex gap-2">
-        <Info size={16} className="mt-0.5 shrink-0 text-sky-700" aria-hidden />
+      <div>
         <div className="space-y-1">
           {title && <div className="font-semibold text-slate-900">{title}</div>}
           <div>{children}</div>

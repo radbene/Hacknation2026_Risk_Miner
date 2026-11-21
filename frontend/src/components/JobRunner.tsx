@@ -55,7 +55,7 @@ export function JobRunner({ label, start, mockKind = 'enrich', mockParams = {}, 
       <Button variant={variant} onClick={running ? () => setOpen(true) : run} loading={starting}>
         {running ? <Loader2 size={14} className="animate-spin" /> : icon ?? <Play size={14} />}{running ? `${Math.round((job.progress ?? 0) * 100)}%` : label}
       </Button>
-      <Dialog open={open} onClose={() => setOpen(false)} title={label} description={job ? `Rozpoczęto ${fmtDateTime(job.started_at ?? job.created_at)} – zadanie działa w tle, możesz zamknąć to okno.` : undefined}
+      <Dialog open={open} onClose={() => setOpen(false)} title={label} description={job ? `Rozpoczęto ${fmtDateTime(job.started_at ?? job.created_at)}. Zadanie działa w tle.` : undefined}
         footer={<Button variant="outline" onClick={() => setOpen(false)}>Zamknij</Button>}>
         {job && <JobReport job={job} />}
       </Dialog>
@@ -70,9 +70,9 @@ export function JobReport({ job }: { job: Schemas['JobOut'] }) {
   const lines: string[] = []
   if (r && job.kind === 'enrich') {
     lines.push(`Sprawdzono ogłoszenia ${r.buyers ?? '?'} zamawiających (${r.requests ?? 0} zapytań do BZP${r.offline_nips?.length ? `; dla ${r.offline_nips.length} użyto zapasowej kopii BZP` : ''}).`)
-    lines.push(`Ogłoszenia: ${r.notices ?? 0} – nowe ${r.inserted ?? 0}, zmienione ${r.updated ?? 0}, bez zmian ${r.unchanged ?? 0}. Postępowania: ${r.procedures ?? 0}.`)
+    lines.push(`Ogłoszenia: ${r.notices ?? 0}, w tym nowe ${r.inserted ?? 0}, zmienione ${r.updated ?? 0}, bez zmian ${r.unchanged ?? 0}. Postępowania: ${r.procedures ?? 0}.`)
     const ls = r.link_summary ?? {}
-    lines.push(`Dopasowanie projektów: ${ls.linked ?? 0} powiązanych, ${ls.uncertain ?? 0} niepewnych, ${ls.unlinked ?? 0} bez powiązania${ls.override ? `, ${ls.override} wg decyzji eksperta` : ''}. Ponowne uruchomienie niczego nie dubluje.`)
+    lines.push(`Dopasowanie projektów: ${ls.linked ?? 0} powiązanych, ${ls.uncertain ?? 0} niepewnych, ${ls.unlinked ?? 0} bez powiązania${ls.override ? `, ${ls.override} wg decyzji eksperta` : ''}. `)
   } else if (r && job.kind === 'harvest') {
     lines.push(`Wczytano ${(r.stored ?? 0).toLocaleString('pl-PL')} ogłoszeń (nowe ${(r.inserted ?? 0).toLocaleString('pl-PL')}), zbudowano ${(r.procedures ?? 0).toLocaleString('pl-PL')} postępowań i ${(r.auto_projects ?? 0).toLocaleString('pl-PL')} inwestycji do porównań.`)
   } else if (r && job.kind === 'llm_test') {

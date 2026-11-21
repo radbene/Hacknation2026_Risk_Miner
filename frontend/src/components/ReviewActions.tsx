@@ -121,7 +121,7 @@ export function ProposalDiff({ current, proposal }: { current: Record<string, un
           })}
         </tbody>
       </table>
-      {'_rerun_at' in proposal && <p className="px-2 py-1 text-[11px] text-slate-500">Ponowna analiza: {String(proposal._rerun_at)} – decyzja eksperta nie została nadpisana.</p>}
+      {'_rerun_at' in proposal && <p className="px-2 py-1 text-[11px] text-slate-500">Ponowna analiza: {String(proposal._rerun_at)}. Decyzja eksperta nie została nadpisana.</p>}
     </div>
   )
 }

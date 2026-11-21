@@ -43,7 +43,7 @@ export function LinkReasons({ comps, compact }: { comps?: Schemas['LinkComponent
             <Icon size={15} className={cn('mt-0.5 shrink-0', ok ? 'text-emerald-600' : partly ? 'text-amber-600' : 'text-rose-500')} aria-hidden />
             <div className="min-w-0">
               <span className="font-medium">{QUESTION[c.name] ?? c.name}</span>
-              <span className="text-slate-500"> – {ok ? 'tak' : partly ? 'częściowo' : 'nie'}</span>
+              <span className="text-slate-500">: {ok ? 'tak' : partly ? 'częściowo' : 'nie'}</span>
               {c.detail && <div className="text-xs text-slate-500">{c.detail}</div>}
             </div>
             {c.evidence_id && <EvidenceChip ids={[c.evidence_id]} className="ml-auto shrink-0" />}

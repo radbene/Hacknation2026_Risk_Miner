@@ -19,7 +19,7 @@ export function DataTable<T extends object>({ data, columns, onRowClick, empty =
   return (
     <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
       <table className="w-full text-sm">
-        <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+        <thead className="bg-slate-50 text-left text-xs text-slate-500">
           {table.getHeaderGroups().map((hg) => (
             <tr key={hg.id}>
               {hg.headers.map((h) => {
@@ -29,7 +29,7 @@ export function DataTable<T extends object>({ data, columns, onRowClick, empty =
                   <th key={h.id} scope="col" className={cn('px-3 font-medium', dense ? 'py-1.5' : 'py-2')}
                     aria-sort={dir === 'asc' ? 'ascending' : dir === 'desc' ? 'descending' : undefined}>
                     {h.isPlaceholder ? null : canSort ? (
-                      <button className="inline-flex items-center gap-1 uppercase cursor-pointer hover:text-slate-800" onClick={h.column.getToggleSortingHandler()}>
+                      <button className="inline-flex items-center gap-1 cursor-pointer hover:text-slate-800" onClick={h.column.getToggleSortingHandler()}>
                         {flexRender(h.column.columnDef.header, h.getContext())}
                         {dir === 'asc' ? <ArrowUp size={12} /> : dir === 'desc' ? <ArrowDown size={12} /> : <ChevronsUpDown size={12} className="opacity-40" />}
                       </button>

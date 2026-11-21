@@ -23,7 +23,7 @@ type Q = Schemas['QueueItem']
 type ObjType = Q['object_type']
 const TYPES: { t: ObjType; label: string; help: string }[] = [
   { t: 'project_procedure', label: 'Powiązania z BZP', help: 'czy projekt z listy dobrze dopasowano do ogłoszeń w BZP' },
-  { t: 'event', label: 'Zdarzenia i przyczyny', help: 'opóźnienia, zmiany umów, kary – z przyczyną i kategorią ryzyka' },
+  { t: 'event', label: 'Zdarzenia i przyczyny', help: 'opóźnienia, zmiany umów i kary z przyczyną i kategorią ryzyka' },
   { t: 'data_issue', label: 'Braki w danych', help: 'czego brakuje i gdzie źródła się różnią' },
   { t: 'contract_change', label: 'Zmiany umów', help: 'zmiany odczytane z ogłoszeń o zmianie i o wykonaniu umowy' },
   { t: 'contract', label: 'Umowy', help: 'wartości i terminy umów odczytane z ogłoszeń' },
@@ -57,9 +57,8 @@ function QueueInner() {
   return (
     <div>
       <PageHeader title="Do zatwierdzenia" actions={<Button variant="success" onClick={() => setBulk(true)}><CheckCheck size={14} />Zatwierdź pewne pozycje hurtowo</Button>} />
-      <Intro can={['wybrać rodzaj pozycji z listy po lewej', 'kliknąć pozycję – po prawej zobaczysz podsumowanie, źródło z zaznaczonym fragmentem i przyciski decyzji',
-        'zatwierdzić, poprawić lub odrzucić; uzasadnienie trafia do historii', 'zatwierdzić hurtowo pozycje, których system jest pewny (np. powiązania po numerze ogłoszenia)']}>
-        Wszystko, co system zbudował automatycznie, jest propozycją. Tutaj decydujesz, co trafia do bazy jako wiarygodne. Najpierw pokazujemy pozycje, których system jest najmniej pewny. Twoje decyzje nie są nadpisywane przy ponownym przeliczeniu – system zapisze wtedy tylko propozycję zmiany do oceny.
+      <Intro can={['zatwierdzić, poprawić lub odrzucić pozycję z uzasadnieniem, które trafia do historii', 'zatwierdzić hurtowo pozycje, których system jest pewny']}>
+        Wszystko, co system zbudował automatycznie, jest propozycją, dopóki jej nie ocenisz. Najmniej pewne pozycje są na górze. Ponowne przeliczenie nie nadpisuje Twoich decyzji, tylko dodaje propozycję zmiany.
       </Intro>
       <div className="grid gap-4 xl:grid-cols-[16rem_minmax(0,1fr)_minmax(0,1.3fr)] lg:grid-cols-[16rem_minmax(0,1fr)]">
         <nav aria-label="Rodzaje pozycji" className="space-y-1">
@@ -77,7 +76,7 @@ function QueueInner() {
           })}
         </nav>
         <div className="min-w-0">
-          {meta && <p className="mb-2 text-xs text-slate-500">{meta.label}: {meta.help}.</p>}
+          {meta && <p className="mb-2 text-xs text-slate-500">{meta.help[0].toUpperCase() + meta.help.slice(1)}.</p>}
           <QueryState q={q} empty={(d) => d.items.length === 0}>{(d) => (
             <ul className="space-y-2">{d.items.map((it) => (
               <li key={it.object_id}>
@@ -98,7 +97,7 @@ function QueueInner() {
         </div>
         <div className="min-w-0 lg:col-span-2 xl:col-span-1">
           {sel ? <div className="xl:sticky xl:top-0"><Detail it={sel} onClose={() => setSel(undefined)} /></div>
-            : <div className="hidden rounded-lg border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500 xl:block">Kliknij pozycję z listy, aby zobaczyć szczegóły i podjąć decyzję.</div>}
+            : <div className="hidden rounded-lg border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500 xl:block">Wybierz pozycję z listy.</div>}
         </div>
       </div>
       <BulkDialog open={bulk} onClose={() => setBulk(false)} type={type} />
@@ -129,7 +128,7 @@ function Detail({ it, onClose }: { it: Q; onClose: () => void }) {
 }
 
 function Sources({ ids }: { ids?: string[] | null }) {
-  if (!ids?.length) return <p className="text-xs text-rose-700">Brak źródła – tej pozycji nie da się sprawdzić w dokumencie.</p>
+  if (!ids?.length) return <p className="text-xs text-rose-700">Brak źródła. Tej pozycji nie da się sprawdzić w dokumencie.</p>
   return <div><div className="mb-1 text-xs font-semibold text-slate-600">Źródło</div><EvidenceList ids={ids} /></div>
 }
 
@@ -148,9 +147,9 @@ function EventDetail({ id }: { id: string }) {
       </div>
       <div className="grid gap-3 sm:grid-cols-2 text-sm">
         <Fact label="Przyczyna" value={<span className="font-normal">{e.cause ?? '—'}</span>} />
-        <Fact label="Skutek" value={<span className="font-normal">{e.effect ?? '—'}{e.effect_days != null && ` · ${fmtNum(e.effect_days, 0)} dni`}{e.effect_pln != null && ` · ${fmtPln(e.effect_pln)}`}</span>} />
+        <Fact label="Skutek" value={<span className="font-normal">{e.effect ?? '—'}{e.effect_days != null && `, ${fmtNum(e.effect_days, 0)} dni`}{e.effect_pln != null && `, ${fmtPln(e.effect_pln)}`}</span>} />
         {e.mitigation && <Fact label="Działanie zaradcze" value={<span className="font-normal">{e.mitigation}</span>} />}
-        <Fact label="Pewność systemu" value={confidenceWords(e.confidence)} hint={e.model_label ? `sklasyfikował: ${e.model_label}` : 'wyliczone regułami z danych BZP'} />
+        <Fact label="Pewność systemu" value={confidenceWords(e.confidence)} hint={e.model_label ? `sklasyfikował ${e.model_label.replace(/\s*\(.*\)$/, '')}` : undefined} />
       </div>
       <Sources ids={e.evidence_ids} />
     </>
@@ -168,7 +167,7 @@ function LinkDetail({ it }: { it: Q }) {
       <div className="text-sm"><div className="font-medium">{l.procedure_title}</div><div className="text-xs text-slate-500">ogłoszenie {l.bzp_number}{l.part_no ? `, część ${l.part_no}` : ''}</div></div>
       <LinkVerdict method={l.method} confidence={l.confidence} />
       <div><div className="mb-1 text-xs font-semibold text-slate-600">Dlaczego to powiązanie</div><LinkReasons comps={l.components} /></div>
-      {!!l.alternatives?.length && <p className="text-xs text-slate-500">System rozważył też {l.alternatives.length} inne postępowania tego zamawiającego – szczegóły na karcie projektu (zakładka „Ogłoszenia BZP tej inwestycji”), gdzie możesz też wskazać inne postępowanie.</p>}
+      {!!l.alternatives?.length && <p className="text-xs text-slate-500">System odrzucił {l.alternatives.length} inne postępowania tego zamawiającego. Inne postępowanie wskażesz na karcie projektu.</p>}
     </>
   )
 }
@@ -209,12 +208,12 @@ function BulkDialog({ open, onClose, type }: { open: boolean; onClose: () => voi
   const m = useApiMutation<Schemas['BulkConfirmIn'], Schemas['BulkResult']>({
     fn: async (body) => unwrap(await api.POST('/api/review/bulk-confirm', { body })),
     invalidate: [['review'], ['projects'], ['links'], ['events'], ['history']],
-    onSuccess: (r) => { toast({ kind: 'success', title: `Zatwierdzono ${r.confirmed} pozycji`, description: `${r.skipped} pozostało do ręcznej decyzji (mniej pewne albo już rozstrzygnięte).` }); onClose() },
+    onSuccess: (r) => { toast({ kind: 'success', title: `Zatwierdzono ${r.confirmed} pozycji`, description: `${r.skipped} czeka na ręczną decyzję.` }); onClose() },
     onError: (e) => toast({ kind: 'error', title: 'Nie udało się', description: String(e) }),
   })
   return (
     <Dialog open={open} onClose={onClose} title={`Zatwierdź hurtowo: ${meta?.label ?? type}`}
-      description="Zatwierdza tylko te propozycje, których system jest pewny co najmniej w wybranym stopniu. Pozostałe zostają do ręcznej decyzji. Każde zatwierdzenie trafia do historii."
+      description="Zatwierdza propozycje, których system jest pewny co najmniej w wybranym stopniu. Pozostałe zostają do ręcznej decyzji."
       footer={<><Button variant="outline" onClick={onClose}>Anuluj</Button>
         <Button variant="success" loading={m.isPending} onClick={() => m.mutate({ object_type: type, min_confidence: Number(minConf), comment, ids: null, project_id: null, method: null })}>Zatwierdź</Button></>}>
       <div className="space-y-3 text-sm">

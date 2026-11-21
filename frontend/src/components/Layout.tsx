@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate } from '@tanstack/react-router'
-import { BookOpen, ClipboardCheck, Cpu, Database, FlaskConical, FolderOpen, Home, LogIn, LogOut, Plug, ShieldCheck, Sparkles } from 'lucide-react'
+import { LogIn, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import { api, unwrap } from '@/api/client'
 import { useApi } from '@/api/hooks'
@@ -8,20 +8,20 @@ import { Badge, Button, Dialog, Input, Label } from './ui'
 import { DataLocationBanner } from './DataLocationBanner'
 
 const USER_NAV = [
-  { to: '/', label: 'Jak zacząć', icon: Home },
-  { to: '/nowa-inwestycja', label: 'Nowa analiza', icon: Sparkles },
-  { to: '/analizy', label: 'Moje analizy', icon: FolderOpen },
-  { to: '/projekty', label: 'Baza przypadków', icon: Database },
-  { to: '/jak-testowac', label: 'Scenariusze testowe', icon: FlaskConical },
+  { to: '/', label: 'Jak zacząć' },
+  { to: '/nowa-inwestycja', label: 'Nowa analiza' },
+  { to: '/analizy', label: 'Moje analizy' },
+  { to: '/projekty', label: 'Baza przypadków' },
+  { to: '/jak-testowac', label: 'Scenariusze testowe' },
 ] as const
 const EXPERT_NAV = [
-  { to: '/', label: 'Jak pracować w panelu', icon: Home },
-  { to: '/kolejka', label: 'Do zatwierdzenia', icon: ClipboardCheck },
-  { to: '/projekty', label: 'Baza przypadków', icon: Database },
-  { to: '/wiedza', label: 'Wiedza ekspercka', icon: BookOpen },
-  { to: '/zrodla', label: 'Źródła danych', icon: Plug },
-  { to: '/modele', label: 'Modele językowe', icon: Cpu },
-  { to: '/analizy', label: 'Analizy użytkowników', icon: FolderOpen },
+  { to: '/', label: 'Jak pracować w panelu' },
+  { to: '/kolejka', label: 'Do zatwierdzenia' },
+  { to: '/projekty', label: 'Baza przypadków' },
+  { to: '/wiedza', label: 'Wiedza ekspercka' },
+  { to: '/zrodla', label: 'Źródła danych' },
+  { to: '/modele', label: 'Modele językowe' },
+  { to: '/analizy', label: 'Analizy użytkowników' },
 ] as const
 
 export function Layout() {
@@ -35,12 +35,12 @@ export function Layout() {
     <div className="flex h-full">
       <aside className={`flex w-64 shrink-0 flex-col border-r ${isExpert ? 'border-violet-200 bg-violet-50/40' : 'border-slate-200 bg-white'}`}>
         <div className="px-4 pt-4 text-lg font-bold text-brand">RISK MINER</div>
-        <div className="px-4 pb-3 text-xs text-slate-500">{isExpert ? <span className="inline-flex items-center gap-1 font-semibold text-violet-800"><ShieldCheck size={12} />Panel eksperta</span> : 'Analiza ryzyka nowych inwestycji'}</div>
+        <div className="px-4 pb-3 text-xs font-semibold text-violet-800">{isExpert ? 'Panel eksperta' : null}</div>
         <nav className="flex flex-col gap-0.5 px-2" aria-label={isExpert ? 'Panel eksperta' : 'Menu'}>
-          {nav.map(({ to, label, icon: Icon }) => (
+          {nav.map(({ to, label }) => (
             <Link key={to} to={to} className="flex items-center gap-2 rounded px-3 py-2 text-sm hover:bg-brand-soft"
               activeProps={{ className: 'bg-brand-soft font-semibold text-brand' }} activeOptions={{ exact: to === '/' }}>
-              <Icon size={16} /> <span className="flex-1">{label}</span>
+              <span className="flex-1">{label}</span>
               {to === '/kolejka' && pending > 0 && <Badge variant="warning">{pending}</Badge>}
             </Link>
           ))}
@@ -76,7 +76,7 @@ export function LoginDialog({ open, onClose }: { open: boolean; onClose: () => v
   }
   return (
     <Dialog open={open} onClose={onClose} title="Logowanie do panelu eksperta"
-      description="Ekspert zatwierdza zdarzenia, przyczyny i powiązania, poprawia dane i prowadzi wiedzę ekspercką. Użytkownik (bez logowania) analizuje nowe inwestycje i przegląda bazę."
+      description="Ekspert zatwierdza zdarzenia, przyczyny i powiązania, poprawia dane i prowadzi wiedzę ekspercką."
       footer={<><Button variant="outline" onClick={onClose}>Anuluj</Button><Button loading={busy} onClick={submit}>Zaloguj</Button></>}>
       <form className="space-y-3 text-sm" onSubmit={(e) => { e.preventDefault(); submit() }}>
         <div><Label htmlFor="lg-u">Login</Label><Input id="lg-u" value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" /></div>
@@ -96,9 +96,8 @@ export function ExpertOnly({ children, what }: { children: React.ReactNode; what
   if (isExpert) return <>{children}</>
   return (
     <div className="mx-auto mt-16 max-w-lg rounded-lg border border-violet-200 bg-violet-50/50 p-6 text-center">
-      <ShieldCheck className="mx-auto mb-2 text-violet-700" />
-      <h1 className="text-lg font-semibold">{what} – panel eksperta</h1>
-      <p className="mt-1 text-sm text-slate-600">Tę część obsługuje ekspert: zatwierdza i poprawia dane, które trafiają do bazy przypadków. Zaloguj się jako ekspert, aby kontynuować.</p>
+      <h1 className="text-lg font-semibold">{what}</h1>
+      <p className="mt-1 text-sm text-slate-600">Tę część obsługuje ekspert: zatwierdza i poprawia dane, które trafiają do bazy przypadków.</p>
       <Button className="mt-4" onClick={() => setLogin(true)}><LogIn size={14} />Zaloguj jako ekspert</Button>
       <LoginDialog open={login} onClose={() => setLogin(false)} />
     </div>

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { CalendarClock, FileUp, MapPin, RefreshCw, Search } from 'lucide-react'
+import { FileUp, RefreshCw, Search } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useProjects } from '@/api/cases'
 import { api, unwrap, type Schemas } from '@/api/client'
@@ -28,18 +28,16 @@ export default function Projects() {
   return (
     <div>
       <PageHeader title="Baza przypadków"
-        description="Zakończone i trwające inwestycje wodno-kanalizacyjne, z których system uczy się, co się w nich wydarzyło."
         actions={isExpert ? <>
           <ImportXlsx />
           <JobRunner label="Pobierz aktualne dane z BZP" icon={<RefreshCw size={14} />} invalidate={[['projects']]}
             start={async () => unwrap(await api.POST('/api/enrich', { body: { project_ids: null, sources: null, as_of: null } }))} />
         </> : undefined} />
       <Intro can={[
-        'wyszukać inwestycję po nazwie, gminie lub numerze ogłoszenia',
-        'otworzyć kartę inwestycji: przebieg zamówień, zmiany umów, opóźnienia i ich przyczyny – z odnośnikami do oryginalnych ogłoszeń',
-        ...(isExpert ? ['zaimportować listę projektów (plik Excel) i pobrać z BZP nowe ogłoszenia dla wszystkich projektów – system dopasuje je do projektów i wyliczy zdarzenia; nic nie zostanie nadpisane bez Twojej decyzji'] : []),
+        'otworzyć kartę inwestycji: przebieg zamówień, zmiany umów, opóźnienia i ich przyczyny',
+        ...(isExpert ? ['zaimportować listę projektów i pobrać z BZP nowe ogłoszenia; system dopasuje je do projektów, nie nadpisując Twoich decyzji'] : []),
       ]}>
-        Baza ma dwie części: <b>22 projekty z listy przekazanej przez organizatora</b> – opisane szczegółowo i sprawdzane przez eksperta – oraz <b>ok. 34 tys. postępowań pobranych automatycznie</b> z Biuletynu Zamówień Publicznych (lata 2021–2026), które służą do porównań przy analizie nowych inwestycji.
+        Baza ma dwie części: <b>22 projekty z listy organizatora</b>, opisane szczegółowo i sprawdzane przez eksperta, oraz <b>ok. 34 tys. postępowań z BZP</b> z lat 2021–2026, z którymi porównujemy nowe inwestycje.
       </Intro>
       <form className="mb-4 flex flex-wrap items-end gap-2" role="search" onSubmit={(e) => { e.preventDefault(); setShown(PAGE); set({ q: text || undefined }) }}>
         <label className="relative">
@@ -60,7 +58,7 @@ export default function Projects() {
         <>
           <p className="mb-2 text-xs text-slate-500">Znaleziono: {d.total.toLocaleString('pl-PL')}{d.items.length < d.total ? ` (pokazano ${Math.min(shown, d.items.length)})` : ''}</p>
           <div className="grid gap-3 lg:grid-cols-2">{d.items.slice(0, shown).map((p) => <ProjectTile key={p.id} p={p} expert={isExpert} />)}</div>
-          {!d.items.length && <p className="py-8 text-center text-sm text-slate-500">Nic nie znaleziono – zmień wyszukiwanie lub filtry.</p>}
+          {!d.items.length && <p className="py-8 text-center text-sm text-slate-500">Nic nie znaleziono. Zmień wyszukiwanie lub filtry.</p>}
           {d.items.length > shown && <div className="mt-4 text-center"><Button variant="outline" onClick={() => setShown((x) => x + PAGE)}>Pokaż więcej</Button></div>}
         </>
       )}</QueryState>
@@ -77,9 +75,9 @@ function ProjectTile({ p, expert }: { p: P; expert: boolean }) {
           {p.tier === 'deep' && <span className="shrink-0 font-mono text-xs text-slate-400">{p.code}</span>}
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
-          <span className="inline-flex items-center gap-1"><MapPin size={12} />{p.beneficiary_name ?? '—'}{p.voivodeship ? `, ${p.voivodeship}` : ''}</span>
+          <span>{p.beneficiary_name ?? '—'}{p.voivodeship ? `, ${p.voivodeship}` : ''}</span>
           {p.subsector_main && <span>{p.subsector_main}</span>}
-          {p.project_status && <span className="inline-flex items-center gap-1"><CalendarClock size={12} />{p.project_status}</span>}
+          {p.project_status && <span>{p.project_status}</span>}
           {p.record_scope && p.record_scope !== 'całe postępowanie' && <Badge variant="info">{p.record_scope}</Badge>}
         </div>
         {p.tier === 'deep' && (
@@ -115,13 +113,12 @@ function ImportXlsx() {
   return (
     <>
       <input ref={ref} type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])} aria-label="Plik z listą projektów" />
-      <Button variant="outline" onClick={() => ref.current?.click()} loading={busy} title="Wczytaj listę projektów z pliku Excel (format organizatora)"><FileUp size={14} />Importuj listę projektów (Excel)</Button>
+      <Button variant="outline" onClick={() => ref.current?.click()} loading={busy}><FileUp size={14} aria-hidden />Importuj listę projektów (Excel)</Button>
       <Dialog open={!!report} onClose={() => setReport(null)} title="Wynik importu listy projektów" description={report ? `Plik „${report.file}”` : ''}
         footer={<Button onClick={() => setReport(null)}>OK</Button>}>
         {report && (
           <div className="space-y-3 text-sm">
-            <p>Przeczytano <b>{report.rows}</b> wierszy: <b>{report.created}</b> nowych projektów, <b>{report.updated}</b> zmienionych, <b>{report.unchanged}</b> bez zmian.
-              Ponowny import tego samego pliku niczego nie dubluje.</p>
+            <p>Przeczytano <b>{report.rows}</b> wierszy: <b>{report.created}</b> nowych projektów, <b>{report.updated}</b> zmienionych, <b>{report.unchanged}</b> bez zmian.</p>
             {(report.issues?.length ?? 0) > 0 && <>
               <h3 className="font-semibold">Wartości do sprawdzenia ({report.issues!.length})</h3>
               <ul className="list-disc space-y-1 pl-5 text-xs">{report.issues!.map((i, k) => (

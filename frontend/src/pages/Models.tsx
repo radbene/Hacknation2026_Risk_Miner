@@ -1,4 +1,4 @@
-import { CheckCircle2, CircleSlash, Cpu, Plus, PlugZap } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { api, unwrap, type Schemas } from '@/api/client'
 import { useApi, useApiMutation } from '@/api/hooks'
@@ -22,7 +22,7 @@ const TASK_PL: Record<string, { name: string; what: string }> = {
   lessons: { name: 'Wnioski z raportów kontroli', what: 'wyciąga wnioski z raportów NIK' },
 }
 const WHERE: Record<string, string> = {
-  local: 'na naszym serwerze – dane nie opuszczają systemu', eu: 'w chmurze na terenie UE', non_eu: 'w usłudze poza UE', none: 'bez modelu – same reguły',
+  local: 'na naszym serwerze, dane nie opuszczają systemu', eu: 'w chmurze w UE', non_eu: 'w usłudze poza UE', none: 'same reguły',
 }
 const KIND: Record<string, string> = {
   openai_compatible: 'serwer zgodny z API OpenAI (Ollama, vLLM, LM Studio)', anthropic: 'Anthropic (Claude)', gemini: 'Google Gemini',
@@ -41,8 +41,8 @@ function ModelsInner() {
   return (
     <div>
       <PageHeader title="Modele językowe" actions={<Button onClick={() => setAdd(true)}><Plus size={14} />Dodaj własny model</Button>} />
-      <Intro can={['zobaczyć, który model wykonuje które zadanie i gdzie przetwarzane są dane', 'zmienić kolejność modeli dla zadania', 'sprawdzić połączenie z modelem', 'dodać własny model (np. serwer z Bielikiem lub PLLuM w instytucji) – bez zmian w programie']}>
-        Model językowy pomaga w kilku zadaniach (np. czyta przyczyny zmian umów). Każde zadanie ma listę modeli w kolejności: system używa pierwszego dostępnego, a gdy żaden nie odpowie – działa wyłącznie na regułach, więc aplikacja działa zawsze. Każdy wynik modelu jest oznaczony jako „Wniosek modelu”, musi mieć cytat sprawdzony w źródle i czeka na decyzję eksperta.
+      <Intro can={['zmienić kolejność modeli dla zadania', 'sprawdzić połączenie z modelem', 'dodać własny model, np. serwer z Bielikiem lub PLLuM w instytucji, bez zmian w programie']}>
+        System używa pierwszego dostępnego modelu z listy zadania. Gdy żaden nie odpowie, działa na samych regułach. Wynik modelu ma etykietę „Wniosek modelu”, musi mieć cytat sprawdzony w źródle i czeka na decyzję eksperta.
       </Intro>
       <QueryState q={q}>{(r) => (
         <div className="space-y-6">
@@ -60,7 +60,7 @@ function ModelsInner() {
               <ul className="space-y-1 text-sm">{rows.map((u, i) => (
                 <li key={i} className="rounded border border-slate-200 bg-white px-3 py-2">
                   <b>{TASK_PL[u.task]?.name ?? u.task}</b>: {u.calls} wywołań{u.cached ? ` (w tym ${u.cached} z zapisanych odpowiedzi)` : ''}{u.errors ? `, ${u.errors} nieudanych` : ''}
-                  {' '}– {nameOf(r, (r.profiles.find((p) => p.model === u.model)?.name) ?? u.model ?? '')}, {WHERE[u.data_location ?? ''] ?? u.data_location}
+                  {', '}{nameOf(r, (r.profiles.find((p) => p.model === u.model)?.name) ?? u.model ?? '')}
                   {u.cost_usd > 0 ? `, koszt ok. ${fmtNum(u.cost_usd, 2)} USD` : ', bez kosztów usług'}
                 </li>))}</ul>
             </section>) : null}</QueryState>
@@ -95,7 +95,7 @@ function TaskCard({ r, task, chain }: { r: R; task: string; chain: string[] }) {
               const p = r.profiles.find((x) => x.name === n)
               return <li key={n} className="flex items-start gap-2">
                 <span className="w-24 shrink-0 text-xs text-slate-500">{i === 0 ? 'Najpierw' : 'Jeśli niedostępny'}</span>
-                <span>{p?.display_name ?? n}{p && !p.available && <span className="text-xs text-amber-700"> – obecnie niedostępny</span>}</span></li>
+                <span>{p?.display_name ?? n}{p && !p.available && <span className="text-xs text-amber-700"> (niedostępny)</span>}</span></li>
             })}
             <li className="flex items-start gap-2"><span className="w-24 shrink-0 text-xs text-slate-500">Na końcu</span><span>reguły bez modelu (zawsze działają)</span></li>
           </ol>
@@ -113,13 +113,13 @@ function TaskCard({ r, task, chain }: { r: R; task: string; chain: string[] }) {
 function ModelCard({ p }: { p: Prof }) {
   return (
     <Card>
-      <CardHeader title={<span className="flex items-center gap-2"><Cpu size={15} className="text-slate-400" />{p.display_name ?? p.name}</span>}
-        actions={p.available ? <Badge variant="success"><CheckCircle2 size={11} />dostępny</Badge> : <Badge><CircleSlash size={11} />niedostępny</Badge>} />
+      <CardHeader title={p.display_name ?? p.name}
+        actions={p.available ? <Badge variant="success">dostępny</Badge> : <Badge>niedostępny</Badge>} />
       <CardContent className="space-y-1 text-sm">
         <p>Rodzaj: {KIND[p.provider] ?? p.provider}</p>
         <p>Gdzie działa: {WHERE[p.data_location] ?? p.data_location}</p>
         {!p.available && p.unavailable_reason && <p className="text-xs text-amber-800">Dlaczego niedostępny: {p.unavailable_reason}</p>}
-        {p.available && <JobRunner label="Sprawdź połączenie" icon={<PlugZap size={14} />} variant="outline"
+        {p.available && <JobRunner label="Sprawdź połączenie" variant="outline"
           start={async () => unwrap(await api.POST('/api/settings/llm/test', { body: { profile: p.name, model: null } }))} />}
       </CardContent>
     </Card>
@@ -146,7 +146,7 @@ function AddModelDialog({ open, onClose }: { open: boolean; onClose: () => void 
   }
   return (
     <Dialog open={open} onClose={onClose} title="Dodaj własny model językowy"
-      description="Model zostanie dodany do ustawień (bez zmian w programie). Klucza API nie wpisujemy w przeglądarce – podaj nazwę zmiennej środowiskowej na serwerze, w której administrator go zapisał."
+      description="Klucza API nie wpisuj w przeglądarce. Podaj nazwę zmiennej środowiskowej na serwerze, w której zapisał go administrator."
       footer={<><Button variant="outline" onClick={onClose}>Anuluj</Button><Button loading={m.isPending} disabled={!f.display_name.trim() || !f.model.trim()} onClick={submit}>Dodaj model</Button></>}>
       <form className="space-y-3 text-sm" onSubmit={(e) => { e.preventDefault(); submit() }}>
         <div><Label htmlFor="m-n">Nazwa wyświetlana</Label><Input id="m-n" value={f.display_name} onChange={(e) => set('display_name', e.target.value)} placeholder="np. PLLuM 12B (serwer w ministerstwie)" /></div>

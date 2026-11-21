@@ -35,7 +35,7 @@ function NoticeBody({ n, section, quote, compact }: { n: Schemas['NoticeDetail']
   return (
     <Card>
       <CardHeader title={<span className="flex flex-wrap items-center gap-2"><Badge variant="brand">{typeLabel(n.notice_type)}</Badge>{n.notice_number}</span>}
-        description={<>{n.title} · opublikowano {fmtDate(n.published_at)} · {n.org_name} (NIP {n.org_nip})</>}
+        description={<>Opublikowano {fmtDate(n.published_at)}</>}
         actions={<>
           {n.url && <a href={n.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-brand hover:underline">Strona ogłoszenia <ExternalLink size={11} /></a>}
           {n.pdf_url && <a href={n.pdf_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-brand hover:underline">PDF <FileDown size={11} /></a>}

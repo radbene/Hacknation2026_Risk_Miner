@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { ExternalLink, FileText, FileUp, Link2, RefreshCw, Sparkles } from 'lucide-react'
+import { ExternalLink, FileUp, Link2, RefreshCw } from 'lucide-react'
 import { useRef, useState } from 'react'
 import {
   useCandidates, useContracts, useDocuments, useEvents, useHistory, useLinks, useNotices, useProcedures, useProject,
@@ -61,8 +61,7 @@ export default function ProjectCard() {
       return (
         <div>
           <PageHeader back title={d.title}
-            description={<>{d.beneficiary_name} · {d.voivodeship ?? 'województwo nieznane'} · {d.subsector_main ?? 'podsektor nieustalony'}
-              {' · '}{deep ? `projekt z listy organizatora (${d.code})` : 'postępowanie pobrane automatycznie z BZP'}</>}
+            description={<>{d.beneficiary_name}{d.voivodeship ? `, ${d.voivodeship}` : ''}</>}
             actions={isExpert && deep ? <>
               <JobRunner label="Pobierz aktualne dane z BZP" icon={<RefreshCw size={14} />} variant="outline"
                 invalidate={[['project', projectId], ['links', projectId], ['events', projectId]]}
@@ -72,7 +71,7 @@ export default function ProjectCard() {
             {deep && <div className="mt-2 flex flex-wrap items-center gap-3 text-xs">
               <span className="flex items-center gap-1">Dopasowanie do ogłoszeń BZP: <LinkStatusBadge status={d.link_status} /></span>
               <span className="flex items-center gap-1">Kompletność danych: <Completeness value={d.completeness} /></span>
-              {isExpert && d.n_pending_review > 0 && <Badge variant="warning">{d.n_pending_review} pozycji do zatwierdzenia</Badge>}
+              {isExpert && d.n_pending_review > 0 && <Badge variant="warning">{d.n_pending_review} do zatwierdzenia</Badge>}
             </div>}
           </PageHeader>
           <Tabs value={tab} onChange={setTab} tabs={[
@@ -88,8 +87,8 @@ export default function ProjectCard() {
             { value: 'historia', label: 'Historia zmian' },
           ]}>
             {tab === 'przeglad' && <Overview d={d} expert={isExpert} />}
-            {tab === 'os' && <><Intro can={['najechać na punkt wykresu, żeby zobaczyć szczegóły', 'kliknąć „Źródło” przy kroku, żeby zobaczyć oryginalny dokument']}>
-              Jak przebiegała inwestycja: ogłoszenie, wybór wykonawcy, podpisanie umowy, zmiany umowy, planowany i faktyczny termin zakończenia oraz kwoty (wartość szacunkowa, budżet, wartość umowy, wypłata). Różnica między terminem planowanym a faktycznym to opóźnienie.</Intro>
+            {tab === 'os' && <><Intro>
+              Kolejne kroki inwestycji: ogłoszenie, wybór wykonawcy, umowa, zmiany umowy oraz planowany i faktyczny termin. Różnica terminów to opóźnienie.</Intro>
               <TimelineTab projectId={projectId} /></>}
             {tab === 'powiazania' && <LinksTab projectId={projectId} expert={isExpert} />}
             {tab === 'umowy' && <ContractsTab projectId={projectId} />}
@@ -98,8 +97,8 @@ export default function ProjectCard() {
               onSelect={(id) => navigate({ search: { ...s, notice: id }, replace: true })} />}
             {tab === 'dokumenty' && <DocumentsTab projectId={projectId} expert={isExpert} />}
             {tab === 'braki' && <IssuesTab projectId={projectId} />}
-            {tab === 'graf' && <><Intro can={['przeciągać i przybliżać mapę', 'sprawdzić, które ogłoszenia i umowy należą do inwestycji']}>
-              Wszystkie elementy inwestycji i ich związki: beneficjent, postępowania, ogłoszenia, umowy z wykonawcami, zmiany umów i zdarzenia. Linia przerywana oznacza powiązanie zaproponowane przez system i jeszcze niezatwierdzone przez eksperta.</Intro>
+            {tab === 'graf' && <><Intro>
+              Beneficjent, postępowania, ogłoszenia, umowy, zmiany i zdarzenia oraz ich związki. Linia przerywana to powiązanie, którego ekspert jeszcze nie zatwierdził.</Intro>
               <GraphTab projectId={projectId} /></>}
             {tab === 'historia' && <HistoryTab projectId={projectId} />}
           </Tabs>
@@ -121,8 +120,8 @@ function Overview({ d, expert }: { d: Schemas['ProjectDetail']; expert: boolean 
   const ev = ((d.import_row as Record<string, unknown> | null)?.evidence ?? {}) as Record<string, string>
   return (
     <div>
-      <Intro can={['kliknąć „Źródło” przy wartości – otworzy się podgląd pliku z zaznaczoną komórką', ...(expert ? ['zatwierdzić dane projektu albo poprawić błędną wartość (zmiana trafi do historii)'] : [])]}>
-        Podstawowe informacje o inwestycji{d.tier === 'deep' ? ' z listy przekazanej przez organizatora (plik Excel)' : ' odczytane z ogłoszeń BZP'}. Każda wartość ma odnośnik do miejsca, z którego pochodzi.
+      <Intro can={expert ? ['zatwierdzić dane projektu albo poprawić błędną wartość'] : undefined}>
+        Dane inwestycji{d.tier === 'deep' ? ' z listy organizatora (plik Excel)' : ' odczytane z ogłoszeń BZP'}. Przy każdej wartości jest jej źródło.
       </Intro>
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
@@ -144,7 +143,7 @@ function Overview({ d, expert }: { d: Schemas['ProjectDetail']; expert: boolean 
             <CardHeader title="Beneficjent" />
             <CardContent className="space-y-1 text-sm">
               <div className="font-medium">{d.beneficiary?.name ?? d.beneficiary_name}</div>
-              <div className="text-xs text-slate-500">NIP {d.beneficiary?.nip ?? d.beneficiary_nip ?? '—'}{d.beneficiary?.regon ? ` · REGON ${d.beneficiary.regon}` : ''}</div>
+              <div className="text-xs text-slate-500">NIP {d.beneficiary?.nip ?? d.beneficiary_nip ?? '—'}</div>
               <div className="text-xs text-slate-500">{[d.beneficiary?.city, d.beneficiary?.province].filter(Boolean).join(', ')}</div>
             </CardContent>
           </Card>
@@ -158,7 +157,7 @@ function Overview({ d, expert }: { d: Schemas['ProjectDetail']; expert: boolean 
                   { key: 'subsector_main', label: 'Podsektor' }, { key: 'work_type', label: 'Rodzaj robót' }, { key: 'formula', label: 'Formuła' },
                   { key: 'public_id_value', label: 'Identyfikator' }, { key: 'project_status', label: 'Stan realizacji' }]}
                 invalidate={[['project', d.id]]} />
-                : <p className="text-xs text-slate-500">Dane tej inwestycji weryfikuje ekspert w swoim panelu.</p>}
+                : null}
             </CardContent>
           </Card>
         </div>
@@ -175,18 +174,14 @@ function LinksTab({ projectId, expert }: { projectId: string; expert: boolean })
   const [relink, setRelink] = useState(false)
   return (
     <div className="space-y-4">
-      <Intro can={[
-        'sprawdzić, dlaczego system uznał, że dane postępowanie dotyczy tej inwestycji (lista warunków ✓/✗, każdy ze źródłem)',
-        'zobaczyć, które inne postępowania tego samego zamawiającego system rozważył i dlaczego je odrzucił',
-        ...(expert ? ['zatwierdzić lub odrzucić powiązanie albo wskazać właściwe postępowanie – decyzja przetrwa ponowne pobranie danych'] : []),
-      ]}>
-        Inwestycja z listy jest opisana jednym numerem (ogłoszenia lub projektu KPO). System odnajduje w Biuletynie Zamówień Publicznych postępowanie, którego dotyczy, wraz ze wszystkimi ogłoszeniami (o zamówieniu, o wyniku, o zmianach i o wykonaniu umowy).
+      <Intro can={expert ? ['zatwierdzić lub odrzucić powiązanie albo wskazać inne postępowanie; decyzja przetrwa ponowne pobranie danych'] : undefined}>
+        Postępowanie w BZP, którego dotyczy inwestycja, z listą warunków, które sprawdził system, oraz postępowaniami tego zamawiającego, które odrzucił.
       </Intro>
       <QueryState q={links} empty={(l) => l.length === 0}>{(ls) => (
         <div className="space-y-3">
           {ls.map((l) => (
             <Card key={l.id} className={cn(l.status === 'rejected' && 'opacity-60')}>
-              <CardHeader title={l.procedure_title} description={<>Ogłoszenie {l.bzp_number}{l.part_no ? ` · część ${l.part_no}` : ''}{l.is_override ? ' · wskazane przez eksperta' : ''}</>}
+              <CardHeader title={l.procedure_title} description={<>Ogłoszenie {l.bzp_number}{l.part_no ? `, część ${l.part_no}` : ''}</>}
                 actions={<StatusBadge status={l.status} />} />
               <CardContent className="space-y-3">
                 <LinkVerdict method={l.method} confidence={l.confidence} />
@@ -220,11 +215,11 @@ function RelinkDialog({ open, onClose, projectId, candidates }: { open: boolean;
   const m = useApiMutation<Schemas['ProjectRelinkIn'], Schemas['LinkOut']>({
     fn: async (body) => unwrap(await api.POST('/api/projects/{project_id}/relink', { params: { path: { project_id: projectId } }, body })),
     invalidate: [['links', projectId], ['project', projectId], ['projects'], ['review'], ['history']],
-    onSuccess: () => { toast({ kind: 'success', title: 'Powiązanie zmienione', description: 'Zapisano jako decyzję eksperta – przetrwa ponowne pobranie danych.' }); onClose() },
+    onSuccess: () => { toast({ kind: 'success', title: 'Powiązanie zmienione' }); onClose() },
     onError: (e) => toast({ kind: 'error', title: 'Nie udało się zmienić powiązania', description: String(e) }),
   })
   return (
-    <Dialog open={open} onClose={onClose} title="Wskaż właściwe postępowanie" description="Wybierz jedno z postępowań tego zamawiającego albo wpisz numer ogłoszenia BZP – system pobierze je z BZP."
+    <Dialog open={open} onClose={onClose} title="Wskaż właściwe postępowanie" description="Wybierz postępowanie tego zamawiającego albo wpisz numer ogłoszenia BZP."
       footer={<><Button variant="outline" onClick={onClose}>Anuluj</Button>
         <Button loading={m.isPending} disabled={(!sel && !notice.trim()) || !comment.trim()}
           onClick={() => m.mutate({ procedure_id: sel || null, notice_number: notice.trim() || null, part_no: part ? Number(part) : null, comment, ocid: null })}>Zapisz powiązanie</Button></>}>
@@ -233,7 +228,7 @@ function RelinkDialog({ open, onClose, projectId, candidates }: { open: boolean;
           {candidates.map((c) => (
             <label key={String(c.procedure_id)} className={cn('flex cursor-pointer items-start gap-2 rounded border p-2', sel === c.procedure_id ? 'border-brand bg-brand-soft' : 'border-slate-200')}>
               <input type="radio" name="cand" className="mt-1 accent-brand" checked={sel === c.procedure_id} onChange={() => { setSel(String(c.procedure_id)); setNotice('') }} />
-              <span><span className="text-xs">{c.title}</span><br /><span className="text-[11px] text-slate-500">ogłoszenie {c.bzp_number} · dopasowanie {confidenceWords(c.score)}</span></span>
+              <span><span className="text-xs">{c.title}</span><br /><span className="text-[11px] text-slate-500">dopasowanie {confidenceWords(c.score)}</span></span>
             </label>))}
         </div>
         <div className="grid grid-cols-3 gap-2">
@@ -254,13 +249,13 @@ function ContractsTab({ projectId }: { projectId: string }) {
   const contracts = useContracts(projectId)
   return (
     <div className="space-y-4">
-      <Intro can={['porównać planowany termin z faktycznym i wartość umowy z wypłatą', 'przeczytać, dlaczego zmieniano umowę (cytat z ogłoszenia o zmianie)']}>
-        Postępowanie przetargowe (co zamawiający chciał kupić, za ile, ile ofert wpłynęło), zawarte umowy z wykonawcami i każda zmiana umowy wraz z podstawą prawną i powodem. Kwota szacunkowa jest netto, pozostałe kwoty brutto.
+      <Intro>
+        Przetarg, umowy z wykonawcami i każda zmiana umowy z podstawą prawną i powodem. Wartość szacunkowa jest netto, pozostałe kwoty brutto.
       </Intro>
       <QueryState q={procs} empty={(x) => x.length === 0}>{(ps) => (
         <div className="grid gap-3 md:grid-cols-2">{ps.map((p) => (
           <Card key={p.id}>
-            <CardHeader title={p.title} description={<>Postępowanie, ogłoszenie {p.bzp_number}</>} actions={<EvidenceChip ids={p.evidence_ids} />} />
+            <CardHeader title={p.title} description={<>Ogłoszenie {p.bzp_number}</>} actions={<EvidenceChip ids={p.evidence_ids} />} />
             <CardContent className="grid grid-cols-2 gap-3 text-sm">
               <Fact label="Wartość szacunkowa (netto)" value={fmtPln(p.est_value_net)} />
               <Fact label="Kwota przeznaczona przez zamawiającego (brutto)" value={fmtPln(p.budget_gross)} />
@@ -277,7 +272,7 @@ function ContractsTab({ projectId }: { projectId: string }) {
           const delay = c.actual_end && c.planned_end ? Math.round((+new Date(c.actual_end) - +new Date(c.planned_end)) / 86400000) : null
           return (
             <Card key={c.id}>
-              <CardHeader title={`Umowa${c.part_no ? ` – część ${c.part_no}` : ''}`}
+              <CardHeader title={`Umowa${c.part_no ? `, część ${c.part_no}` : ''}`}
                 description={c.contractor ? `Wykonawca: ${c.contractor.natural_person_flag ? 'osoba fizyczna (dane ukryte)' : c.contractor.name}` : undefined}
                 actions={<EvidenceChip ids={c.evidence_ids} />} />
               <CardContent className="space-y-3">
@@ -320,14 +315,14 @@ function EventsTab({ projectId, expert }: { projectId: string; expert: boolean }
   const ev = useEvents(projectId)
   return (
     <div>
-      <Intro can={['kliknąć „Pokaż w źródle”, żeby zobaczyć ogłoszenie lub dokument z zaznaczonym fragmentem', ...(expert ? ['zatwierdzić zdarzenie, poprawić przyczynę lub kategorię ryzyka, oznaczyć je jako wzorcowe (system użyje go jako przykładu)'] : [])]}>
-        Co się wydarzyło w tej inwestycji (opóźnienie, zmiana umowy, wypłata ponad wartość umowy, kary…), dlaczego (przyczyna z cytatem) i jaki był skutek (dni, złote). Każde zdarzenie ma kategorię ryzyka z katalogu ekspertów (R01–R15). Etykieta „Wniosek modelu” oznacza, że przyczynę sklasyfikował model językowy – zawsze z cytatem sprawdzonym w źródle.
+      <Intro can={expert ? ['zatwierdzić zdarzenie, poprawić przyczynę lub kategorię ryzyka, oznaczyć je jako wzorcowe'] : undefined}>
+        Opóźnienia, zmiany umów, wypłaty ponad wartość umowy i kary: przyczyna z cytatem, skutek w dniach i złotych oraz kategoria ryzyka R01–R15. „Wniosek modelu” oznacza, że przyczynę sklasyfikował model językowy na podstawie cytatu sprawdzonego w źródle.
       </Intro>
       <QueryState q={ev} empty={(x) => x.length === 0}>{(items) => (
         <div className="space-y-3">{items.map((e) => (
           <Card key={e.id} className={cn(e.status === 'rejected' && 'opacity-60')}>
             <CardHeader title={<span className="flex flex-wrap items-center gap-2">{e.title ?? EVENT_PL[e.event_type] ?? e.event_type}<RiskCodes codes={e.risk_codes} />{e.exemplary && <Badge variant="violet">wzorcowe</Badge>}</span>}
-              description={<>{EVENT_PL[e.event_type] ?? e.event_type}{e.event_date ? ` · ${fmtDate(e.event_date)}` : ''}</>}
+              description={e.event_date ? fmtDate(e.event_date) : undefined}
               actions={<><BlockLabel label={e.model_label ? 'wniosek_modelu' : 'dane_zrodlowe'} /><StatusBadge status={e.status} /></>} />
             <CardContent className="space-y-2 text-sm">
               {e.quote && <blockquote className="border-l-2 border-teal-400 bg-teal-50/40 py-1 pl-2 text-slate-700">„{e.quote}”</blockquote>}
@@ -335,10 +330,10 @@ function EventsTab({ projectId, expert }: { projectId: string; expert: boolean }
               <div className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
                 {e.cause && <Fact label="Przyczyna" value={<span className="font-normal">{e.cause}</span>} />}
                 {(e.effect || e.effect_days != null || e.effect_pln != null) && <Fact label="Skutek" value={<span className="font-normal">{e.effect}
-                  {e.effect_days != null && ` · ${fmtNum(e.effect_days, 0)} dni`}{e.effect_pln != null && ` · ${fmtPln(e.effect_pln)}`}</span>} />}
+                  {e.effect_days != null && `, ${fmtNum(e.effect_days, 0)} dni`}{e.effect_pln != null && `, ${fmtPln(e.effect_pln)}`}</span>} />}
                 {e.mitigation && <Fact label="Działanie zaradcze" value={<span className="font-normal">{e.mitigation}{e.mitigation_effect && <Badge className="ml-1" variant={e.mitigation_effect === 'skuteczne' ? 'success' : 'warning'}>{e.mitigation_effect}</Badge>}</span>} />}
               </div>
-              {e.model_label && <div className="text-[11px] text-amber-800">Przyczynę sklasyfikował: {e.model_label}; pewność {confidenceWords(e.confidence)}.</div>}
+              {e.model_label && <div className="text-[11px] text-amber-800">Przyczynę sklasyfikował {e.model_label.replace(/\s*\(.*\)$/, '')}, pewność {confidenceWords(e.confidence)}.</div>}
               {expert && <ReviewActions objectType="event" objectId={e.id} status={e.status} exemplary={e.exemplary} proposal={e.proposal}
                 values={e as unknown as Record<string, unknown>}
                 editFields={[{ key: 'risk_codes', label: 'Kategorie ryzyka', type: 'rcodes' }, { key: 'cause', label: 'Przyczyna', type: 'longtext' },
@@ -357,8 +352,8 @@ function NoticesTab({ projectId, selected, section, quote, onSelect }: { project
   const n = useNotices(projectId)
   return (
     <div>
-      <Intro can={['wybrać ogłoszenie z listy i przeczytać jego pełną treść podzieloną na punkty', 'wyszukać słowo w treści ogłoszenia', 'otworzyć oryginał w e-Zamówieniach']}>
-        Pełna treść wszystkich ogłoszeń z Biuletynu Zamówień Publicznych dotyczących tej inwestycji – w tej samej numeracji punktów co w oryginale.
+      <Intro>
+        Pełna treść ogłoszeń tej inwestycji w numeracji punktów z oryginału.
       </Intro>
       <QueryState q={n} empty={(x) => x.length === 0}>{(ns) => {
         const cur = selected ?? ns[0]?.id
@@ -368,7 +363,7 @@ function NoticesTab({ projectId, selected, section, quote, onSelect }: { project
               <li key={x.id}><button onClick={() => onSelect(x.id)}
                 className={cn('w-full cursor-pointer rounded border p-2 text-left text-xs', cur === x.id ? 'border-brand bg-brand-soft' : 'border-slate-200 bg-white hover:bg-slate-50')}>
                 <div className="font-semibold">{NOTICE_PL[x.notice_type] ?? x.notice_type}</div>
-                <div>{x.notice_number} · {fmtDate(x.published_at)}</div>
+                <div>{fmtDate(x.published_at)}</div>
               </button></li>))}</ul>
             <div>
               {cur && (() => {
@@ -415,8 +410,8 @@ function DocumentsTab({ projectId, expert }: { projectId: string; expert: boolea
   }
   return (
     <div className="space-y-3">
-      <Intro can={['otworzyć dokument w podglądzie', ...(expert ? ['dodać dokument (PDF, Word, Excel) albo podać adres URL – system odczyta tekst ze stronami i wskaże fragmenty, które mogą świadczyć o ryzyku', 'potem użyć „Przelicz zdarzenia”, żeby zobaczyć, co nowy dokument zmienił'] : [])]}>
-        Dokumenty inwestycji poza ogłoszeniami BZP: umowa, aneksy, protokoły, specyfikacja (SWZ), program funkcjonalno-użytkowy, raporty kontroli.
+      <Intro can={expert ? ['dodać dokument (PDF, Word, Excel) albo adres URL; system odczyta tekst ze stronami i wskaże fragmenty świadczące o ryzyku', 'przeliczyć zdarzenia, żeby zobaczyć, co zmienił nowy dokument'] : undefined}>
+        Dokumenty spoza BZP: umowa, aneksy, protokoły, SWZ, program funkcjonalno-użytkowy, raporty kontroli.
       </Intro>
       {expert && <div className="flex flex-wrap items-end gap-2">
         <input ref={ref} type="file" className="hidden" accept=".pdf,.docx,.xlsx,.xls,.csv,.html,.htm,.txt" onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} aria-label="Plik dokumentu" />
@@ -428,9 +423,8 @@ function DocumentsTab({ projectId, expert }: { projectId: string; expert: boolea
         <ul className="grid gap-2 md:grid-cols-2">{ds.map((d) => (
           <li key={d.id}><Link to="/dokumenty/$documentId" params={{ documentId: d.id }} search={{}}
             className="flex items-start gap-2 rounded-lg border border-slate-200 bg-white p-3 hover:border-brand">
-            <FileText size={18} className="mt-0.5 shrink-0 text-slate-400" />
             <span className="min-w-0"><span className="block truncate font-medium">{d.title ?? d.file_name}</span>
-              <span className="text-xs text-slate-500">{[d.doc_type, d.phase, d.pages ? `${d.pages} str.` : null, `dodano ${fmtDate(d.created_at)}`].filter(Boolean).join(' · ')}</span></span>
+              <span className="text-xs text-slate-500">{[d.doc_type, d.pages ? `${d.pages} str.` : null].filter(Boolean).join(', ')}</span></span>
           </Link></li>))}</ul>
       )}</QueryState>
     </div>
@@ -444,8 +438,8 @@ function IssuesTab({ projectId }: { projectId: string }) {
     unwrap(await api.GET('/api/projects/{project_id}/completeness', { params: { path: { project_id: projectId } } })))
   return (
     <div>
-      <Intro can={['sprawdzić, jakich dokumentów lub informacji brakuje i jak to ogranicza analizę', 'zobaczyć, gdzie dwa źródła podają różne wartości']}>
-        Ekspert rozróżnia cztery sytuacje, które nie są równoważne: dokumentu <b>nie ma w zebranych materiałach</b> (nie znaczy, że nie istnieje), dokument <b>nie wspomina</b> o czymś, <b>brak potwierdzenia</b> (są tylko przesłanki) oraz <b>potwierdzono, że nie wykonano</b>. Osobno pokazujemy sprzeczności między źródłami.
+      <Intro>
+        Czego brakuje i jak to ogranicza analizę. Te cztery stany nie są równoważne: <b>nie ma w zebranych materiałach</b> (dokument może istnieć), <b>dokument nie wspomina</b>, <b>brak potwierdzenia</b> i <b>potwierdzono, że nie wykonano</b>. Osobno pokazujemy sprzeczności między źródłami.
       </Intro>
       <QueryState q={c}>{(d) => (
         <div className="space-y-3">
@@ -472,7 +466,7 @@ function HistoryTab({ projectId }: { projectId: string }) {
   const h = useHistory(projectId)
   return (
     <div>
-      <Intro>Każda decyzja eksperta dotycząca tej inwestycji (zatwierdzenie, poprawka, odrzucenie, zmiana powiązania) – kto, kiedy, z jakim uzasadnieniem i co dokładnie zmienił.</Intro>
+      <Intro>Decyzje eksperta dotyczące tej inwestycji: kto, kiedy, z jakim uzasadnieniem i co zmienił.</Intro>
       <QueryState q={h} empty={(x) => x.length === 0}>{(items) => (
         <ol className="space-y-2">{items.map((r) => (
           <li key={r.id} className="rounded-lg border border-slate-200 bg-white p-3 text-sm">
@@ -511,8 +505,8 @@ function Reanalyze({ projectId }: { projectId: string }) {
       <ul className="list-disc pl-5 text-sm">{xs.map((x, i) => <li key={i}>{x.title ?? x.event_type}</li>)}</ul></div>)
   return (
     <>
-      <Button variant="outline" loading={m.isPending} onClick={() => m.mutate()} title="Ponownie wylicza zdarzenia z aktualnych ogłoszeń i dokumentów i pokazuje różnice"><Sparkles size={14} />Przelicz zdarzenia</Button>
-      <Dialog open={!!diff} onClose={() => setDiff(null)} title="Co zmieniło się po przeliczeniu" description="System wyliczył zdarzenia od nowa na aktualnych danych. Twoje wcześniejsze decyzje nie zostały nadpisane – różnice czekają na Twoją ocenę."
+      <Button variant="outline" loading={m.isPending} onClick={() => m.mutate()}>Przelicz zdarzenia</Button>
+      <Dialog open={!!diff} onClose={() => setDiff(null)} title="Co zmieniło się po przeliczeniu" description="Twoje wcześniejsze decyzje nie zostały nadpisane. Różnice czekają na Twoją ocenę."
         footer={<Button onClick={() => setDiff(null)}>OK</Button>}>
         {diff && <div className="space-y-3">
           {sec('Nowe zdarzenia', diff.new ?? [], 'success')}

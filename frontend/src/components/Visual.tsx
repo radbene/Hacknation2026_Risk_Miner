@@ -13,7 +13,7 @@ export function Proportion({ k, n, estimate, low, high, what, tone = 'rose' }:
     <div>
       <div className="text-sm">
         {k != null && n ? <>W <b>{k}</b> z <b>{n}</b> {what}</> : <>Brak danych</>}
-        {estimate != null && <> – po wygładzeniu <b>{pct(estimate)}</b></>}
+        {estimate != null && <>, po wygładzeniu <b>{pct(estimate)}</b></>}
       </div>
       <div className="relative mt-1 h-2.5 w-full rounded-full bg-slate-100" aria-hidden>
         {low != null && high != null && <div className={cn('absolute inset-y-0 rounded-full', band)} style={{ left: `${low * 100}%`, width: `${Math.max(1, (high - low) * 100)}%` }} />}

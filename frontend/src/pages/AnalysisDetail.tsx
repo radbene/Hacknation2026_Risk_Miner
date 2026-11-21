@@ -43,9 +43,9 @@ export default function AnalysisDetail() {
       return (
         <div>
           <PageHeader back title={a.title}
-            description={<>Porównanie z {Number(sm.n_cases ?? 0).toLocaleString('pl-PL')} zakończonymi inwestycjami z bazy · wersja analizy {a.version}</>}
+            description={<>Porównanie z {Number(sm.n_cases ?? 0).toLocaleString('pl-PL')} zakończonymi inwestycjami</>}
             actions={<>
-              <Button variant="outline" loading={recompute.isPending} onClick={() => recompute.mutate()} title="Liczy analizę od nowa na aktualnej bazie i wiedzy eksperckiej"><RefreshCw size={14} />Przelicz</Button>
+              <Button variant="outline" loading={recompute.isPending} onClick={() => recompute.mutate()}><RefreshCw size={14} aria-hidden />Przelicz</Button>
               <ExportButton id={a.id} format="docx" title={a.title} label="Pobierz kartę (Word)" />
               <ExportButton id={a.id} format="json" title={a.title} label="Dane (JSON)" />
               <ExportButton id={a.id} format="csv" title={a.title} label="Dane (CSV)" />
@@ -96,7 +96,7 @@ function Summary({ a }: { a: A }) {
   return (
     <Card>
       <CardHeader title="W skrócie" actions={<BlockLabel label="obliczenia" />}
-        description={`Na podstawie ${s.n_neighbours ?? 0} najbardziej podobnych zakończonych inwestycji (zakładka „Podobne inwestycje”).`} />
+        description={`Na podstawie ${s.n_neighbours ?? 0} najbardziej podobnych zakończonych inwestycji`} />
       <CardContent className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
         <div className="space-y-1">
           <div className="text-xs font-semibold text-slate-600">Czy zdąży na czas?</div>
@@ -116,7 +116,7 @@ function Summary({ a }: { a: A }) {
           <div className="text-xs font-semibold text-slate-600">Czy budżet jest realny?</div>
           {b.percentile != null
             ? <p className="text-sm">Budżet jest wyższy niż w <b>{Math.round(b.percentile * 100)}</b> na 100 podobnych umów{b.reserve_p80 ? <>; z zapasem warto zarezerwować <b>{fmtPln(b.reserve_p80.amount)}</b> <Term t="rezerwa P80" /></> : null}.</p>
-            : <p className="text-sm text-amber-800">{b.message ?? 'Nie porównano – uzupełnij wartość i informację netto/brutto w zakładce „Cechy inwestycji”.'}</p>}
+            : <p className="text-sm text-amber-800">{b.message ?? 'Nie porównano. Uzupełnij wartość i informację netto/brutto w zakładce „Cechy inwestycji”.'}</p>}
         </div>
       </CardContent>
     </Card>
@@ -131,7 +131,7 @@ function ItemDecision({ a, it, allowExclude }: { a: A; it: Item; allowExclude?: 
   const m = useApiMutation<Schemas['AnalysisItemPatch'], Item>({
     fn: async (body) => unwrap(await api.PATCH('/api/analyses/{analysis_id}/items/{item_id}', { params: { path: { analysis_id: a.id, item_id: it.id } }, body })),
     invalidate: [['analysis', a.id]],
-    onSuccess: (_r, v) => v.excluded != null && toast({ kind: 'success', title: v.excluded ? 'Wykluczono – analiza przeliczona bez tej inwestycji' : 'Przywrócono – analiza przeliczona' }),
+    onSuccess: (_r, v) => v.excluded != null && toast({ kind: 'success', title: v.excluded ? 'Analiza przeliczona bez tej inwestycji' : 'Analiza przeliczona z tą inwestycją' }),
     onError: (e) => toast({ kind: 'error', title: 'Nie udało się', description: String(e) }),
   })
   return (
@@ -143,7 +143,7 @@ function ItemDecision({ a, it, allowExclude }: { a: A; it: Item; allowExclude?: 
         {it.status !== 'proposed' && <Button size="sm" variant="ghost" onClick={() => m.mutate({ status: 'proposed' })}><RotateCcw size={12} />Cofnij decyzję</Button>}
       </>}
       {allowExclude && <Button size="sm" variant="outline" loading={m.isPending} onClick={() => m.mutate({ excluded: !it.excluded })}
-        title={it.excluded ? 'Uwzględnij tę inwestycję w porównaniu' : 'Pomiń tę inwestycję (np. niepodobna) – wyniki zostaną przeliczone'}>
+        title={it.excluded ? undefined : 'Wyniki przeliczą się bez tej inwestycji'}>
         <EyeOff size={12} />{it.excluded ? 'Uwzględnij ponownie' : 'Pomiń w porównaniu'}</Button>}
     </div>
   )
@@ -154,8 +154,8 @@ function ItemDecision({ a, it, allowExclude }: { a: A; it: Item; allowExclude?: 
 function Flags({ items, a }: { items: Item[]; a: A }) {
   return (
     <div>
-      <Intro can={['przeczytać, dlaczego flaga się pojawiła (każda ma uzasadnienie, a zdania z Twojego opisu są przytoczone)', 'zobaczyć przykłady z podobnych inwestycji – kliknij, by otworzyć ich kartę']}>
-        Sprawy, które w podobnych inwestycjach prowadziły do opóźnień, zmian umów lub wzrostu kosztów – albo które wynikają z Twojego opisu (np. brak zgód właścicieli, brak decyzji). Kolejność: najpierw <b>ważne</b>, potem <b>do sprawdzenia</b> i <b>informacyjne</b>. Kod w fioletowej etykiecie to <Term t="kategoria ryzyka" /> z katalogu ekspertów.
+      <Intro>
+        Sprawy, które w podobnych inwestycjach prowadziły do opóźnień, zmian umów lub wzrostu kosztów, oraz ryzyka wynikające z Twojego opisu, np. brak zgód właścicieli. Najpierw <b>ważne</b>, potem <b>do sprawdzenia</b> i <b>informacyjne</b>. Fioletowy kod to <Term t="kategoria ryzyka" />.
       </Intro>
       {!items.length && <p className="text-sm text-slate-500">Brak flag.</p>}
       <div className="space-y-3">{items.map((it) => {
@@ -168,7 +168,7 @@ function Flags({ items, a }: { items: Item[]; a: A }) {
             <CardContent className="space-y-2 text-sm">
               <p>{p.why}</p>
               {(it.risk_codes ?? []).map((c) => RISK_NAMES[c] ? <p key={c} className="text-xs text-slate-500">{c}: {RISK_NAMES[c]}</p> : null)}
-              {p.quote && <blockquote className="border-l-2 border-teal-400 bg-teal-50/40 py-1 pl-2 text-sm">„{p.quote}” <span className="text-xs text-slate-500">– z Twojego opisu</span></blockquote>}
+              {p.quote && <blockquote className="border-l-2 border-teal-400 bg-teal-50/40 py-1 pl-2 text-sm">„{p.quote}” <span className="text-xs text-slate-500">(z Twojego opisu)</span></blockquote>}
               {!!p.examples?.length && (
                 <details className="text-sm"><summary className="cursor-pointer text-slate-600">Jak to wyglądało w podobnych inwestycjach ({p.examples.length})</summary>
                   <ul className="mt-2 space-y-1.5">{p.examples.map((e: P) => (
@@ -195,14 +195,14 @@ function Actions({ items, a }: { items: Item[]; a: A }) {
   const rest = items.filter((i) => i !== llm)
   return (
     <div className="space-y-3">
-      <Intro can={['skopiować proponowany zapis do projektu umowy lub SWZ (po weryfikacji prawnej)', 'przeczytać lekcje z kontroli i wzorcowe przypadki zatwierdzone przez eksperta']}>
-        Dla każdej kategorii ryzyka wskazanej we flagach: zapis umowny lub działanie zapobiegawcze z podstawą prawną (katalog prowadzi ekspert), wnioski z kontroli NIK i wzorcowe przypadki z bazy. Na górze – krótkie podsumowanie przygotowane przez model językowy na podstawie wyliczonych liczb.
+      <Intro can={['skopiować zapis do projektu umowy lub SWZ po weryfikacji prawnej']}>
+        Dla każdej kategorii ryzyka z flag: zapis umowny lub działanie zapobiegawcze z podstawą prawną, wnioski z kontroli NIK i wzorcowe przypadki z bazy. Podsumowanie na górze przygotował model językowy z liczb tej analizy.
       </Intro>
       {llm && (() => {
         const p = llm.payload as P
         return (
           <Card className="border-amber-200">
-            <CardHeader title="Podsumowanie" actions={<BlockLabel label="wniosek_modelu" />} description={`Przygotował: ${p.model_label ?? 'model językowy'} – na podstawie liczb z tej analizy; wymaga oceny eksperta.`} />
+            <CardHeader title="Podsumowanie" actions={<BlockLabel label="wniosek_modelu" />} description={`${(p.model_label ?? 'Model językowy').replace(/\s*\(.*\)$/, '')}, na podstawie liczb z tej analizy`} />
             <CardContent className="space-y-2 text-sm"><p>{p.summary}</p>
               <ol className="list-decimal space-y-0.5 pl-5">{(p.top_actions ?? []).map((x: string, i: number) => <li key={i}>{x}</li>)}</ol>
               <ItemDecision a={a} it={llm} /></CardContent>
@@ -217,14 +217,14 @@ function Actions({ items, a }: { items: Item[]; a: A }) {
               {(p.clauses ?? []).map((c: P) => (
                 <div key={c.id} className="rounded-md border border-slate-200 p-3">
                   <div className="flex flex-wrap items-center gap-2 font-medium">{c.title}
-                    {c.status !== 'approved' && <Badge variant="warning" title="Zapis z katalogu zespołu – czeka na zatwierdzenie eksperta w „Wiedzy eksperckiej”">projekt zapisu</Badge>}</div>
+                    {c.status !== 'approved' && <Badge variant="warning" title="Czeka na zatwierdzenie eksperta">projekt zapisu</Badge>}</div>
                   <p className="mt-1">{c.text}</p>
-                  <p className="mt-1 text-xs text-slate-500">Podstawa: {c.legal_basis}{c.trigger ? ` · kiedy stosować: ${c.trigger}` : ''}</p>
+                  <p className="mt-1 text-xs text-slate-500">Podstawa: {c.legal_basis}</p>
                 </div>))}
               {(p.lessons ?? []).map((l: P) => (
-                <div key={l.id} className="rounded-md bg-slate-50 p-2 text-xs"><b>Wniosek z kontroli:</b> {l.title} – {l.recommendation} <EvidenceChip ids={l.evidence_ids} /></div>))}
+                <div key={l.id} className="rounded-md bg-slate-50 p-2 text-xs"><b>Wniosek z kontroli:</b> {l.title}. {l.recommendation} <EvidenceChip ids={l.evidence_ids} /></div>))}
               {(p.examples ?? []).map((e: P) => (
-                <div key={e.id} className="rounded-md bg-emerald-50 p-2 text-xs"><b>Wzorcowy przypadek:</b> {e.title} – {e.mitigation} {e.mitigation_effect && `(${e.mitigation_effect})`}</div>))}
+                <div key={e.id} className="rounded-md bg-emerald-50 p-2 text-xs"><b>Wzorcowy przypadek:</b> {e.title}. {e.mitigation} {e.mitigation_effect && `(${e.mitigation_effect})`}</div>))}
               <ItemDecision a={a} it={it} />
             </CardContent>
           </Card>)
@@ -238,8 +238,8 @@ function Actions({ items, a }: { items: Item[]; a: A }) {
 function Assessment({ items }: { items: Item[]; a: A }) {
   return (
     <div>
-      <Intro can={['sprawdzić, czy budżet i czas realizacji nie są zbyt optymistyczne', 'zobaczyć koszt na kilometr sieci lub na mieszkańca w porównaniu z podobnymi']}>
-        Porównujemy budżet, harmonogram i koszt jednostkowy tej inwestycji z faktycznymi umowami podobnych inwestycji. Kwoty porównujemy tylko tego samego rodzaju (netto z netto, brutto z brutto). <Term t="percentyl">Percentyl</Term> P20 oznacza, że wartość jest niższa niż w 8 na 10 podobnych przypadków.
+      <Intro>
+        Budżet, harmonogram i koszt jednostkowy tej inwestycji na tle umów podobnych inwestycji. Porównujemy tylko kwoty tego samego rodzaju: netto z netto, brutto z brutto. <Term t="percentyl">Percentyl</Term> P20 oznacza wartość niższą niż w 8 na 10 podobnych przypadków.
       </Intro>
       <div className="grid gap-3 md:grid-cols-2">{items.map((it) => {
         const p = it.payload as P
@@ -278,8 +278,8 @@ const RANGE_Q: Record<string, { q: string; what: string; tone?: 'rose' | 'amber'
 function Ranges({ items, a }: { items: Item[]; a: A }) {
   return (
     <div>
-      <Intro can={['rozwinąć „Jak to policzono?” przy każdej liczbie', 'sprawdzić, na ilu przypadkach policzono wynik']}>
-        Co działo się w podobnych, zakończonych inwestycjach: jak często i o ile się opóźniały, czy wypłata przekraczała wartość umowy, jak często zmieniano umowy i unieważniano przetargi. Gdy podobnych inwestycji z danymi jest mało, liczymy na szerszej grupie (cały podsektor albo wszystkie inwestycje wod-kan) i stosujemy <Term t="wygładzenie" />. Przy odsetkach podajemy <Term t="przedział 95%">przedział</Term>, w którym prawdopodobnie leży prawdziwa wartość.
+      <Intro>
+        Jak często i o ile podobne inwestycje się opóźniały, czy wypłata przekraczała umowę, jak często zmieniano umowy i unieważniano przetargi. Przy małej liczbie podobnych liczymy na szerszej grupie i stosujemy <Term t="wygładzenie" />. Przy odsetkach podajemy <Term t="przedział 95%">przedział</Term>, w którym prawdopodobnie leży prawdziwa wartość.
       </Intro>
       <div className="grid gap-3 md:grid-cols-2">{items.map((it) => {
         const p = it.payload as P
@@ -291,7 +291,7 @@ function Ranges({ items, a }: { items: Item[]; a: A }) {
             <CardContent className="space-y-2">
               {isProp ? <Proportion k={p.k} n={p.n} estimate={p.estimate} low={p.ci_low} high={p.ci_high} what={m.what} tone={m.tone} />
                 : <Spread p50={p.p50} p80={p.p80} p95={p.p95} unit={m.unit} digits={m.digits ?? 0} />}
-              <p className="text-xs text-slate-500">Policzono na <Term t="n">{p.n} przypadkach</Term> – {LEVEL_PL[p.fallback_level] ?? p.fallback_level}{p.period ? `, lata ${p.period}` : ''}.</p>
+              <p className="text-xs text-slate-500">Policzono na <Term t="n">{p.n} przypadkach</Term>: {LEVEL_PL[p.fallback_level] ?? p.fallback_level}{p.period ? `, lata ${p.period}` : ''}.</p>
               {p.formula && <HowCalculated>{p.formula}</HowCalculated>}
               <ItemDecision a={a} it={it} />
             </CardContent>
@@ -307,8 +307,8 @@ function Neighbours({ items, a }: { items: Item[]; a: A }) {
   const sorted = [...items].sort((x, y) => Number(x.excluded) - Number(y.excluded) || (y.payload as P).score - (x.payload as P).score)
   return (
     <div className="space-y-3">
-      <Intro can={['zobaczyć, w czym każda inwestycja jest podobna, a w czym różna', 'pominąć inwestycję, która Twoim zdaniem nie pasuje – wszystkie wyniki zostaną przeliczone bez niej', 'otworzyć kartę inwestycji i sprawdzić, co się w niej wydarzyło']}>
-        Zakończone inwestycje najbardziej zbliżone do opisanej. <Term t="podobieństwo">Podobieństwo</Term> składa się z kilku cech – pasek pokazuje, na ile dana cecha się zgadza, a <Term t="waga">waga</Term> – jak bardzo się liczy. Na tych inwestycjach opierają się zakresy i flagi.
+      <Intro can={['pominąć inwestycję, która nie pasuje; wyniki przeliczą się bez niej']}>
+        Zakończone inwestycje najbardziej zbliżone do opisanej. Pasek pokazuje zgodność każdej cechy, a <Term t="waga">waga</Term> jej znaczenie w ocenie <Term t="podobieństwo">podobieństwa</Term>. Na tych inwestycjach opierają się zakresy i flagi.
       </Intro>
       {sorted.map((it) => {
         const p = it.payload as P
@@ -316,7 +316,7 @@ function Neighbours({ items, a }: { items: Item[]; a: A }) {
         return (
           <Card key={it.id} className={cn(it.excluded && 'opacity-50')}>
             <CardHeader title={<Link to="/projekty/$projectId" params={{ projectId: p.project_id }} search={{}} className="hover:underline">{p.title}</Link>}
-              description={<>{p.subsector_main ?? 'podsektor nieustalony'} · podobieństwo <b>{pct(p.score)}</b>{it.excluded ? ' · pominięta w porównaniu' : ''}</>}
+              description={<>Podobieństwo <b>{pct(p.score)}</b>{it.excluded ? ', pominięta w porównaniu' : ''}</>}
               actions={<EvidenceChip ids={o.evidence_ids} label="Źródło wyniku" />} />
             <CardContent className="space-y-3">
               <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
@@ -345,14 +345,14 @@ function FeaturesTab({ a }: { a: A }) {
   const m = useApiMutation<Features, A>({
     fn: async (body) => unwrap(await api.PUT('/api/analyses/{analysis_id}/features', { params: { path: { analysis_id: a.id } }, body })),
     invalidate: [['analysis', a.id]],
-    onSuccess: () => toast({ kind: 'success', title: 'Cechy zapisane – analiza przeliczona' }),
+    onSuccess: () => toast({ kind: 'success', title: 'Cechy zapisane, analiza przeliczona' }),
     onError: (e) => toast({ kind: 'error', title: 'Nie udało się', description: String(e) }),
   })
   const qs = ((a.params as P).questions ?? []) as string[]
   return (
     <div>
-      <Intro can={['poprawić lub uzupełnić cechę – po zapisaniu analiza zostanie przeliczona', 'sprawdzić, z którego zdania opisu odczytano każdą cechę']}>
-        Cechy, na podstawie których szukamy podobnych inwestycji i oceniamy budżet. Przy każdej widać, skąd pochodzi: z reguły, z modelu językowego albo od Ciebie.
+      <Intro can={['poprawić lub uzupełnić cechę; analiza przeliczy się po zapisaniu']}>
+        Cechy, według których szukamy podobnych inwestycji i oceniamy budżet. Przy każdej widać, czy odczytała ją reguła, model językowy, czy wpisałeś ją Ty.
       </Intro>
       <Card>
         <CardHeader title="Cechy inwestycji" actions={<Button loading={m.isPending} onClick={() => m.mutate(f)}>Zapisz i przelicz</Button>} />

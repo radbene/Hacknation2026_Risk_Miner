@@ -39,7 +39,7 @@ export function sourceTitle(e: Ev): string {
   if (e.notice_id) {
     const t = NOTICE_PL[String(l.notice_type)] ?? 'Ogłoszenie BZP'
     const where = l.section ? `pkt ${l.section}${l.label ? ` „${String(l.label).replace(/\)$/, '')}”` : ''}` : l.field ? FIELD_PL[String(l.field)] ?? 'pole ogłoszenia' : ''
-    return `${t} ${l.notice_number ?? ''}${where ? ` – ${where}` : ''}`
+    return `${t} ${l.notice_number ?? ''}${where ? `, ${where}` : ''}`
   }
   return 'Źródło'
 }
@@ -55,7 +55,7 @@ function Icon({ e }: { e: Ev }) {
 export function EvidenceList({ ids, depth = 0 }: { ids: string[]; depth?: number }) {
   const q = useEvidence(ids)
   const [sel, setSel] = useState(0)
-  if (!ids.length) return <Empty>Brak źródła – wynik nieudokumentowany.</Empty>
+  if (!ids.length) return <Empty>Brak źródła.</Empty>
   if (q.isLoading) return <Loading label="Wczytywanie źródeł…" />
   if (q.error) return <ErrorState error={q.error} onRetry={() => q.refetch()} />
   const items = q.data ?? []
@@ -78,9 +78,8 @@ export function SourcePreview({ e, depth = 0 }: { e: Ev; depth?: number }) {
     <div className="min-w-0 space-y-2">
       <div className="flex flex-wrap items-center gap-2 text-sm font-medium"><Icon e={e} />{sourceTitle(e)}</div>
       <div className="text-xs text-slate-500">
-        {e.retrieved_at && <>pobrano {fmtDate(e.retrieved_at)}</>}
-        {e.quote_verified === true && <> · cytat sprawdzony w treści źródła</>}
-        {e.url && <> · <a href={e.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-0.5 text-brand hover:underline">oryginał w e-Zamówieniach<ExternalLink size={10} /></a></>}
+        {e.retrieved_at && <>pobrano {fmtDate(e.retrieved_at)} </>}
+        {e.url && <><a href={e.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-0.5 text-brand hover:underline">oryginał w e-Zamówieniach<ExternalLink size={10} /></a></>}
       </div>
       {e.derivation ? <Calculation e={e} depth={depth} />
         : e.kind === 'xlsx_cell' ? <SheetRow e={e} />
@@ -99,7 +98,7 @@ function SheetRow({ e }: { e: Ev }) {
   return (
     <div className="rounded-md border border-slate-200 bg-white">
       <div className="border-b border-slate-100 px-3 py-1.5 text-xs text-slate-500">
-        Plik „{d.file}”, arkusz „{d.sheet}”, wiersz {d.row} – zaznaczona komórka, z której pochodzi wartość</div>
+        Plik „{d.file}”, arkusz „{d.sheet}”, wiersz {d.row}</div>
       <div className="max-h-[55vh] overflow-auto p-2">
         <div className="grid gap-1 sm:grid-cols-2">{d.cells.map((c) => {
           const hit = c.header === d.header
@@ -141,7 +140,7 @@ function Calculation({ e, depth }: { e: Ev; depth: number }) {
       {d.result !== undefined && <p>Wynik: <b>{typeof d.result === 'number' ? d.result.toLocaleString('pl-PL') : String(d.result)}</b></p>}
       {d.inputs && d.inputs.length > 0 && depth < 2 && (
         <details className="text-xs" open={depth === 0}>
-          <summary className="cursor-pointer text-slate-600">Dane wejściowe obliczenia ({d.inputs.length}) – kliknij, aby zobaczyć źródło każdej</summary>
+          <summary className="cursor-pointer text-slate-600">Dane wejściowe ({d.inputs.length})</summary>
           <div className="mt-2"><EvidenceList ids={d.inputs} depth={depth + 1} /></div>
         </details>)}
     </div>

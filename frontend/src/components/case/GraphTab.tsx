@@ -28,13 +28,13 @@ function Graph({ g }: { g: Schemas['GraphOut'] }) {
       const r = (rows[c] = (rows[c] ?? -1) + 1)
       return {
         id: n.id, position: { x: c * 230, y: r * 74 },
-        data: { label: <div className="text-left"><div className="text-[9px] uppercase opacity-70">{TYPE_PL[n.type] ?? n.type}</div><div className="line-clamp-2 text-[11px] font-medium">{n.label}</div></div> },
+        data: { label: <div className="text-left"><div className="text-[10px] opacity-70">{TYPE_PL[n.type] ?? n.type}</div><div className="line-clamp-2 text-[11px] font-medium">{n.label}</div></div> },
         style: { borderColor: COLOR[n.type] ?? '#64748b', borderWidth: 1.5, width: 200, padding: 6, fontSize: 11 },
       }
     })
     const edges: Edge[] = g.edges.map((e, i) => ({
       id: `e${i}`, source: e.source, target: e.target,
-      label: e.confidence != null ? `${e.label ?? ''} ${e.method ?? ''} ${e.confidence.toFixed(2)}`.trim() : e.label ?? undefined,
+      label: e.label ?? undefined,
       style: { stroke: e.status === 'rejected' ? '#e11d48' : '#94a3b8', strokeDasharray: e.status === 'proposed' && e.confidence != null ? '4 3' : undefined },
       labelStyle: { fontSize: 9 },
     }))
@@ -42,7 +42,6 @@ function Graph({ g }: { g: Schemas['GraphOut'] }) {
   }, [g])
   return (
     <div>
-      <p className="mb-2 text-xs text-slate-500">Projekt ↔ beneficjent ↔ postępowania ↔ ogłoszenia ↔ umowy ↔ zmiany ↔ zdarzenia. Linia przerywana = powiązanie zaproponowane przez system, czerwona = odrzucone.</p>
       <div className="h-[560px] rounded-lg border border-slate-200 bg-white">
         <ReactFlow nodes={nodes} edges={edges} fitView nodesDraggable proOptions={{ hideAttribution: true }}>
           <Background /><Controls showInteractive={false} />

@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Flag, Plus, Users } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { api, unwrap } from '@/api/client'
 import { useApi } from '@/api/hooks'
 import { Intro } from '@/components/Explain'
@@ -17,9 +17,9 @@ export default function Analyses() {
     <div>
       <PageHeader title={isExpert ? 'Analizy użytkowników' : 'Moje analizy'}
         actions={!isExpert ? <Link to="/nowa-inwestycja"><Button><Plus size={14} />Nowa analiza</Button></Link> : undefined} />
-      <Intro can={isExpert ? ['otworzyć analizę i zatwierdzić lub odrzucić jej flagi, zakresy i rekomendacje'] : ['otworzyć analizę, zmienić cechy inwestycji, pominąć niepasujące podobne inwestycje', 'pobrać kartę analizy jako dokument Word']}>
-        {isExpert ? 'Analizy nowych inwestycji przygotowane przez użytkowników. Ekspert ocenia ich elementy – zatwierdzone wnioski są wyraźnie oznaczone.'
-          : 'Zapisane analizy planowanych inwestycji. Każdą można otworzyć ponownie – wyniki są przeliczane na aktualnej bazie przypadków.'}
+      <Intro can={isExpert ? ['zatwierdzić lub odrzucić flagi, zakresy i rekomendacje analizy'] : ['zmienić cechy inwestycji i pominąć niepasujące podobne inwestycje', 'pobrać kartę analizy jako dokument Word']}>
+        {isExpert ? 'Analizy nowych inwestycji przygotowane przez użytkowników.'
+          : 'Twoje zapisane analizy. Po otwarciu wyniki liczą się na aktualnej bazie przypadków.'}
       </Intro>
       <QueryState q={q}>{(d) => (
         d.items.length === 0
@@ -28,10 +28,9 @@ export default function Analyses() {
             <Link key={a.id} to="/analizy/$analysisId" params={{ analysisId: a.id }} search={{}} className="group">
               <Card className="h-full p-4 group-hover:border-brand">
                 <h2 className="font-medium">{a.title}</h2>
-                <div className="mt-1 text-xs text-slate-500">{a.subsector_main ?? 'podsektor nieustalony'} · {fmtDateTime(a.created_at)}{isExpert && a.created_by ? ` · ${a.created_by}` : ''}</div>
+                <div className="mt-1 text-xs text-slate-500">{fmtDateTime(a.created_at)}</div>
                 <div className="mt-2 flex flex-wrap gap-3 text-xs">
-                  <span className="inline-flex items-center gap-1"><Users size={12} />{a.n_neighbours} podobnych inwestycji</span>
-                  <span className="inline-flex items-center gap-1"><Flag size={12} />{a.n_flags} {a.n_flags === 1 ? 'flaga' : 'flag'}</span>
+                  <span>{a.n_flags} {a.n_flags === 1 ? 'flaga' : 'flag'}</span>
                   {a.status !== 'proposed' && <Badge variant={a.status === 'rejected' ? 'danger' : 'success'}>{a.status === 'rejected' ? 'odrzucona przez eksperta' : 'zatwierdzona przez eksperta'}</Badge>}
                 </div>
               </Card>

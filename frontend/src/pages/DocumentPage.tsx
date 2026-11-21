@@ -30,7 +30,7 @@ export function DocumentViewer({ documentId, page, quote }: { documentId: string
           <span className="font-medium">{d.title ?? d.file_name}</span>
           {d.doc_type && <Badge variant="brand">{d.doc_type}</Badge>}
           {d.phase && <Badge>{d.phase}</Badge>}
-          <span className="text-xs text-slate-500">wersja {d.version} · {d.pages ?? '?'} str. · {d.text_status ?? ''}</span>
+          <span className="text-xs text-slate-500">{d.pages ?? '?'} str.</span>
           {d.url && <a href={d.url} target="_blank" rel="noreferrer" className="ml-auto inline-flex items-center gap-1 text-xs text-brand hover:underline">Źródło <ExternalLink size={11} /></a>}
         </div>
         <CardContent>

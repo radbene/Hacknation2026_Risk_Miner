@@ -46,16 +46,16 @@ function TimelineBody({ t }: { t: Schemas['TimelineOut'] }) {
         <Fact label="Wypłacono" value={fmtPln(pva.paid as number)} ev={t.items.find((i) => i.kind === 'paid')?.evidence_ids} />
         <Fact label="Wypłata / wartość" value={pva.paid_ratio != null ? String(pva.paid_ratio).replace('.', ',') : '—'} ev={pva.evidence?.paid_ratio ? [pva.evidence.paid_ratio] : []} calc
           warn={Number(pva.paid_ratio) > 1.05} />
-        <Fact label="Oferta / szacunek" value={pva.evidence?.offer_vs_estimate ? 'netto vs brutto – nie porównujemy' : '—'} ev={pva.evidence?.offer_vs_estimate ? [pva.evidence.offer_vs_estimate] : []} calc />
+        <Fact label="Oferta / szacunek" value={pva.evidence?.offer_vs_estimate ? 'netto i brutto, nie porównujemy' : '—'} ev={pva.evidence?.offer_vs_estimate ? [pva.evidence.offer_vs_estimate] : []} calc />
       </div>
 
       <Card>
-        <CardHeader title="Przebieg: plan vs rzeczywistość" description="Szary pas – okres planowany (umowa → termin pierwotny); czerwony – faktyczny; pomarańczowe linie – terminy po zmianach." actions={<BlockLabel label="dane_zrodlowe" />} />
+        <CardHeader title="Przebieg: plan vs rzeczywistość" description="Szary pas: okres planowany. Czerwony: faktyczny. Pomarańczowe linie: terminy po zmianach." actions={<BlockLabel label="dane_zrodlowe" />} />
         <CardContent>
           <div className="h-72" role="img" aria-label="Oś czasu projektu: postępowanie, umowa, zmiany, płatności">
             <ResponsiveContainer>
               <ScatterChart margin={{ top: 10, right: 30, bottom: 10, left: 10 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <CartesianGrid stroke="#f1f5f9" />
                 <XAxis type="number" dataKey="x" domain={[Math.min(...xs) - pad, Math.max(...xs) + pad]} scale="time"
                   tickFormatter={(v) => new Date(v).toLocaleDateString('pl-PL', { month: 'short', year: '2-digit' })} fontSize={11} />
                 <YAxis type="number" dataKey="y" domain={[0.5, 4.5]} ticks={[1, 2, 3, 4]} tickFormatter={(v) => LANE_NAME[v] ?? ''} width={90} fontSize={11} />
@@ -92,8 +92,7 @@ function TimelineBody({ t }: { t: Schemas['TimelineOut'] }) {
             <div className="h-56" role="img" aria-label="Porównanie kwot">
               <ResponsiveContainer>
                 <BarChart data={money} layout="vertical" margin={{ left: 20, right: 80 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
-                  <XAxis type="number" tickFormatter={(v) => `${(v / 1e6).toLocaleString('pl-PL', { maximumFractionDigits: 1 })} mln`} fontSize={11} />
+                  <XAxis type="number" hide />
                   <YAxis type="category" dataKey="name" width={120} fontSize={11} />
                   <Tooltip formatter={(v) => fmtPln(Number(v))} />
                   <Bar dataKey="value" radius={[0, 3, 3, 0]}>
@@ -108,7 +107,7 @@ function TimelineBody({ t }: { t: Schemas['TimelineOut'] }) {
       )}
 
       <Card>
-        <CardHeader title="Kroki przebiegu" description="Wszystkie ogłoszenia, umowy, zmiany i zdarzenia w kolejności dat – każdy krok z odnośnikiem do źródła." />
+        <CardHeader title="Kroki przebiegu" />
         <ol className="divide-y divide-slate-100">
           {t.items.map((i, k) => (
             <li key={k} className="flex flex-wrap items-center gap-3 px-4 py-2 text-sm">

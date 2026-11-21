@@ -18,10 +18,10 @@ export function EvidenceChip({ ids, title, className, label }: { ids?: string[] 
         className={cn('inline-flex items-center gap-1 rounded border border-teal-200 bg-teal-50 px-1.5 py-px text-[11px] font-medium text-teal-800 hover:bg-teal-100 cursor-pointer',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500', className)}
         aria-label={`Pokaż źródła (${list.length})`}>
-        <Quote size={11} aria-hidden />{label ?? 'Źródło'}{list.length > 1 ? ` · ${list.length}` : ''}
+        <Quote size={11} aria-hidden />{label ?? 'Źródło'}{list.length > 1 ? ` (${list.length})` : ''}
       </button>
       <Dialog open={open} onClose={() => setOpen(false)} title={title ?? 'Skąd pochodzi ta informacja'} className="w-[min(64rem,calc(100vw-2rem))]"
-        description="Podgląd oryginalnego źródła – zaznaczone jest dokładnie to miejsce, z którego system odczytał wartość.">
+        description="Zaznaczone jest miejsce, z którego system odczytał wartość.">
         {open && <EvidenceList ids={list} />}
       </Dialog>
     </>
