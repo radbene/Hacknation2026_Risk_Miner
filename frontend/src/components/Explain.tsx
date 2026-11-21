@@ -22,13 +22,13 @@ export const GLOSSARY: Record<string, string> = {
 /** Box at the top of every section/tab: what it shows and what you can do here. */
 export function Intro({ title, children, can, className }: { title?: ReactNode; children: ReactNode; can?: ReactNode[]; className?: string }) {
   return (
-    <div className={cn('mb-4 rounded-lg border border-sky-200 bg-sky-50/60 px-4 py-3 text-sm text-slate-700', className)}>
+    <div className={cn('mb-5 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600', className)}>
       <div>
         <div className="space-y-1">
-          {title && <div className="font-semibold text-slate-900">{title}</div>}
+          {title && <div className="font-medium text-slate-950">{title}</div>}
           <div>{children}</div>
           {can && can.length > 0 && (
-            <div><span className="font-medium">Co możesz tu zrobić: </span>
+            <div><span className="font-medium text-slate-900">Co możesz tu zrobić: </span>
               <ul className="mt-0.5 list-disc pl-5">{can.map((c, i) => <li key={i}>{c}</li>)}</ul></div>)}
         </div>
       </div>

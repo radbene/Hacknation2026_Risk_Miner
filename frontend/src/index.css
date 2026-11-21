@@ -1,19 +1,35 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
 
+/* shadcn/ui "New York" look: Inter, zinc neutrals (Tailwind's slate scale is remapped to zinc so every page
+   follows), one blue accent, light borders, small shadows. */
 @theme {
-  --color-brand: #1d4f91;
-  --color-brand-soft: #e8eef7;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-slate-50: #fafafa;
+  --color-slate-100: #f4f4f5;
+  --color-slate-200: #e4e4e7;
+  --color-slate-300: #d4d4d8;
+  --color-slate-400: #a1a1aa;
+  --color-slate-500: #71717a;
+  --color-slate-600: #52525b;
+  --color-slate-700: #3f3f46;
+  --color-slate-800: #27272a;
+  --color-slate-900: #18181b;
+  --color-slate-950: #09090b;
+  --color-brand: #2563eb;
+  --color-brand-soft: #eff6ff;
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --color-src: #0f766e;   /* [Dane źródłowe] */
   --color-calc: #6d28d9;  /* [Obliczenia] */
   --color-model: #b45309; /* [Wniosek modelu] */
 }
 
 html, body, #root { height: 100%; }
-body { @apply bg-slate-50 text-slate-900 antialiased; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+body { @apply bg-white font-sans text-slate-950 antialiased; font-feature-settings: "cv11", "ss01"; }
 mark.quote { @apply bg-yellow-200 rounded px-0.5; }
 
 /* Block labels: [Dane źródłowe] / [Obliczenia] / [Wniosek modelu] */
-.block-label { @apply inline-flex items-center gap-1 rounded border px-1.5 py-px text-[11px] font-semibold whitespace-nowrap; }
+.block-label { @apply inline-flex items-center gap-1 rounded-md border px-1.5 py-px text-[11px] font-medium whitespace-nowrap; }
 .block-src { color: var(--color-src); border-color: color-mix(in srgb, var(--color-src) 35%, white); background: color-mix(in srgb, var(--color-src) 8%, white); }
 .block-calc { color: var(--color-calc); border-color: color-mix(in srgb, var(--color-calc) 35%, white); background: color-mix(in srgb, var(--color-calc) 8%, white); }
 .block-model { color: var(--color-model); border-color: color-mix(in srgb, var(--color-model) 35%, white); background: color-mix(in srgb, var(--color-model) 8%, white); }

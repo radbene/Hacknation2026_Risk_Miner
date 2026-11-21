@@ -1,8 +1,8 @@
 import { forwardRef, type InputHTMLAttributes, type SelectHTMLAttributes, type TextareaHTMLAttributes, type LabelHTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
-const field = 'w-full rounded-md border border-slate-300 bg-white px-2.5 text-sm placeholder:text-slate-400 ' +
-  'focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand disabled:bg-slate-50 disabled:text-slate-500'
+const field = 'w-full rounded-md border border-slate-200 bg-white px-3 text-sm shadow-xs transition-[color,box-shadow] placeholder:text-slate-400 ' +
+  'outline-none focus-visible:border-brand focus-visible:ring-[3px] focus-visible:ring-brand/20 disabled:bg-slate-50 disabled:text-slate-500'
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(({ className, ...p }, ref) => (
   <input ref={ref} className={cn(field, 'h-9', className)} {...p} />
@@ -26,5 +26,5 @@ export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSel
 Select.displayName = 'Select'
 
 export function Label({ className, ...p }: LabelHTMLAttributes<HTMLLabelElement>) {
-  return <label className={cn('mb-1 block text-xs font-medium text-slate-600', className)} {...p} />
+  return <label className={cn('mb-1.5 block text-sm font-medium text-slate-900', className)} {...p} />
 }

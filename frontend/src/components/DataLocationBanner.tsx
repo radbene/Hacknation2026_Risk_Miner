@@ -18,7 +18,7 @@ export function DataLocationBanner() {
   const loc = p?.data_location ?? 'none'
   const warn = loc === 'non_eu'
   return (
-    <div className={`px-6 py-1.5 text-xs ${warn ? 'bg-amber-50 text-amber-900' : 'bg-emerald-50 text-emerald-900'}`}>
+    <div className={`border-b px-8 py-1.5 text-xs ${warn ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-slate-200 bg-white text-slate-500'}`}>
       Model językowy <b>{(p?.display_name ?? p?.name ?? 'brak').replace(/\s*\(.*\)$/, '')}</b> {WHERE[loc] ?? loc}.
     </div>
   )

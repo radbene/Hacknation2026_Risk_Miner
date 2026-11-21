@@ -8,7 +8,7 @@ export function PageHeader({ title, description, actions, back, children }: { ti
     <header className="mb-4 flex flex-wrap items-start justify-between gap-3">
       <div className="min-w-0">
         {back && <button onClick={() => router.history.back()} className="mb-1 inline-flex items-center gap-1 text-xs text-slate-500 hover:text-brand cursor-pointer"><ArrowLeft size={12} />Wstecz</button>}
-        <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-950">{title}</h1>
         {description && <p className="mt-1 max-w-3xl text-sm text-slate-600">{description}</p>}
         {children}
       </div>
