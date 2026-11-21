@@ -34,6 +34,11 @@ CUE_RISKS = {
     "startup": (["R10"], "Rozruch / próby / odbiór parametrów", "niska"),
 }
 SEV_ORDER = {"wysoka": 0, "średnia": 1, "niska": 2}
+LEVEL_PL = {"neighbours": "sąsiedzi", "subsector": "podsektor", "wodkan": "wod-kan", "works": "wszystkie roboty"}
+
+
+def _pct(x: float | None) -> str:
+    return "?" if x is None else f"{x:.0%}"
 
 
 def _fv(features: dict[str, Any], name: str) -> Any:
@@ -105,7 +110,7 @@ def build_flags(session: Session, features: dict[str, Any], text: str, neighbour
         add("R-LATE", f"Wysokie prawdopodobieństwo opóźnienia: {pl['estimate']:.0%}", ["R06"],
             "wysoka" if pl["estimate"] >= 0.55 else "średnia", "realizacja",
             f"Wśród podobnych zakończonych umów {pl.get('k')} z {pl.get('n')} nie wykonano w pierwotnym terminie "
-            f"(poziom: {pl.get('fallback_level')}; 95% CI {pl.get('ci_low')}–{pl.get('ci_high')}).",
+            f"(poziom: {LEVEL_PL.get(pl.get('fallback_level'), pl.get('fallback_level'))}; 95% CI {_pct(pl.get('ci_low'))}–{_pct(pl.get('ci_high'))}).",
             n=pl.get("n"), k=pl.get("k"), case_ids=pl.get("case_ids", [])[:50], formula=pl.get("formula"))
     pc = rng("p_change")
     if (pc.get("estimate") or 0) >= 0.5:
