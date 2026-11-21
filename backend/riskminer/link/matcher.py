@@ -23,8 +23,17 @@ from sqlalchemy.orm import Session
 from riskminer.connectors.bzp_store import api_evidence, field_evidence, is_wodkan
 from riskminer.core.upsert import upsert_reviewable
 from riskminer.ids import make_id
-from riskminer.models import (Contract, DataIssue, Entity, Notice, Procedure, Project, ProjectProcedure, ReviewStatus,
-                              Rule)
+from riskminer.models import (
+    Contract,
+    DataIssue,
+    Entity,
+    Notice,
+    Procedure,
+    Project,
+    ProjectProcedure,
+    ReviewStatus,
+    Rule,
+)
 from riskminer.parse.bzp_notices import norm_notice_no
 
 WEIGHTS = {"title": 0.40, "location": 0.15, "cpv": 0.10, "date": 0.10, "value": 0.10, "scope": 0.10,

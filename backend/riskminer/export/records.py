@@ -13,8 +13,8 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from riskminer.core.upsert import jsonable, row_dict
 from riskminer import models as M
+from riskminer.core.upsert import jsonable, row_dict
 
 ENTITIES: dict[str, tuple[type, str | None]] = {
     "projects": (M.Project, "id"), "procedures": (M.Procedure, None), "notices": (M.Notice, None),
@@ -65,16 +65,18 @@ def bundle(session: Session, out_dir: Path | None = None) -> bytes:
     from riskminer.api.routers.analyses import analysis_out
     from riskminer.connectors.pipeline import links_csv
     from riskminer.export.analysis import to_csv as a_csv
-    from riskminer.export.analysis import to_docx, to_json as a_json
+    from riskminer.export.analysis import to_docx
+    from riskminer.export.analysis import to_json as a_json
 
     files: dict[str, bytes] = {"links.csv": links_csv(session).encode("utf-8")}
+    deep_ids = {r["id"] for r in rows(session, "projects")}
     for ent in ("projects", "links", "events", "issues", "lessons", "clauses", "reviews"):
         data = rows(session, ent)
+        if ent in ("links", "events", "issues"):
+            data = [r for r in data if r.get("project_id") in deep_ids]
         files[f"{ent}.json"] = to_json(data)
         files[f"{ent}.csv"] = to_csv(data)
-    deep = {r["id"] for r in rows(session, "projects")}
-    procs = [r for r in rows(session, "links")]
-    pids = {r["procedure_id"] for r in procs if r["project_id"] in deep}
+    pids = {r["procedure_id"] for r in json.loads(files["links.json"])}
     for ent in ("procedures", "contracts", "changes"):
         data = [r for r in rows(session, ent, tier=None) if (r.get("procedure_id") or r.get("id")) in pids]
         files[f"{ent}.json"], files[f"{ent}.csv"] = to_json(data), to_csv(data)

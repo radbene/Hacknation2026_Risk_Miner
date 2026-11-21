@@ -248,7 +248,7 @@ def test_routing_override_persisted(tx):  # noqa: F811
 
 
 def test_usage_summary(tx):  # noqa: F811
-    from riskminer.llm.usage import usage_summary, totals
+    from riskminer.llm.usage import totals, usage_summary
     from riskminer.models import LLMCall
 
     tx.add_all([LLMCall(task="t_usage", provider="anthropic", model="claude-opus-5-5", data_location="non_eu",

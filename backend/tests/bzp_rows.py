@@ -1,8 +1,7 @@
-"""TEST-ONLY helper: builds notice/procedure/contract/contract_change rows from raw BZP notices (notices22).
+"""TEST-ONLY helper: notice/procedure/contract rows for one procedure of notices22 via S1's real store and parser.
 
-S1 owns the real parser (`riskminer/parse/`). This mimics its documented output shape
-(notice.sections = [{section, label, value, offset, part_no}]) just enough for S2 tests. Do not import from
-application code.
+After the merge S2 tests run on S1's output (same uuid5 ids as the live pipeline, so no duplicates in a shared DB).
+`sections()` is kept for tests that only need the section split. Do not import from application code.
 """
 
 from __future__ import annotations
@@ -13,7 +12,7 @@ import re
 
 from riskminer.core.upsert import upsert
 from riskminer.ids import make_id
-from riskminer.models import Contract, ContractChange, Notice, Procedure, Project, ProjectProcedure
+from riskminer.models import Contract, Project, ProjectProcedure
 
 _H = re.compile(r"<h3[^>]*>(.*?)</h3>|<h2[^>]*>(.*?)</h2>", re.S | re.I)
 _SEC = re.compile(r"^\s*(\d+(?:\.\d+)*)\.?\)\s*(.*)$", re.S)
@@ -84,78 +83,22 @@ def _basis_code(v):
 
 
 def load(session, notices: list[dict], project_code: str | None = None) -> dict:
-    """Insert rows for the notices of one procedure (same tenderId). Returns ids."""
-    from riskminer.extract.common import planned_end_from_period
+    """Rows for the notices of one procedure via S1's real store/parser (ids match the live pipeline). Returns ids."""
+    from sqlalchemy import select
+
+    from riskminer.connectors.bzp_store import build_procedure, ensure_sources, store_notice
 
     ocid = notices[0]["tenderId"]
-    pid = make_id("procedure", ocid)
-    cn = next((n for n in notices if n["noticeType"] == "ContractNotice"), None)
-    tr = next((n for n in notices if n["noticeType"] == "TenderResultNotice"), None)
-    parsed = {n["objectId"]: sections(n.get("htmlBody") or "") for n in notices}
-    tr_secs = parsed[tr["objectId"]][0] if tr else []
-    upsert(session, Procedure, dict(
-        id=pid, ocid=ocid, bzp_number=(cn or notices[0])["bzpNumber"], title=notices[0]["orderObject"],
-        buyer_nip=notices[0]["organizationNationalId"], tier="deep",
-        est_value_net=_num(_sv(tr_secs, "4.3")), offers_count=int(_num(_sv(tr_secs, "6.1")) or 0) or None,
-        cancelled=bool(tr and "uniewaznienie" in (tr.get("procedureResult") or "")),
-        cancel_basis=(_sv(tr_secs, "5.2") or "") + " " + (_sv(tr_secs, "5.2.1") or "") if tr else None,
-        first_published_at=(cn or notices[0])["publicationDate"]))
+    ensure_sources(session)
     nids = {}
     for n in notices:
-        secs, canon = parsed[n["objectId"]]
-        nid = make_id("notice", n["objectId"])
+        nid, _ = store_notice(session, n, source_code="bzp_zip", retrieved_from="zip:notices_by_nip", tier="deep",
+                              keep_html=False)
         nids[n["objectId"]] = nid
-        upsert(session, Notice, dict(
-            id=nid, object_id=n["objectId"], notice_number=n["noticeNumber"], bzp_number=n["bzpNumber"],
-            notice_type=n["noticeType"], procedure_id=pid, ocid=ocid, published_at=n["publicationDate"],
-            title=n["orderObject"], org_name=n["organizationName"], org_nip=n["organizationNationalId"],
-            url=f"https://ezamowienia.gov.pl/mo-client-board/bzp/notice-details/id/{n['objectId']}",
-            retrieved_from="zip:notices.jsonl.xz", canonical_text=canon, sections=secs, parser_version="test"))
     session.flush()
-    contracts = []
-    for n in notices:
-        if n["noticeType"] not in ("ContractPerformingNotice", "AgreementUpdateNotice"):
-            continue
-        secs = parsed[n["objectId"]][0]
-        cnip = ((n.get("contractors") or [{}])[0] or {}).get("contractorNationalId")
-        cid = make_id("contract", pid, None, cnip)
-        signed = _date(_sv(secs, "4.1"))
-        planned_end, _ = planned_end_from_period(signed, _sv(secs, "4.2"))
-        vals = dict(id=cid, procedure_id=pid, part_no=None, signed_at=signed, value_gross=_num(_sv(secs, "4.4")),
-                    planned_end=planned_end, offers_count=int(_num(_sv(tr_secs, "6.1")) or 0) or None,
-                    lowest_offer=_num(_sv(tr_secs, "6.2")), highest_offer=_num(_sv(tr_secs, "6.3")),
-                    result_notice_id=nids.get(tr["objectId"]) if tr else None, meta={"period_text": _sv(secs, "4.2")})
-        if n["noticeType"] == "ContractPerformingNotice":
-            vals.update(performing_notice_id=nids[n["objectId"]], performed=_yn(_sv(secs, "5.1")),
-                        actual_end=_date(_sv(secs, "5.2")), on_time=_yn(_sv(secs, "5.3")),
-                        paid_gross=_num(_sv(secs, "5.5")), proper=_yn(_sv(secs, "5.6")),
-                        n_changes=int(_num(_sv(secs, "5.4.1")) or 0))
-        existing = session.get(Contract, cid)
-        if existing is None:
-            session.add(Contract(**vals))
-        else:
-            for k, v in vals.items():
-                if v is not None:
-                    setattr(existing, k, v)
-        session.flush()
-        contracts.append(cid)
-        if n["noticeType"] == "ContractPerformingNotice":
-            k = 0
-            while _sv(secs, "5.4.2", k) is not None:
-                desc = _sv(secs, "5.4.5", k)
-                session.add(ContractChange(
-                    id=make_id("contract_change", cid, nids[n["objectId"]], k + 1), contract_id=cid, procedure_id=pid,
-                    notice_id=nids[n["objectId"]], change_no=k + 1, legal_basis=_sv(secs, "5.4.3", k),
-                    legal_basis_code=_basis_code(_sv(secs, "5.4.3", k)), reason=_sv(secs, "5.4.4", k), description=desc,
-                    method="test"))
-                k += 1
-        else:
-            session.add(ContractChange(
-                id=make_id("contract_change", cid, nids[n["objectId"]], 1), contract_id=cid, procedure_id=pid,
-                notice_id=nids[n["objectId"]], change_no=1, change_date=_date(_sv(secs, "5.1")),
-                legal_basis=_sv(secs, "5.2"), legal_basis_code=_basis_code(_sv(secs, "5.2")),
-                reason=_sv(secs, "5.3"), description=_sv(secs, "5.4"), method="test"))
-        session.flush()
+    pid = build_procedure(session, ocid, tier="deep")
+    session.flush()
+    contracts = list(session.execute(select(Contract.id).where(Contract.procedure_id == pid)).scalars())
     project_id = None
     if project_code:
         project_id = make_id("project", project_code)

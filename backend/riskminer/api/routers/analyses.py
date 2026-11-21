@@ -5,8 +5,8 @@ from __future__ import annotations
 import uuid
 
 from fastapi import APIRouter, HTTPException
-from sqlalchemy import func, select
 from fastapi.responses import Response
+from sqlalchemy import func, select
 
 from riskminer.api.deps import DB, USER, CurrentUser, Session
 from riskminer.models import Analysis, AnalysisItem

@@ -225,7 +225,7 @@ def find_neighbours(cases: list[Case], features: dict[str, Any], text: str, sess
         scored.append((s["score"], c.code, i, s))
     scored.sort(key=lambda t: (-t[0], t[1]))
     out, excluded = [], []
-    for sc, _code, i, s in scored:
+    for _sc, _code, i, s in scored:
         c = cases[i]
         item = {"case": c, **s, "shared_terms": shared_terms(q.text, c.text), "tfidf": round(float(tf[i]), 4)}
         if str(c.project_id) in excl:

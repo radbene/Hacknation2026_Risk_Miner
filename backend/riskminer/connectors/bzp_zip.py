@@ -12,8 +12,8 @@ from __future__ import annotations
 
 import datetime as dt
 import json
-import lzma
 import logging
+import lzma
 import time
 from collections.abc import Callable, Iterator
 from pathlib import Path

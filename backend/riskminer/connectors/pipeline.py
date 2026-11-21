@@ -147,6 +147,7 @@ def links_csv(session: Session) -> str:
     rows = session.execute(select(ProjectProcedure, Project, Procedure)
                            .join(Project, Project.id == ProjectProcedure.project_id)
                            .join(Procedure, Procedure.id == ProjectProcedure.procedure_id)
+                           .where(Project.tier == "deep")
                            .order_by(Project.code, ProjectProcedure.rank)).all()
     buf = io.StringIO()
     w = csv.writer(buf)

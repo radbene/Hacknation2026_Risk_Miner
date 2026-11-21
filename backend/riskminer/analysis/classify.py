@@ -7,6 +7,7 @@ left untouched. Idempotent.
 
 from __future__ import annotations
 
+import re
 from collections.abc import Callable
 from typing import Any
 
@@ -17,6 +18,7 @@ from riskminer.analysis.features import extract_rules
 from riskminer.analysis.knowledge import rows as krows
 from riskminer.models import Project
 
+ROAD = re.compile(r"\b(ul\.|ulic\w*|drog\w*|dróg|jezdni\w*|chodnik\w*|ścieżk\w*|ronda|skrzyżowani\w*|nawierzchni\w*)", re.I)
 SKIP = {"cues", "extra", "vat_basis", "value", "duration_months", "start_date", "funding"}
 
 
@@ -45,13 +47,21 @@ def classify(session: Session, *, tier: str | None = None, only_missing: bool = 
         for p in session.execute(select(Project).where(Project.id.in_(ids[i:i + batch]))).scalars():
             src = "\n".join(x for x in (p.title, p.description) if x)
             f = extract_rules(src, session)
-            sub = f.subsector_main.value if f.subsector_main else None
+            ft = extract_rules(p.title or "", session)
+            sub = ft.subsector_main.value if ft.subsector_main else None
+            road = bool(ROAD.search(p.title or ""))
+            if not sub and not road:
+                sub = f.subsector_main.value if f.subsector_main else None
+            elif not sub and road:  # road works with a water/sewer component: keep it as an extra subsector only
+                extra = [f.subsector_main.value] if f.subsector_main else []
+                p.subsector_extra = sorted(set((p.subsector_extra or []) + extra))
+                p.features = {**(p.features or {}), "primary_object": "droga"}
             cpv = (cpv_by_project.get(p.id) or "")
-            if not sub and cpv:
+            if not sub and not road and cpv:
                 sub = cmap.get(cpv) or cmap.get(cpv[:8]) or next((v for k, v in cmap.items() if cpv.startswith(k.rstrip("0"))), None)
             if sub:
                 n_sub += 1
-            p.subsector_main = p.subsector_main or sub
+            p.subsector_main = sub if not only_missing else (p.subsector_main or sub)
             if not p.subsector_extra and f.subsector_extra:
                 p.subsector_extra = list(f.subsector_extra.value or [])
             p.work_type = p.work_type or (f.work_type.value if f.work_type else None)

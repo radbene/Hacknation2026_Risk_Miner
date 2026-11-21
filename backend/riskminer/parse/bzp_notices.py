@@ -13,7 +13,7 @@ import re
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
-from riskminer.parse.bzp_dom import Field, ParsedDom, parse_dom
+from riskminer.parse.bzp_dom import ParsedDom, parse_dom
 
 BZP_NO_RE = re.compile(r"\b(\d{4}/BZP \d{8})(?:/(\d{2}))?\b")
 TED_NO_RE = re.compile(r"\b(\d{3,6}-\d{4})\b")

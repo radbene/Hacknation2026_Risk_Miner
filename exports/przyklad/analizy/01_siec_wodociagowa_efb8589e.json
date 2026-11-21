@@ -1,0 +1,3456 @@
+{
+ "status": "proposed",
+ "method": "rule",
+ "confidence": null,
+ "evidence_ids": [],
+ "proposal": null,
+ "reviewed_by": null,
+ "reviewed_at": null,
+ "id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+ "title": "01 siec wodociagowa",
+ "input_text": "Gmina Mszana (woj. śląskie) planuje rozbudowę sieci wodociągowej w miejscowościach Gogołowa i Połomia.\nZakres: budowa sieci wodociągowej z rur PE o łącznej długości ok. 8,4 km wraz z 96 przyłączami\ndo granic nieruchomości oraz budowa hydroforni. Zasilanie z istniejącej stacji uzdatniania wody\nw Mszanie; operator (Gminny Zakład Komunalny) nie wydał jeszcze warunków technicznych przyłączenia.\nTrasa przebiega częściowo w pasie drogi powiatowej i przez działki prywatne – brak zgód części właścicieli.\nFormuła: tradycyjna (zaprojektuj – buduj osobno), projekt budowlany z pozwoleniem na budowę z 2024 r.\nSzacunkowa wartość robót: 6 200 000 zł. Planowany okres realizacji: 14 miesięcy od podpisania umowy,\nrozpoczęcie III kwartał 2027. Finansowanie: KPO, inwestycja B3.1.1 (dofinansowanie do 80%).\n",
+ "features": {
+  "cues": {
+   "land": {
+    "quote": "Trasa przebiega częściowo w pasie drogi powiatowej i przez działki prywatne – brak zgód części właścicieli.",
+    "value": "grunty / prawa do nieruchomości",
+    "source": "regex",
+    "confidence": 0.6
+   },
+   "gap_1": {
+    "quote": "tniejącej stacji uzdatniania wody w Mszanie; operator (Gminny Zakład Komunalny) nie wydał jeszcze warunków technicznych przyłączenia.",
+    "value": "sygnał braku / niepewności",
+    "source": "regex",
+    "confidence": 0.6
+   },
+   "gap_2": {
+    "quote": "Trasa przebiega częściowo w pasie drogi powiatowej i przez działki prywatne – brak zgód części właścicieli.",
+    "value": "sygnał braku / niepewności",
+    "source": "regex",
+    "confidence": 0.6
+   },
+   "permits": {
+    "quote": "zdatniania wody w Mszanie; operator (Gminny Zakład Komunalny) nie wydał jeszcze warunków technicznych przyłączenia.",
+    "value": "decyzje i uzgodnienia",
+    "source": "regex",
+    "confidence": 0.6
+   },
+   "operator": {
+    "quote": "Zasilanie z istniejącej stacji uzdatniania wody w Mszanie; operator (Gminny Zakład Komunalny) nie wydał jeszcze warunków technicznych przyłączenia.",
+    "value": "operator / eksploatacja",
+    "source": "regex",
+    "confidence": 0.6
+   },
+   "design_ready": {
+    "quote": "Formuła: tradycyjna (zaprojektuj – buduj osobno), projekt budowlany z pozwoleniem na budowę z 2024 r.",
+    "value": "gotowa dokumentacja projektowa",
+    "source": "regex",
+    "confidence": 0.6
+   },
+   "existing_asset": {
+    "quote": "Zasilanie z istniejącej stacji uzdatniania wody w Mszanie; operator (Gminny Zakład Komunalny) nie wydał jeszcz",
+    "value": "roboty przy czynnym obiekcie",
+    "source": "regex",
+    "confidence": 0.6
+   }
+  },
+  "extra": {},
+  "value": {
+   "unit": "PLN",
+   "quote": "Szacunkowa wartość robót: 6 200 000 zł.",
+   "value": 6200000.0,
+   "source": "regex",
+   "confidence": 0.8
+  },
+  "formula": {
+   "quote": "Formuła: tradycyjna (zaprojektuj – buduj osobno), projekt budowlany z",
+   "value": "tradycyjna",
+   "source": "regex",
+   "confidence": 0.7
+  },
+  "funding": {
+   "quote": "KPO",
+   "value": "KPO",
+   "source": "regex",
+   "confidence": 0.8
+  },
+  "location": {
+   "quote": "Gmina Mszana",
+   "value": "Mszana",
+   "source": "regex",
+   "confidence": 0.6
+  },
+  "length_km": {
+   "unit": "km",
+   "quote": "łącznej długości ok. 8,4 km",
+   "value": 8.4,
+   "source": "regex",
+   "confidence": 0.9
+  },
+  "vat_basis": {
+   "value": "unknown",
+   "source": "default",
+   "confidence": 1.0
+  },
+  "work_type": {
+   "quote": "śląskie) planuje rozbudowę sieci wodociągowej w miejscowościach Gog",
+   "value": "rozbudowa",
+   "source": "regex",
+   "confidence": 0.7
+  },
+  "start_date": {
+   "quote": "III kwartał 2027",
+   "value": "2027-07-01",
+   "source": "regex",
+   "confidence": 0.7
+  },
+  "connections": {
+   "unit": "szt.",
+   "quote": "96 przyłączami",
+   "value": 96,
+   "source": "regex",
+   "confidence": 0.8
+  },
+  "voivodeship": {
+   "quote": "(woj. śląskie",
+   "value": "śląskie",
+   "source": "regex",
+   "confidence": 0.9
+  },
+  "subsector_main": {
+   "quote": "śląskie) planuje rozbudowę sieci wodociągowej w miejscowościach Gogołowa i Połomia.",
+   "value": "Sieć wodociągowa",
+   "source": "regex",
+   "confidence": 0.95
+  },
+  "duration_months": {
+   "unit": "mies.",
+   "quote": "Planowany okres realizacji: 14 miesięcy od podpisania umowy, rozpoczęcie III kwartał 2027",
+   "value": 14,
+   "source": "regex",
+   "confidence": 0.8
+  },
+  "subsector_extra": {
+   "quote": "stacji uzdatniania wody",
+   "value": [
+    "Uzdatnianie i zaopatrzenie w wodę"
+   ],
+   "source": "regex",
+   "confidence": 0.6
+  }
+ },
+ "params": {
+  "missing": [
+   "vat_basis"
+  ],
+  "use_llm": false,
+  "questions": [
+   "Czy kwota 6 200 000 zł to wartość netto (bez VAT) czy brutto (z VAT)?"
+  ],
+  "features_model": null
+ },
+ "summary": {
+  "budget": {
+   "basis": "nie porównano: nie wiadomo, czy kwota jest netto czy brutto",
+   "value": null,
+   "message": "nie porównano: nie wiadomo, czy kwota jest netto czy brutto",
+   "position": null,
+   "percentile": null,
+   "reserve_p80": null
+  },
+  "n_pool": 18823,
+  "p_late": {
+   "n": 12,
+   "ci_low": 0.2538,
+   "ci_high": 0.7462,
+   "estimate": 0.4243,
+   "fallback_level": "neighbours"
+  },
+  "n_cases": 26363,
+  "n_flags": 9,
+  "weights": {
+   "tfidf": 0.1,
+   "value": 0.15,
+   "formula": 0.1,
+   "embedding": 0.0,
+   "length_km": 0.1,
+   "work_type": 0.1,
+   "voivodeship": 0.05,
+   "subsector_main": 0.25,
+   "subsector_extra": 0.05
+  },
+  "p_change": {
+   "n": 12,
+   "estimate": 0.4653,
+   "fallback_level": "neighbours"
+  },
+  "schedule": {
+   "value": null,
+   "message": null,
+   "position": "powyżej mediany sąsiadów",
+   "percentile": null
+  },
+  "delay_days": {
+   "n": 11,
+   "p50": 31.0,
+   "p80": 111.0,
+   "fallback_level": "neighbours"
+  },
+  "flags_high": 0,
+  "paid_ratio": {
+   "n": 10,
+   "p50": 1.001,
+   "p80": 1.0243,
+   "p95": 1.1119,
+   "fallback_level": "neighbours"
+  },
+  "risk_codes": [
+   "R01",
+   "R02",
+   "R03",
+   "R04",
+   "R05",
+   "R06",
+   "R07",
+   "R10"
+  ],
+  "change_basis": {
+   "counts": {
+    "455.2": 2,
+    "455.1.1": 8,
+    "455.1.3": 4,
+    "455.1.4": 2
+   },
+   "shares": {
+    "455.2": 0.125,
+    "455.1.1": 0.5,
+    "455.1.3": 0.25,
+    "455.1.4": 0.125
+   },
+   "n_cases": 12,
+   "case_ids": {
+    "455.2": [
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "7824df98-17be-5da7-952d-94b5ecbc792c"
+    ],
+    "455.1.1": [
+     "7180994b-c437-56f6-aef9-1c72f17156f2",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9"
+    ],
+    "455.1.3": [
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc"
+    ],
+    "455.1.4": [
+     "7824df98-17be-5da7-952d-94b5ecbc792c"
+    ]
+   },
+   "n_changes": 16
+  },
+  "n_neighbours": 12,
+  "cases_by_tier": {
+   "auto": 26341,
+   "deep": 22
+  },
+  "weights_source": "db:v1",
+  "share_cancelled_255_3": {
+   "n": 36,
+   "estimate": 0.1099,
+   "fallback_level": "neighbours"
+  }
+ },
+ "excluded_project_ids": [],
+ "llm_profile": null,
+ "created_by": "cli",
+ "created_at": "2026-11-21T18:02:22.691164Z",
+ "version": 1,
+ "items": [
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "96c16fd4-c10b-52f8-ba5f-7b8d310403db",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 1,
+   "label": "obliczenia",
+   "title": "AUTO-47a72eaaae0b: Rozbudowa systemu sieci wodociągowej na obszarze gmin – członków Związku Komunalnego Gmin ds. Wodociągów i Kanalizacji w Częstochowie",
+   "payload": {
+    "key": "7180994b-c437-56f6-aef9-1c72f17156f2",
+    "tier": "auto",
+    "score": 0.7912,
+    "title": "Rozbudowa systemu sieci wodociągowej na obszarze gmin – członków Związku Komunalnego Gmin ds. Wodociągów i Kanalizacji w Częstochowie",
+    "missing": [
+     "długość sieci"
+    ],
+    "outcome": {
+     "late": false,
+     "cancelled": false,
+     "n_changes": 2,
+     "delay_days": 0,
+     "paid_ratio": 1.0,
+     "value_gross": 5268189.86,
+     "change_codes": [
+      "455.1.1",
+      "455.1.1"
+     ],
+     "evidence_ids": [
+      "4cdcc475-b328-5541-b087-ed7275e2066f",
+      "4d7105f8-7930-56be-b8c3-47b091f71e9a",
+      "7ca6934f-b6a1-52a0-b4e1-4c52aa21dcf6",
+      "0613c0b7-8b8e-5013-8529-c9b1c0443843",
+      "06b781b2-ab6b-5699-b830-dd26a01f11dd"
+     ],
+     "planned_days": 446
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 0.5,
+      "contribution": 0.0278
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "rozbudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna (przyjęto: brak wzmianki o „zaprojektuj i wybuduj”)",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "5 268 190 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.868,
+      "contribution": 0.1447
+     },
+     {
+      "label": "długość sieci",
+      "detail": "brak długości sieci w danych sąsiada",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": null,
+      "contribution": 0.0556
+     },
+     {
+      "label": "województwo",
+      "detail": "śląskie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 1.0,
+      "contribution": 0.0556
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.07",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.068,
+      "contribution": 0.0076
+     }
+    ],
+    "project_id": "7180994b-c437-56f6-aef9-1c72f17156f2",
+    "differences": [],
+    "project_code": "AUTO-47a72eaaae0b",
+    "shared_terms": [
+     "rozbudowę",
+     "sieci",
+     "wodociągowej",
+     "zakres",
+     "przyłączami",
+     "zasilanie",
+     "wody",
+     "komunalny"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "7180994b-c437-56f6-aef9-1c72f17156f2",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "8a2804ed-6cc7-53ac-979a-54649faa974d",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 2,
+   "label": "obliczenia",
+   "title": "AUTO-3be3bab32dcf: Rozbudowa sieci wodociągowej w Ornontowicach przy ul. Solarnia/Myśliwska Budowa infrastruktury kanalizacyjnej w Ornontowicach-Północ",
+   "payload": {
+    "key": "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+    "tier": "auto",
+    "score": 0.7883,
+    "title": "Rozbudowa sieci wodociągowej w Ornontowicach przy ul. Solarnia/Myśliwska Budowa infrastruktury kanalizacyjnej w Ornontowicach-Północ",
+    "missing": [
+     "długość sieci"
+    ],
+    "outcome": {
+     "late": true,
+     "cancelled": false,
+     "n_changes": 3,
+     "delay_days": 66,
+     "paid_ratio": 1.124165,
+     "value_gross": 5341182.65,
+     "change_codes": [
+      "455.2",
+      "455.1.1",
+      "455.1.1"
+     ],
+     "evidence_ids": [
+      "11676873-92c0-579f-b50c-443dd56f8e4e",
+      "176ddf6a-f6e8-530c-ad69-14c5e964dcaa",
+      "1bbefb6e-df0a-54a9-9d55-146a4051e80a",
+      "00caa89a-107a-5e72-b6d8-9a241a69aab5",
+      "23f7289e-8008-5bd8-a18a-d61495b3f633"
+     ],
+     "planned_days": 486
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 0.5,
+      "contribution": 0.0278
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "rozbudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna (przyjęto: brak wzmianki o „zaprojektuj i wybuduj”)",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "5 341 183 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.879,
+      "contribution": 0.1464
+     },
+     {
+      "label": "długość sieci",
+      "detail": "brak długości sieci w danych sąsiada",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": null,
+      "contribution": 0.0556
+     },
+     {
+      "label": "województwo",
+      "detail": "śląskie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 1.0,
+      "contribution": 0.0556
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.03",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.027,
+      "contribution": 0.003
+     }
+    ],
+    "project_id": "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+    "differences": [],
+    "project_code": "AUTO-3be3bab32dcf",
+    "shared_terms": [
+     "rozbudowę",
+     "sieci",
+     "wodociągowej"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "b71ee4d1-c9a9-5c76-a182-15a124a381af",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 3,
+   "label": "obliczenia",
+   "title": "AUTO-fd09ba627c11: Rozbudowa istniejącej sieci wodociągowej i kanalizacyjnej wraz z urządzeniami na terenie gminy Gniewkowo",
+   "payload": {
+    "key": "7824df98-17be-5da7-952d-94b5ecbc792c",
+    "tier": "auto",
+    "score": 0.7775,
+    "title": "Rozbudowa istniejącej sieci wodociągowej i kanalizacyjnej wraz z urządzeniami na terenie gminy Gniewkowo",
+    "missing": [],
+    "outcome": {
+     "late": true,
+     "cancelled": false,
+     "n_changes": 4,
+     "delay_days": 63,
+     "paid_ratio": 1.006203,
+     "value_gross": 7431974.88,
+     "change_codes": [
+      "455.1.1",
+      "455.2",
+      "455.1.4",
+      "455.1.4"
+     ],
+     "evidence_ids": [
+      "c77eb1ea-42c7-5eef-91c5-bfdda7f54980",
+      "e9024f3c-4e01-556f-b13c-e7e64854f290",
+      "043042b9-1181-556b-ad39-c690983f071c",
+      "16957b3b-211d-52b4-b45d-0d1ea8828fba",
+      "17b2ce5b-da64-581d-aab6-3e1e8787e785"
+     ],
+     "planned_days": 244
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa, Uzdatnianie i zaopatrzenie w wodę",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 0.667,
+      "contribution": 0.037
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "rozbudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna (przyjęto: brak wzmianki o „zaprojektuj i wybuduj”)",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "7 431 975 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.854,
+      "contribution": 0.1424
+     },
+     {
+      "label": "długość sieci",
+      "detail": "10.126 km vs 8.4 km",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": 0.816,
+      "contribution": 0.0907
+     },
+     {
+      "label": "województwo",
+      "detail": "kujawsko-pomorskie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 0.0,
+      "contribution": 0.0
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.07",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.067,
+      "contribution": 0.0074
+     }
+    ],
+    "project_id": "7824df98-17be-5da7-952d-94b5ecbc792c",
+    "differences": [
+     "województwo: kujawsko-pomorskie"
+    ],
+    "project_code": "AUTO-fd09ba627c11",
+    "shared_terms": [
+     "rozbudowę",
+     "sieci",
+     "wodociągowej",
+     "przyłączami",
+     "istniejącej",
+     "stacji",
+     "uzdatniania",
+     "wody"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "7824df98-17be-5da7-952d-94b5ecbc792c",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "151cba2f-a229-5614-8fbd-afcd9eda9b95",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 4,
+   "label": "obliczenia",
+   "title": "AUTO-b0e555010b51: Uregulowanie gospodarki wodno-ściekowej na terenie gminy Golina – Rozbudowa stacji uzdatniania wody w Golinie wraz z przebudową sieci wodociągowej",
+   "payload": {
+    "key": "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+    "tier": "auto",
+    "score": 0.7601,
+    "title": "Uregulowanie gospodarki wodno-ściekowej na terenie gminy Golina – Rozbudowa stacji uzdatniania wody w Golinie wraz z przebudową sieci wodociągowej",
+    "missing": [
+     "długość sieci"
+    ],
+    "outcome": {
+     "late": false,
+     "cancelled": false,
+     "n_changes": 0,
+     "delay_days": 0,
+     "paid_ratio": 1.0,
+     "value_gross": 6096600.0,
+     "change_codes": [],
+     "evidence_ids": [
+      "1569b105-0bcf-5b06-ba1c-c102ee52ee84",
+      "50364c99-45eb-51a2-b572-65adcadab4b4",
+      "520186fb-23df-54b2-885b-1551f24199fd",
+      "0ade904f-005f-5983-aef4-7b2324eb2ef0",
+      "16cd42f4-8963-5163-a847-2f83350505a2"
+     ],
+     "planned_days": 396
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 0.5,
+      "contribution": 0.0278
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "rozbudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna (przyjęto: brak wzmianki o „zaprojektuj i wybuduj”)",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "6 096 600 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.985,
+      "contribution": 0.1642
+     },
+     {
+      "label": "długość sieci",
+      "detail": "brak długości sieci w danych sąsiada",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": null,
+      "contribution": 0.0556
+     },
+     {
+      "label": "województwo",
+      "detail": "wielkopolskie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 0.0,
+      "contribution": 0.0
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.11",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.113,
+      "contribution": 0.0125
+     }
+    ],
+    "project_id": "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+    "differences": [
+     "województwo: wielkopolskie"
+    ],
+    "project_code": "AUTO-b0e555010b51",
+    "shared_terms": [
+     "rozbudowę",
+     "sieci",
+     "wodociągowej",
+     "zakres",
+     "istniejącej",
+     "stacji",
+     "uzdatniania",
+     "wody"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "d4fb3d62-b019-55c9-8d4c-237c34f4dff8",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 5,
+   "label": "obliczenia",
+   "title": "AUTO-0f121a897ff5: Rozbudowa i modernizacja ujęcia wody i stacji uzdatniania wody w miejscowości Przywidz oraz Stara Huta wraz z rozbudową sieci wodociągowej",
+   "payload": {
+    "key": "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+    "tier": "auto",
+    "score": 0.7534,
+    "title": "Rozbudowa i modernizacja ujęcia wody i stacji uzdatniania wody w miejscowości Przywidz oraz Stara Huta wraz z rozbudową sieci wodociągowej",
+    "missing": [
+     "długość sieci"
+    ],
+    "outcome": {
+     "late": false,
+     "cancelled": false,
+     "n_changes": 0,
+     "delay_days": 14,
+     "paid_ratio": null,
+     "value_gross": 8172433.71,
+     "change_codes": [],
+     "evidence_ids": [
+      "0ec94eaa-0556-586b-a708-c20a786d913e",
+      "355cd76b-bf6c-5988-a171-c371f1835f16",
+      "b65df1c8-f997-5821-a48e-a62241519aa8",
+      "62650a03-c3c4-5669-9c72-e9e437f988b1",
+      "a8e2583a-671c-5cbf-8486-0853c493a795"
+     ],
+     "planned_days": 365
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa, Uzdatnianie i zaopatrzenie w wodę",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 1.0,
+      "contribution": 0.0556
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "rozbudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna (przyjęto: brak wzmianki o „zaprojektuj i wybuduj”)",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "8 172 434 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.787,
+      "contribution": 0.1311
+     },
+     {
+      "label": "długość sieci",
+      "detail": "brak długości sieci w danych sąsiada",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": null,
+      "contribution": 0.0556
+     },
+     {
+      "label": "województwo",
+      "detail": "pomorskie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 0.0,
+      "contribution": 0.0
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.10",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.101,
+      "contribution": 0.0112
+     }
+    ],
+    "project_id": "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+    "differences": [
+     "województwo: pomorskie"
+    ],
+    "project_code": "AUTO-0f121a897ff5",
+    "shared_terms": [
+     "rozbudowę",
+     "sieci",
+     "wodociągowej",
+     "stacji",
+     "uzdatniania",
+     "wody"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "0321126e-f61a-52d7-8042-70827df6c90e",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 6,
+   "label": "obliczenia",
+   "title": "AUTO-e7a4c95d8797: Przebudowa i rozbudowa Stacji Wodociągowej w Myszkowie przy\nul. J. Piłsudskiego 17 działka ewid. Nr 2817/2",
+   "payload": {
+    "key": "9797190c-5366-55b3-accb-627d08dc92e5",
+    "tier": "auto",
+    "score": 0.7512,
+    "title": "Przebudowa i rozbudowa Stacji Wodociągowej w Myszkowie przy\nul. J. Piłsudskiego 17 działka ewid. Nr 2817/2",
+    "missing": [
+     "długość sieci"
+    ],
+    "outcome": {
+     "late": true,
+     "cancelled": false,
+     "n_changes": 0,
+     "delay_days": 111,
+     "paid_ratio": 1.002858,
+     "value_gross": 6126630.0,
+     "change_codes": [],
+     "evidence_ids": [
+      "03f250e8-2254-5cf5-b33a-5b96b9f812de",
+      "10020410-74e4-5cc4-8c33-32e77d0cc3a4",
+      "2031e014-939a-59a1-b62b-c64045323806",
+      "00ffc688-db67-50db-9dd8-f8b401593ce6",
+      "0bd0c169-bca0-5a3a-b636-0eedb90f44fa"
+     ],
+     "planned_days": 214
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 0.333,
+      "contribution": 0.0185
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "przebudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 0.5,
+      "contribution": 0.0556
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna (przyjęto: brak wzmianki o „zaprojektuj i wybuduj”)",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "6 126 630 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.99,
+      "contribution": 0.165
+     },
+     {
+      "label": "długość sieci",
+      "detail": "brak długości sieci w danych sąsiada",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": null,
+      "contribution": 0.0556
+     },
+     {
+      "label": "województwo",
+      "detail": "śląskie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 1.0,
+      "contribution": 0.0556
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.11",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.109,
+      "contribution": 0.0121
+     }
+    ],
+    "project_id": "9797190c-5366-55b3-accb-627d08dc92e5",
+    "differences": [
+     "podsektory dodatkowe: Sieć wodociągowa"
+    ],
+    "project_code": "AUTO-e7a4c95d8797",
+    "shared_terms": [
+     "śląskie",
+     "rozbudowę",
+     "wodociągowej",
+     "zakres",
+     "zasilanie",
+     "stacji",
+     "uzdatniania",
+     "wody"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "9797190c-5366-55b3-accb-627d08dc92e5",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "18334d20-c6ba-560c-aafe-db3e5ee4926f",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 7,
+   "label": "obliczenia",
+   "title": "AUTO-a858f3029f89: Rozbudowa, nadbudowa i przebudowa budynku OSP w Rychwale wraz z robotami rozbiórkowymi",
+   "payload": {
+    "key": "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+    "tier": "auto",
+    "score": 0.7452,
+    "title": "Rozbudowa, nadbudowa i przebudowa budynku OSP w Rychwale wraz z robotami rozbiórkowymi",
+    "missing": [
+     "długość sieci"
+    ],
+    "outcome": {
+     "late": false,
+     "cancelled": false,
+     "n_changes": 4,
+     "delay_days": 31,
+     "paid_ratio": 1.096847,
+     "value_gross": 6192370.0,
+     "change_codes": [
+      "455.1.3",
+      "455.1.1",
+      "455.1.1",
+      "455.1.3"
+     ],
+     "evidence_ids": [
+      "47ee856f-2663-5bd2-9e41-8db297bee17c",
+      "836521b1-e911-57c1-85f3-845b5063161b",
+      "8960f572-fb70-5d03-a756-ba43e51917e3",
+      "026ec273-e222-5081-97da-963766db2001",
+      "0d03075d-ebae-5ec8-8bf9-117bde5ec825"
+     ],
+     "planned_days": 458
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 0.333,
+      "contribution": 0.0185
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "rozbudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "6 192 370 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.999,
+      "contribution": 0.1665
+     },
+     {
+      "label": "długość sieci",
+      "detail": "brak długości sieci w danych sąsiada",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": null,
+      "contribution": 0.0556
+     },
+     {
+      "label": "województwo",
+      "detail": "wielkopolskie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 0.0,
+      "contribution": 0.0
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.04",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.042,
+      "contribution": 0.0047
+     }
+    ],
+    "project_id": "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+    "differences": [
+     "podsektory dodatkowe: Sieć wodociągowa",
+     "województwo: wielkopolskie"
+    ],
+    "project_code": "AUTO-a858f3029f89",
+    "shared_terms": [
+     "rozbudowę",
+     "wodociągowej",
+     "przyłączami",
+     "zasilanie",
+     "projekt",
+     "budowlany",
+     "robót"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "cdff3afb-f1d8-5e66-b2e6-86547d827ff7",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 8,
+   "label": "obliczenia",
+   "title": "AUTO-a46f7274f60d: ROZBUDOWA SYSTEMU WODOCIĄGOWEGO I KANALIZACYJNEGO\nW GMINIE DOBRA - POZA AGLOMERACJĄ",
+   "payload": {
+    "key": "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+    "tier": "auto",
+    "score": 0.7447,
+    "title": "ROZBUDOWA SYSTEMU WODOCIĄGOWEGO I KANALIZACYJNEGO\nW GMINIE DOBRA - POZA AGLOMERACJĄ",
+    "missing": [
+     "długość sieci"
+    ],
+    "outcome": {
+     "late": false,
+     "cancelled": false,
+     "n_changes": 0,
+     "delay_days": 0,
+     "paid_ratio": 1.0,
+     "value_gross": 6600897.09,
+     "change_codes": [],
+     "evidence_ids": [
+      "0e71c2cf-8989-5c01-8ca2-8e32e18dab1a",
+      "18007e59-3f99-52eb-b9af-c8e06566fc78",
+      "61b3d2c6-4573-5cf0-b2a8-f39b0c4a55aa",
+      "620bb4f3-1c89-5530-83fa-68188463eed3",
+      "695c5c25-cda5-514f-a84d-81d0c8c8ba19"
+     ],
+     "planned_days": 488
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 0.5,
+      "contribution": 0.0278
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "rozbudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna (przyjęto: brak wzmianki o „zaprojektuj i wybuduj”)",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "6 600 897 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.947,
+      "contribution": 0.1578
+     },
+     {
+      "label": "długość sieci",
+      "detail": "brak długości sieci w danych sąsiada",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": null,
+      "contribution": 0.0556
+     },
+     {
+      "label": "województwo",
+      "detail": "małopolskie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 0.0,
+      "contribution": 0.0
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.03",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.031,
+      "contribution": 0.0035
+     }
+    ],
+    "project_id": "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+    "differences": [
+     "województwo: małopolskie"
+    ],
+    "project_code": "AUTO-a46f7274f60d",
+    "shared_terms": [
+     "rozbudowę",
+     "wodociągowej"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "8a69d435-10ee-5d10-968a-48fb8f8b081b",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 9,
+   "label": "obliczenia",
+   "title": "AUTO-371071188927: Rozbudowa infrastruktury wodno – kanalizacyjnej w Gminie Masłów\nw ramach dofinansowania z Rządowego Funduszu Polski Ład: Program Inwestycji Strategicznych",
+   "payload": {
+    "key": "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+    "tier": "auto",
+    "score": 0.744,
+    "title": "Rozbudowa infrastruktury wodno – kanalizacyjnej w Gminie Masłów\nw ramach dofinansowania z Rządowego Funduszu Polski Ład: Program Inwestycji Strategicznych",
+    "missing": [
+     "długość sieci"
+    ],
+    "outcome": {
+     "late": true,
+     "cancelled": false,
+     "n_changes": 0,
+     "delay_days": 127,
+     "paid_ratio": 1.002085,
+     "value_gross": 6714013.0,
+     "change_codes": [],
+     "evidence_ids": [
+      "270a297d-55c6-56e3-9cbe-2c462250285c",
+      "33c4a889-cef1-5c94-b27a-a98dcbde42ec",
+      "5c7c2ee1-7998-56fe-b4a2-23dc25d11dc5",
+      "4473f900-ad79-509a-ab05-643fdf2f06f2",
+      "4dd0e35e-8a46-56a5-9db1-811fc9a1a4ef"
+     ],
+     "planned_days": 245
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 0.5,
+      "contribution": 0.0278
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "rozbudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna (przyjęto: brak wzmianki o „zaprojektuj i wybuduj”)",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "6 714 013 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.933,
+      "contribution": 0.1555
+     },
+     {
+      "label": "długość sieci",
+      "detail": "brak długości sieci w danych sąsiada",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": null,
+      "contribution": 0.0556
+     },
+     {
+      "label": "województwo",
+      "detail": "świętokrzyskie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 0.0,
+      "contribution": 0.0
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.05",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.046,
+      "contribution": 0.0052
+     }
+    ],
+    "project_id": "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+    "differences": [
+     "województwo: świętokrzyskie"
+    ],
+    "project_code": "AUTO-371071188927",
+    "shared_terms": [
+     "rozbudowę",
+     "inwestycja",
+     "dofinansowanie"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "0a4548f4-2d7a-5b1a-a8a6-24c331669e1a",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 10,
+   "label": "obliczenia",
+   "title": "AUTO-7aa50b2c0db1: ROZBUDOWA INFRASTRUKTURY WODOCIĄGOWEJ I KANALIZACJI SANITARNEJ NA TERENIE GMINY PABIANICE",
+   "payload": {
+    "key": "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+    "tier": "auto",
+    "score": 0.7404,
+    "title": "ROZBUDOWA INFRASTRUKTURY WODOCIĄGOWEJ I KANALIZACJI SANITARNEJ NA TERENIE GMINY PABIANICE",
+    "missing": [
+     "długość sieci"
+    ],
+    "outcome": {
+     "late": true,
+     "cancelled": false,
+     "n_changes": 2,
+     "delay_days": 391,
+     "paid_ratio": null,
+     "value_gross": 5995830.42,
+     "change_codes": [
+      "455.1.1",
+      "455.1.3"
+     ],
+     "evidence_ids": [
+      "21d64dd9-bcd9-5298-af07-eb5092e6c278",
+      "34a5aaa4-5227-52ad-9853-10e1c93df9f5",
+      "59e71924-23fe-5256-9ec9-c56dc68190cf",
+      "1ba988fd-4213-57e1-8053-55a9fb4cc597",
+      "1d9d8c45-66e0-5e66-acc0-9497f71f78a6"
+     ],
+     "planned_days": 591
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 0.333,
+      "contribution": 0.0185
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "rozbudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna (przyjęto: brak wzmianki o „zaprojektuj i wybuduj”)",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "5 995 830 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.971,
+      "contribution": 0.1619
+     },
+     {
+      "label": "długość sieci",
+      "detail": "brak długości sieci w danych sąsiada",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": null,
+      "contribution": 0.0556
+     },
+     {
+      "label": "województwo",
+      "detail": "łódzkie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 0.0,
+      "contribution": 0.0
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.04",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.04,
+      "contribution": 0.0044
+     }
+    ],
+    "project_id": "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+    "differences": [
+     "podsektory dodatkowe: Sieć wodociągowa",
+     "województwo: łódzkie"
+    ],
+    "project_code": "AUTO-7aa50b2c0db1",
+    "shared_terms": [
+     "rozbudowę",
+     "wodociągowej"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "c3f952f5-a6e5-5f1b-9f27-09670e8d4d15",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 11,
+   "label": "obliczenia",
+   "title": "AUTO-d9e797a0b887: Rozbudowa systemu wodociągowo - kanalizacyjnego w Łaszczowie.",
+   "payload": {
+    "key": "5a7d1534-796a-5f1d-aa00-3a7b65788acc",
+    "tier": "auto",
+    "score": 0.7402,
+    "title": "Rozbudowa systemu wodociągowo - kanalizacyjnego w Łaszczowie.",
+    "missing": [
+     "długość sieci"
+    ],
+    "outcome": {
+     "late": true,
+     "cancelled": false,
+     "n_changes": 1,
+     "delay_days": 17,
+     "paid_ratio": 1.0,
+     "value_gross": 5604000.0,
+     "change_codes": [
+      "455.1.3"
+     ],
+     "evidence_ids": [
+      "6f4b9ad2-ea41-5d24-90ee-6433a2da11dd",
+      "74fda07f-515e-50df-86d7-912cf404a553",
+      "9bf51e44-d922-59db-874f-f599c064ebc5",
+      "1932daa9-034c-5b6f-a3fa-ec6d80032d0f",
+      "4b2b8b2a-b151-5496-acd0-fdb1a0e1d62a"
+     ],
+     "planned_days": 171
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 0.5,
+      "contribution": 0.0278
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "rozbudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna (przyjęto: brak wzmianki o „zaprojektuj i wybuduj”)",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "5 604 000 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.916,
+      "contribution": 0.1527
+     },
+     {
+      "label": "długość sieci",
+      "detail": "brak długości sieci w danych sąsiada",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": null,
+      "contribution": 0.0556
+     },
+     {
+      "label": "województwo",
+      "detail": "lubelskie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 0.0,
+      "contribution": 0.0
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.04",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.038,
+      "contribution": 0.0042
+     }
+    ],
+    "project_id": "5a7d1534-796a-5f1d-aa00-3a7b65788acc",
+    "differences": [
+     "województwo: lubelskie"
+    ],
+    "project_code": "AUTO-d9e797a0b887",
+    "shared_terms": [
+     "rozbudowę",
+     "wodociągowej"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "5a7d1534-796a-5f1d-aa00-3a7b65788acc",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "136e2dfe-d35b-5a41-926e-b68c72c8ddb5",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "neighbour",
+   "ord": 12,
+   "label": "obliczenia",
+   "title": "AUTO-8f413958ae7a: Poprawa warunków ochrony p.poż: instalacje i rozbudowa w AAN w Warszawie - montaż klap oddymiających, wymiana stałego urząd. gaśniczego i urząd. w zakresie p.po",
+   "payload": {
+    "key": "ec5b456f-4009-5d79-a3f7-17d74fbe1360",
+    "tier": "auto",
+    "score": 0.7395,
+    "title": "Poprawa warunków ochrony p.poż: instalacje i rozbudowa w AAN w Warszawie - montaż klap oddymiających, wymiana stałego urząd. gaśniczego i urząd. w zakresie p.poż wraz z rozbudową inst. hydrantowe",
+    "missing": [
+     "długość sieci"
+    ],
+    "outcome": {
+     "late": false,
+     "cancelled": false,
+     "n_changes": 0,
+     "delay_days": null,
+     "paid_ratio": 1.0,
+     "value_gross": 5541506.7,
+     "change_codes": [],
+     "evidence_ids": [
+      "2e0335dc-9673-5780-9447-c7fd3ee73ae3",
+      "382671f9-03f7-5a17-87c6-f7d7e6c593de",
+      "8f059ada-b4e0-5333-a15a-045828315e87",
+      "086eac44-42a6-5887-a380-7ca2941119fd",
+      "12f4dffb-dad9-559a-82c3-609cb4cbfbf8"
+     ],
+     "planned_days": 63
+    },
+    "breakdown": [
+     {
+      "label": "podsektor główny",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.25,
+      "component": "subsector_main",
+      "similarity": 1.0,
+      "contribution": 0.2778
+     },
+     {
+      "label": "podsektory dodatkowe",
+      "detail": "Sieć wodociągowa",
+      "weight": 0.05,
+      "component": "subsector_extra",
+      "similarity": 0.5,
+      "contribution": 0.0278
+     },
+     {
+      "label": "rodzaj robót",
+      "detail": "rozbudowa",
+      "weight": 0.1,
+      "component": "work_type",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "formuła realizacji",
+      "detail": "tradycyjna (przyjęto: brak wzmianki o „zaprojektuj i wybuduj”)",
+      "weight": 0.1,
+      "component": "formula",
+      "similarity": 1.0,
+      "contribution": 0.1111
+     },
+     {
+      "label": "skala (wartość)",
+      "detail": "5 541 507 zł brutto vs 6 200 000 zł",
+      "weight": 0.15,
+      "component": "value",
+      "similarity": 0.907,
+      "contribution": 0.1512
+     },
+     {
+      "label": "długość sieci",
+      "detail": "brak długości sieci w danych sąsiada",
+      "weight": 0.1,
+      "component": "length_km",
+      "similarity": null,
+      "contribution": 0.0556
+     },
+     {
+      "label": "województwo",
+      "detail": "mazowieckie",
+      "weight": 0.05,
+      "component": "voivodeship",
+      "similarity": 0.0,
+      "contribution": 0.0
+     },
+     {
+      "label": "podobieństwo opisu (TF-IDF)",
+      "detail": "cosinus 0.04",
+      "weight": 0.1,
+      "component": "tfidf",
+      "similarity": 0.045,
+      "contribution": 0.005
+     }
+    ],
+    "project_id": "ec5b456f-4009-5d79-a3f7-17d74fbe1360",
+    "differences": [
+     "województwo: mazowieckie"
+    ],
+    "project_code": "AUTO-8f413958ae7a",
+    "shared_terms": [
+     "rozbudowę",
+     "wodociągowej",
+     "miejscowościach",
+     "zakres",
+     "hydroforni",
+     "warunków",
+     "projekt",
+     "umowy"
+    ],
+    "subsector_main": "Sieć wodociągowa"
+   },
+   "ref_project_id": "ec5b456f-4009-5d79-a3f7-17d74fbe1360",
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "2955e88c-ab60-5a42-9a7e-6ccd7af6961d",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "range",
+   "ord": 13,
+   "label": "obliczenia",
+   "title": "Prawdopodobieństwo opóźnienia",
+   "payload": {
+    "k": 6,
+    "n": 12,
+    "key": "p_late",
+    "raw": 0.5,
+    "ci_low": 0.2538,
+    "metric": "p_late",
+    "parent": {
+     "k": 1380,
+     "n": 4443,
+     "level": "subsector"
+    },
+    "period": "2021–2025",
+    "ci_high": 0.7462,
+    "formula": "P(opóźnienie) = k/n; k = umowy, w których zamawiający podał „nie wykonano w pierwotnym terminie” (5.3); estymata = (k + m·p_rodzica)/(n + m), m=8; CI: Wilson 95% dla k/n",
+    "case_ids": [
+     "7180994b-c437-56f6-aef9-1c72f17156f2",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+     "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+     "9797190c-5366-55b3-accb-627d08dc92e5",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+     "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc",
+     "ec5b456f-4009-5d79-a3f7-17d74fbe1360"
+    ],
+    "estimate": 0.4243,
+    "fallback_level": "neighbours"
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "55c1f173-f0e8-5cb7-8122-71a71013ceb3",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "range",
+   "ord": 14,
+   "label": "obliczenia",
+   "title": "Opóźnienie [dni]",
+   "payload": {
+    "n": 11,
+    "key": "delay_days",
+    "p50": 31.0,
+    "p80": 111.0,
+    "metric": "delay_days",
+    "period": "2021–2025",
+    "formula": "opóźnienie [dni] = max(0, data wykonania (5.2) − (data zawarcia (4.1) + okres realizacji (4.2))); kwantyle empiryczne",
+    "case_ids": [
+     "7180994b-c437-56f6-aef9-1c72f17156f2",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+     "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+     "9797190c-5366-55b3-accb-627d08dc92e5",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+     "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc"
+    ],
+    "fallback_level": "neighbours",
+    "neighbour_values": [
+     {
+      "code": "AUTO-47a72eaaae0b",
+      "value": 0,
+      "project_id": "7180994b-c437-56f6-aef9-1c72f17156f2"
+     },
+     {
+      "code": "AUTO-3be3bab32dcf",
+      "value": 66,
+      "project_id": "5fe66946-99a5-58c5-8609-41b2b4bd075f"
+     },
+     {
+      "code": "AUTO-fd09ba627c11",
+      "value": 63,
+      "project_id": "7824df98-17be-5da7-952d-94b5ecbc792c"
+     },
+     {
+      "code": "AUTO-b0e555010b51",
+      "value": 0,
+      "project_id": "0bb25b7d-96c2-57d6-ad17-c118ea947f75"
+     },
+     {
+      "code": "AUTO-0f121a897ff5",
+      "value": 14,
+      "project_id": "cdd4c6cd-6c45-5263-a273-fec4777564a8"
+     },
+     {
+      "code": "AUTO-e7a4c95d8797",
+      "value": 111,
+      "project_id": "9797190c-5366-55b3-accb-627d08dc92e5"
+     },
+     {
+      "code": "AUTO-a858f3029f89",
+      "value": 31,
+      "project_id": "72c7c736-ca31-57d3-8d55-2bfd97904cb9"
+     },
+     {
+      "code": "AUTO-a46f7274f60d",
+      "value": 0,
+      "project_id": "eeb24c43-b945-5a8d-9f91-40e85e5f8581"
+     },
+     {
+      "code": "AUTO-371071188927",
+      "value": 127,
+      "project_id": "a9887d3c-79a4-5a21-b85d-8ccaa873d19e"
+     },
+     {
+      "code": "AUTO-7aa50b2c0db1",
+      "value": 391,
+      "project_id": "2c71046c-e5f4-5ad8-86cf-d752bd5645c9"
+     },
+     {
+      "code": "AUTO-d9e797a0b887",
+      "value": 17,
+      "project_id": "5a7d1534-796a-5f1d-aa00-3a7b65788acc"
+     }
+    ],
+    "n_neighbours_with_data": 11
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "72f8255c-1c7c-507e-b291-9e8beb73bd52",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "range",
+   "ord": 15,
+   "label": "obliczenia",
+   "title": "Opóźnienie wśród opóźnionych [dni]",
+   "payload": {
+    "n": 1348,
+    "key": "delay_days_if_late",
+    "p50": 50.0,
+    "p80": 123.0,
+    "metric": "delay_days_if_late",
+    "period": "2021–2026",
+    "formula": "opóźnienie [dni] tylko wśród umów opóźnionych; kwantyle empiryczne; sąsiedzi mają 6 wartości (< 8) → kwantyle z poziomu „subsector” (n=1348)",
+    "case_ids": [
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "9797190c-5366-55b3-accb-627d08dc92e5",
+     "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc"
+    ],
+    "fallback_level": "subsector",
+    "neighbour_values": [
+     {
+      "code": "AUTO-3be3bab32dcf",
+      "value": 66,
+      "project_id": "5fe66946-99a5-58c5-8609-41b2b4bd075f"
+     },
+     {
+      "code": "AUTO-fd09ba627c11",
+      "value": 63,
+      "project_id": "7824df98-17be-5da7-952d-94b5ecbc792c"
+     },
+     {
+      "code": "AUTO-e7a4c95d8797",
+      "value": 111,
+      "project_id": "9797190c-5366-55b3-accb-627d08dc92e5"
+     },
+     {
+      "code": "AUTO-371071188927",
+      "value": 127,
+      "project_id": "a9887d3c-79a4-5a21-b85d-8ccaa873d19e"
+     },
+     {
+      "code": "AUTO-7aa50b2c0db1",
+      "value": 391,
+      "project_id": "2c71046c-e5f4-5ad8-86cf-d752bd5645c9"
+     },
+     {
+      "code": "AUTO-d9e797a0b887",
+      "value": 17,
+      "project_id": "5a7d1534-796a-5f1d-aa00-3a7b65788acc"
+     }
+    ],
+    "n_neighbours_with_data": 6
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "cc51f855-f35c-54cd-896a-7f0cd698a13b",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "range",
+   "ord": 16,
+   "label": "obliczenia",
+   "title": "Wypłata / wartość umowy",
+   "payload": {
+    "n": 10,
+    "key": "paid_ratio",
+    "p50": 1.001,
+    "p80": 1.0243,
+    "p95": 1.1119,
+    "metric": "paid_ratio",
+    "period": "2021–2025",
+    "formula": "wypłacone wynagrodzenie (5.5) / wartość umowy (4.4), obie kwoty brutto, umowy wykonane; kwantyle empiryczne",
+    "case_ids": [
+     "7180994b-c437-56f6-aef9-1c72f17156f2",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+     "9797190c-5366-55b3-accb-627d08dc92e5",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+     "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc",
+     "ec5b456f-4009-5d79-a3f7-17d74fbe1360"
+    ],
+    "fallback_level": "neighbours",
+    "neighbour_values": [
+     {
+      "code": "AUTO-47a72eaaae0b",
+      "value": 1.0,
+      "project_id": "7180994b-c437-56f6-aef9-1c72f17156f2"
+     },
+     {
+      "code": "AUTO-3be3bab32dcf",
+      "value": 1.1242,
+      "project_id": "5fe66946-99a5-58c5-8609-41b2b4bd075f"
+     },
+     {
+      "code": "AUTO-fd09ba627c11",
+      "value": 1.0062,
+      "project_id": "7824df98-17be-5da7-952d-94b5ecbc792c"
+     },
+     {
+      "code": "AUTO-b0e555010b51",
+      "value": 1.0,
+      "project_id": "0bb25b7d-96c2-57d6-ad17-c118ea947f75"
+     },
+     {
+      "code": "AUTO-e7a4c95d8797",
+      "value": 1.0029,
+      "project_id": "9797190c-5366-55b3-accb-627d08dc92e5"
+     },
+     {
+      "code": "AUTO-a858f3029f89",
+      "value": 1.0968,
+      "project_id": "72c7c736-ca31-57d3-8d55-2bfd97904cb9"
+     },
+     {
+      "code": "AUTO-a46f7274f60d",
+      "value": 1.0,
+      "project_id": "eeb24c43-b945-5a8d-9f91-40e85e5f8581"
+     },
+     {
+      "code": "AUTO-371071188927",
+      "value": 1.0021,
+      "project_id": "a9887d3c-79a4-5a21-b85d-8ccaa873d19e"
+     },
+     {
+      "code": "AUTO-d9e797a0b887",
+      "value": 1.0,
+      "project_id": "5a7d1534-796a-5f1d-aa00-3a7b65788acc"
+     },
+     {
+      "code": "AUTO-8f413958ae7a",
+      "value": 1.0,
+      "project_id": "ec5b456f-4009-5d79-a3f7-17d74fbe1360"
+     }
+    ],
+    "n_neighbours_with_data": 10
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "46b2c252-0306-52e8-93ad-b3176b6a497b",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "range",
+   "ord": 17,
+   "label": "obliczenia",
+   "title": "Prawdopodobieństwo zmiany umowy",
+   "payload": {
+    "k": 6,
+    "n": 12,
+    "key": "p_change",
+    "raw": 0.5,
+    "ci_low": 0.2538,
+    "metric": "p_change",
+    "parent": {
+     "k": 1836,
+     "n": 4444,
+     "level": "subsector"
+    },
+    "period": "2021–2025",
+    "ci_high": 0.7462,
+    "formula": "P(zmiana umowy) = k/n; k = umowy z liczbą zmian (5.4.1) > 0; estymata = (k + m·p_rodzica)/(n + m), m=8; CI: Wilson 95% dla k/n",
+    "case_ids": [
+     "7180994b-c437-56f6-aef9-1c72f17156f2",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+     "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+     "9797190c-5366-55b3-accb-627d08dc92e5",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+     "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc",
+     "ec5b456f-4009-5d79-a3f7-17d74fbe1360"
+    ],
+    "estimate": 0.4653,
+    "fallback_level": "neighbours"
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "5357f2b7-510f-55bf-be00-794fd0b50282",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "range",
+   "ord": 18,
+   "label": "obliczenia",
+   "title": "Udział unieważnionych postępowań",
+   "payload": {
+    "k": 8,
+    "n": 36,
+    "key": "share_cancelled",
+    "raw": 0.2222,
+    "ci_low": 0.1172,
+    "metric": "share_cancelled",
+    "parent": {
+     "k": 981,
+     "n": 5421,
+     "level": "subsector"
+    },
+    "period": "2021–2026",
+    "ci_high": 0.3808,
+    "formula": "udział unieważnionych postępowań wśród podobnych postępowań (zakończonych i unieważnionych); estymata = (k + m·p_rodzica)/(n + m), m=8; CI: Wilson 95% dla k/n",
+    "case_ids": [
+     "7180994b-c437-56f6-aef9-1c72f17156f2",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "ba3964ea-d402-5e57-b01c-19acc73a2de9",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "8b77eb85-521f-5689-a5f8-4f4065272758",
+     "7ddcb84c-b8c4-56b3-aa62-7135b7208544",
+     "a328e9da-cef1-524b-912c-8ea37c040101",
+     "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+     "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+     "9797190c-5366-55b3-accb-627d08dc92e5",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+     "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+     "d6bc591d-bbb1-5f14-bc63-d4f0fe55f947",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc",
+     "ec5b456f-4009-5d79-a3f7-17d74fbe1360",
+     "4c75bbbf-895e-5177-9892-74159dbf4e34",
+     "3350fab9-ee07-58d1-96e2-240fb594cf3f",
+     "674cbf0c-50d9-56a8-94a4-26b0fdb65ec7",
+     "af3a51bc-6f1f-594d-95ce-549b2acfff9e",
+     "d3c2efb4-3ccb-509d-a2c5-720e603cefeb",
+     "2e87122d-91c3-5850-8e74-3a3b49eb8ae0",
+     "661cd156-49b3-5174-b6c6-f3a19174d50c",
+     "d991b482-e9d2-571c-adcf-8eb94884d0b1",
+     "2ec4724e-c0b6-5fe7-bb96-930788a13c81",
+     "bb485b0f-588f-5c14-a1af-9f693a6e6fc3",
+     "f4060d30-5c5e-5fc5-8331-e3e1c44ae069",
+     "ca2f0cf6-6c4b-5dc1-a5bf-46b9ab44df7f",
+     "66e96810-db54-5df2-9de9-34816914076a",
+     "9c464a8b-1ac8-576e-bc45-af43f79b2895",
+     "ce5356a4-676b-5475-a55a-b900ae2a0a5c",
+     "39b83595-dea4-5b13-80ea-2107d00de399",
+     "8de6be48-d210-5cca-94db-f2439610fa63",
+     "ff0d171a-3932-53a3-b482-d3aa40a18562",
+     "ca7eecfa-2ca0-589e-884d-21bf61249dfd"
+    ],
+    "estimate": 0.2147,
+    "fallback_level": "neighbours"
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "baaf6a5a-2e29-53d0-a7bf-e8790284641c",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "range",
+   "ord": 19,
+   "label": "obliczenia",
+   "title": "Unieważnienia – art. 255 pkt 3 Pzp",
+   "payload": {
+    "k": 4,
+    "n": 36,
+    "key": "share_cancelled_255_3",
+    "raw": 0.1111,
+    "ci_low": 0.0441,
+    "metric": "share_cancelled_255_3",
+    "parent": {
+     "k": 566,
+     "n": 5421,
+     "level": "subsector"
+    },
+    "period": "2021–2026",
+    "ci_high": 0.2531,
+    "formula": "udział unieważnień z art. 255 pkt 3 Pzp (oferta przewyższa kwotę na sfinansowanie); estymata = (k + m·p_rodzica)/(n + m), m=8; CI: Wilson 95% dla k/n",
+    "case_ids": [
+     "7180994b-c437-56f6-aef9-1c72f17156f2",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "ba3964ea-d402-5e57-b01c-19acc73a2de9",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "8b77eb85-521f-5689-a5f8-4f4065272758",
+     "7ddcb84c-b8c4-56b3-aa62-7135b7208544",
+     "a328e9da-cef1-524b-912c-8ea37c040101",
+     "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+     "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+     "9797190c-5366-55b3-accb-627d08dc92e5",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+     "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+     "d6bc591d-bbb1-5f14-bc63-d4f0fe55f947",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc",
+     "ec5b456f-4009-5d79-a3f7-17d74fbe1360",
+     "4c75bbbf-895e-5177-9892-74159dbf4e34",
+     "3350fab9-ee07-58d1-96e2-240fb594cf3f",
+     "674cbf0c-50d9-56a8-94a4-26b0fdb65ec7",
+     "af3a51bc-6f1f-594d-95ce-549b2acfff9e",
+     "d3c2efb4-3ccb-509d-a2c5-720e603cefeb",
+     "2e87122d-91c3-5850-8e74-3a3b49eb8ae0",
+     "661cd156-49b3-5174-b6c6-f3a19174d50c",
+     "d991b482-e9d2-571c-adcf-8eb94884d0b1",
+     "2ec4724e-c0b6-5fe7-bb96-930788a13c81",
+     "bb485b0f-588f-5c14-a1af-9f693a6e6fc3",
+     "f4060d30-5c5e-5fc5-8331-e3e1c44ae069",
+     "ca2f0cf6-6c4b-5dc1-a5bf-46b9ab44df7f",
+     "66e96810-db54-5df2-9de9-34816914076a",
+     "9c464a8b-1ac8-576e-bc45-af43f79b2895",
+     "ce5356a4-676b-5475-a55a-b900ae2a0a5c",
+     "39b83595-dea4-5b13-80ea-2107d00de399",
+     "8de6be48-d210-5cca-94db-f2439610fa63",
+     "ff0d171a-3932-53a3-b482-d3aa40a18562",
+     "ca7eecfa-2ca0-589e-884d-21bf61249dfd"
+    ],
+    "estimate": 0.1099,
+    "fallback_level": "neighbours"
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "a3bf00c2-c1af-5a13-99c4-c23bf157b14a",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "range",
+   "ord": 20,
+   "label": "obliczenia",
+   "title": "Cena oferty / kwota na sfinansowanie",
+   "payload": {
+    "n": 0,
+    "key": "offer_vs_budget",
+    "p50": null,
+    "p80": null,
+    "p95": null,
+    "metric": "offer_vs_budget",
+    "period": null,
+    "formula": "cena wybranej oferty (6.4, brutto) / kwota na sfinansowanie (brutto) – obie z VAT (Porady: porównuj kwoty tego samego rodzaju); sąsiedzi mają 0 wartości (< 8) → kwantyle z poziomu „works” (n=0)",
+    "case_ids": [],
+    "fallback_level": "works",
+    "n_neighbours_with_data": 0
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "12105977-fef2-56d4-81b9-40ca4f039aee",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "range",
+   "ord": 21,
+   "label": "obliczenia",
+   "title": "Cena oferty / wartość szacunkowa × 1,23",
+   "payload": {
+    "n": 0,
+    "key": "offer_vs_estimate",
+    "p50": null,
+    "p80": null,
+    "p95": null,
+    "metric": "offer_vs_estimate",
+    "period": null,
+    "formula": "cena wybranej oferty (brutto) / (wartość zamówienia netto (4.3) × 1,23) – ZAŁOŻENIE: stawka VAT 23% dla robót; sąsiedzi mają 0 wartości (< 8) → kwantyle z poziomu „works” (n=0)",
+    "case_ids": [],
+    "fallback_level": "works",
+    "n_neighbours_with_data": 0
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "f2dfbe5c-13c7-5827-9764-81aca2d0fad1",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "assessment",
+   "ord": 22,
+   "label": "obliczenia",
+   "title": "Budżet na tle wartości umów sąsiadów",
+   "payload": {
+    "n": 12,
+    "key": "budget_percentile",
+    "basis": "nie porównano: nie wiadomo, czy kwota jest netto czy brutto",
+    "title": "Budżet na tle wartości umów sąsiadów",
+    "metric": "budget_percentile",
+    "status": "not_compared",
+    "formula": "percentyl = udział umów sąsiadów o wartości (4.4, brutto) ≤ budżetowi inwestycji",
+    "message": "nie porównano: nie wiadomo, czy kwota jest netto czy brutto",
+    "case_ids": [
+     "7180994b-c437-56f6-aef9-1c72f17156f2",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+     "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+     "9797190c-5366-55b3-accb-627d08dc92e5",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+     "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc",
+     "ec5b456f-4009-5d79-a3f7-17d74fbe1360"
+    ]
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "ec4b9658-257d-5714-a251-bf7a20fb0b70",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "assessment",
+   "ord": 23,
+   "label": "obliczenia",
+   "title": "Harmonogram na tle czasu realizacji sąsiadów",
+   "payload": {
+    "n": 11,
+    "key": "schedule_percentile",
+    "note": "plan 420 dni + P80 opóźnienia 111 dni (poziom neighbours, n=11)",
+    "tight": false,
+    "title": "Harmonogram na tle czasu realizacji sąsiadów",
+    "metric": "schedule_percentile",
+    "formula": "czas rzeczywisty = data wykonania (5.2) − data zawarcia (4.1); percentyl planu wśród czasów rzeczywistych sąsiadów",
+    "case_ids": [
+     "7180994b-c437-56f6-aef9-1c72f17156f2",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+     "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+     "9797190c-5366-55b3-accb-627d08dc92e5",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+     "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc"
+    ],
+    "position": "powyżej mediany sąsiadów",
+    "n_planned": 12,
+    "value_days": 420,
+    "p80_end_days": 531,
+    "actual_quantiles": {
+     "p10": 188.0,
+     "p50": 396.0,
+     "p80": 478.0,
+     "p90": 489.0
+    },
+    "percentile_actual": 0.545,
+    "planned_quantiles": {
+     "p10": 175.3,
+     "p50": 380.5,
+     "p80": 480.4,
+     "p90": 487.8
+    },
+    "percentile_planned": 0.583
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "36c3162d-341d-50f9-bd41-9eeffe5bcc94",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "assessment",
+   "ord": 24,
+   "label": "obliczenia",
+   "title": "Koszt na km",
+   "payload": {
+    "n": 980,
+    "key": "cost_per_km",
+    "pool": "podsektor Sieć wodociągowa",
+    "title": "Koszt na km",
+    "metric": "cost_per_km",
+    "formula": "(wypłata 5.5 albo wartość umowy 4.4, brutto) / km z opisu przedmiotu; n przypadków z podaną skalą",
+    "message": "nie porównano: nie wiadomo, czy kwota jest netto czy brutto",
+    "case_ids": [
+     "e9112650-2daa-5980-ac6e-6a8a00939b4f",
+     "399808f6-d1d2-5f1c-809c-81f14c85738e",
+     "567aff03-9fdd-506c-bc79-36201a6970f7",
+     "6753d947-1d9c-5b43-84d9-f12a32a748c0",
+     "afec3433-89a1-55f6-8134-3e357482d9a3",
+     "fc939f07-3f4e-509d-bc2a-f6fc43131b00",
+     "e8aebca8-c7a1-5ae3-8b41-d776ffc5291a",
+     "36fa51a2-d8a5-5d5d-89e9-f78ae9bf0faa",
+     "667600cd-a9f6-5fc2-a5c4-df305dad42e3",
+     "45ac5fb5-d449-5d75-b834-1b1b4f7df0e4",
+     "e2080745-dced-5acf-8bb3-4187bc6cccb9",
+     "95abe205-b87b-5ac3-8081-3bfea06fa404",
+     "7796ec2a-5bf3-5f53-a608-dc4eb719c36e",
+     "3782946c-4561-5800-b8e5-8ebab3c302cd",
+     "b1605678-7f8f-5e46-a0bb-982e1c0133da",
+     "0992184b-71f8-51b6-a920-4c6929b4899d",
+     "9bc5ba8d-ac3d-5fb9-8e6d-568a67cf346e",
+     "1c9a8a43-ba32-51d0-95bc-fdb47e1f40e1",
+     "d3e99c63-a390-5a74-8adb-8af17eae8ffd",
+     "0fd2c3ed-e2b9-58c6-b3c3-ed5e586f5dac",
+     "0f5e456a-c674-5aca-9966-5bf2bdc13704",
+     "4f87a783-221a-5680-81b1-78a8a231c20a",
+     "d88893aa-2d12-5b90-98ce-23f53468cd9f",
+     "2f5ba7c5-faf9-5c42-8821-bffe129a21f9",
+     "858bceb3-5862-5d4a-adda-e2c4caf9b5e2",
+     "e7b4c35f-5e01-5dc1-b071-0f32214f2e8a",
+     "86f47575-8d2c-547e-a36d-4226e03103ea",
+     "a9213fd2-1a15-5a48-8d13-821b8c2a6e24",
+     "3f35a157-734e-54d9-bea1-2d2fd279d542",
+     "5235c720-72eb-516d-923e-202081a019a7",
+     "3c88d065-b987-5087-851d-f86d27a1e102",
+     "6476e898-b01c-54a1-a661-74ea9e3f21db",
+     "b491eb8c-9745-5fc2-99f4-5751286cabfc",
+     "13585d57-bd76-5184-ab41-aad5eb272ece",
+     "f3074bf1-1f6d-5d68-b3b0-5080a8521f06",
+     "af57eaf0-03a6-5d3f-a35b-ea823dfe429f",
+     "845a8e63-a9dd-5b46-bfd0-28d5262d856a",
+     "0332bd37-8509-5865-91d7-306e3c9ce94a",
+     "5dc9a35e-2546-56a9-861d-49c7b01aa55f",
+     "c35a91d7-093b-5366-8de7-97c74b26b26d",
+     "c4d5aee4-e7da-5da8-8cfd-8748579911fd",
+     "ee271062-2d46-502f-8895-be93f1422a0a",
+     "b54a9c28-3ba0-534b-ad4c-310cf585cf01",
+     "a68625de-b7f8-56d0-9c79-320d8e4348af",
+     "d403c74f-288d-5a0c-8de8-1665e0374ce5",
+     "9145b53a-5c01-58fe-9c47-41d89f5d54e7",
+     "85a181ae-9928-596b-a9e7-8559b2d6e656",
+     "a9715e33-768f-586a-9399-1130fafb8496",
+     "ee06bb0c-00f6-5f11-ad08-f2f8ba901dcf",
+     "7d37418e-8c3c-5199-8ab8-a58389afb2e5"
+    ],
+    "quantiles": {
+     "p10": 172359.88,
+     "p50": 486807.99,
+     "p80": 1818794.33,
+     "p90": 6613759.1
+    }
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "a4cdec4b-b284-59bf-b07e-47ad2f3a9003",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "assessment",
+   "ord": 25,
+   "label": "obliczenia",
+   "title": "Koszt na RLM",
+   "payload": {
+    "n": 2,
+    "key": "cost_per_rlm",
+    "pool": "podsektor Sieć wodociągowa",
+    "title": "Koszt na RLM",
+    "metric": "cost_per_rlm",
+    "status": "not_compared",
+    "formula": "(wypłata 5.5 albo wartość umowy 4.4, brutto) / RLM z opisu przedmiotu; n przypadków z podaną skalą",
+    "message": "brak skali w opisie",
+    "case_ids": [
+     "3b1eb0c7-8c8c-5749-a150-a9df5ccccb57",
+     "c822783f-a346-52ae-a24f-dd78bfe1f675"
+    ]
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "c451c441-4661-5133-ae21-bda623da6895",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "assessment",
+   "ord": 26,
+   "label": "obliczenia",
+   "title": "Cena oferty a kwota na sfinansowanie (brutto/brutto)",
+   "payload": {
+    "n": 0,
+    "key": "offer_vs_budget",
+    "p50": null,
+    "p80": null,
+    "p95": null,
+    "title": "Cena oferty a kwota na sfinansowanie (brutto/brutto)",
+    "metric": "offer_vs_budget",
+    "formula": "cena wybranej oferty (6.4, brutto) / kwota na sfinansowanie (brutto) – obie z VAT (Porady: porównuj kwoty tego samego rodzaju); sąsiedzi mają 0 wartości (< 8) → kwantyle z poziomu „works” (n=0)",
+    "case_ids": [],
+    "fallback_level": "works"
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "3ea2802f-c85b-5e22-a8af-055fae062cdf",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "assessment",
+   "ord": 27,
+   "label": "obliczenia",
+   "title": "Cena oferty a wartość szacunkowa (brutto / netto×1,23)",
+   "payload": {
+    "n": 0,
+    "key": "offer_vs_estimate",
+    "p50": null,
+    "p80": null,
+    "p95": null,
+    "title": "Cena oferty a wartość szacunkowa (brutto / netto×1,23)",
+    "metric": "offer_vs_estimate",
+    "formula": "cena wybranej oferty (brutto) / (wartość zamówienia netto (4.3) × 1,23) – ZAŁOŻENIE: stawka VAT 23% dla robót; sąsiedzi mają 0 wartości (< 8) → kwantyle z poziomu „works” (n=0)",
+    "case_ids": [],
+    "fallback_level": "works"
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "8299464f-5edc-5132-a566-9088e79329c1",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "assessment",
+   "ord": 28,
+   "label": "obliczenia",
+   "title": "Unieważnienia – art. 255 pkt 3 Pzp wśród podobnych postępowań",
+   "payload": {
+    "k": 4,
+    "n": 36,
+    "key": "cancelled_255_3",
+    "title": "Unieważnienia – art. 255 pkt 3 Pzp wśród podobnych postępowań",
+    "ci_low": 0.0441,
+    "metric": "cancelled_255_3",
+    "ci_high": 0.2531,
+    "formula": "udział unieważnień z art. 255 pkt 3 Pzp (oferta przewyższa kwotę na sfinansowanie); estymata = (k + m·p_rodzica)/(n + m), m=8; CI: Wilson 95% dla k/n",
+    "case_ids": [
+     "7180994b-c437-56f6-aef9-1c72f17156f2",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "ba3964ea-d402-5e57-b01c-19acc73a2de9",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "8b77eb85-521f-5689-a5f8-4f4065272758",
+     "7ddcb84c-b8c4-56b3-aa62-7135b7208544",
+     "a328e9da-cef1-524b-912c-8ea37c040101",
+     "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+     "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+     "9797190c-5366-55b3-accb-627d08dc92e5",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+     "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+     "d6bc591d-bbb1-5f14-bc63-d4f0fe55f947",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc",
+     "ec5b456f-4009-5d79-a3f7-17d74fbe1360",
+     "4c75bbbf-895e-5177-9892-74159dbf4e34",
+     "3350fab9-ee07-58d1-96e2-240fb594cf3f",
+     "674cbf0c-50d9-56a8-94a4-26b0fdb65ec7",
+     "af3a51bc-6f1f-594d-95ce-549b2acfff9e",
+     "d3c2efb4-3ccb-509d-a2c5-720e603cefeb",
+     "2e87122d-91c3-5850-8e74-3a3b49eb8ae0",
+     "661cd156-49b3-5174-b6c6-f3a19174d50c",
+     "d991b482-e9d2-571c-adcf-8eb94884d0b1",
+     "2ec4724e-c0b6-5fe7-bb96-930788a13c81",
+     "bb485b0f-588f-5c14-a1af-9f693a6e6fc3",
+     "f4060d30-5c5e-5fc5-8331-e3e1c44ae069",
+     "ca2f0cf6-6c4b-5dc1-a5bf-46b9ab44df7f",
+     "66e96810-db54-5df2-9de9-34816914076a",
+     "9c464a8b-1ac8-576e-bc45-af43f79b2895",
+     "ce5356a4-676b-5475-a55a-b900ae2a0a5c",
+     "39b83595-dea4-5b13-80ea-2107d00de399",
+     "8de6be48-d210-5cca-94db-f2439610fa63",
+     "ff0d171a-3932-53a3-b482-d3aa40a18562",
+     "ca7eecfa-2ca0-589e-884d-21bf61249dfd"
+    ],
+    "estimate": 0.1099,
+    "fallback_level": "neighbours"
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "ce64091c-9303-53fb-a245-d2f10bd06300",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "flag",
+   "ord": 29,
+   "label": "obliczenia",
+   "title": "Roboty przy czynnym obiekcie",
+   "payload": {
+    "key": "D-existing_asset",
+    "why": "Opis inwestycji wskazuje ten czynnik.",
+    "axis": "przygotowanie",
+    "code": "D-existing_asset",
+    "quote": "Zasilanie z istniejącej stacji uzdatniania wody w Mszanie; operator (Gminny Zakład Komunalny) nie wydał jeszcz",
+    "title": "Roboty przy czynnym obiekcie",
+    "source": "opis",
+    "severity": "średnia",
+    "risk_codes": [
+     "R06",
+     "R10"
+    ],
+    "risk_names": {
+     "R06": "Nierealistyczny harmonogram i nieuwzględnione zależności",
+     "R10": "Niedookreślone próby, rozruch i odbiór"
+    }
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R06",
+    "R10"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "777847a8-6a63-5dd6-83b5-279d24506381",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "flag",
+   "ord": 30,
+   "label": "obliczenia",
+   "title": "Opis wskazuje brak lub niepewność",
+   "payload": {
+    "key": "D-gap_1",
+    "why": "Zdanie z opisu sygnalizuje brak/niepewność – do wyjaśnienia przed ogłoszeniem.",
+    "axis": "przygotowanie",
+    "code": "D-gap_1",
+    "quote": "tniejącej stacji uzdatniania wody w Mszanie; operator (Gminny Zakład Komunalny) nie wydał jeszcze warunków technicznych przyłączenia.",
+    "title": "Opis wskazuje brak lub niepewność",
+    "source": "opis",
+    "severity": "średnia",
+    "risk_codes": [
+     "R01"
+    ],
+    "risk_names": {
+     "R01": "Niepełny lub niespójny zakres"
+    }
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R01"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "7cb6faae-d518-5457-929f-79ea7ed849e8",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "flag",
+   "ord": 31,
+   "label": "obliczenia",
+   "title": "Opis wskazuje brak lub niepewność",
+   "payload": {
+    "key": "D-gap_2",
+    "why": "Zdanie z opisu sygnalizuje brak/niepewność – do wyjaśnienia przed ogłoszeniem.",
+    "axis": "przygotowanie",
+    "code": "D-gap_2",
+    "quote": "Trasa przebiega częściowo w pasie drogi powiatowej i przez działki prywatne – brak zgód części właścicieli.",
+    "title": "Opis wskazuje brak lub niepewność",
+    "source": "opis",
+    "severity": "średnia",
+    "risk_codes": [
+     "R03"
+    ],
+    "risk_names": {
+     "R03": "Kolizje, dostęp do terenu i prawa do nieruchomości"
+    }
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R03"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "8604604e-0b4b-5e06-894f-e272ca800305",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "flag",
+   "ord": 32,
+   "label": "obliczenia",
+   "title": "Trasa / teren wymaga praw do nieruchomości",
+   "payload": {
+    "key": "D-land",
+    "why": "Opis inwestycji wskazuje ten czynnik.",
+    "axis": "przygotowanie",
+    "code": "D-land",
+    "quote": "Trasa przebiega częściowo w pasie drogi powiatowej i przez działki prywatne – brak zgód części właścicieli.",
+    "title": "Trasa / teren wymaga praw do nieruchomości",
+    "source": "opis",
+    "severity": "średnia",
+    "risk_codes": [
+     "R03"
+    ],
+    "risk_names": {
+     "R03": "Kolizje, dostęp do terenu i prawa do nieruchomości"
+    }
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R03"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "3281d64f-5110-55bf-a957-234f6912e1b6",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "flag",
+   "ord": 33,
+   "label": "obliczenia",
+   "title": "Inwestycja zależy od decyzji i uzgodnień podmiotów trzecich",
+   "payload": {
+    "key": "D-permits",
+    "why": "Opis inwestycji wskazuje ten czynnik.",
+    "axis": "przygotowanie",
+    "code": "D-permits",
+    "quote": "zdatniania wody w Mszanie; operator (Gminny Zakład Komunalny) nie wydał jeszcze warunków technicznych przyłączenia.",
+    "title": "Inwestycja zależy od decyzji i uzgodnień podmiotów trzecich",
+    "source": "opis",
+    "severity": "średnia",
+    "risk_codes": [
+     "R04"
+    ],
+    "risk_names": {
+     "R04": "Decyzje, pozwolenia i uzgodnienia zależne od podmiotów trzecich"
+    }
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R04"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "4c5ba47b-ac9f-576e-bfc0-9c7c2ce86104",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "flag",
+   "ord": 34,
+   "label": "obliczenia",
+   "title": "Nieprzewidziane zmiany i roboty dodatkowe – występowało u 4 z 12 podobnych inwestycji",
+   "payload": {
+    "k": 4,
+    "n": 12,
+    "key": "N-R07",
+    "why": "U 4 z 12 najbliższych sąsiadów odnotowano zdarzenie z kategorią R07 (33%); przykłady poniżej z cytatami ze źródeł.",
+    "axis": "realizacja",
+    "code": "N-R07",
+    "title": "Nieprzewidziane zmiany i roboty dodatkowe – występowało u 4 z 12 podobnych inwestycji",
+    "formula": "udział = sąsiedzi z ≥1 zdarzeniem danej kategorii / liczba sąsiadów; próg: ≥2 i ≥25%",
+    "case_ids": [
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "7824df98-17be-5da7-952d-94b5ecbc792c"
+    ],
+    "examples": [
+     {
+      "cause": "konieczność wykonania robót dodatkowych",
+      "match": "robót dodatk",
+      "quote": "konieczność wykonania robót dodatkowych",
+      "title": "AUTO-3be3bab32dcf: zmiana umowy (455.2)",
+      "event_id": "5fe66946-99a5-58c5-8609-41b2b4bd075f:R07:0",
+      "project_id": "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+      "evidence_ids": [
+       "1813cdcf-133b-5a56-9f61-1afc2e09bd72",
+       "4cd7ff47-93ce-5869-8f33-991a1805a2f9",
+       "869b4b05-dae1-512e-a184-b4be9ae47e4f"
+      ]
+     },
+     {
+      "cause": "Zmiana wynagrodzenia wykonawcy z uwagi na konieczność wykonania robót dodatkowych",
+      "match": "robót dodatk",
+      "quote": "Zmiana wynagrodzenia wykonawcy z uwagi na konieczność wykonania robót dodatkowych",
+      "title": "AUTO-fd09ba627c11: zmiana umowy (455.2)",
+      "event_id": "7824df98-17be-5da7-952d-94b5ecbc792c:R07:1",
+      "project_id": "7824df98-17be-5da7-952d-94b5ecbc792c",
+      "evidence_ids": [
+       "4e1c22ba-e0ab-5cff-b94a-aecd51c50b69",
+       "51c245c2-9d09-53de-b8df-498fc202b28c",
+       "7acb3cb3-21b6-5120-9889-9b1ba8320e4f"
+      ]
+     },
+     {
+      "cause": "Konieczność wydłużenia terminu wykonania przedmiotu umowy wynika z następujących okoliczności:\n- opóźnień w dostawie materiałów budowlanych\n- warunków terenowo- gruntowych nieprzewidzianych w dokumentacji projektowej",
+      "match": "nieprzewidzian",
+      "quote": "Konieczność wydłużenia terminu wykonania przedmiotu umowy wynika z następujących okoliczności:\n- opóźnień w dostawie materiałów budowlanych\n- warunków terenowo- gruntowych nieprzewidzianych w dokumentacji projektowej",
+      "title": "AUTO-fd09ba627c11: zmiana umowy (455.1.4)",
+      "event_id": "7824df98-17be-5da7-952d-94b5ecbc792c:R07:2",
+      "project_id": "7824df98-17be-5da7-952d-94b5ecbc792c",
+      "evidence_ids": [
+       "09995bbb-e8d2-573b-8953-7f3a723d8d6c",
+       "0b5879bf-c1dd-5af4-91fd-7b56411490a8",
+       "7c951533-a8bc-584e-ba03-8579480f65ed"
+      ]
+     },
+     {
+      "cause": "Konieczność wykonania robót dodatkowych i zamiennych.",
+      "match": "robót dodatk",
+      "quote": "Konieczność wykonania robót dodatkowych i zamiennych.",
+      "title": "AUTO-a858f3029f89: zmiana umowy (455.1.3)",
+      "event_id": "72c7c736-ca31-57d3-8d55-2bfd97904cb9:R07:3",
+      "project_id": "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+      "evidence_ids": [
+       "1a47b166-e93b-5f08-bfc2-0c9e559e1e6a",
+       "318c0a9f-63bc-5b6a-8cc6-65d0ad0ef286",
+       "6e7d21f0-8e9f-5159-9293-8b727043e179"
+      ]
+     },
+     {
+      "cause": "Konieczność zmiany terminu zakończenia umowy z uwagi na wykonanie robót dodatkowych i zamiennych.",
+      "match": "robót dodatk",
+      "quote": "Konieczność zmiany terminu zakończenia umowy z uwagi na wykonanie robót dodatkowych i zamiennych.",
+      "title": "AUTO-a858f3029f89: zmiana umowy (455.1.1)",
+      "event_id": "72c7c736-ca31-57d3-8d55-2bfd97904cb9:R07:4",
+      "project_id": "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+      "evidence_ids": [
+       "17fed55a-27e3-52ed-85b1-51ad0ecc6fc9",
+       "2b600e34-ed52-556b-9809-d9dee0660d0f",
+       "6b543213-e96b-5923-a0c5-33fc71fe0f50"
+      ]
+     }
+    ],
+    "severity": "średnia",
+    "risk_codes": [
+     "R07"
+    ],
+    "risk_names": {
+     "R07": "Nieprzewidziane zmiany i roboty dodatkowe"
+    }
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R07"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "19d7a039-5dcf-5d58-9c54-81a3535fffd5",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "flag",
+   "ord": 35,
+   "label": "obliczenia",
+   "title": "Wysokie prawdopodobieństwo opóźnienia: 42%",
+   "payload": {
+    "k": 6,
+    "n": 12,
+    "key": "R-LATE",
+    "why": "Wśród podobnych zakończonych umów 6 z 12 nie wykonano w pierwotnym terminie (poziom: sąsiedzi; 95% CI 25%–75%).",
+    "axis": "realizacja",
+    "code": "R-LATE",
+    "title": "Wysokie prawdopodobieństwo opóźnienia: 42%",
+    "formula": "P(opóźnienie) = k/n; k = umowy, w których zamawiający podał „nie wykonano w pierwotnym terminie” (5.3); estymata = (k + m·p_rodzica)/(n + m), m=8; CI: Wilson 95% dla k/n",
+    "case_ids": [
+     "7180994b-c437-56f6-aef9-1c72f17156f2",
+     "5fe66946-99a5-58c5-8609-41b2b4bd075f",
+     "7824df98-17be-5da7-952d-94b5ecbc792c",
+     "0bb25b7d-96c2-57d6-ad17-c118ea947f75",
+     "cdd4c6cd-6c45-5263-a273-fec4777564a8",
+     "9797190c-5366-55b3-accb-627d08dc92e5",
+     "72c7c736-ca31-57d3-8d55-2bfd97904cb9",
+     "eeb24c43-b945-5a8d-9f91-40e85e5f8581",
+     "a9887d3c-79a4-5a21-b85d-8ccaa873d19e",
+     "2c71046c-e5f4-5ad8-86cf-d752bd5645c9",
+     "5a7d1534-796a-5f1d-aa00-3a7b65788acc",
+     "ec5b456f-4009-5d79-a3f7-17d74fbe1360"
+    ],
+    "severity": "średnia",
+    "risk_codes": [
+     "R06"
+    ],
+    "risk_names": {
+     "R06": "Nierealistyczny harmonogram i nieuwzględnione zależności"
+    }
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R06"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "d3e90f35-f2ca-541e-b37d-cd8c2f9fda70",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "flag",
+   "ord": 36,
+   "label": "obliczenia",
+   "title": "Brak informacji dla 2 punktów listy kontrolnej eksperta",
+   "payload": {
+    "key": "C-CHECK",
+    "why": "Opis nie zawiera informacji wymaganych listą kontrolną – uzupełnij przed analizą ryzyka.",
+    "axis": "dane",
+    "code": "C-CHECK",
+    "items": [
+     {
+      "no": 7,
+      "item": "Główne przeszkody lokalizacyjne i zależności od innych inwestycji.",
+      "risk_codes": [
+       "R02",
+       "R03",
+       "R06"
+      ],
+      "guide_sections": "5.4; 6.1–6.2"
+     },
+     {
+      "no": 9,
+      "item": "Podział odpowiedzialności za przygotowanie, projekt, nieruchomości, decyzje i eksploatację oraz główne ryzyka.",
+      "risk_codes": [
+       "R05"
+      ],
+      "guide_sections": "7.1–7.5"
+     }
+    ],
+    "title": "Brak informacji dla 2 punktów listy kontrolnej eksperta",
+    "severity": "niska",
+    "risk_codes": [
+     "R02",
+     "R03",
+     "R05",
+     "R06"
+    ],
+    "risk_names": {
+     "R02": "Niedostateczne rozpoznanie stanu istniejącego",
+     "R03": "Kolizje, dostęp do terenu i prawa do nieruchomości",
+     "R05": "Niejasny lub nieadekwatny podział odpowiedzialności",
+     "R06": "Nierealistyczny harmonogram i nieuwzględnione zależności"
+    }
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R02",
+    "R03",
+    "R05",
+    "R06"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "rule",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "9615dd5e-1b24-5aed-93f1-977a109459e6",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "flag",
+   "ord": 37,
+   "label": "obliczenia",
+   "title": "Nie wiadomo, czy kwota jest netto czy brutto",
+   "payload": {
+    "key": "Q-VAT",
+    "why": "Kwoty porównujemy tylko tego samego rodzaju (Porady: kwoty netto i brutto) – ocena budżetu wstrzymana.",
+    "axis": "dane",
+    "code": "Q-VAT",
+    "title": "Nie wiadomo, czy kwota jest netto czy brutto",
+    "severity": "niska",
+    "risk_codes": [],
+    "risk_names": {}
+   },
+   "ref_project_id": null,
+   "risk_codes": [],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "knowledge",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "a1bf1229-197b-5264-b8fd-6496f553ac5b",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "action",
+   "ord": 38,
+   "label": "dane_zrodlowe",
+   "title": "R01 Niepełny lub niespójny zakres",
+   "payload": {
+    "key": "R01",
+    "flags": [
+     "D-gap_1"
+    ],
+    "clauses": [
+     {
+      "id": "af957c67-6a20-595c-8959-f736b7c6b0e2",
+      "code": "K-R01",
+      "text": "Przed ogłoszeniem przeprowadzić przegląd spójności dokumentacji projektowej, STWiORB i przedmiaru (lub PFU); w SWZ określić hierarchię dokumentów na wypadek sprzeczności oraz zasady rozliczania robót zamiennych.",
+      "title": "Jednoznaczny i kompletny opis przedmiotu zamówienia",
+      "status": "proposed",
+      "trigger": "Zakres opisany ogólnie, brak przedmiaru/PFU, rozbieżności między dokumentacją a opisem",
+      "legal_basis": "art. 99 i art. 103 Pzp"
+     }
+    ],
+    "lessons": [],
+    "examples": [],
+    "risk_code": "R01",
+    "risk_name": "Niepełny lub niespójny zakres"
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R01"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "knowledge",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "c2c62f8c-1210-5e67-af0c-76a60b3a456e",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "action",
+   "ord": 39,
+   "label": "dane_zrodlowe",
+   "title": "R02 Niedostateczne rozpoznanie stanu istniejącego",
+   "payload": {
+    "key": "R02",
+    "flags": [
+     "C-CHECK"
+    ],
+    "clauses": [
+     {
+      "id": "cd1938e5-137b-521b-9f1b-f7a66adcac94",
+      "code": "K-R02",
+      "text": "Wykonać badania geotechniczne i inwentaryzację uzbrojenia przed wyceną; w umowie przewidzieć jasną procedurę i sposób wyceny robót wynikających z odmiennych od opisanych warunków gruntowych (klauzula przeglądowa) z limitem wartości.",
+      "title": "Rozpoznanie warunków gruntowych i infrastruktury istniejącej",
+      "status": "proposed",
+      "trigger": "Brak badań geotechnicznych, inwentaryzacji uzbrojenia, wody gruntowe w historii podobnych inwestycji",
+      "legal_basis": "art. 455 ust. 1 pkt 1 Pzp (zmiany przewidziane w umowie)"
+     }
+    ],
+    "lessons": [],
+    "examples": [],
+    "risk_code": "R02",
+    "risk_name": "Niedostateczne rozpoznanie stanu istniejącego"
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R02"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "knowledge",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "03565323-6c4b-5bd4-9e22-5de82846ced4",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "action",
+   "ord": 40,
+   "label": "dane_zrodlowe",
+   "title": "R03 Kolizje, dostęp do terenu i prawa do nieruchomości",
+   "payload": {
+    "key": "R03",
+    "flags": [
+     "D-gap_2",
+     "D-land",
+     "C-CHECK"
+    ],
+    "clauses": [
+     {
+      "id": "3b5aa618-9036-58a5-8324-c9e732f8349f",
+      "code": "K-R03",
+      "text": "Uzyskać zgody właścicieli i ustanowić służebności przesyłu przed ogłoszeniem; w umowie przewidzieć zmianę terminu o czas oczekiwania na wejście na teren niezależne od wykonawcy, z obowiązkiem niezwłocznego zgłoszenia przeszkody.",
+      "title": "Prawo do dysponowania nieruchomościami przed wszczęciem postępowania",
+      "status": "proposed",
+      "trigger": "Trasa przez działki prywatne, brak zgód właścicieli/służebności, kolizje z drogami",
+      "legal_basis": "art. 455 ust. 1 pkt 1 Pzp"
+     }
+    ],
+    "lessons": [],
+    "examples": [],
+    "risk_code": "R03",
+    "risk_name": "Kolizje, dostęp do terenu i prawa do nieruchomości"
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R03"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "knowledge",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "080260de-883e-58af-b410-003cf00a9b61",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "action",
+   "ord": 41,
+   "label": "dane_zrodlowe",
+   "title": "R04 Decyzje, pozwolenia i uzgodnienia zależne od podmiotów trzecich",
+   "payload": {
+    "key": "R04",
+    "flags": [
+     "D-permits"
+    ],
+    "clauses": [
+     {
+      "id": "b3cd9113-0d97-5ac9-89e3-80b099039f44",
+      "code": "K-R04",
+      "text": "Ogłaszać postępowanie po uzyskaniu kluczowych decyzji; w umowie wskazać, kto odpowiada za każdą decyzję, oraz przewidzieć przesunięcie terminu o czas opóźnienia organu, jeżeli wniosek złożono kompletny i w terminie.",
+      "title": "Decyzje i uzgodnienia jako warunek wszczęcia",
+      "status": "proposed",
+      "trigger": "Brak decyzji środowiskowej, pozwolenia wodnoprawnego, uzgodnień z zarządcą drogi lub gestorami sieci",
+      "legal_basis": "art. 455 ust. 1 pkt 1 Pzp"
+     }
+    ],
+    "lessons": [],
+    "examples": [],
+    "risk_code": "R04",
+    "risk_name": "Decyzje, pozwolenia i uzgodnienia zależne od podmiotów trzecich"
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R04"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "knowledge",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "a9349b2f-ad94-545e-b792-0a39b0f2bcd0",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "action",
+   "ord": 42,
+   "label": "dane_zrodlowe",
+   "title": "R05 Niejasny lub nieadekwatny podział odpowiedzialności",
+   "payload": {
+    "key": "R05",
+    "flags": [
+     "C-CHECK"
+    ],
+    "clauses": [
+     {
+      "id": "0b0b32b2-7b8b-5db5-8f79-2eb796d7827c",
+      "code": "K-R05",
+      "text": "Dołączyć do umowy macierz odpowiedzialności (projekt, nieruchomości, decyzje, odbiory, rozruch, eksploatacja); nie przerzucać na wykonawcę odpowiedzialności za okoliczności leżące po stronie zamawiającego.",
+      "title": "Macierz odpowiedzialności stron",
+      "status": "proposed",
+      "trigger": "Formuła „zaprojektuj i wybuduj”, wielu uczestników (operator, gmina, gestorzy)",
+      "legal_basis": "art. 433 Pzp (zakazane postanowienia umowne)"
+     }
+    ],
+    "lessons": [],
+    "examples": [],
+    "risk_code": "R05",
+    "risk_name": "Niejasny lub nieadekwatny podział odpowiedzialności"
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R05"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "knowledge",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "0228ed2e-5278-59c2-9b37-aa8e61c6ac6d",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "action",
+   "ord": 43,
+   "label": "dane_zrodlowe",
+   "title": "R06 Nierealistyczny harmonogram i nieuwzględnione zależności",
+   "payload": {
+    "key": "R06",
+    "flags": [
+     "D-existing_asset",
+     "R-LATE",
+     "C-CHECK"
+    ],
+    "clauses": [
+     {
+      "id": "6dff767a-dd47-5f36-a81c-ec5c9a0e2df5",
+      "code": "K-R06",
+      "text": "Termin realizacji ustalić na podstawie czasu trwania podobnych umów (percentyl P80 z bazy doświadczeń) z rezerwą na okres zimowy; przewidzieć harmonogram rzeczowo-finansowy aktualizowany co miesiąc.",
+      "title": "Realistyczny harmonogram z buforem",
+      "status": "proposed",
+      "trigger": "Krótki okres realizacji przy dużej wartości, koniec robót ziemnych w okresie zimowym",
+      "legal_basis": "art. 436 pkt 1 Pzp (termin wykonania)"
+     }
+    ],
+    "lessons": [],
+    "examples": [],
+    "risk_code": "R06",
+    "risk_name": "Nierealistyczny harmonogram i nieuwzględnione zależności"
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R06"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "knowledge",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "3e2ce25b-378d-5b6f-bfc2-07d97461a01a",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "action",
+   "ord": 44,
+   "label": "dane_zrodlowe",
+   "title": "R07 Nieprzewidziane zmiany i roboty dodatkowe",
+   "payload": {
+    "key": "R07",
+    "flags": [
+     "N-R07"
+    ],
+    "clauses": [
+     {
+      "id": "76e39692-7039-5503-8511-ca1789c6b12f",
+      "code": "K-R07",
+      "text": "Zaplanować rezerwę budżetową na poziomie P80 relacji wypłaty do wartości umowy u podobnych inwestycji; w umowie opisać tryb zlecania i wyceny robót dodatkowych (protokół konieczności, ceny jednostkowe z oferty).",
+      "title": "Rezerwa na roboty nieprzewidziane i tryb ich zlecania",
+      "status": "proposed",
+      "trigger": "Wysoki udział zmian umów u podobnych inwestycji, wypłata powyżej wartości umowy",
+      "legal_basis": "art. 455 ust. 1 pkt 1 oraz ust. 2 Pzp"
+     }
+    ],
+    "lessons": [],
+    "examples": [],
+    "risk_code": "R07",
+    "risk_name": "Nieprzewidziane zmiany i roboty dodatkowe"
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R07"
+   ],
+   "excluded": false
+  },
+  {
+   "status": "proposed",
+   "method": "knowledge",
+   "confidence": null,
+   "evidence_ids": [],
+   "proposal": null,
+   "reviewed_by": null,
+   "reviewed_at": null,
+   "id": "63a5c78d-e366-5e10-976a-ee470f6e2981",
+   "analysis_id": "efb8589e-c48f-4836-8df2-e4f45cb32ed5",
+   "kind": "action",
+   "ord": 45,
+   "label": "dane_zrodlowe",
+   "title": "R10 Niedookreślone próby, rozruch i odbiór",
+   "payload": {
+    "key": "R10",
+    "flags": [
+     "D-existing_asset"
+    ],
+    "clauses": [
+     {
+      "id": "6df8049e-8b79-5bd9-94fc-8409008bc0d8",
+      "code": "K-R10",
+      "text": "Opisać w umowie program prób i rozruchu, parametry gwarantowane, sposób ich pomiaru i skutki nieosiągnięcia; odbiór końcowy uzależnić od potwierdzonych parametrów.",
+      "title": "Procedura prób, rozruchu i odbioru",
+      "status": "proposed",
+      "trigger": "Stacje uzdatniania, oczyszczalnie, przepompownie – parametry technologiczne",
+      "legal_basis": "art. 436 Pzp"
+     }
+    ],
+    "lessons": [],
+    "examples": [],
+    "risk_code": "R10",
+    "risk_name": "Niedookreślone próby, rozruch i odbiór"
+   },
+   "ref_project_id": null,
+   "risk_codes": [
+    "R10"
+   ],
+   "excluded": false
+  }
+ ]
+}
