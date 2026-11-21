@@ -73,7 +73,10 @@ def load_zip(*, limit: int | None = None, date_from: dt.date | None = None, date
                         or (nips is not None and nip not in nips):
                     counts["skipped"] += 1
                     continue
-                tier = "deep" if deep_nips and nip in deep_nips else "auto"
+                if deep_nips and nip in deep_nips:  # deep tier is owned by `enrich` (live API provenance)
+                    counts["skipped"] += 1
+                    continue
+                tier = "auto"
                 try:
                     _, res = store_notice(s, rec, source_code="bzp_zip", retrieved_from=f"{path}#L{lineno}",
                                           tier=tier, keep_html=False)

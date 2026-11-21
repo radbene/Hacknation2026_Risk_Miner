@@ -38,12 +38,24 @@ committed on their branches first). Main session wired the missing CLI/jobs/rout
   (`riskminer export` → `exports/przyklad/`). `riskminer analyse <plik>` na fixture 01: 12 sąsiadów, 16 flag.
 - Frontend: lista „Baza przypadków” działa na prawdziwym API.
 
-**W toku**
-- Warstwa automatyczna: `riskminer harvest` z pełnej kopii (113k ogłoszeń) – uruchomione ~18:45.
+**Warstwa automatyczna (21.11 ~19:50)**
+- `riskminer harvest`: 113 276 ogłoszeń z kopii BZP organizatora (strumieniowo z .xz, bez rozpakowania), 45 069 postępowań,
+  34 399 projektów automatycznych (postępowania z umową lub unieważnieniem); 16,7 min; 2 uszkodzone rekordy pominięte
+  (data w polu liczbowym, znak \u0000). Baza ~4 GB. Harvest pomija NIP-y warstwy pogłębionej (te ogłoszenia pobiera `enrich`
+  na żywo – zachowanie pochodzenia „BZP API”).
+- `riskminer classify`: podsektor / rodzaj robót / formuła / skala z tytułu i opisu (reguły), CPV jako zapas.
+
+**Frontend (21.11 ~20:00)** – wszystkie obszary na prawdziwym API:
+- Karta projektu: przegląd z komórkami xlsx, oś czasu plan vs wykonanie, powiązania (składowe ze źródłami, alternatywy,
+  kandydaci, „Wskaż inne postępowanie”), umowy i zmiany, zdarzenia z cytatami i decyzją eksperta, ogłoszenia z sekcjami,
+  dokumenty (upload / URL), braki i sprzeczności (4 stany eksperta), graf relacji, historia, ponowna analiza (diff).
+- Kolejka eksperta (typy, najmniej pewne na górze, zatwierdzanie hurtowe), wiedza ekspercka (edycja, wersje, przywracanie).
+- Nowa inwestycja → analiza: cechy ze źródłem i pytaniem netto/brutto, podsumowanie (n, CI), flagi z uzasadnieniem,
+  działania i klauzule, budżet i harmonogram, zakresy, sąsiedzi z rozbiciem + wykluczenie i przeliczenie, eksport DOCX/JSON/CSV.
+- Start (liczniki), Źródła i operacje (konektory, dziennik zapytań, jakość dopasowania, routing LLM, monitorowanie,
+  licencje, eksport ZIP), „Jak testować” (scenariusze dla jury wg kryteriów).
 
 **Znane problemy / do zrobienia**
-- Frontend: karta projektu, kolejka eksperta, wiedza, nowa inwestycja, analizy, źródła i operacje, start, „Jak testować”
-  – jeszcze zaślepki „W budowie (S4)”.
 - Przypadki pogłębione nie mają podsektora do czasu `riskminer classify`; P(zmiana) na samych 22 projektach jest
   zawyżone (próba organizatora) – po załadowaniu warstwy automatycznej zakresy liczone z ~20 tys. umów.
 - Biała lista VAT, TED, KRS, KIO – nie zaimplementowane (zaprojektowane).
