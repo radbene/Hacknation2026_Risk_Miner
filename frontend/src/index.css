@@ -57,9 +57,6 @@ body { @apply bg-paper font-sans text-ink antialiased; }
 .tag { @apply inline-flex items-center border border-ink px-1.5 py-px font-mono text-[11px] uppercase tracking-wide text-ink; }
 @keyframes twinkle { 0%, 100% { opacity: 1 } 50% { opacity: .15 } }
 .twinkle { animation: twinkle 1.6s steps(2, end) infinite; }
-@keyframes pick-swing { 0% { transform: rotate(0) } 35% { transform: rotate(-28deg) } 60% { transform: rotate(6deg) } 100% { transform: rotate(0) } }
-.pick-swing { animation: pick-swing .45s steps(6, end) 1; }
-.group:hover .pick-swing { animation: pick-swing .9s steps(6, end) infinite; }
 /* mining loader (MiningLoader.tsx): the impact lands at 54% of the swing = 378 ms */
 @keyframes pick-strike { 0% { transform: rotate(32deg) } 40% { transform: rotate(38deg) } 54% { transform: rotate(0deg) } 62% { transform: rotate(3deg) } 100% { transform: rotate(32deg) } }
 .pick-strike { animation: pick-strike .7s ease-in both; }
@@ -74,7 +71,7 @@ body { @apply bg-paper font-sans text-ink antialiased; }
 @media (prefers-reduced-motion: reduce) {
   .press, .lift { transition: none; }
   .press:hover, .lift:hover { transform: none; }
-  .twinkle, .pick-swing, .group:hover .pick-swing, .pick-strike, .rock-shake, .rock-chip { animation: none; }
+  .twinkle, .pick-strike, .rock-shake, .rock-chip { animation: none; }
 }
 mark.quote { @apply bg-yellow-200 px-0.5; }
 

@@ -2,10 +2,9 @@
  * every hit, and the moment the server answers it shatters, uncovers the gem and hands over to the result.
  * The cracks are not a fake progress bar: they slow down and never finish until the calculation really is done. */
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { GEM, GEM_COL, INK, Pixels, ground, sceneRock, type Px } from '@/components/PixelMine'
 import { cn } from '@/lib/utils'
 
-const INK = '#121212'
-type Px = Map<string, string>
 const key = (x: number, y: number) => `${x},${y}`
 const xy = (k: string) => k.split(',').map(Number) as [number, number]
 
@@ -14,8 +13,10 @@ const IMPACT_AT = 380 // ms into the swing when the pick touches the rock
 const SHATTER_MS = 1100 // how long the pieces fly before the result shows
 const MAX_WAITING_DAMAGE = 0.9 // the rock never breaks by itself
 
-const CX = 30, CY = 30, RX = 19, RY = 13, GROUND = 42
-const IMPACT: [number, number] = [44, 23]
+// The same rock as on the start page (mound with crystals, 64×40 scene); a little extra room on the right for the swing.
+const BASE = sceneRock()
+const CX = 30, CY = 24
+const IMPACT: [number, number] = [47, 26]
 const STEPS = [
   'Szukamy podobnych zakończonych inwestycji',
   'Liczymy opóźnienia i zmiany umów w podobnych',
@@ -28,12 +29,7 @@ function rng(seed: number) {
   return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296 }
 }
 
-function inRock(x: number, y: number) {
-  if (y > GROUND - 1) return false
-  const a = Math.atan2(y - CY, x - CX)
-  const r = 1 + 0.07 * Math.sin(3 * a + 1) + 0.05 * Math.cos(5 * a)
-  return ((x - CX) / RX) ** 2 + ((y - CY) / RY) ** 2 <= r * r
-}
+const inRock = (x: number, y: number) => BASE.has(key(x, y))
 
 /** Crack pixels, interleaved so that all cracks grow together. */
 const CRACKS: string[] = (() => {
@@ -53,19 +49,15 @@ const CRACKS: string[] = (() => {
   return out
 })()
 
-/** Rock pixels for a given damage (0..1): crater at the impact point, cracks, ink outline. */
+/** Rock pixels for a given damage (0..1): crater at the impact point, cracks, ink edge around the crater. */
 function rock(damage: number): Px {
-  const m: Px = new Map()
+  const m: Px = new Map(BASE)
   const crater = damage < 0.12 ? 0 : 1.5 + damage * 5
-  for (let y = CY - RY - 2; y < GROUND; y++) for (let x = CX - RX - 3; x <= CX + RX + 3; x++) {
-    if (!inRock(x, y)) continue
-    if (Math.hypot(x - IMPACT[0], y - IMPACT[1]) < crater) continue
-    const t = (y - (CY - RY)) / (RY * 2)
-    m.set(key(x, y), t > 0.6 && (x + y) % 2 === 0 ? '#a9a698' : (x * 3 + y * 5) % 7 === 0 ? '#bfbcaf' : t < 0.3 && x < CX ? '#e6e4da' : '#cfccbf')
-  }
-  for (const k of [...m.keys()]) {
+  const removed: string[] = []
+  for (const k of BASE.keys()) { const [x, y] = xy(k); if (Math.hypot(x - IMPACT[0], y - IMPACT[1]) < crater) { m.delete(k); removed.push(k) } }
+  for (const k of removed) {
     const [x, y] = xy(k)
-    if (![[1, 0], [-1, 0], [0, 1], [0, -1]].every(([dx, dy]) => m.has(key(x + dx, y + dy)))) m.set(k, INK)
+    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const n = key(x + dx, y + dy); if (m.has(n)) m.set(n, INK) }
   }
   CRACKS.slice(0, Math.floor(CRACKS.length * Math.min(1, damage / MAX_WAITING_DAMAGE))).forEach((k) => { if (m.has(k)) m.set(k, INK) })
   return m
@@ -97,10 +89,11 @@ function outlined(fill: Px): Px {
 const PERP: [number, number] = [-0.83, 0.55] // along the head, towards the tip
 const DIR: [number, number] = [-0.55, -0.83] // along the handle, from pivot to head
 const TOP: [number, number] = [IMPACT[0] - PERP[0] * 7, IMPACT[1] - PERP[1] * 7]
-const PIVOT: [number, number] = [TOP[0] - DIR[0] * 22, TOP[1] - DIR[1] * 22]
+const HANDLE = 15
+const PIVOT: [number, number] = [TOP[0] - DIR[0] * HANDLE, TOP[1] - DIR[1] * HANDLE]
 const PICK: Px = (() => {
   const f: Px = new Map()
-  for (let i = 0; i <= 22; i++) {
+  for (let i = 0; i <= HANDLE; i++) {
     const x = Math.round(PIVOT[0] + DIR[0] * i), y = Math.round(PIVOT[1] + DIR[1] * i)
     f.set(key(x, y), '#8a5a2b'); f.set(key(x + 1, y), '#5e3b17')
   }
@@ -113,13 +106,6 @@ const PICK: Px = (() => {
   return outlined(f)
 })()
 
-const GEM = ['..KKKKK..', '.KLLHLLK.', 'KLLHHHLLK', 'KKKKKKKKK', '.KDLLLDK.', '..KDLDK..', '...KDK...', '....K....']
-const GEM_COL: Record<string, string> = { K: INK, L: '#7d75ff', H: '#e7e5ff', D: '#3d33f2' }
-
-function Pixels({ px, size = 1.02 }: { px: Px; size?: number }) {
-  return <>{[...px].map(([k, fill]) => { const [x, y] = xy(k); return <rect key={k} x={x} y={y} width={size} height={size} fill={fill} /> })}</>
-}
-
 interface Chip { id: number; dx: number; dy: number; c: string }
 
 const reducedMotion = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -128,7 +114,7 @@ const reducedMotion = () => typeof window !== 'undefined' && window.matchMedia?.
 export function MiningLoader({ pending, failed, onFinished, title = 'Liczymy ryzyko' }: { pending: boolean; failed?: boolean; onFinished?: () => void; title?: string }) {
   const [phase, setPhase] = useState<'idle' | 'mining' | 'breaking' | 'broken'>('idle')
   const [damage, setDamage] = useState(0)
-  const [hits, setHits] = useState(0)
+  const [hits, setHits] = useState(0) // remount key: shakes the rock on every hit
   const [swing, setSwing] = useState(0)
   const [chips, setChips] = useState<Chip[]>([])
   const [started, setStarted] = useState(0)
@@ -181,6 +167,7 @@ export function MiningLoader({ pending, failed, onFinished, title = 'Liczymy ryz
 
   const step = Math.round(damage * 20) / 20
   const pieces = useMemo(() => split(rock(step)), [step])
+  const groundPx = useMemo(() => ground(70), [])
   const gem = useMemo(() => {
     const m: Px = new Map()
     GEM.forEach((row, y) => [...row].forEach((c, x) => { if (GEM_COL[c]) m.set(key(x, y), GEM_COL[c]) }))
@@ -201,13 +188,11 @@ export function MiningLoader({ pending, failed, onFinished, title = 'Liczymy ryz
           <span className="stripes h-3 flex-1" aria-hidden />
         </div>
         <div className="px-4 pt-4 sm:px-6">
-          <svg viewBox="0 0 72 48" shapeRendering="crispEdges" className="h-auto w-full" aria-hidden>
-            {/* ground */}
-            <rect x={0} y={GROUND} width={72} height={1} fill={INK} />
-            {Array.from({ length: 24 }, (_, i) => <rect key={i} x={i * 3 + (i % 2)} y={GROUND + 2 + (i % 2) * 2} width={1} height={1} fill="#7d7a6e" />)}
+          <svg viewBox="0 0 70 40" shapeRendering="crispEdges" className="h-auto w-full" aria-hidden>
+            <Pixels px={groundPx} />
             {/* the gem waiting inside */}
             <g className={cn(broken ? 'gem-reveal' : 'opacity-0')} style={{ transformOrigin: `${CX}px ${CY}px`, transformBox: 'view-box' }}>
-              <g transform={`translate(${CX - 9} ${CY - 8}) scale(2)`}><Pixels px={gem} /></g>
+              <g transform={`translate(${CX - 9} ${CY - 6}) scale(2)`}><Pixels px={gem} /></g>
             </g>
             {/* the rock, shaking on every hit, flying apart at the end */}
             <g key={hits} className={broken ? undefined : 'rock-shake'}>
@@ -226,7 +211,7 @@ export function MiningLoader({ pending, failed, onFinished, title = 'Liczymy ryz
               <g key={swing} className="pick-strike" style={{ transformOrigin: `${PIVOT[0]}px ${PIVOT[1]}px`, transformBox: 'view-box' }}>
                 <Pixels px={PICK} />
               </g>)}
-            {broken && [[18, 14], [44, 12], [24, 40], [40, 38], [31, 9]].map(([x, y], i) => (
+            {broken && [[16, 12], [44, 10], [20, 32], [42, 33], [31, 6]].map(([x, y], i) => (
               <g key={i} className="twinkle" style={{ animationDelay: `${i * 0.15}s` }} fill="#3d33f2">
                 <rect x={x} y={y - 1} width={1} height={3} /><rect x={x - 1} y={y} width={3} height={1} />
               </g>))}
@@ -235,7 +220,7 @@ export function MiningLoader({ pending, failed, onFinished, title = 'Liczymy ryz
         <div className="border-t-2 border-ink px-4 py-3 sm:px-6">
           <p role="status" aria-live="polite" className={cn('font-semibold', broken && 'text-brand')}>{message}{broken ? '' : '…'}</p>
           <p className="mt-1 font-mono text-[11px] text-slate-600">
-            {broken ? 'Pokazujemy wynik.' : <>czas: {secs} s · uderzenia: {hits} · zwykle do 2 minut, bo podsumowanie pisze model językowy</>}
+            {broken ? 'Pokazujemy wynik.' : <>czas: {secs} s · zwykle do 2 minut, bo podsumowanie pisze model językowy</>}
           </p>
         </div>
       </div>

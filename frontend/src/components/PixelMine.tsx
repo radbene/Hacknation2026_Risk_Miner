@@ -1,17 +1,17 @@
 /** Original pixel-art for the "miner" theme: a gem icon and a rock mound with crystals and a pickaxe.
  * Drawn procedurally on a pixel grid (crisp SVG rects), so it scales without blur. */
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { cn } from '@/lib/utils'
 
-const INK = '#121212'
-type Px = Map<string, string>
+export const INK = '#121212'
+export type Px = Map<string, string>
 const k = (x: number, y: number) => `${x},${y}`
 
-function Pixels({ px, className }: { px: Px; className?: string }) {
+export function Pixels({ px, className }: { px: Px; className?: string }) {
   return <g className={className}>{[...px].map(([key, fill]) => { const [x, y] = key.split(',').map(Number); return <rect key={key} x={x} y={y} width={1.02} height={1.02} fill={fill} /> })}</g>
 }
 
-const GEM = [
+export const GEM = [
   '..KKKKK..',
   '.KLLHLLK.',
   'KLLHHHLLK',
@@ -21,7 +21,7 @@ const GEM = [
   '...KDK...',
   '....K....',
 ]
-const GEM_COL: Record<string, string> = { K: INK, L: '#7d75ff', H: '#e7e5ff', D: '#3d33f2' }
+export const GEM_COL: Record<string, string> = { K: INK, L: '#7d75ff', H: '#e7e5ff', D: '#3d33f2' }
 
 export function Gem({ size = 20, className }: { size?: number; className?: string }) {
   const px = useMemo(() => {
@@ -78,9 +78,9 @@ function mound(): Px {
   }, [cx - rx, cy - ry, cx + rx, 36])
 }
 
-function ground(): Px {
+export function ground(width = 64): Px {
   const m: Px = new Map()
-  for (let x = 0; x < 64; x++) {
+  for (let x = 0; x < width; x++) {
     m.set(k(x, 37), INK)
     for (let y = 38; y < 40; y++) if ((x + y) % 3 === 0) m.set(k(x, y), '#7d7a6e')
   }
@@ -107,24 +107,25 @@ function pickaxe(): Px {
 
 const SPARKS: [number, number, number][] = [[14, 9, 0], [44, 6, 0.6], [36, 14, 1.2], [10, 20, 1.8], [47, 26, 0.9], [27, 3, 1.5]]
 
-/** Rock mound with crystals; hover or click swings the pickaxe and lights the crystals. */
+/** The mound with its crystals as one pixel map (the "rock" the loader breaks). */
+export function sceneRock(): Px {
+  const m: Px = new Map(mound())
+  for (const c of CRYSTALS) for (const [key, fill] of crystal(c)) m.set(key, fill)
+  return m
+}
+
+/** Static start-page illustration: rock mound with crystals, a pickaxe leaning on it, a few sparkles. */
 export function PixelMine({ className }: { className?: string }) {
-  const [hits, setHits] = useState(0)
-  const layers = useMemo(() => ({ ground: ground(), mound: mound(), crystals: CRYSTALS.map(crystal), pick: pickaxe() }), [])
+  const layers = useMemo(() => ({ ground: ground(), rock: sceneRock(), pick: pickaxe() }), [])
   return (
-    <button type="button" onClick={() => setHits((h) => h + 1)} aria-label="Ilustracja: skała z kryształami i kilof. Kliknij, aby uderzyć kilofem."
-      className={cn('group relative block w-full cursor-pointer outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand', className)}>
-      <svg viewBox="0 0 64 40" shapeRendering="crispEdges" className="h-auto w-full" aria-hidden>
-        <Pixels px={layers.ground} />
-        <Pixels px={layers.mound} />
-        {layers.crystals.map((c, i) => <Pixels key={i} px={c} className="transition-[filter] duration-200 group-hover:brightness-110" />)}
-        <g key={hits} className="pick-swing" style={{ transformOrigin: '49px 36px', transformBox: 'view-box' }}><Pixels px={layers.pick} /></g>
-        {SPARKS.map(([x, y, d]) => (
-          <g key={`${x},${y}`} className="twinkle" style={{ animationDelay: `${d}s` }} fill={INK}>
-            <rect x={x} y={y - 1} width={1} height={3} /><rect x={x - 1} y={y} width={3} height={1} />
-          </g>))}
-      </svg>
-      {hits > 0 && <span className="absolute right-0 bottom-0 border-2 border-ink bg-surface px-1.5 font-mono text-[11px]">urobek: {hits}</span>}
-    </button>
+    <svg viewBox="0 0 64 40" shapeRendering="crispEdges" className={cn('block h-auto w-full', className)} role="img" aria-label="Ilustracja: skała z kryształami i kilof">
+      <Pixels px={layers.ground} />
+      <Pixels px={layers.rock} />
+      <Pixels px={layers.pick} />
+      {SPARKS.map(([x, y, d]) => (
+        <g key={`${x},${y}`} className="twinkle" style={{ animationDelay: `${d}s` }} fill={INK}>
+          <rect x={x} y={y - 1} width={1} height={3} /><rect x={x - 1} y={y} width={3} height={1} />
+        </g>))}
+    </svg>
   )
 }
