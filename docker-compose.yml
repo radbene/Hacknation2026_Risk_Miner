@@ -1,19 +1,23 @@
 # RISK MINER – full stack: db, api, worker, web, caddy (auto-HTTPS).
-#   local:  docker compose up -d db          (dev: API/web run from the host, see Makefile)
-#   server: DOMAIN=riskminer.example.org docker compose --profile prod up -d --build
+#   local dev:  docker compose up -d db          (API/web run from the host, see Makefile)
+#   server:     DOMAIN=1.2.3.4.sslip.io docker compose --profile prod up -d --build   (or: make deploy)
+#   local prod test (does not touch the dev DB):
+#     DOMAIN=:80 DB_PORT=55499 HTTP_PORT=8088 HTTPS_PORT=8443 docker compose -p rmtest --profile prod up -d --build
 name: riskminer
 
 x-backend: &backend
   build: { context: ., dockerfile: backend/Dockerfile }
+  image: riskminer-backend:latest
   env_file: [.env]
   environment:
     DATABASE_URL: postgresql+psycopg://riskminer:${POSTGRES_PASSWORD:-riskminer}@db:5432/riskminer
     SETTINGS_FILE: /app/config/settings.yaml
+    CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5180}
   volumes:
     - ./config:/app/config:ro
     - ./knowledge:/app/knowledge
-    - ./data:/app/data
-    - ./exports:/app/exports
+    - ./data:/app/data          # raw store, uploads, BZP zip, LLM replay cache, golden snapshot
+    - ./exports:/app/exports    # example export + generated reports
   depends_on:
     db: { condition: service_healthy }
   restart: unless-stopped
@@ -36,16 +40,19 @@ services:
   api:
     <<: *backend
     profiles: [prod]
-    command: ["sh", "-c", "alembic upgrade head && uvicorn riskminer.api.main:app --host 0.0.0.0 --port 8040 --proxy-headers"]
+    command: ["sh", "-c", "alembic upgrade head && exec uvicorn riskminer.api.main:app --host 0.0.0.0 --port 8040 --proxy-headers --forwarded-allow-ips='*' --workers ${API_WORKERS:-2}"]
     expose: ["8040"]
 
   worker:
     <<: *backend
     profiles: [prod]
-    command: ["riskminer", "worker"]
+    # job queue + APScheduler monitoring of watched procedures (riskminer.monitor)
+    command: ["sh", "-c", "until alembic current 2>/dev/null | grep -q head; do sleep 2; done; exec riskminer monitor worker"]
+    healthcheck: { disable: true }
 
   web:
     build: { context: frontend, dockerfile: Dockerfile }
+    image: riskminer-web:latest
     profiles: [prod]
     expose: ["80"]
     restart: unless-stopped
@@ -55,13 +62,20 @@ services:
     profiles: [prod]
     environment:
       DOMAIN: ${DOMAIN:-localhost}
-    ports: ["80:80", "443:443"]
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+      - "${HTTPS_PORT:-443}:443/udp"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
-    depends_on: [api, web]
+      - caddy_config:/config
+    depends_on:
+      api: { condition: service_healthy }
+      web: { condition: service_started }
     restart: unless-stopped
 
 volumes:
   pgdata:
   caddy_data:
+  caddy_config:
