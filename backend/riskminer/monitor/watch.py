@@ -64,7 +64,13 @@ def get_cursor(session: Session) -> dict[str, Any]:
 
 
 def set_cursor(session: Session, value: dict[str, Any], user: str | None = None) -> None:
-    upsert(session, Setting, {"key": CURSOR_KEY, "value": value, "updated_by": user or "monitor"}, ["key"])
+    # ORM write (not a Core upsert) so an already-loaded Setting in this session is not left stale
+    s = session.get(Setting, CURSOR_KEY)
+    if s is None:
+        session.add(Setting(key=CURSOR_KEY, value=value, updated_by=user or "monitor"))
+    else:
+        s.value, s.updated_by, s.version = value, user or "monitor", (s.version or 1) + 1
+    session.flush()
 
 
 def alert(session: Session, *, kind: str, key: tuple, message: str, severity: str = "info",

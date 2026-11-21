@@ -202,9 +202,21 @@ def quality(db: Session = DB):
     for name in ("compute", "compute_quality", "quality_metrics", "evaluate"):
         fn = getattr(q, name, None)
         if callable(fn):
-            res = fn(db)
-            return res if isinstance(res, QualityMetrics) else QualityMetrics.model_validate(res)
+            return to_quality_metrics(fn(db))
     raise HTTPException(501, "riskminer.link.quality has no compute() function")
+
+
+def to_quality_metrics(res) -> QualityMetrics:
+    """Accept QualityMetrics, a dict in its shape, or S1's flat `evaluate()` dict (precision, recall, per_project …)."""
+    if isinstance(res, QualityMetrics):
+        return res
+    res = dict(res or {})
+    if "linking" in res and "gold_set" in res:
+        return QualityMetrics.model_validate({"computed_at": dt.datetime.now(dt.UTC), **res})
+    details = res.pop("per_project", []) or []
+    extra = {k: res.pop(k) for k in ("events", "quotes") if isinstance(res.get(k), dict)}
+    return QualityMetrics(gold_set=str(res.pop("gold_file", res.pop("gold_set", "links_gold.csv"))),
+                          computed_at=dt.datetime.now(dt.UTC), linking=res, details=details, **extra)
 
 
 @router.get("/alerts", response_model=list[AlertOut])

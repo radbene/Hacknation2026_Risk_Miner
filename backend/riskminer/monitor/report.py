@@ -213,8 +213,19 @@ def build_report(session: Session) -> tuple[str, dict]:
                   _table(["Projekt", "OCID", "Część", "Wynik", "Metoda", "Pewność", "Status", "Uwagi"],
                          [[d["rm_id"], d["ocid"], d["part_no"], d["verdict"], d["method"], d["confidence"],
                            d["status"], d.get("note")] for d in bad]), ""]
-    if s1q:
-        L += ["Metryki modułu dopasowania (S1, `riskminer.link.quality`):", "", "```", str(s1q)[:3000], "```", ""]
+    if s1q and "error" not in s1q:
+        keys = [("n_projects", "projekty"), ("n_gold_links", "ogłoszenia wzorcowe"), ("n_predicted", "ogłoszenia powiązane"),
+                ("tp", "trafione"), ("fp", "nadmiarowe"), ("fn", "pominięte"), ("precision", "precyzja"),
+                ("recall", "kompletność"), ("f1", "F1"), ("projects_fully_correct", "projekty w pełni poprawne"),
+                ("projects_uncertain", "projekty niepewne (pewność < 0,95)")]
+        L += ["Poziom ogłoszeń (moduł dopasowania, `riskminer.link.quality.evaluate`):", "",
+              _table(["Miara", "Wartość"], [[label, s1q.get(k)] for k, label in keys if k in s1q]), ""]
+        if s1q.get("decoys_linked"):
+            L += ["Powiązane pułapki: " + ", ".join(f"{d['rm_id']}/{d['object_id']}" for d in s1q["decoys_linked"]), ""]
+        if s1q.get("missed"):
+            L += ["Pominięte: " + ", ".join(f"{d['rm_id']}/{d['object_id']}" for d in s1q["missed"][:40]), ""]
+    elif s1q:
+        L += [f"Moduł dopasowania S1 zgłosił błąd: {s1q['error']}", ""]
 
     L += ["## 3. Błędy i braki w danych organizatora", ""]
     issues = session.execute(select(DataIssue).order_by(DataIssue.kind, DataIssue.field)).scalars().all()

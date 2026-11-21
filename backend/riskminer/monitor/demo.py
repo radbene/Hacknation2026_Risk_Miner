@@ -229,8 +229,13 @@ def run_demo(*, fresh: bool = False, sample: int = 500, as_of: str | None = None
     if snapshot:
         from riskminer.monitor import snapshot as snap
 
-        m = snap.save()
-        echo(f"▶ Złoty zrzut bazy → {snap.DEFAULT_DIR} ({sum(m['counts'].values())} wierszy)")
+        if command_exists(["reset-demo"]):  # S5's sandbox owns the golden DB used by "Przywróć stan demo"
+            echo("▶ Złoty stan piaskownicy (S5: riskminer reset-demo --snapshot)")
+            rc, _ = run_cli(["reset-demo", "--snapshot", "--force"], echo)
+            report["steps"].append({"step": "Złoty stan piaskownicy", "owner": "S5",
+                                    "status": "ok" if rc == 0 else "failed-optional"})
+        m = snap.save()  # portable COPY snapshot as well (data/snapshots/golden, survives a server move)
+        echo(f"▶ Złoty zrzut bazy (COPY) → {snap.DEFAULT_DIR} ({sum(m['counts'].values())} wierszy)")
     EXPORT_DIR.mkdir(parents=True, exist_ok=True)
     report["seconds"] = round(time.monotonic() - t_start, 1)
     (EXPORT_DIR / "demo_run.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), "utf-8")
