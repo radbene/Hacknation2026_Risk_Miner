@@ -9,8 +9,8 @@ export function Tooltip({ content, children, className, side = 'top' }:
     <span className={cn('group relative inline-flex', className)} aria-describedby={id}>
       {children}
       <span role="tooltip" id={id}
-        className={cn('pointer-events-none absolute left-1/2 z-50 w-max max-w-xs -translate-x-1/2 rounded bg-slate-900 px-2 py-1',
-          'text-xs font-normal text-white opacity-0 shadow transition-opacity group-hover:opacity-100 group-focus-within:opacity-100',
+        className={cn('pointer-events-none absolute left-1/2 z-50 w-max max-w-xs -translate-x-1/2 border-2 border-ink bg-ink px-2 py-1',
+          'text-xs font-normal text-paper opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100',
           side === 'top' ? 'bottom-full mb-1' : 'top-full mt-1')}>
         {content}
       </span>

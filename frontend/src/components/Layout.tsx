@@ -1,10 +1,11 @@
 import { Link, Outlet, useNavigate } from '@tanstack/react-router'
-import { LogIn, LogOut } from 'lucide-react'
+import { LogIn, LogOut, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { api, unwrap } from '@/api/client'
 import { useApi } from '@/api/hooks'
 import { useAuth } from '@/lib/auth'
-import { Badge, Button, Dialog, Input, Label } from './ui'
+import { Button, Dialog, Input, Label } from './ui'
+import { Gem } from './PixelMine'
 import { DataLocationBanner } from './DataLocationBanner'
 
 const USER_NAV = [
@@ -27,36 +28,59 @@ const EXPERT_NAV = [
 export function Layout() {
   const { user, isExpert, logout } = useAuth()
   const [login, setLogin] = useState(false)
+  const [menu, setMenu] = useState(false)
   const navigate = useNavigate()
   const counts = useApi(['review', 'counts'], async () => unwrap(await api.GET('/api/review/counts')), undefined, { enabled: isExpert })
   const pending = isExpert ? Object.values(counts.data ?? {}).reduce((a, b) => a + b, 0) : 0
   const nav = isExpert ? EXPERT_NAV : USER_NAV
+  // the expert menu is longer: show it inline only on very wide screens, otherwise behind the menu button
+  const wide = isExpert ? { show: '2xl:flex', hide: '2xl:hidden' } : { show: 'xl:flex', hide: 'xl:hidden' }
+  const links = (mobile: boolean) => nav.map(({ to, label }) => (
+    <Link key={to} to={to} onClick={() => setMenu(false)}
+      className={mobile
+        ? 'flex items-center gap-2 border-b-2 border-ink px-4 py-3 font-mono text-sm uppercase tracking-wide last:border-b-0 hover:bg-brand-soft'
+        : 'flex items-center gap-1.5 whitespace-nowrap border-2 border-transparent px-2.5 py-1 font-mono text-[12px] uppercase tracking-wide text-ink hover:border-ink'}
+      activeProps={{ className: mobile ? 'bg-ink text-paper hover:bg-ink' : 'border-ink bg-ink text-paper hover:border-ink' }} activeOptions={{ exact: to === '/' }}>
+      <span className="flex-1">{label}</span>
+      {to === '/kolejka' && pending > 0 && <span className="bg-amber-300 px-1 text-[11px] text-ink tabular-nums">{pending}</span>}
+    </Link>))
+  const roleButton = isExpert
+    ? <Button size="sm" variant="outline" onClick={() => { setMenu(false); logout(); navigate({ to: '/' }) }}><LogOut size={13} />Wyjdź z panelu</Button>
+    : <Button size="sm" variant="outline" onClick={() => { setMenu(false); setLogin(true) }}><LogIn size={13} />Panel eksperta</Button>
   return (
-    <div className="flex h-full">
-      <aside className="flex w-60 shrink-0 flex-col border-r border-slate-200 bg-slate-50">
-        <div className="px-4 pt-4 pb-3">
-          <div className="text-[15px] font-semibold tracking-tight text-slate-950">RISK MINER</div>
-          {isExpert && <div className="text-xs font-medium text-violet-700">Panel eksperta</div>}
+    <div className="flex h-full flex-col">
+      <header className="relative z-30 shrink-0 border-b-2 border-ink bg-paper">
+        <div className="flex items-center gap-3 px-4 py-2.5 lg:px-6">
+          <Link to="/" className="flex shrink-0 items-center gap-2" onClick={() => setMenu(false)} aria-label="RISK MINER, strona główna">
+            <span className="grid h-9 w-9 place-items-center border-2 border-ink bg-surface shadow-sm"><Gem size={22} /></span>
+            <span className="font-pixel text-[15px] leading-none text-ink">Risk<br />Miner</span>
+          </Link>
+          <nav className={`ml-3 hidden items-center gap-1 ${wide.show}`} aria-label={isExpert ? 'Panel eksperta' : 'Menu'}>{links(false)}</nav>
+          <span className="stripes mx-2 hidden h-4 min-w-6 flex-1 sm:block" aria-hidden />
+          <span className="flex-1 sm:hidden" />
+          <div className="hidden shrink-0 items-center gap-2 md:flex">
+            <span className="whitespace-nowrap font-mono text-xs text-slate-600">{isExpert ? user.display_name : 'Użytkownik'}</span>
+            <span className={isExpert ? 'tag border-violet-700 bg-violet-50 text-violet-800' : 'tag'}>{isExpert ? 'ekspert' : 'analityk'}</span>
+            {roleButton}
+          </div>
+          <button className={`press grid h-9 w-9 shrink-0 place-items-center border-2 border-ink bg-surface shadow-sm cursor-pointer ${wide.hide}`}
+            aria-label={menu ? 'Zamknij menu' : 'Otwórz menu'} aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
+            {menu ? <X size={18} /> : <Menu size={18} />}
+          </button>
         </div>
-        <nav className="flex flex-col gap-0.5 px-2" aria-label={isExpert ? 'Panel eksperta' : 'Menu'}>
-          {nav.map(({ to, label }) => (
-            <Link key={to} to={to} className="flex items-center gap-2 rounded-md px-3 py-1.5 text-sm text-slate-600 transition-colors duration-150 hover:bg-slate-200/60 hover:text-slate-950"
-              activeProps={{ className: 'bg-white font-medium text-slate-950 shadow-xs ring-1 ring-slate-200' }} activeOptions={{ exact: to === '/' }}>
-              <span className="flex-1">{label}</span>
-              {to === '/kolejka' && pending > 0 && <Badge variant="warning">{pending}</Badge>}
-            </Link>
-          ))}
-        </nav>
-        <div className="mt-auto border-t border-slate-200 p-3 text-xs">
-          <div className="mb-2 text-slate-500">Zalogowano jako: <b className="text-slate-800">{isExpert ? user.display_name : 'Użytkownik'}</b></div>
-          {isExpert
-            ? <Button size="sm" variant="outline" className="w-full" onClick={() => { logout(); navigate({ to: '/' }) }}><LogOut size={13} />Wyjdź z panelu eksperta</Button>
-            : <Button size="sm" variant="outline" className="w-full" onClick={() => setLogin(true)}><LogIn size={13} />Zaloguj jako ekspert</Button>}
-        </div>
-      </aside>
-      <main className="flex min-w-0 flex-1 flex-col">
+        {menu && (
+          <div className={`absolute inset-x-0 top-full border-b-2 border-ink bg-surface shadow-md sm:left-auto sm:right-4 sm:top-[calc(100%+6px)] sm:w-80 sm:border-2 lg:right-6 ${wide.hide}`}>
+            <nav className="flex flex-col" aria-label="Menu">{links(true)}</nav>
+            <div className="flex items-center gap-2 border-t-2 border-ink px-4 py-3 md:hidden">
+              <span className={isExpert ? 'tag border-violet-700 bg-violet-50 text-violet-800' : 'tag'}>{isExpert ? 'ekspert' : 'analityk'}</span>
+              <span className="flex-1 font-mono text-xs">{isExpert ? user.display_name : 'Użytkownik'}</span>
+              {roleButton}
+            </div>
+          </div>)}
+      </header>
+      <main className="flex min-h-0 min-w-0 flex-1 flex-col">
         <DataLocationBanner />
-        <div className="min-h-0 flex-1 overflow-auto px-8 py-6"><Outlet /></div>
+        <div className="min-h-0 flex-1 overflow-auto px-4 py-5 sm:px-6 lg:px-10 lg:py-8"><div className="mx-auto max-w-[1400px]"><Outlet /></div></div>
       </main>
       <LoginDialog open={login} onClose={() => setLogin(false)} />
     </div>
@@ -83,7 +107,7 @@ export function LoginDialog({ open, onClose }: { open: boolean; onClose: () => v
       <form className="space-y-3 text-sm" onSubmit={(e) => { e.preventDefault(); submit() }}>
         <div><Label htmlFor="lg-u">Login</Label><Input id="lg-u" value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" /></div>
         <div><Label htmlFor="lg-p">Hasło</Label><Input id="lg-p" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" /></div>
-        {hint && <p className="rounded bg-amber-50 p-2 text-xs text-amber-900">Wersja demonstracyjna: konto <b>ekspert</b>, hasło <b>{hint}</b>.</p>}
+        {hint && <p className="border-2 border-amber-700 bg-amber-50 p-2 text-xs text-amber-900">Wersja demonstracyjna: konto <b>ekspert</b>, hasło <b>{hint}</b>.</p>}
         {err && <p role="alert" className="text-xs text-rose-700">{err}</p>}
         <button type="submit" className="hidden" />
       </form>
@@ -97,7 +121,7 @@ export function ExpertOnly({ children, what }: { children: React.ReactNode; what
   const [login, setLogin] = useState(false)
   if (isExpert) return <>{children}</>
   return (
-    <div className="mx-auto mt-16 max-w-lg rounded-lg border border-violet-200 bg-violet-50/50 p-6 text-center">
+    <div className="mx-auto mt-16 max-w-lg border-2 border-ink bg-surface p-6 text-center shadow-md">
       <h1 className="text-lg font-semibold">{what}</h1>
       <p className="mt-1 text-sm text-slate-600">Tę część obsługuje ekspert: zatwierdza i poprawia dane, które trafiają do bazy przypadków.</p>
       <Button className="mt-4" onClick={() => setLogin(true)}><LogIn size={14} />Zaloguj jako ekspert</Button>

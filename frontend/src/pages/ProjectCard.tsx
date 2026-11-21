@@ -422,7 +422,7 @@ function DocumentsTab({ projectId, expert }: { projectId: string; expert: boolea
       <QueryState q={docs} empty={(x) => x.length === 0}>{(ds) => (
         <ul className="grid gap-2 md:grid-cols-2">{ds.map((d) => (
           <li key={d.id}><Link to="/dokumenty/$documentId" params={{ documentId: d.id }} search={{}}
-            className="flex items-start gap-2 rounded-lg border border-slate-200 bg-white p-3 hover:border-brand">
+            className="flex items-start gap-2 border-2 border-ink bg-surface p-3 hover:border-brand">
             <span className="min-w-0"><span className="block truncate font-medium">{d.title ?? d.file_name}</span>
               <span className="text-xs text-slate-500">{[d.doc_type, d.pages ? `${d.pages} str.` : null].filter(Boolean).join(', ')}</span></span>
           </Link></li>))}</ul>
@@ -447,7 +447,7 @@ function IssuesTab({ projectId }: { projectId: string }) {
           <ul className="space-y-2">{d.items.map((i) => {
             const st = ISSUE[String(i.state)] ?? { label: String(i.state ?? '—'), tone: 'default' as const }
             return (
-              <li key={i.id} className="rounded-lg border border-slate-200 bg-white p-3 text-sm">
+              <li key={i.id} className="border-2 border-ink bg-surface p-3 text-sm">
                 <div className="flex flex-wrap items-center gap-2"><Badge variant={st.tone}>{st.label}</Badge><span className="font-medium">{i.message}</span>
                   {!!i.evidence_ids?.length && <EvidenceChip ids={i.evidence_ids} className="ml-auto" />}</div>
                 {i.what_to_add && <div className="mt-1 text-xs"><span className="text-slate-500">Co uzupełnić: </span>{i.what_to_add}</div>}
@@ -469,7 +469,7 @@ function HistoryTab({ projectId }: { projectId: string }) {
       <Intro>Decyzje eksperta dotyczące tej inwestycji: kto, kiedy, z jakim uzasadnieniem i co zmienił.</Intro>
       <QueryState q={h} empty={(x) => x.length === 0}>{(items) => (
         <ol className="space-y-2">{items.map((r) => (
-          <li key={r.id} className="rounded-lg border border-slate-200 bg-white p-3 text-sm">
+          <li key={r.id} className="border-2 border-ink bg-surface p-3 text-sm">
             <div className="flex flex-wrap items-center gap-2"><b>{fmtDateTime(r.at)}</b><span>{r.reviewer}</span>
               <Badge>{ACTION_LABEL[r.action] ?? r.action}</Badge><span className="text-slate-500">{OBJECT_TYPE_LABEL[r.object_type] ?? r.object_type}</span></div>
             {r.comment && <div className="mt-1 text-slate-700">Uzasadnienie: „{r.comment}”</div>}

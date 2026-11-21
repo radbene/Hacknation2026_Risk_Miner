@@ -15,18 +15,20 @@ export function Dialog({ open, onClose, title, description, children, footer, cl
   return (
     <dialog ref={ref} onClose={onClose} onCancel={(e) => { e.preventDefault(); onClose() }}
       onClick={(e) => { if (e.target === ref.current) onClose() }}
-      className={cn('m-auto w-[min(42rem,calc(100vw-2rem))] rounded-xl border border-slate-200 bg-white p-0 shadow-lg backdrop:bg-black/50', className)}>
+      className={cn('m-auto w-[min(42rem,calc(100vw-2rem))] border-2 border-ink bg-surface p-0 shadow-lg backdrop:bg-ink/40', className)}>
       {open && (
         <div className="flex max-h-[85vh] flex-col">
-          <div className="flex items-start justify-between gap-4 px-6 pt-5 pb-3">
-            <div>
-              <h2 className="text-lg font-semibold leading-none tracking-tight">{title}</h2>
-              {description && <p className="mt-1.5 text-sm text-slate-500">{description}</p>}
+          <div className="flex items-center gap-3 border-b-2 border-ink px-4 py-2">
+            <span className="h-3.5 w-3.5 shrink-0 border-2 border-ink" aria-hidden />
+            <div className="min-w-0">
+              <h2 className="font-mono text-sm font-semibold">{title}</h2>
+              {description && <p className="mt-0.5 text-xs text-slate-600">{description}</p>}
             </div>
-            <button onClick={onClose} aria-label="Zamknij" className="rounded p-1 text-slate-500 hover:bg-slate-100 cursor-pointer"><X size={16} /></button>
+            <span className="stripes h-3 min-w-6 flex-1" aria-hidden />
+            <button onClick={onClose} aria-label="Zamknij" className="border-2 border-ink p-0.5 text-ink hover:bg-ink hover:text-paper cursor-pointer"><X size={14} /></button>
           </div>
-          <div className="overflow-auto px-6 py-3">{children}</div>
-          {footer && <div className="flex justify-end gap-2 px-6 pt-3 pb-5">{footer}</div>}
+          <div className="overflow-auto px-5 py-4">{children}</div>
+          {footer && <div className="flex justify-end gap-3 border-t-2 border-ink px-5 py-3">{footer}</div>}
         </div>
       )}
     </dialog>

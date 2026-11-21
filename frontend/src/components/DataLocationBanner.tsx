@@ -18,8 +18,8 @@ export function DataLocationBanner() {
   const loc = p?.data_location ?? 'none'
   const warn = loc === 'non_eu'
   return (
-    <div className={`border-b px-8 py-1.5 text-xs ${warn ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-slate-200 bg-white text-slate-500'}`}>
-      Model językowy <b>{(p?.display_name ?? p?.name ?? 'brak').replace(/\s*\(.*\)$/, '')}</b> {WHERE[loc] ?? loc}.
+    <div className={`border-b-2 border-ink px-4 py-1 font-mono text-[11px] sm:px-6 lg:px-10 ${warn ? 'bg-amber-100 text-amber-900' : 'bg-surface text-slate-600'}`}>
+      <span aria-hidden className="mr-1.5 inline-block h-2 w-2 bg-emerald-500 align-middle" />Model językowy <b>{(p?.display_name ?? p?.name ?? 'brak').replace(/\s*\(.*\)$/, '')}</b> {WHERE[loc] ?? loc}.
     </div>
   )
 }

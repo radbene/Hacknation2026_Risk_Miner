@@ -7,7 +7,7 @@ export function Loading({ label = 'Wczytywanie…' }: { label?: string }) {
 }
 export function ErrorState({ error, onRetry }: { error: unknown; onRetry?: () => void }) {
   return (
-    <div role="alert" className="flex items-start gap-2 rounded-md border border-rose-200 bg-rose-50 p-3 text-sm text-rose-900">
+    <div role="alert" className="flex items-start gap-2 border-2 border-rose-700 bg-rose-50 p-3 text-sm text-rose-900">
       <AlertTriangle size={16} className="mt-0.5 shrink-0" />
       <div className="flex-1">Nie udało się wczytać danych. <span className="text-xs text-rose-700">{error instanceof Error ? error.message : String(error)}</span></div>
       {onRetry && <Button size="sm" variant="outline" onClick={onRetry}>Ponów</Button>}

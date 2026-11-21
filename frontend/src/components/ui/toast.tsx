@@ -25,7 +25,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {items.map((t) => {
           const Icon = t.kind === 'success' ? CheckCircle2 : t.kind === 'error' ? TriangleAlert : Info
           return (
-            <div key={t.id} className={cn('flex items-start gap-2 rounded-md border bg-white p-3 text-sm shadow-lg',
+            <div key={t.id} className={cn('flex items-start gap-2 border-2 border-ink bg-surface p-3 text-sm shadow-md',
               t.kind === 'success' && 'border-emerald-200', t.kind === 'error' && 'border-rose-200')}>
               <Icon size={16} className={cn('mt-0.5 shrink-0', t.kind === 'success' ? 'text-emerald-600' : t.kind === 'error' ? 'text-rose-600' : 'text-brand')} />
               <div className="min-w-0 flex-1">

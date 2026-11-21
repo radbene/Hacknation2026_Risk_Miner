@@ -26,7 +26,7 @@ export default function Analyses() {
           ? <p className="py-8 text-center text-sm text-slate-500">Nie ma jeszcze analiz. <Link to="/nowa-inwestycja" className="text-brand hover:underline">Rozpocznij pierwszą</Link>.</p>
           : <div className="grid gap-3 md:grid-cols-2">{d.items.map((a) => (
             <Link key={a.id} to="/analizy/$analysisId" params={{ analysisId: a.id }} search={{}} className="group">
-              <Card className="h-full p-4 group-hover:border-brand">
+              <Card className="lift h-full p-4">
                 <h2 className="font-medium">{a.title}</h2>
                 <div className="mt-1 text-xs text-slate-500">{fmtDateTime(a.created_at)}</div>
                 <div className="mt-2 flex flex-wrap gap-3 text-xs">

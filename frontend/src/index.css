@@ -1,35 +1,74 @@
 @import "tailwindcss";
-@import "@fontsource-variable/inter";
+@import "@fontsource/silkscreen/400.css";
+@import "@fontsource/silkscreen/700.css";
+@import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/archivo";
 
-/* shadcn/ui "New York" look: Inter, zinc neutrals (Tailwind's slate scale is remapped to zinc so every page
-   follows), one blue accent, light borders, small shadows. */
+/* Retro "terminal on paper" look: paper background, black ink, one electric-blue accent, square corners,
+   2px ink borders with hard offset shadows, pixel display font for the logo, monospace for labels.
+   Tailwind's slate scale is remapped to warm paper greys so every page follows. */
 @theme {
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --color-slate-50: #fafafa;
-  --color-slate-100: #f4f4f5;
-  --color-slate-200: #e4e4e7;
-  --color-slate-300: #d4d4d8;
-  --color-slate-400: #a1a1aa;
-  --color-slate-500: #71717a;
-  --color-slate-600: #52525b;
-  --color-slate-700: #3f3f46;
-  --color-slate-800: #27272a;
-  --color-slate-900: #18181b;
-  --color-slate-950: #09090b;
-  --color-brand: #2563eb;
-  --color-brand-soft: #eff6ff;
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --font-sans: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --font-pixel: "Silkscreen", "JetBrains Mono Variable", monospace;
+  --color-paper: #f2f1ea;
+  --color-surface: #f8f7f2;
+  --color-ink: #121212;
+  --color-slate-50: #f6f5ef;
+  --color-slate-100: #ebe9e1;
+  --color-slate-200: #d9d6cb;
+  --color-slate-300: #bfbbae;
+  --color-slate-400: #9c978a;
+  --color-slate-500: #6f6b60;
+  --color-slate-600: #514e46;
+  --color-slate-700: #3b3933;
+  --color-slate-800: #262521;
+  --color-slate-900: #171614;
+  --color-slate-950: #0d0d0c;
+  --color-brand: #3d33f2;
+  --color-brand-soft: #e7e5ff;
   --color-src: #0f766e;   /* [Dane źródłowe] */
   --color-calc: #6d28d9;  /* [Obliczenia] */
   --color-model: #b45309; /* [Wniosek modelu] */
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --shadow-xs: 0 0 0 0 transparent;
+  --shadow-sm: 3px 3px 0 0 var(--color-ink);
+  --shadow-md: 4px 4px 0 0 var(--color-ink);
+  --shadow-lg: 6px 6px 0 0 var(--color-ink);
 }
 
 html, body, #root { height: 100%; }
-body { @apply bg-white font-sans text-slate-950 antialiased; font-feature-settings: "cv11", "ss01"; }
-mark.quote { @apply bg-yellow-200 rounded px-0.5; }
+body { @apply bg-paper font-sans text-ink antialiased; }
+
+/* retro helpers */
+.ink-box { border: 2px solid var(--color-ink); background: var(--color-surface); }
+.hard-shadow { box-shadow: 4px 4px 0 0 var(--color-ink); }
+.stripes { background: repeating-linear-gradient(to bottom, var(--color-ink) 0 1px, transparent 1px 3px); }
+.press { transition: transform 120ms ease-out, box-shadow 120ms ease-out; }
+.press:hover { transform: translate(-1px, -1px); }
+.press:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 0 var(--color-ink); }
+.lift { transition: transform 150ms ease-out, box-shadow 150ms ease-out; }
+.lift:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 0 var(--color-ink); }
+.tag { @apply inline-flex items-center border border-ink px-1.5 py-px font-mono text-[11px] uppercase tracking-wide text-ink; }
+@keyframes twinkle { 0%, 100% { opacity: 1 } 50% { opacity: .15 } }
+.twinkle { animation: twinkle 1.6s steps(2, end) infinite; }
+@keyframes pick-swing { 0% { transform: rotate(0) } 35% { transform: rotate(-28deg) } 60% { transform: rotate(6deg) } 100% { transform: rotate(0) } }
+.pick-swing { animation: pick-swing .45s steps(6, end) 1; }
+.group:hover .pick-swing { animation: pick-swing .9s steps(6, end) infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .press, .lift { transition: none; }
+  .press:hover, .lift:hover { transform: none; }
+  .twinkle, .pick-swing, .group:hover .pick-swing { animation: none; }
+}
+mark.quote { @apply bg-yellow-200 px-0.5; }
 
 /* Block labels: [Dane źródłowe] / [Obliczenia] / [Wniosek modelu] */
-.block-label { @apply inline-flex items-center gap-1 rounded-md border px-1.5 py-px text-[11px] font-medium whitespace-nowrap; }
+.block-label { @apply inline-flex items-center gap-1 border px-1.5 py-px font-mono text-[11px] font-medium whitespace-nowrap; }
 .block-src { color: var(--color-src); border-color: color-mix(in srgb, var(--color-src) 35%, white); background: color-mix(in srgb, var(--color-src) 8%, white); }
 .block-calc { color: var(--color-calc); border-color: color-mix(in srgb, var(--color-calc) 35%, white); background: color-mix(in srgb, var(--color-calc) 8%, white); }
 .block-model { color: var(--color-model); border-color: color-mix(in srgb, var(--color-model) 35%, white); background: color-mix(in srgb, var(--color-model) 8%, white); }

@@ -18,18 +18,18 @@ export function Tabs({ tabs, value, onChange, children, className }:
   }
   return (
     <div className={className}>
-      <div className="overflow-x-auto pb-1 [scrollbar-width:thin]"><div role="tablist" className="inline-flex h-9 items-center gap-0.5 rounded-lg bg-slate-100 p-[3px] text-slate-500">
+      <div className="overflow-x-auto pb-2 [scrollbar-width:thin]"><div role="tablist" className="inline-flex items-stretch border-2 border-ink bg-surface">
         {tabs.map((t, i) => {
           const active = t.value === value
           return (
             <button key={t.value} ref={(el) => { refs.current[i] = el }} role="tab" id={`${id}-t-${t.value}`}
               aria-selected={active} aria-controls={`${id}-p-${t.value}`} tabIndex={active ? 0 : -1}
               onClick={() => onChange(t.value)} onKeyDown={(e) => onKey(e, i)}
-              className={cn('flex h-full items-center gap-1.5 whitespace-nowrap rounded-md px-3 text-sm font-medium cursor-pointer transition-colors duration-150',
-                'outline-none focus-visible:ring-[3px] focus-visible:ring-brand/30',
-                active ? 'bg-white text-slate-950 shadow-xs' : 'hover:text-slate-900')}>
+              className={cn('flex items-center gap-1.5 whitespace-nowrap border-r-2 border-ink px-3 py-1.5 font-mono text-xs font-medium uppercase tracking-wide cursor-pointer last:border-r-0',
+                'outline-none focus-visible:bg-brand-soft',
+                active ? 'bg-ink text-paper' : 'text-ink hover:bg-brand-soft')}>
               {t.label}
-              {t.count !== undefined && <span className="rounded-md bg-slate-200/70 px-1.5 text-[11px] tabular-nums text-slate-600">{t.count}</span>}
+              {t.count !== undefined && <span className={cn('px-1 text-[11px] tabular-nums', active ? 'bg-paper text-ink' : 'bg-ink text-paper')}>{t.count}</span>}
             </button>
           )
         })}

@@ -42,7 +42,7 @@ function Graph({ g }: { g: Schemas['GraphOut'] }) {
   }, [g])
   return (
     <div>
-      <div className="h-[560px] rounded-lg border border-slate-200 bg-white">
+      <div className="h-[560px] border-2 border-ink bg-surface">
         <ReactFlow nodes={nodes} edges={edges} fitView nodesDraggable proOptions={{ hideAttribution: true }}>
           <Background /><Controls showInteractive={false} />
         </ReactFlow>

@@ -17,7 +17,7 @@ export function DataTable<T extends object>({ data, columns, onRowClick, empty =
     getRowId: getRowId ? (r: T) => getRowId(r) : undefined,
   })
   return (
-    <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+    <div className="overflow-x-auto border-2 border-ink bg-surface">
       <table className="w-full text-sm">
         <thead className="bg-slate-50 text-left text-xs text-slate-500">
           {table.getHeaderGroups().map((hg) => (

@@ -157,12 +157,12 @@ function Tile({ open, onToggle, title, sub, dim, accent, children }: {
 }) {
   return (
     <li className={cn(open && 'md:col-span-2 xl:col-span-3')}>
-      <Card className={cn('h-full', dim && 'opacity-50', open ? 'border-brand' : accent)}>
-        <button type="button" onClick={onToggle} aria-expanded={open} className="block w-full cursor-pointer rounded-lg px-4 py-3 text-left hover:bg-slate-50">
+      <Card className={cn('h-full', !open && 'lift', dim && 'opacity-50', open ? 'border-brand' : accent)}>
+        <button type="button" onClick={onToggle} aria-expanded={open} className="block w-full cursor-pointer px-4 py-3 text-left hover:bg-brand-soft/40">
           <span className="line-clamp-2 font-semibold text-slate-900">{title}</span>
           {sub && <span className="mt-1 block text-sm text-slate-500">{sub}</span>}
         </button>
-        {open && <CardContent className="space-y-3 border-t border-slate-100 pt-3 text-sm">{children}</CardContent>}
+        {open && <CardContent className="space-y-3 border-t-2 border-ink pt-3 text-sm">{children}</CardContent>}
       </Card>
     </li>
   )

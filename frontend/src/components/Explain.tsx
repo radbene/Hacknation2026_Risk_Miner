@@ -22,10 +22,10 @@ export const GLOSSARY: Record<string, string> = {
 /** Box at the top of every section/tab: what it shows and what you can do here. */
 export function Intro({ title, children, can, className }: { title?: ReactNode; children: ReactNode; can?: ReactNode[]; className?: string }) {
   return (
-    <div className={cn('mb-5 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600', className)}>
+    <div className={cn('mb-5 border-2 border-ink border-l-[6px] border-l-brand bg-surface px-4 py-3 text-sm text-slate-700', className)}>
       <div>
         <div className="space-y-1">
-          {title && <div className="font-medium text-slate-950">{title}</div>}
+          {title && <div className="font-bold text-ink">{title}</div>}
           <div>{children}</div>
           {can && can.length > 0 && (
             <div><span className="font-medium text-slate-900">Co możesz tu zrobić: </span>
@@ -48,7 +48,7 @@ export function Term({ t, children, explain }: { t: string; children?: ReactNode
         onClick={(e) => { e.stopPropagation(); setOpen((o) => !o) }} onBlur={() => setOpen(false)}
         className="cursor-pointer text-slate-400 hover:text-brand"><HelpCircle size={12} /></button>}
       {open && <span role="tooltip" id={id}
-        className="absolute left-0 top-full z-30 mt-1 w-72 rounded-md border border-slate-200 bg-white p-2 text-xs font-normal normal-case text-slate-700 shadow-lg">{text}</span>}
+        className="absolute left-0 top-full z-30 mt-1 w-72 border-2 border-ink bg-surface p-2 text-xs font-normal normal-case text-slate-800 shadow-sm">{text}</span>}
     </span>
   )
 }
@@ -61,7 +61,7 @@ export function HowCalculated({ children, label = 'Jak to policzono?' }: { child
       <button type="button" onClick={() => setOpen((o) => !o)} className="inline-flex cursor-pointer items-center gap-1 text-slate-500 hover:text-brand" aria-expanded={open}>
         <ChevronDown size={12} className={cn('transition-transform', open && 'rotate-180')} />{label}
       </button>
-      {open && <div className="mt-1 rounded-md bg-violet-50/60 px-3 py-2 leading-relaxed text-slate-700">{children}</div>}
+      {open && <div className="mt-1 border-2 border-dashed border-ink/40 bg-violet-50/60 px-3 py-2 leading-relaxed text-slate-800">{children}</div>}
     </div>
   )
 }

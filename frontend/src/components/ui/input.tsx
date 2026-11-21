@@ -1,11 +1,11 @@
 import { forwardRef, type InputHTMLAttributes, type SelectHTMLAttributes, type TextareaHTMLAttributes, type LabelHTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
-const field = 'w-full rounded-md border border-slate-200 bg-white px-3 text-sm shadow-xs transition-[color,box-shadow] placeholder:text-slate-400 ' +
-  'outline-none focus-visible:border-brand focus-visible:ring-[3px] focus-visible:ring-brand/20 disabled:bg-slate-50 disabled:text-slate-500'
+const field = 'w-full border-2 border-ink bg-white px-3 text-sm text-ink placeholder:text-slate-400 ' +
+  'outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:bg-slate-100 disabled:text-slate-500'
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(({ className, ...p }, ref) => (
-  <input ref={ref} className={cn(field, 'h-9', className)} {...p} />
+  <input ref={ref} className={cn(field, 'h-10', className)} {...p} />
 ))
 Input.displayName = 'Input'
 
@@ -17,7 +17,7 @@ Textarea.displayName = 'Textarea'
 export interface SelectOption { value: string; label: string }
 export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSelectElement> & { options: SelectOption[]; placeholder?: string }>(
   ({ className, options, placeholder, ...p }, ref) => (
-    <select ref={ref} className={cn(field, 'h-9 pr-7', className)} {...p}>
+    <select ref={ref} className={cn(field, 'h-10 pr-7', className)} {...p}>
       {placeholder !== undefined && <option value="">{placeholder}</option>}
       {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
     </select>
@@ -26,5 +26,5 @@ export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSel
 Select.displayName = 'Select'
 
 export function Label({ className, ...p }: LabelHTMLAttributes<HTMLLabelElement>) {
-  return <label className={cn('mb-1.5 block text-sm font-medium text-slate-900', className)} {...p} />
+  return <label className={cn('mb-1.5 block font-mono text-xs font-medium uppercase tracking-wide text-slate-700', className)} {...p} />
 }

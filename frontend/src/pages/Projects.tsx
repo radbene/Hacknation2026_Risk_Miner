@@ -69,7 +69,7 @@ export default function Projects() {
 function ProjectTile({ p, expert }: { p: P; expert: boolean }) {
   return (
     <Link to="/projekty/$projectId" params={{ projectId: p.id }} search={{}} className="group">
-      <Card className="h-full p-4 transition-colors group-hover:border-brand">
+      <Card className="lift h-full p-4">
         <div className="flex items-start justify-between gap-2">
           <h2 className="line-clamp-2 font-medium text-slate-900">{p.title}</h2>
           {p.tier === 'deep' && <span className="shrink-0 font-mono text-xs text-slate-400">{p.code}</span>}

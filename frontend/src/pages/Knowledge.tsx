@@ -143,7 +143,7 @@ function TableEditor({ name }: { name: string }) {
             {help.source === 'zespół' && <p className="text-xs text-slate-500">Propozycja zespołu do weryfikacji przez eksperta.</p>}
           </CardContent>}
         </Card>
-        <div className="sticky top-0 z-10 flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-white/95 p-2 backdrop-blur">
+        <div className="sticky top-0 z-10 flex flex-wrap items-center gap-2 border-2 border-ink bg-surface/95 p-2 backdrop-blur">
           <Button size="sm" variant="outline" disabled={idx === 0} onClick={() => setIdx((i) => i - 1)} title={hist[idx]?.note ? `Cofnij: ${hist[idx].note}` : 'Cofnij'}><Undo2 size={14} />Cofnij</Button>
           <Button size="sm" variant="outline" disabled={idx >= hist.length - 1} onClick={() => setIdx((i) => i + 1)}><Redo2 size={14} />Ponów</Button>
           <Button size="sm" variant="outline" onClick={() => {
