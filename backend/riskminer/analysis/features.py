@@ -331,8 +331,9 @@ def extract_rules(text: str, session: Session | None = None) -> Features:
 
 
 class _LLMField(BaseModel):
-    value: str | float | int | bool | list[str] | None = None
-    quote: str | None = Field(None, description="dosłowny cytat z opisu potwierdzający wartość")
+    # both required (nullable): small local models under a JSON grammar skip optional keys
+    value: str | float | list[str] | None = Field(description="wartość cechy (liczba, tekst z listy dozwolonych albo null)")
+    quote: str | None = Field(description="dosłowny cytat z opisu potwierdzający wartość")
 
 
 class LLMFeatures(BaseModel):
@@ -358,8 +359,9 @@ class LLMFeatures(BaseModel):
 
 SYSTEM = (
     "Jesteś analitykiem inwestycji wodno-kanalizacyjnych. Z opisu nowej inwestycji wyodrębnij cechy według schematu "
-    "JSON. Dla każdej wartości podaj dosłowny cytat (quote) z opisu. Nie zgaduj: gdy opis nie mówi, czy kwota jest "
-    "netto czy brutto, ustaw vat_basis=unknown. Podsektor wybierz z listy: {subsectors}. work_type: budowa | "
+    "JSON. Każde pole to obiekt {{\"value\": …, \"quote\": …}}: value to WARTOŚĆ cechy (np. 15.8, \"budowa\", "
+    "\"net\"), quote to dosłowny cytat z opisu, który ją potwierdza. Pomiń pola, których opis nie podaje. Nie zgaduj: gdy opis nie mówi, czy kwota jest "
+    "netto czy brutto, ustaw vat_basis=unknown (net = netto, gross = brutto). Podsektor wybierz z listy: {subsectors}. work_type: budowa | "
     "przebudowa | rozbudowa | modernizacja. formula: tradycyjna | zaprojektuj i wybuduj. length_km w km, "
     "duration_months w miesiącach, value w PLN. cues: land, permits, environment, operator, collisions."
 )

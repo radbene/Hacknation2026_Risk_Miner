@@ -1,0 +1,7 @@
+# RISK MINER – local Bielik (SpeakLeash, Apache-2.0) for Ollama.
+#   ollama pull SpeakLeash/bielik-11b-v3.0-instruct:Q4_K_M
+#   ollama create riskminer-bielik -f deploy/ollama/Modelfile
+# 8k context: prompts carry a document excerpt + the JSON schema (Ollama's default 4096 would silently truncate).
+FROM SpeakLeash/bielik-11b-v3.0-instruct:Q4_K_M
+PARAMETER num_ctx 8192
+PARAMETER temperature 0.1

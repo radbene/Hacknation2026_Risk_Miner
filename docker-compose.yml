@@ -1,4 +1,4 @@
-# RISK MINER – full stack: db, api, worker, web, caddy (auto-HTTPS).
+# RISK MINER – full stack: db, api, worker, web, caddy (auto-HTTPS); optional ollama (local Bielik, GPU).
 #   local dev:  docker compose up -d db          (API/web run from the host, see Makefile)
 #   server:     DOMAIN=1.2.3.4.sslip.io docker compose --profile prod up -d --build   (or: make deploy)
 #   local prod test (does not touch the dev DB):
@@ -75,7 +75,25 @@ services:
       web: { condition: service_started }
     restart: unless-stopped
 
+  # Local Bielik (SpeakLeash) on a GPU host – data never leaves the server. Needs the NVIDIA container toolkit.
+  #   docker compose --profile prod --profile bielik up -d      (deploy/deploy.sh … --bielik does it all)
+  ollama:
+    image: ollama/ollama:latest
+    profiles: [bielik]
+    expose: ["11434"]
+    environment:
+      OLLAMA_KEEP_ALIVE: 24h        # keep the model in VRAM between jury requests
+    volumes:
+      - ollama:/root/.ollama
+      - ./deploy/ollama:/modelfile:ro
+    deploy:
+      resources:
+        reservations:
+          devices: [{ driver: nvidia, count: all, capabilities: [gpu] }]
+    restart: unless-stopped
+
 volumes:
+  ollama:
   pgdata:
   caddy_data:
   caddy_config:

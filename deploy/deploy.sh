@@ -5,17 +5,21 @@
 #   deploy/deploy.sh root@1.2.3.4 --bootstrap     # first time: install docker + firewall, then deploy
 #   deploy/deploy.sh root@1.2.3.4 --with-data     # also upload data/ (BZP zip, raw store, LLM replay cache)
 #   deploy/deploy.sh root@1.2.3.4 --demo          # after start: run `riskminer demo` inside the api container
+#   deploy/deploy.sh root@1.2.3.4 --bielik        # GPU host: also run Ollama + Bielik 11B v3.0 (routing: local first)
+#     without a GPU host: deploy --with-data and set LLM_MODE=replay – Bielik answers computed on the team's GPU
+#     are served from data/llm_cache (same model id → same cache key), new prompts fall back to rules.
 #
 # Env: REMOTE_DIR (default /opt/riskminer), DOMAIN (default <ip>.sslip.io), SSH_OPTS.
 set -euo pipefail
 
-HOST="${1:?usage: deploy/deploy.sh user@host [--bootstrap] [--with-data] [--demo]}"; shift || true
-BOOTSTRAP=0; WITH_DATA=0; DEMO=0
+HOST="${1:?usage: deploy/deploy.sh user@host [--bootstrap] [--with-data] [--demo] [--bielik]}"; shift || true
+BOOTSTRAP=0; WITH_DATA=0; DEMO=0; BIELIK=0
 for a in "$@"; do
   case "$a" in
     --bootstrap) BOOTSTRAP=1 ;;
     --with-data) WITH_DATA=1 ;;
     --demo) DEMO=1 ;;
+    --bielik) BIELIK=1 ;;
     *) echo "unknown option $a" >&2; exit 2 ;;
   esac
 done
@@ -51,8 +55,23 @@ ssh $SSH_OPTS "$HOST" "cd $REMOTE_DIR && \
   sed -i '/^DOMAIN=/d; /^CORS_ORIGINS=/d' .env && echo 'DOMAIN=$DOMAIN' >> .env && echo 'CORS_ORIGINS=https://$DOMAIN' >> .env && \
   [ -f config/settings.yaml ] || cp config/settings.example.yaml config/settings.yaml"
 
-say "Build + start (docker compose --profile prod)"
-ssh $SSH_OPTS "$HOST" "cd $REMOTE_DIR && docker compose --profile prod up -d --build --remove-orphans && docker compose ps"
+PROFILES="--profile prod"
+if [[ $BIELIK == 1 ]]; then
+  PROFILES="--profile prod --profile bielik"
+  say "Bielik: point local_bielik at the ollama service"
+  ssh $SSH_OPTS "$HOST" "cd $REMOTE_DIR && sed -i 's#base_url: http://localhost:11434/v1#base_url: http://ollama:11434/v1#' config/settings.yaml && \
+    grep -n 'ollama:11434' config/settings.yaml"
+fi
+
+say "Build + start (docker compose $PROFILES)"
+ssh $SSH_OPTS "$HOST" "cd $REMOTE_DIR && docker compose $PROFILES up -d --build --remove-orphans && docker compose $PROFILES ps"
+
+if [[ $BIELIK == 1 ]]; then
+  say "Bielik: pull SpeakLeash/bielik-11b-v3.0-instruct:Q4_K_M (~6.7 GB) and build riskminer-bielik (8k context)"
+  ssh $SSH_OPTS "$HOST" "cd $REMOTE_DIR && docker compose $PROFILES exec -T ollama ollama pull SpeakLeash/bielik-11b-v3.0-instruct:Q4_K_M && \
+    docker compose $PROFILES exec -T ollama ollama create riskminer-bielik -f /modelfile/Modelfile && \
+    docker compose $PROFILES exec -T api riskminer llm test local_bielik"
+fi
 
 say "Smoke test https://$DOMAIN"
 for i in $(seq 1 40); do

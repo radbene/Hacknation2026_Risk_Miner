@@ -1,0 +1,110 @@
+{
+ "started_at": "2026-11-21T18:55:21.980462+00:00",
+ "steps": [
+  {
+   "step": "Wczytanie wiedzy eksperckiej (R01–R15, podsektory, checklisty) do bazy",
+   "owner": "S5",
+   "status": "ok",
+   "seconds": 0.7
+  },
+  {
+   "step": "Konta demonstracyjne",
+   "owner": "S5",
+   "status": "ok",
+   "seconds": 0.6
+  },
+  {
+   "step": "Import listy projektów organizatora (xlsx)",
+   "owner": "S1",
+   "status": "ok",
+   "seconds": 1.4
+  },
+  {
+   "step": "Wzbogacenie: BZP (lustro) + Biała lista VAT, powiązania",
+   "owner": "S1",
+   "status": "ok",
+   "seconds": 171.4
+  },
+  {
+   "step": "Zbiór automatyczny z paczki BZP (próbka 500)",
+   "owner": "S1",
+   "status": "ok",
+   "seconds": 15.4
+  },
+  {
+   "step": "Zdarzenia, zmiany umów, przyczyny z cytatami",
+   "owner": "S2",
+   "status": "ok",
+   "seconds": 1.5
+  },
+  {
+   "step": "Analiza nowych inwestycji (fixtures)",
+   "owner": "S3",
+   "status": "ok",
+   "seconds": 22.5
+  },
+  {
+   "step": "Eksport przykładowy (JSON/CSV)",
+   "owner": "S3",
+   "status": "ok",
+   "seconds": 6.3
+  },
+  {
+   "step": "Monitoring",
+   "owner": "S6",
+   "status": "ok",
+   "watched": 15598,
+   "alerts_created": 2235
+  },
+  {
+   "step": "Raport z testu",
+   "owner": "S6",
+   "status": "ok",
+   "path": "/home/radek/workspace/hacknation/risk_miner/risk-miner/docs/raport_z_testu.md",
+   "linking": {
+    "verdicts": {
+     "wrong": 34399,
+     "correct": 22
+    },
+    "precision": 0.001,
+    "recall": 1.0
+   }
+  },
+  {
+   "step": "Złoty stan piaskownicy",
+   "owner": "S5",
+   "status": "ok"
+  }
+ ],
+ "counts": {
+  "alert": 10865,
+  "analysis": 6,
+  "analysis_item": 272,
+  "contract": 39094,
+  "contract_change": 26804,
+  "data_issue": 162,
+  "document": 0,
+  "entity": 17028,
+  "event": 83,
+  "evidence": 872707,
+  "fact": 20,
+  "job": 0,
+  "knowledge_table": 21,
+  "llm_call": 2,
+  "notice": 112729,
+  "op_log": 730,
+  "procedure": 45055,
+  "project": 34421,
+  "project_procedure": 34421,
+  "review": 22
+ },
+ "added_this_run": {
+  "alert": 2235,
+  "analysis": 3,
+  "analysis_item": 136,
+  "contract_change": 2,
+  "evidence": 62,
+  "op_log": 157
+ },
+ "seconds": 468.8
+}

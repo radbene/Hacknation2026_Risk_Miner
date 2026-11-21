@@ -96,18 +96,20 @@ llm:
       data_location: eu
       extra: { vertexai: true, project: "", location: europe-west4 }
     local_bielik:
-      provider: openai       # any OpenAI-compatible endpoint
-      model: SpeakLeash/bielik-11b-v3.0-instruct:Q4_K_M
-      base_url: http://localhost:11434/v1
-      api_key_env: OLLAMA_API_KEY
+      provider: openai       # any OpenAI-compatible endpoint (Ollama, vLLM, LM Studio)
+      model: riskminer-bielik   # SpeakLeash/bielik-11b-v3.0-instruct:Q4_K_M + num_ctx 8192, see deploy/ollama/Modelfile
+      base_url: http://localhost:11434/v1   # docker: http://host.docker.internal:11434/v1 or the `ollama` service
+      api_key_env: OLLAMA_API_KEY            # optional for a local server
       data_location: local
+      max_tokens: 2000
+      extra: { temperature: 0.1, timeout_s: 300 }
   # ordered fallbacks per task; the last entry should be `rules`
-  tasks:
-    causes: [claude, local_bielik, rules]
-    doc_fragments: [claude, rules]
-    features: [claude_fast, rules]
-    recommendations: [claude, rules]
-    clauses: [claude, rules]
-    category_proposal: [claude, rules]
-    lessons: [claude, rules]
+  tasks:                     # local Bielik first: public-sector documents stay on our server
+    causes: [local_bielik, claude, rules]
+    doc_fragments: [local_bielik, claude, rules]
+    features: [local_bielik, claude_fast, rules]
+    recommendations: [local_bielik, claude, rules]
+    clauses: [local_bielik, claude, rules]
+    category_proposal: [local_bielik, claude, rules]
+    lessons: [local_bielik, claude, rules]
   default: [rules]

@@ -6155,673 +6155,6 @@
   "reviewed_at": null
  },
  {
-  "id": "eccbee97-aaf6-5fc8-81c4-a22fd312693a",
-  "project_id": "68ebbb7f-c124-551c-bc2b-98e3691ad24b",
-  "procedure_id": "3e2f76f4-08a0-58b0-bdb3-1aa104c5be31",
-  "part_no": null,
-  "components": [
-   {
-    "name": "xref",
-    "score": 0.95,
-    "detail": "Numer 2023/BZP 00110672/01 nie istnieje w BZP; występuje jako odwołanie (sekcja 3.2.1/2.14) w ogłoszeniu 2023/BZP 00580488/01 → OCID ocds-148610-f193152b-b443-11ed-9236-36fed59ea7dd",
-    "weight": null,
-    "evidence_id": "08c85d6d-7803-50d9-82c0-dfcd544dcd00"
-   },
-   {
-    "name": "nip",
-    "score": 1.0,
-    "detail": "NIP zamawiającego 9860164852 = NIP odbiorcy 9860164852",
-    "weight": null,
-    "evidence_id": "0822f5b5-493b-590b-8783-9fad91bcca83"
-   },
-   {
-    "name": "title",
-    "score": 1.0,
-    "detail": "Podobieństwo tytułu 100%: „Budowa sieci wodociągowych i kanalizacji sanitarnej w Gminie Wolin”",
-    "weight": 0.4,
-    "evidence_id": "7246eaa0-0c45-514d-b21b-5d5e1f84963a"
-   },
-   {
-    "name": "date",
-    "score": 1.0,
-    "detail": "Rok publikacji 2023; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
-    "weight": 0.1,
-    "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-   },
-   {
-    "name": "value",
-    "score": 0.5,
-    "detail": "Brak wartości do porównania",
-    "weight": 0.1,
-    "evidence_id": null
-   }
-  ],
-  "alternatives": [
-   {
-    "ocid": "ocds-148610-646ba830-e435-11ed-9355-06954b8c6cb9",
-    "score": 0.853,
-    "title": "BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,",
-    "why_not": "niższy wynik (0.85 < 0.95)",
-    "bzp_number": "2023/BZP 00194168",
-    "components": [
-     {
-      "name": "title",
-      "score": 0.883,
-      "detail": "Podobieństwo tytułu 88%: „BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,”",
-      "weight": 0.4,
-      "evidence_id": "cce7121d-fde7-531a-b341-93fa6e571f4f"
-     },
-     {
-      "name": "location",
-      "score": 1.0,
-      "detail": "Wspólne nazwy: wolin",
-      "weight": 0.15,
-      "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
-     },
-     {
-      "name": "cpv",
-      "score": 1.0,
-      "detail": "CPV 45231300 – wod-kan",
-      "weight": 0.1,
-      "evidence_id": "65228f50-f274-55db-8ba8-9bd3f182241e"
-     },
-     {
-      "name": "date",
-      "score": 1.0,
-      "detail": "Rok publikacji 2023; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
-      "weight": 0.1,
-      "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-     },
-     {
-      "name": "value",
-      "score": 0.5,
-      "detail": "Brak wartości do porównania",
-      "weight": 0.1,
-      "evidence_id": null
-     },
-     {
-      "name": "consistency",
-      "score": 1.0,
-      "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
-      "weight": 0.05,
-      "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
-     },
-     {
-      "name": "scope",
-      "score": 0.5,
-      "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
-      "weight": 0.1,
-      "evidence_id": null
-     }
-    ],
-    "procedure_id": "00a4db6d-e50b-546c-a27a-db84cd459689"
-   },
-   {
-    "ocid": "ocds-148610-4a470f91-f930-4381-abfc-71f2de051740",
-    "score": 0.773,
-    "title": "„Budowa przyłączy wodociągowych w miejscowości Żółwino w Gminie Wolin”",
-    "why_not": "niższy wynik (0.77 < 0.95)",
-    "bzp_number": "2024/BZP 00657628",
-    "components": [
-     {
-      "name": "title",
-      "score": 0.682,
-      "detail": "Podobieństwo tytułu 68%: „„Budowa przyłączy wodociągowych w miejscowości Żółwino w Gminie Wolin””",
-      "weight": 0.4,
-      "evidence_id": "c344e25f-8de6-5d70-8599-71c999b2cea0"
-     },
-     {
-      "name": "location",
-      "score": 1.0,
-      "detail": "Wspólne nazwy: wolin",
-      "weight": 0.15,
-      "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
-     },
-     {
-      "name": "cpv",
-      "score": 1.0,
-      "detail": "CPV 45231300 – wod-kan",
-      "weight": 0.1,
-      "evidence_id": "ffd9461e-9528-5229-a0a3-7b19a62c0324"
-     },
-     {
-      "name": "date",
-      "score": 1.0,
-      "detail": "Rok publikacji 2024; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
-      "weight": 0.1,
-      "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-     },
-     {
-      "name": "value",
-      "score": 0.5,
-      "detail": "Brak wartości do porównania",
-      "weight": 0.1,
-      "evidence_id": null
-     },
-     {
-      "name": "consistency",
-      "score": 1.0,
-      "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
-      "weight": 0.05,
-      "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
-     },
-     {
-      "name": "scope",
-      "score": 0.5,
-      "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
-      "weight": 0.1,
-      "evidence_id": null
-     }
-    ],
-    "procedure_id": "70600407-b3ed-5119-9961-42601407781f"
-   },
-   {
-    "ocid": "ocds-148610-5166e727-2792-11ed-9071-8637ea33a6f9",
-    "score": 0.706,
-    "title": "Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin (II postępowanie)",
-    "why_not": "niższy wynik (0.71 < 0.95)",
-    "bzp_number": "2022/BZP 00323933",
-    "components": [
-     {
-      "name": "title",
-      "score": 0.515,
-      "detail": "Podobieństwo tytułu 51%: „Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin (II postępowanie)”",
-      "weight": 0.4,
-      "evidence_id": "b459661a-56d1-594e-8004-7e1d52ac4d5c"
-     },
-     {
-      "name": "location",
-      "score": 1.0,
-      "detail": "Wspólne nazwy: wolin",
-      "weight": 0.15,
-      "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
-     },
-     {
-      "name": "cpv",
-      "score": 1.0,
-      "detail": "CPV 45000000 – wod-kan",
-      "weight": 0.1,
-      "evidence_id": "3995da88-c4a8-5f2e-96b9-394807eeca72"
-     },
-     {
-      "name": "date",
-      "score": 1.0,
-      "detail": "Rok publikacji 2022; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
-      "weight": 0.1,
-      "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-     },
-     {
-      "name": "value",
-      "score": 0.5,
-      "detail": "Brak wartości do porównania",
-      "weight": 0.1,
-      "evidence_id": null
-     },
-     {
-      "name": "consistency",
-      "score": 1.0,
-      "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
-      "weight": 0.05,
-      "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
-     },
-     {
-      "name": "scope",
-      "score": 0.5,
-      "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
-      "weight": 0.1,
-      "evidence_id": null
-     }
-    ],
-    "procedure_id": "76fda20e-09e3-5f1b-8348-3c5acafa974d"
-   },
-   {
-    "ocid": "ocds-148610-e00f7e91-f3c2-11ed-9355-06954b8c6cb9",
-    "score": 0.68,
-    "title": "Przebudowa i rozbudowa odcinka drogi dojazdowej w miejscowości Dramino",
-    "why_not": "niższy wynik (0.68 < 0.95)",
-    "bzp_number": "2023/BZP 00217546",
-    "components": [
-     {
-      "name": "title",
-      "score": 0.449,
-      "detail": "Podobieństwo tytułu 45%: „Przebudowa i rozbudowa odcinka drogi dojazdowej w miejscowości Dramino”",
-      "weight": 0.4,
-      "evidence_id": "a3825dc5-291d-56d0-9b26-cd72fea8c718"
-     },
-     {
-      "name": "location",
-      "score": 1.0,
-      "detail": "Wspólne nazwy: wolin",
-      "weight": 0.15,
-      "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
-     },
-     {
-      "name": "cpv",
-      "score": 1.0,
-      "detail": "CPV 45233123 – wod-kan",
-      "weight": 0.1,
-      "evidence_id": "18b54da1-428c-50d5-95a4-476e0d73f73c"
-     },
-     {
-      "name": "date",
-      "score": 1.0,
-      "detail": "Rok publikacji 2023; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
-      "weight": 0.1,
-      "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-     },
-     {
-      "name": "value",
-      "score": 0.5,
-      "detail": "Brak wartości do porównania",
-      "weight": 0.1,
-      "evidence_id": null
-     },
-     {
-      "name": "consistency",
-      "score": 1.0,
-      "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
-      "weight": 0.05,
-      "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
-     },
-     {
-      "name": "scope",
-      "score": 0.5,
-      "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
-      "weight": 0.1,
-      "evidence_id": null
-     }
-    ],
-    "procedure_id": "c5352484-af25-5438-85b7-ffe41d57339c"
-   },
-   {
-    "ocid": "ocds-148610-81bdb26b-13e3-11ed-acbd-46d0480cd9c4",
-    "score": 0.666,
-    "title": "Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin",
-    "why_not": "unieważnione",
-    "bzp_number": "2022/BZP 00292606",
-    "components": [
-     {
-      "name": "title",
-      "score": 0.541,
-      "detail": "Podobieństwo tytułu 54%: „Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin”",
-      "weight": 0.4,
-      "evidence_id": "b7048d46-df2a-5c03-b3ee-a58198733c2d"
-     },
-     {
-      "name": "location",
-      "score": 1.0,
-      "detail": "Wspólne nazwy: wolin",
-      "weight": 0.15,
-      "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
-     },
-     {
-      "name": "cpv",
-      "score": 1.0,
-      "detail": "CPV 45000000 – wod-kan",
-      "weight": 0.1,
-      "evidence_id": "2090373b-7b3a-589f-a7bf-d0761ba2f01c"
-     },
-     {
-      "name": "date",
-      "score": 1.0,
-      "detail": "Rok publikacji 2022; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
-      "weight": 0.1,
-      "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-     },
-     {
-      "name": "value",
-      "score": 0.5,
-      "detail": "Brak wartości do porównania",
-      "weight": 0.1,
-      "evidence_id": null
-     },
-     {
-      "name": "consistency",
-      "score": 0.0,
-      "detail": "unieważnione; status xlsx 'Zakończone', ogłoszenie o wykonaniu: nie",
-      "weight": 0.05,
-      "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
-     },
-     {
-      "name": "scope",
-      "score": 0.5,
-      "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
-      "weight": 0.1,
-      "evidence_id": null
-     }
-    ],
-    "procedure_id": "d8f091f3-8a70-5444-aee2-f88902047a3d"
-   }
-  ],
-  "is_override": false,
-  "rank": 1,
-  "created_at": "2026-11-21T17:04:27.165185+00:00",
-  "updated_at": "2026-11-21T17:04:50.089677+00:00",
-  "status": "proposed",
-  "method": "xref",
-  "confidence": 0.95,
-  "evidence_ids": [
-   "0822f5b5-493b-590b-8783-9fad91bcca83",
-   "08c85d6d-7803-50d9-82c0-dfcd544dcd00",
-   "7246eaa0-0c45-514d-b21b-5d5e1f84963a",
-   "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-  ],
-  "proposal": {
-   "method": "expert",
-   "components": [
-    {
-     "name": "expert",
-     "score": 1.0,
-     "detail": "Powiązanie wskazane przez eksperta: test",
-     "weight": null,
-     "evidence_id": null
-    }
-   ],
-   "confidence": 1.0,
-   "is_override": true,
-   "alternatives": [
-    {
-     "ocid": "ocds-148610-646ba830-e435-11ed-9355-06954b8c6cb9",
-     "score": 0.853,
-     "title": "BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,",
-     "why_not": "niższy wynik (0.85 < 1.00)",
-     "bzp_number": "2023/BZP 00194168",
-     "components": [
-      {
-       "name": "title",
-       "score": 0.883,
-       "detail": "Podobieństwo tytułu 88%: „BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,”",
-       "weight": 0.4,
-       "evidence_id": "cce7121d-fde7-531a-b341-93fa6e571f4f"
-      },
-      {
-       "name": "location",
-       "score": 1.0,
-       "detail": "Wspólne nazwy: wolin",
-       "weight": 0.15,
-       "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
-      },
-      {
-       "name": "cpv",
-       "score": 1.0,
-       "detail": "CPV 45231300 – wod-kan",
-       "weight": 0.1,
-       "evidence_id": "65228f50-f274-55db-8ba8-9bd3f182241e"
-      },
-      {
-       "name": "date",
-       "score": 1.0,
-       "detail": "Rok publikacji 2023; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
-       "weight": 0.1,
-       "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-      },
-      {
-       "name": "value",
-       "score": 0.5,
-       "detail": "Brak wartości do porównania",
-       "weight": 0.1,
-       "evidence_id": null
-      },
-      {
-       "name": "consistency",
-       "score": 1.0,
-       "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
-       "weight": 0.05,
-       "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
-      },
-      {
-       "name": "scope",
-       "score": 0.5,
-       "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
-       "weight": 0.1,
-       "evidence_id": null
-      }
-     ],
-     "procedure_id": "00a4db6d-e50b-546c-a27a-db84cd459689"
-    },
-    {
-     "ocid": "ocds-148610-4a470f91-f930-4381-abfc-71f2de051740",
-     "score": 0.773,
-     "title": "„Budowa przyłączy wodociągowych w miejscowości Żółwino w Gminie Wolin”",
-     "why_not": "niższy wynik (0.77 < 1.00)",
-     "bzp_number": "2024/BZP 00657628",
-     "components": [
-      {
-       "name": "title",
-       "score": 0.682,
-       "detail": "Podobieństwo tytułu 68%: „„Budowa przyłączy wodociągowych w miejscowości Żółwino w Gminie Wolin””",
-       "weight": 0.4,
-       "evidence_id": "c344e25f-8de6-5d70-8599-71c999b2cea0"
-      },
-      {
-       "name": "location",
-       "score": 1.0,
-       "detail": "Wspólne nazwy: wolin",
-       "weight": 0.15,
-       "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
-      },
-      {
-       "name": "cpv",
-       "score": 1.0,
-       "detail": "CPV 45231300 – wod-kan",
-       "weight": 0.1,
-       "evidence_id": "ffd9461e-9528-5229-a0a3-7b19a62c0324"
-      },
-      {
-       "name": "date",
-       "score": 1.0,
-       "detail": "Rok publikacji 2024; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
-       "weight": 0.1,
-       "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-      },
-      {
-       "name": "value",
-       "score": 0.5,
-       "detail": "Brak wartości do porównania",
-       "weight": 0.1,
-       "evidence_id": null
-      },
-      {
-       "name": "consistency",
-       "score": 1.0,
-       "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
-       "weight": 0.05,
-       "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
-      },
-      {
-       "name": "scope",
-       "score": 0.5,
-       "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
-       "weight": 0.1,
-       "evidence_id": null
-      }
-     ],
-     "procedure_id": "70600407-b3ed-5119-9961-42601407781f"
-    },
-    {
-     "ocid": "ocds-148610-5166e727-2792-11ed-9071-8637ea33a6f9",
-     "score": 0.706,
-     "title": "Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin (II postępowanie)",
-     "why_not": "niższy wynik (0.71 < 1.00)",
-     "bzp_number": "2022/BZP 00323933",
-     "components": [
-      {
-       "name": "title",
-       "score": 0.515,
-       "detail": "Podobieństwo tytułu 51%: „Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin (II postępowanie)”",
-       "weight": 0.4,
-       "evidence_id": "b459661a-56d1-594e-8004-7e1d52ac4d5c"
-      },
-      {
-       "name": "location",
-       "score": 1.0,
-       "detail": "Wspólne nazwy: wolin",
-       "weight": 0.15,
-       "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
-      },
-      {
-       "name": "cpv",
-       "score": 1.0,
-       "detail": "CPV 45000000 – wod-kan",
-       "weight": 0.1,
-       "evidence_id": "3995da88-c4a8-5f2e-96b9-394807eeca72"
-      },
-      {
-       "name": "date",
-       "score": 1.0,
-       "detail": "Rok publikacji 2022; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
-       "weight": 0.1,
-       "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-      },
-      {
-       "name": "value",
-       "score": 0.5,
-       "detail": "Brak wartości do porównania",
-       "weight": 0.1,
-       "evidence_id": null
-      },
-      {
-       "name": "consistency",
-       "score": 1.0,
-       "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
-       "weight": 0.05,
-       "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
-      },
-      {
-       "name": "scope",
-       "score": 0.5,
-       "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
-       "weight": 0.1,
-       "evidence_id": null
-      }
-     ],
-     "procedure_id": "76fda20e-09e3-5f1b-8348-3c5acafa974d"
-    },
-    {
-     "ocid": "ocds-148610-e00f7e91-f3c2-11ed-9355-06954b8c6cb9",
-     "score": 0.68,
-     "title": "Przebudowa i rozbudowa odcinka drogi dojazdowej w miejscowości Dramino",
-     "why_not": "niższy wynik (0.68 < 1.00)",
-     "bzp_number": "2023/BZP 00217546",
-     "components": [
-      {
-       "name": "title",
-       "score": 0.449,
-       "detail": "Podobieństwo tytułu 45%: „Przebudowa i rozbudowa odcinka drogi dojazdowej w miejscowości Dramino”",
-       "weight": 0.4,
-       "evidence_id": "a3825dc5-291d-56d0-9b26-cd72fea8c718"
-      },
-      {
-       "name": "location",
-       "score": 1.0,
-       "detail": "Wspólne nazwy: wolin",
-       "weight": 0.15,
-       "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
-      },
-      {
-       "name": "cpv",
-       "score": 1.0,
-       "detail": "CPV 45233123 – wod-kan",
-       "weight": 0.1,
-       "evidence_id": "18b54da1-428c-50d5-95a4-476e0d73f73c"
-      },
-      {
-       "name": "date",
-       "score": 1.0,
-       "detail": "Rok publikacji 2023; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
-       "weight": 0.1,
-       "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-      },
-      {
-       "name": "value",
-       "score": 0.5,
-       "detail": "Brak wartości do porównania",
-       "weight": 0.1,
-       "evidence_id": null
-      },
-      {
-       "name": "consistency",
-       "score": 1.0,
-       "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
-       "weight": 0.05,
-       "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
-      },
-      {
-       "name": "scope",
-       "score": 0.5,
-       "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
-       "weight": 0.1,
-       "evidence_id": null
-      }
-     ],
-     "procedure_id": "c5352484-af25-5438-85b7-ffe41d57339c"
-    },
-    {
-     "ocid": "ocds-148610-81bdb26b-13e3-11ed-acbd-46d0480cd9c4",
-     "score": 0.666,
-     "title": "Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin",
-     "why_not": "unieważnione",
-     "bzp_number": "2022/BZP 00292606",
-     "components": [
-      {
-       "name": "title",
-       "score": 0.541,
-       "detail": "Podobieństwo tytułu 54%: „Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin”",
-       "weight": 0.4,
-       "evidence_id": "b7048d46-df2a-5c03-b3ee-a58198733c2d"
-      },
-      {
-       "name": "location",
-       "score": 1.0,
-       "detail": "Wspólne nazwy: wolin",
-       "weight": 0.15,
-       "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
-      },
-      {
-       "name": "cpv",
-       "score": 1.0,
-       "detail": "CPV 45000000 – wod-kan",
-       "weight": 0.1,
-       "evidence_id": "2090373b-7b3a-589f-a7bf-d0761ba2f01c"
-      },
-      {
-       "name": "date",
-       "score": 1.0,
-       "detail": "Rok publikacji 2022; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
-       "weight": 0.1,
-       "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
-      },
-      {
-       "name": "value",
-       "score": 0.5,
-       "detail": "Brak wartości do porównania",
-       "weight": 0.1,
-       "evidence_id": null
-      },
-      {
-       "name": "consistency",
-       "score": 0.0,
-       "detail": "unieważnione; status xlsx 'Zakończone', ogłoszenie o wykonaniu: nie",
-       "weight": 0.05,
-       "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
-      },
-      {
-       "name": "scope",
-       "score": 0.5,
-       "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
-       "weight": 0.1,
-       "evidence_id": null
-      }
-     ],
-     "procedure_id": "d8f091f3-8a70-5444-aee2-f88902047a3d"
-    }
-   ],
-   "evidence_ids": []
-  },
-  "reviewed_by": null,
-  "reviewed_at": null
- },
- {
   "id": "9ca6bdb5-fdb3-5821-a870-cfccf912afe3",
   "project_id": "a539a5c7-c6d1-59bf-9992-be5160845363",
   "procedure_id": "e0a20996-9937-5e99-84af-eb32195fd2f1",
@@ -7197,6 +6530,673 @@
    "edda902e-a671-5df6-8025-bcffd6a082f6"
   ],
   "proposal": null,
+  "reviewed_by": null,
+  "reviewed_at": null
+ },
+ {
+  "id": "eccbee97-aaf6-5fc8-81c4-a22fd312693a",
+  "project_id": "68ebbb7f-c124-551c-bc2b-98e3691ad24b",
+  "procedure_id": "3e2f76f4-08a0-58b0-bdb3-1aa104c5be31",
+  "part_no": null,
+  "components": [
+   {
+    "name": "xref",
+    "score": 0.95,
+    "detail": "Numer 2023/BZP 00110672/01 nie istnieje w BZP; występuje jako odwołanie (sekcja 3.2.1/2.14) w ogłoszeniu 2023/BZP 00580488/01 → OCID ocds-148610-f193152b-b443-11ed-9236-36fed59ea7dd",
+    "weight": null,
+    "evidence_id": "08c85d6d-7803-50d9-82c0-dfcd544dcd00"
+   },
+   {
+    "name": "nip",
+    "score": 1.0,
+    "detail": "NIP zamawiającego 9860164852 = NIP odbiorcy 9860164852",
+    "weight": null,
+    "evidence_id": "0822f5b5-493b-590b-8783-9fad91bcca83"
+   },
+   {
+    "name": "title",
+    "score": 1.0,
+    "detail": "Podobieństwo tytułu 100%: „Budowa sieci wodociągowych i kanalizacji sanitarnej w Gminie Wolin”",
+    "weight": 0.4,
+    "evidence_id": "7246eaa0-0c45-514d-b21b-5d5e1f84963a"
+   },
+   {
+    "name": "date",
+    "score": 1.0,
+    "detail": "Rok publikacji 2023; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
+    "weight": 0.1,
+    "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+   },
+   {
+    "name": "value",
+    "score": 0.5,
+    "detail": "Brak wartości do porównania",
+    "weight": 0.1,
+    "evidence_id": null
+   }
+  ],
+  "alternatives": [
+   {
+    "ocid": "ocds-148610-646ba830-e435-11ed-9355-06954b8c6cb9",
+    "score": 0.853,
+    "title": "BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,",
+    "why_not": "niższy wynik (0.85 < 0.95)",
+    "bzp_number": "2023/BZP 00194168",
+    "components": [
+     {
+      "name": "title",
+      "score": 0.883,
+      "detail": "Podobieństwo tytułu 88%: „BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,”",
+      "weight": 0.4,
+      "evidence_id": "cce7121d-fde7-531a-b341-93fa6e571f4f"
+     },
+     {
+      "name": "location",
+      "score": 1.0,
+      "detail": "Wspólne nazwy: wolin",
+      "weight": 0.15,
+      "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
+     },
+     {
+      "name": "cpv",
+      "score": 1.0,
+      "detail": "CPV 45231300 – wod-kan",
+      "weight": 0.1,
+      "evidence_id": "65228f50-f274-55db-8ba8-9bd3f182241e"
+     },
+     {
+      "name": "date",
+      "score": 1.0,
+      "detail": "Rok publikacji 2023; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
+      "weight": 0.1,
+      "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+     },
+     {
+      "name": "value",
+      "score": 0.5,
+      "detail": "Brak wartości do porównania",
+      "weight": 0.1,
+      "evidence_id": null
+     },
+     {
+      "name": "consistency",
+      "score": 1.0,
+      "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
+      "weight": 0.05,
+      "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
+     },
+     {
+      "name": "scope",
+      "score": 0.5,
+      "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
+      "weight": 0.1,
+      "evidence_id": null
+     }
+    ],
+    "procedure_id": "00a4db6d-e50b-546c-a27a-db84cd459689"
+   },
+   {
+    "ocid": "ocds-148610-4a470f91-f930-4381-abfc-71f2de051740",
+    "score": 0.773,
+    "title": "„Budowa przyłączy wodociągowych w miejscowości Żółwino w Gminie Wolin”",
+    "why_not": "niższy wynik (0.77 < 0.95)",
+    "bzp_number": "2024/BZP 00657628",
+    "components": [
+     {
+      "name": "title",
+      "score": 0.682,
+      "detail": "Podobieństwo tytułu 68%: „„Budowa przyłączy wodociągowych w miejscowości Żółwino w Gminie Wolin””",
+      "weight": 0.4,
+      "evidence_id": "c344e25f-8de6-5d70-8599-71c999b2cea0"
+     },
+     {
+      "name": "location",
+      "score": 1.0,
+      "detail": "Wspólne nazwy: wolin",
+      "weight": 0.15,
+      "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
+     },
+     {
+      "name": "cpv",
+      "score": 1.0,
+      "detail": "CPV 45231300 – wod-kan",
+      "weight": 0.1,
+      "evidence_id": "ffd9461e-9528-5229-a0a3-7b19a62c0324"
+     },
+     {
+      "name": "date",
+      "score": 1.0,
+      "detail": "Rok publikacji 2024; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
+      "weight": 0.1,
+      "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+     },
+     {
+      "name": "value",
+      "score": 0.5,
+      "detail": "Brak wartości do porównania",
+      "weight": 0.1,
+      "evidence_id": null
+     },
+     {
+      "name": "consistency",
+      "score": 1.0,
+      "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
+      "weight": 0.05,
+      "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
+     },
+     {
+      "name": "scope",
+      "score": 0.5,
+      "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
+      "weight": 0.1,
+      "evidence_id": null
+     }
+    ],
+    "procedure_id": "70600407-b3ed-5119-9961-42601407781f"
+   },
+   {
+    "ocid": "ocds-148610-5166e727-2792-11ed-9071-8637ea33a6f9",
+    "score": 0.706,
+    "title": "Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin (II postępowanie)",
+    "why_not": "niższy wynik (0.71 < 0.95)",
+    "bzp_number": "2022/BZP 00323933",
+    "components": [
+     {
+      "name": "title",
+      "score": 0.515,
+      "detail": "Podobieństwo tytułu 51%: „Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin (II postępowanie)”",
+      "weight": 0.4,
+      "evidence_id": "b459661a-56d1-594e-8004-7e1d52ac4d5c"
+     },
+     {
+      "name": "location",
+      "score": 1.0,
+      "detail": "Wspólne nazwy: wolin",
+      "weight": 0.15,
+      "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
+     },
+     {
+      "name": "cpv",
+      "score": 1.0,
+      "detail": "CPV 45000000 – wod-kan",
+      "weight": 0.1,
+      "evidence_id": "3995da88-c4a8-5f2e-96b9-394807eeca72"
+     },
+     {
+      "name": "date",
+      "score": 1.0,
+      "detail": "Rok publikacji 2022; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
+      "weight": 0.1,
+      "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+     },
+     {
+      "name": "value",
+      "score": 0.5,
+      "detail": "Brak wartości do porównania",
+      "weight": 0.1,
+      "evidence_id": null
+     },
+     {
+      "name": "consistency",
+      "score": 1.0,
+      "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
+      "weight": 0.05,
+      "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
+     },
+     {
+      "name": "scope",
+      "score": 0.5,
+      "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
+      "weight": 0.1,
+      "evidence_id": null
+     }
+    ],
+    "procedure_id": "76fda20e-09e3-5f1b-8348-3c5acafa974d"
+   },
+   {
+    "ocid": "ocds-148610-e00f7e91-f3c2-11ed-9355-06954b8c6cb9",
+    "score": 0.68,
+    "title": "Przebudowa i rozbudowa odcinka drogi dojazdowej w miejscowości Dramino",
+    "why_not": "niższy wynik (0.68 < 0.95)",
+    "bzp_number": "2023/BZP 00217546",
+    "components": [
+     {
+      "name": "title",
+      "score": 0.449,
+      "detail": "Podobieństwo tytułu 45%: „Przebudowa i rozbudowa odcinka drogi dojazdowej w miejscowości Dramino”",
+      "weight": 0.4,
+      "evidence_id": "a3825dc5-291d-56d0-9b26-cd72fea8c718"
+     },
+     {
+      "name": "location",
+      "score": 1.0,
+      "detail": "Wspólne nazwy: wolin",
+      "weight": 0.15,
+      "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
+     },
+     {
+      "name": "cpv",
+      "score": 1.0,
+      "detail": "CPV 45233123 – wod-kan",
+      "weight": 0.1,
+      "evidence_id": "18b54da1-428c-50d5-95a4-476e0d73f73c"
+     },
+     {
+      "name": "date",
+      "score": 1.0,
+      "detail": "Rok publikacji 2023; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
+      "weight": 0.1,
+      "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+     },
+     {
+      "name": "value",
+      "score": 0.5,
+      "detail": "Brak wartości do porównania",
+      "weight": 0.1,
+      "evidence_id": null
+     },
+     {
+      "name": "consistency",
+      "score": 1.0,
+      "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
+      "weight": 0.05,
+      "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
+     },
+     {
+      "name": "scope",
+      "score": 0.5,
+      "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
+      "weight": 0.1,
+      "evidence_id": null
+     }
+    ],
+    "procedure_id": "c5352484-af25-5438-85b7-ffe41d57339c"
+   },
+   {
+    "ocid": "ocds-148610-81bdb26b-13e3-11ed-acbd-46d0480cd9c4",
+    "score": 0.666,
+    "title": "Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin",
+    "why_not": "unieważnione",
+    "bzp_number": "2022/BZP 00292606",
+    "components": [
+     {
+      "name": "title",
+      "score": 0.541,
+      "detail": "Podobieństwo tytułu 54%: „Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin”",
+      "weight": 0.4,
+      "evidence_id": "b7048d46-df2a-5c03-b3ee-a58198733c2d"
+     },
+     {
+      "name": "location",
+      "score": 1.0,
+      "detail": "Wspólne nazwy: wolin",
+      "weight": 0.15,
+      "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
+     },
+     {
+      "name": "cpv",
+      "score": 1.0,
+      "detail": "CPV 45000000 – wod-kan",
+      "weight": 0.1,
+      "evidence_id": "2090373b-7b3a-589f-a7bf-d0761ba2f01c"
+     },
+     {
+      "name": "date",
+      "score": 1.0,
+      "detail": "Rok publikacji 2022; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
+      "weight": 0.1,
+      "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+     },
+     {
+      "name": "value",
+      "score": 0.5,
+      "detail": "Brak wartości do porównania",
+      "weight": 0.1,
+      "evidence_id": null
+     },
+     {
+      "name": "consistency",
+      "score": 0.0,
+      "detail": "unieważnione; status xlsx 'Zakończone', ogłoszenie o wykonaniu: nie",
+      "weight": 0.05,
+      "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
+     },
+     {
+      "name": "scope",
+      "score": 0.5,
+      "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
+      "weight": 0.1,
+      "evidence_id": null
+     }
+    ],
+    "procedure_id": "d8f091f3-8a70-5444-aee2-f88902047a3d"
+   }
+  ],
+  "is_override": false,
+  "rank": 1,
+  "created_at": "2026-11-21T17:04:27.165185+00:00",
+  "updated_at": "2026-11-21T18:10:40.969616+00:00",
+  "status": "proposed",
+  "method": "xref",
+  "confidence": 0.95,
+  "evidence_ids": [
+   "0822f5b5-493b-590b-8783-9fad91bcca83",
+   "08c85d6d-7803-50d9-82c0-dfcd544dcd00",
+   "7246eaa0-0c45-514d-b21b-5d5e1f84963a",
+   "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+  ],
+  "proposal": {
+   "method": "expert",
+   "components": [
+    {
+     "name": "expert",
+     "score": 1.0,
+     "detail": "Powiązanie wskazane przez eksperta: test",
+     "weight": null,
+     "evidence_id": null
+    }
+   ],
+   "confidence": 1.0,
+   "is_override": true,
+   "alternatives": [
+    {
+     "ocid": "ocds-148610-646ba830-e435-11ed-9355-06954b8c6cb9",
+     "score": 0.853,
+     "title": "BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,",
+     "why_not": "niższy wynik (0.85 < 1.00)",
+     "bzp_number": "2023/BZP 00194168",
+     "components": [
+      {
+       "name": "title",
+       "score": 0.883,
+       "detail": "Podobieństwo tytułu 88%: „BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,”",
+       "weight": 0.4,
+       "evidence_id": "cce7121d-fde7-531a-b341-93fa6e571f4f"
+      },
+      {
+       "name": "location",
+       "score": 1.0,
+       "detail": "Wspólne nazwy: wolin",
+       "weight": 0.15,
+       "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
+      },
+      {
+       "name": "cpv",
+       "score": 1.0,
+       "detail": "CPV 45231300 – wod-kan",
+       "weight": 0.1,
+       "evidence_id": "65228f50-f274-55db-8ba8-9bd3f182241e"
+      },
+      {
+       "name": "date",
+       "score": 1.0,
+       "detail": "Rok publikacji 2023; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
+       "weight": 0.1,
+       "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+      },
+      {
+       "name": "value",
+       "score": 0.5,
+       "detail": "Brak wartości do porównania",
+       "weight": 0.1,
+       "evidence_id": null
+      },
+      {
+       "name": "consistency",
+       "score": 1.0,
+       "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
+       "weight": 0.05,
+       "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
+      },
+      {
+       "name": "scope",
+       "score": 0.5,
+       "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
+       "weight": 0.1,
+       "evidence_id": null
+      }
+     ],
+     "procedure_id": "00a4db6d-e50b-546c-a27a-db84cd459689"
+    },
+    {
+     "ocid": "ocds-148610-4a470f91-f930-4381-abfc-71f2de051740",
+     "score": 0.773,
+     "title": "„Budowa przyłączy wodociągowych w miejscowości Żółwino w Gminie Wolin”",
+     "why_not": "niższy wynik (0.77 < 1.00)",
+     "bzp_number": "2024/BZP 00657628",
+     "components": [
+      {
+       "name": "title",
+       "score": 0.682,
+       "detail": "Podobieństwo tytułu 68%: „„Budowa przyłączy wodociągowych w miejscowości Żółwino w Gminie Wolin””",
+       "weight": 0.4,
+       "evidence_id": "c344e25f-8de6-5d70-8599-71c999b2cea0"
+      },
+      {
+       "name": "location",
+       "score": 1.0,
+       "detail": "Wspólne nazwy: wolin",
+       "weight": 0.15,
+       "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
+      },
+      {
+       "name": "cpv",
+       "score": 1.0,
+       "detail": "CPV 45231300 – wod-kan",
+       "weight": 0.1,
+       "evidence_id": "ffd9461e-9528-5229-a0a3-7b19a62c0324"
+      },
+      {
+       "name": "date",
+       "score": 1.0,
+       "detail": "Rok publikacji 2024; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
+       "weight": 0.1,
+       "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+      },
+      {
+       "name": "value",
+       "score": 0.5,
+       "detail": "Brak wartości do porównania",
+       "weight": 0.1,
+       "evidence_id": null
+      },
+      {
+       "name": "consistency",
+       "score": 1.0,
+       "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
+       "weight": 0.05,
+       "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
+      },
+      {
+       "name": "scope",
+       "score": 0.5,
+       "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
+       "weight": 0.1,
+       "evidence_id": null
+      }
+     ],
+     "procedure_id": "70600407-b3ed-5119-9961-42601407781f"
+    },
+    {
+     "ocid": "ocds-148610-5166e727-2792-11ed-9071-8637ea33a6f9",
+     "score": 0.706,
+     "title": "Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin (II postępowanie)",
+     "why_not": "niższy wynik (0.71 < 1.00)",
+     "bzp_number": "2022/BZP 00323933",
+     "components": [
+      {
+       "name": "title",
+       "score": 0.515,
+       "detail": "Podobieństwo tytułu 51%: „Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin (II postępowanie)”",
+       "weight": 0.4,
+       "evidence_id": "b459661a-56d1-594e-8004-7e1d52ac4d5c"
+      },
+      {
+       "name": "location",
+       "score": 1.0,
+       "detail": "Wspólne nazwy: wolin",
+       "weight": 0.15,
+       "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
+      },
+      {
+       "name": "cpv",
+       "score": 1.0,
+       "detail": "CPV 45000000 – wod-kan",
+       "weight": 0.1,
+       "evidence_id": "3995da88-c4a8-5f2e-96b9-394807eeca72"
+      },
+      {
+       "name": "date",
+       "score": 1.0,
+       "detail": "Rok publikacji 2022; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
+       "weight": 0.1,
+       "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+      },
+      {
+       "name": "value",
+       "score": 0.5,
+       "detail": "Brak wartości do porównania",
+       "weight": 0.1,
+       "evidence_id": null
+      },
+      {
+       "name": "consistency",
+       "score": 1.0,
+       "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
+       "weight": 0.05,
+       "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
+      },
+      {
+       "name": "scope",
+       "score": 0.5,
+       "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
+       "weight": 0.1,
+       "evidence_id": null
+      }
+     ],
+     "procedure_id": "76fda20e-09e3-5f1b-8348-3c5acafa974d"
+    },
+    {
+     "ocid": "ocds-148610-e00f7e91-f3c2-11ed-9355-06954b8c6cb9",
+     "score": 0.68,
+     "title": "Przebudowa i rozbudowa odcinka drogi dojazdowej w miejscowości Dramino",
+     "why_not": "niższy wynik (0.68 < 1.00)",
+     "bzp_number": "2023/BZP 00217546",
+     "components": [
+      {
+       "name": "title",
+       "score": 0.449,
+       "detail": "Podobieństwo tytułu 45%: „Przebudowa i rozbudowa odcinka drogi dojazdowej w miejscowości Dramino”",
+       "weight": 0.4,
+       "evidence_id": "a3825dc5-291d-56d0-9b26-cd72fea8c718"
+      },
+      {
+       "name": "location",
+       "score": 1.0,
+       "detail": "Wspólne nazwy: wolin",
+       "weight": 0.15,
+       "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
+      },
+      {
+       "name": "cpv",
+       "score": 1.0,
+       "detail": "CPV 45233123 – wod-kan",
+       "weight": 0.1,
+       "evidence_id": "18b54da1-428c-50d5-95a4-476e0d73f73c"
+      },
+      {
+       "name": "date",
+       "score": 1.0,
+       "detail": "Rok publikacji 2023; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
+       "weight": 0.1,
+       "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+      },
+      {
+       "name": "value",
+       "score": 0.5,
+       "detail": "Brak wartości do porównania",
+       "weight": 0.1,
+       "evidence_id": null
+      },
+      {
+       "name": "consistency",
+       "score": 1.0,
+       "detail": "status xlsx 'Zakończone', ogłoszenie o wykonaniu: tak",
+       "weight": 0.05,
+       "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
+      },
+      {
+       "name": "scope",
+       "score": 0.5,
+       "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
+       "weight": 0.1,
+       "evidence_id": null
+      }
+     ],
+     "procedure_id": "c5352484-af25-5438-85b7-ffe41d57339c"
+    },
+    {
+     "ocid": "ocds-148610-81bdb26b-13e3-11ed-acbd-46d0480cd9c4",
+     "score": 0.666,
+     "title": "Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin",
+     "why_not": "unieważnione",
+     "bzp_number": "2022/BZP 00292606",
+     "components": [
+      {
+       "name": "title",
+       "score": 0.541,
+       "detail": "Podobieństwo tytułu 54%: „Budowa świetlicy wiejskiej w Koniewie i w Kodrąbku, gm. Wolin”",
+       "weight": 0.4,
+       "evidence_id": "b7048d46-df2a-5c03-b3ee-a58198733c2d"
+      },
+      {
+       "name": "location",
+       "score": 1.0,
+       "detail": "Wspólne nazwy: wolin",
+       "weight": 0.15,
+       "evidence_id": "d4d8b17a-3b4f-531f-94b7-ee792d868bf9"
+      },
+      {
+       "name": "cpv",
+       "score": 1.0,
+       "detail": "CPV 45000000 – wod-kan",
+       "weight": 0.1,
+       "evidence_id": "2090373b-7b3a-589f-a7bf-d0761ba2f01c"
+      },
+      {
+       "name": "date",
+       "score": 1.0,
+       "detail": "Rok publikacji 2022; oczekiwane 2022–2024 (z numeru 2023/BZP 00110672/01)",
+       "weight": 0.1,
+       "evidence_id": "e64e4de9-a31e-520c-84e8-2e5168e6922c"
+      },
+      {
+       "name": "value",
+       "score": 0.5,
+       "detail": "Brak wartości do porównania",
+       "weight": 0.1,
+       "evidence_id": null
+      },
+      {
+       "name": "consistency",
+       "score": 0.0,
+       "detail": "unieważnione; status xlsx 'Zakończone', ogłoszenie o wykonaniu: nie",
+       "weight": 0.05,
+       "evidence_id": "5bf8b324-f958-5250-88eb-b58112222428"
+      },
+      {
+       "name": "scope",
+       "score": 0.5,
+       "detail": "Zakres (km, przyłącza) – porównanie niedostępne w regułach",
+       "weight": 0.1,
+       "evidence_id": null
+      }
+     ],
+     "procedure_id": "d8f091f3-8a70-5444-aee2-f88902047a3d"
+    }
+   ],
+   "evidence_ids": []
+  },
   "reviewed_by": null,
   "reviewed_at": null
  },
