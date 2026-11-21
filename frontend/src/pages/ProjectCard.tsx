@@ -1,158 +1,167 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { ExternalLink, FileUp, Link2, RefreshCw, Sparkles } from 'lucide-react'
+import { ExternalLink, FileText, FileUp, Link2, RefreshCw, Sparkles } from 'lucide-react'
 import { useRef, useState } from 'react'
 import {
-  useCandidates, useContracts, useDocuments, useEvents, useHistory, useIssues, useLinks, useNotices, useProcedures, useProject,
+  useCandidates, useContracts, useDocuments, useEvents, useHistory, useLinks, useNotices, useProcedures, useProject,
 } from '@/api/cases'
 import { api, unwrap, type Schemas } from '@/api/client'
 import { useApi, useApiMutation } from '@/api/hooks'
-import { TimelineTab } from '@/components/case/TimelineTab'
-import { GraphTab } from '@/components/case/GraphTab'
 import { BlockLabel } from '@/components/BlockLabel'
+import { GraphTab } from '@/components/case/GraphTab'
+import { TimelineTab } from '@/components/case/TimelineTab'
 import { EvidenceChip } from '@/components/evidence/EvidenceChip'
 import { NoticeView } from '@/components/evidence/NoticeView'
+import { Intro } from '@/components/Explain'
 import { JobRunner } from '@/components/JobRunner'
 import { Completeness, LinkStatusBadge, RiskCodes } from '@/components/LinkStatusBadge'
-import { MethodConfidence } from '@/components/MethodConfidence'
+import { LinkReasons, LinkVerdict } from '@/components/LinkReasons'
 import { PageHeader } from '@/components/PageHeader'
 import { ReviewActions } from '@/components/ReviewActions'
 import { StatusBadge } from '@/components/StatusBadge'
-import {
-  Badge, Button, Card, CardContent, CardHeader, DataTable, Dialog, Input, Label, QueryState, Tabs, Textarea, useToast,
-  type ColumnDef,
-} from '@/components/ui'
+import { confidenceWords, Fact } from '@/components/Visual'
+import { Badge, Button, Card, CardContent, CardHeader, Dialog, Input, Label, QueryState, Tabs, Textarea, useToast } from '@/components/ui'
+import { useAuth } from '@/lib/auth'
 import { ACTION_LABEL, EVENT_TYPE_LABEL, OBJECT_TYPE_LABEL } from '@/lib/labels'
 import { cn, fmtDate, fmtDateTime, fmtNum, fmtPln } from '@/lib/utils'
 import { projectRoute } from '@/router'
 
 const NOTICE_PL: Record<string, string> = {
-  ContractNotice: 'Ogłoszenie o zamówieniu', TenderResultNotice: 'Ogłoszenie o wyniku', AgreementUpdateNotice: 'Zmiana umowy',
-  ContractPerformingNotice: 'Wykonanie umowy',
+  ContractNotice: 'Ogłoszenie o zamówieniu', TenderResultNotice: 'Ogłoszenie o wyniku postępowania', AgreementUpdateNotice: 'Ogłoszenie o zmianie umowy',
+  ContractPerformingNotice: 'Ogłoszenie o wykonaniu umowy',
 }
-const EVENT_PL: Record<string, string> = {
-  ...EVENT_TYPE_LABEL, late: 'Opóźnienie', paid_above_value: 'Wypłata powyżej wartości umowy', change_deadline: 'Zmiana terminu',
-  change_value: 'Zmiana wynagrodzenia', change_scope: 'Zmiana zakresu', repeated: 'Powtórzone postępowanie', improper: 'Nienależyte wykonanie / kary',
-  cancelled: 'Unieważnienie', single_offer: 'Jedna oferta', over_budget: 'Oferty powyżej budżetu', not_performed: 'Niewykonanie',
+export const EVENT_PL: Record<string, string> = {
+  ...EVENT_TYPE_LABEL, late: 'Opóźnienie', paid_above_value: 'Wypłata wyższa niż wartość umowy', change_deadline: 'Zmiana terminu',
+  change_value: 'Zmiana wynagrodzenia', change_scope: 'Zmiana zakresu', repeated: 'Powtórzone postępowanie', improper: 'Nienależyte wykonanie / kary umowne',
+  cancelled: 'Unieważnienie', single_offer: 'Jedna oferta', over_budget: 'Oferty powyżej budżetu', not_performed: 'Niewykonanie umowy',
   terminated: 'Rozwiązanie umowy', document_fragment: 'Fragment dokumentu',
 }
-const ISSUE_V: Record<string, 'success' | 'warning' | 'danger' | 'default' | 'info'> = {
-  potwierdzone: 'success', 'częściowe': 'warning', brak: 'default', sprzeczne: 'danger',
-  nie_ma_w_paczce: 'default', dokument_nie_wspomina: 'info', brak_potwierdzenia: 'warning', potwierdzono_niewykonanie: 'danger',
-}
-const ISSUE_L: Record<string, string> = {
-  nie_ma_w_paczce: 'nie ma w paczce', dokument_nie_wspomina: 'dokument nie wspomina', brak_potwierdzenia: 'brak potwierdzenia',
-  potwierdzono_niewykonanie: 'potwierdzono, że nie wykonano',
+const ISSUE: Record<string, { label: string; tone: 'default' | 'info' | 'warning' | 'danger' | 'success' }> = {
+  nie_ma_w_paczce: { label: 'nie ma w zebranych materiałach', tone: 'default' },
+  dokument_nie_wspomina: { label: 'dokument nie wspomina', tone: 'info' },
+  brak_potwierdzenia: { label: 'brak potwierdzenia', tone: 'warning' },
+  potwierdzono_niewykonanie: { label: 'potwierdzono, że nie wykonano', tone: 'danger' },
+  sprzeczne: { label: 'źródła się różnią', tone: 'danger' },
+  potwierdzone: { label: 'potwierdzone', tone: 'success' },
 }
 
 export default function ProjectCard() {
   const { projectId } = projectRoute.useParams()
   const s = projectRoute.useSearch()
   const navigate = useNavigate({ from: '/projekty/$projectId' })
+  const { isExpert } = useAuth()
   const tab = s.tab ?? 'przeglad'
   const setTab = (t: string) => navigate({ search: { ...s, tab: t, notice: undefined }, replace: true })
   const p = useProject(projectId)
   const events = useEvents(projectId)
-  const issues = useIssues(projectId)
   const links = useLinks(projectId)
 
   return (
-    <QueryState q={p}>{(d) => (
-      <div>
-        <PageHeader back title={<span><span className="mr-2 font-mono text-base text-brand">{d.code}</span>{d.title}</span>}
-          description={<>{d.beneficiary_name} · {d.voivodeship ?? '—'} · {d.subsector_main ?? 'podsektor nieustalony'} · warstwa {d.tier === 'deep' ? 'pogłębiona' : 'automatyczna'}</>}
-          actions={<>
-            <JobRunner label="Wzbogać" icon={<RefreshCw size={14} />} variant="outline"
-              invalidate={[['project', projectId], ['links', projectId], ['events', projectId]]}
-              start={async () => unwrap(await api.POST('/api/enrich', { body: { project_ids: [projectId], sources: null, as_of: null } }))} />
-            <Reanalyze projectId={projectId} />
-          </>}>
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-            <LinkStatusBadge status={d.link_status} /><StatusBadge status={d.status} />
-            <span className="text-slate-500">Kompletność</span><Completeness value={d.completeness} />
-            {d.n_pending_review > 0 && <Badge variant="warning">{d.n_pending_review} do przeglądu</Badge>}
-          </div>
-        </PageHeader>
-        <Tabs value={tab} onChange={setTab} tabs={[
-          { value: 'przeglad', label: 'Przegląd' },
-          { value: 'os', label: 'Oś czasu' },
-          { value: 'powiazania', label: 'Powiązania', count: links.data?.length },
-          { value: 'umowy', label: 'Umowy i zmiany' },
-          { value: 'zdarzenia', label: 'Zdarzenia i przyczyny', count: events.data?.length },
-          { value: 'ogloszenia', label: 'Ogłoszenia' },
-          { value: 'dokumenty', label: 'Dokumenty' },
-          { value: 'braki', label: 'Braki i sprzeczności', count: issues.data?.length },
-          { value: 'graf', label: 'Relacje' },
-          { value: 'historia', label: 'Historia' },
-        ]}>
-          {tab === 'przeglad' && <Overview d={d} />}
-          {tab === 'os' && <TimelineTab projectId={projectId} />}
-          {tab === 'powiazania' && <LinksTab projectId={projectId} />}
-          {tab === 'umowy' && <ContractsTab projectId={projectId} />}
-          {tab === 'zdarzenia' && <EventsTab projectId={projectId} />}
-          {tab === 'ogloszenia' && <NoticesTab projectId={projectId} selected={s.notice} section={s.section} quote={s.quote}
-            onSelect={(id) => navigate({ search: { ...s, notice: id }, replace: true })} />}
-          {tab === 'dokumenty' && <DocumentsTab projectId={projectId} />}
-          {tab === 'braki' && <IssuesTab projectId={projectId} />}
-          {tab === 'graf' && <GraphTab projectId={projectId} />}
-          {tab === 'historia' && <HistoryTab projectId={projectId} />}
-        </Tabs>
-      </div>
-    )}</QueryState>
+    <QueryState q={p}>{(d) => {
+      const deep = d.tier === 'deep'
+      return (
+        <div>
+          <PageHeader back title={d.title}
+            description={<>{d.beneficiary_name} · {d.voivodeship ?? 'województwo nieznane'} · {d.subsector_main ?? 'podsektor nieustalony'}
+              {' · '}{deep ? `projekt z listy organizatora (${d.code})` : 'postępowanie pobrane automatycznie z BZP'}</>}
+            actions={isExpert && deep ? <>
+              <JobRunner label="Pobierz aktualne dane z BZP" icon={<RefreshCw size={14} />} variant="outline"
+                invalidate={[['project', projectId], ['links', projectId], ['events', projectId]]}
+                start={async () => unwrap(await api.POST('/api/enrich', { body: { project_ids: [projectId], sources: null, as_of: null } }))} />
+              <Reanalyze projectId={projectId} />
+            </> : undefined}>
+            {deep && <div className="mt-2 flex flex-wrap items-center gap-3 text-xs">
+              <span className="flex items-center gap-1">Dopasowanie do ogłoszeń BZP: <LinkStatusBadge status={d.link_status} /></span>
+              <span className="flex items-center gap-1">Kompletność danych: <Completeness value={d.completeness} /></span>
+              {isExpert && d.n_pending_review > 0 && <Badge variant="warning">{d.n_pending_review} pozycji do zatwierdzenia</Badge>}
+            </div>}
+          </PageHeader>
+          <Tabs value={tab} onChange={setTab} tabs={[
+            { value: 'przeglad', label: 'Opis' },
+            { value: 'os', label: 'Przebieg w czasie' },
+            { value: 'powiazania', label: 'Ogłoszenia BZP tej inwestycji', count: links.data?.filter((l) => l.status !== 'rejected').length },
+            { value: 'umowy', label: 'Umowy i zmiany' },
+            { value: 'zdarzenia', label: 'Zdarzenia i przyczyny', count: events.data?.length },
+            { value: 'ogloszenia', label: 'Treść ogłoszeń' },
+            { value: 'dokumenty', label: 'Dokumenty' },
+            { value: 'braki', label: 'Braki w danych' },
+            { value: 'graf', label: 'Mapa powiązań' },
+            { value: 'historia', label: 'Historia zmian' },
+          ]}>
+            {tab === 'przeglad' && <Overview d={d} expert={isExpert} />}
+            {tab === 'os' && <><Intro can={['najechać na punkt wykresu, żeby zobaczyć szczegóły', 'kliknąć „Źródło” przy kroku, żeby zobaczyć oryginalny dokument']}>
+              Jak przebiegała inwestycja: ogłoszenie, wybór wykonawcy, podpisanie umowy, zmiany umowy, planowany i faktyczny termin zakończenia oraz kwoty (wartość szacunkowa, budżet, wartość umowy, wypłata). Różnica między terminem planowanym a faktycznym to opóźnienie.</Intro>
+              <TimelineTab projectId={projectId} /></>}
+            {tab === 'powiazania' && <LinksTab projectId={projectId} expert={isExpert} />}
+            {tab === 'umowy' && <ContractsTab projectId={projectId} />}
+            {tab === 'zdarzenia' && <EventsTab projectId={projectId} expert={isExpert} />}
+            {tab === 'ogloszenia' && <NoticesTab projectId={projectId} selected={s.notice} section={s.section} quote={s.quote}
+              onSelect={(id) => navigate({ search: { ...s, notice: id }, replace: true })} />}
+            {tab === 'dokumenty' && <DocumentsTab projectId={projectId} expert={isExpert} />}
+            {tab === 'braki' && <IssuesTab projectId={projectId} />}
+            {tab === 'graf' && <><Intro can={['przeciągać i przybliżać mapę', 'sprawdzić, które ogłoszenia i umowy należą do inwestycji']}>
+              Wszystkie elementy inwestycji i ich związki: beneficjent, postępowania, ogłoszenia, umowy z wykonawcami, zmiany umów i zdarzenia. Linia przerywana oznacza powiązanie zaproponowane przez system i jeszcze niezatwierdzone przez eksperta.</Intro>
+              <GraphTab projectId={projectId} /></>}
+            {tab === 'historia' && <HistoryTab projectId={projectId} />}
+          </Tabs>
+        </div>
+      )
+    }}</QueryState>
   )
 }
 
 /* ------------------------------------------------------------------ overview */
 
 const XLSX_FIELDS: [keyof Schemas['ProjectDetail'], string][] = [
-  ['public_id_type', 'Typ identyfikatora'], ['public_id_value', 'Identyfikator publiczny'], ['record_scope', 'Zakres rekordu'],
-  ['project_status', 'Status projektu'], ['funding', 'Finansowanie'], ['work_type', 'Rodzaj robót'], ['formula', 'Formuła'],
-  ['city', 'Miejscowość'], ['teryt', 'TERYT'], ['voivodeship', 'Województwo'],
+  ['public_id_type', 'Rodzaj identyfikatora'], ['public_id_value', 'Identyfikator (numer ogłoszenia lub projektu KPO)'],
+  ['record_scope', 'Czego dotyczy rekord'], ['project_status', 'Stan realizacji'], ['funding', 'Finansowanie'],
+  ['work_type', 'Rodzaj robót'], ['formula', 'Formuła realizacji'], ['city', 'Miejscowość'], ['voivodeship', 'Województwo'],
 ]
 
-function Overview({ d }: { d: Schemas['ProjectDetail'] }) {
+function Overview({ d, expert }: { d: Schemas['ProjectDetail']; expert: boolean }) {
   const ev = ((d.import_row as Record<string, unknown> | null)?.evidence ?? {}) as Record<string, string>
   return (
-    <div className="grid gap-4 lg:grid-cols-3">
-      <Card className="lg:col-span-2">
-        <CardHeader title="Opis przedsięwzięcia" description="Z pliku organizatora (xlsx) – każda wartość z adresem komórki." actions={<BlockLabel label="dane_zrodlowe" />} />
-        <CardContent className="space-y-3 text-sm">
-          <p className="whitespace-pre-line text-slate-700">{d.description ?? '—'}</p>
-          <dl className="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
-            {XLSX_FIELDS.map(([k, label]) => (
-              <div key={k} className="flex items-start justify-between gap-2 border-b border-slate-100 pb-1">
-                <dt className="text-xs text-slate-500">{label}</dt>
-                <dd className="flex items-center gap-1 text-right text-sm">{String(d[k] ?? '—')}{ev[k as string] && <EvidenceChip ids={[ev[k as string]]} label="xlsx" />}</dd>
-              </div>
-            ))}
-            <div className="flex items-start justify-between gap-2 border-b border-slate-100 pb-1"><dt className="text-xs text-slate-500">Wartość projektu</dt>
-              <dd className="text-sm">{fmtPln(d.project_value)}</dd></div>
-            <div className="flex items-start justify-between gap-2 border-b border-slate-100 pb-1"><dt className="text-xs text-slate-500">Dofinansowanie</dt>
-              <dd className="text-sm">{fmtPln(d.grant_value)}</dd></div>
-          </dl>
-          {d.annotation && <div className="rounded-md border border-amber-200 bg-amber-50 p-2 text-xs"><b>Adnotacja instytucji:</b> {d.annotation}</div>}
-        </CardContent>
-      </Card>
-      <div className="space-y-4">
-        <Card>
-          <CardHeader title="Beneficjent" />
-          <CardContent className="text-sm">
-            <div className="font-medium">{d.beneficiary?.name ?? d.beneficiary_name}</div>
-            <div className="text-xs text-slate-500">NIP {d.beneficiary?.nip ?? d.beneficiary_nip ?? '—'} · REGON {d.beneficiary?.regon ?? '—'}</div>
-            <div className="text-xs text-slate-500">{d.beneficiary?.city} {d.beneficiary?.province}</div>
-            {!!d.beneficiary?.verified_by?.length && <div className="mt-1 text-xs">Zweryfikowano: {d.beneficiary.verified_by.join(', ')}</div>}
+    <div>
+      <Intro can={['kliknąć „Źródło” przy wartości – otworzy się podgląd pliku z zaznaczoną komórką', ...(expert ? ['zatwierdzić dane projektu albo poprawić błędną wartość (zmiana trafi do historii)'] : [])]}>
+        Podstawowe informacje o inwestycji{d.tier === 'deep' ? ' z listy przekazanej przez organizatora (plik Excel)' : ' odczytane z ogłoszeń BZP'}. Każda wartość ma odnośnik do miejsca, z którego pochodzi.
+      </Intro>
+      <div className="grid gap-4 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+          <CardHeader title="Opis przedsięwzięcia" actions={<BlockLabel label="dane_zrodlowe" />} />
+          <CardContent className="space-y-4 text-sm">
+            <p className="whitespace-pre-line text-slate-700">{d.description ?? 'Brak opisu.'}</p>
+            <div className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+              {XLSX_FIELDS.map(([k, label]) => d[k] ? (
+                <div key={k} className="flex items-start justify-between gap-2"><Fact label={label} value={String(d[k])} />
+                  {ev[k as string] && <EvidenceChip ids={[ev[k as string]]} />}</div>) : null)}
+              <Fact label="Wartość projektu" value={fmtPln(d.project_value)} />
+              <Fact label="Kwota dofinansowania" value={fmtPln(d.grant_value)} />
+            </div>
+            {d.annotation && <div className="rounded-md border border-amber-200 bg-amber-50 p-2 text-xs"><b>Adnotacja instytucji:</b> {d.annotation}</div>}
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader title="Decyzja eksperta" description="Zatwierdź dane projektu lub popraw pole – każda zmiana trafia do historii." />
-          <CardContent>
-            <ReviewActions objectType="project" objectId={d.id} status={d.status} exemplary={d.exemplary} proposal={d.proposal}
-              values={d as unknown as Record<string, unknown>}
-              editFields={[{ key: 'title', label: 'Tytuł' }, { key: 'description', label: 'Opis', type: 'longtext' },
-                { key: 'subsector_main', label: 'Podsektor' }, { key: 'work_type', label: 'Rodzaj robót' }, { key: 'formula', label: 'Formuła' },
-                { key: 'public_id_value', label: 'Identyfikator publiczny' }, { key: 'project_status', label: 'Status projektu' }]}
-              invalidate={[['project', d.id]]} />
-          </CardContent>
-        </Card>
+        <div className="space-y-4">
+          <Card>
+            <CardHeader title="Beneficjent" />
+            <CardContent className="space-y-1 text-sm">
+              <div className="font-medium">{d.beneficiary?.name ?? d.beneficiary_name}</div>
+              <div className="text-xs text-slate-500">NIP {d.beneficiary?.nip ?? d.beneficiary_nip ?? '—'}{d.beneficiary?.regon ? ` · REGON ${d.beneficiary.regon}` : ''}</div>
+              <div className="text-xs text-slate-500">{[d.beneficiary?.city, d.beneficiary?.province].filter(Boolean).join(', ')}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader title="Stan weryfikacji" />
+            <CardContent className="space-y-2 text-sm">
+              <StatusBadge status={d.status} />
+              {expert ? <ReviewActions objectType="project" objectId={d.id} status={d.status} exemplary={d.exemplary} proposal={d.proposal}
+                values={d as unknown as Record<string, unknown>}
+                editFields={[{ key: 'title', label: 'Nazwa' }, { key: 'description', label: 'Opis', type: 'longtext' },
+                  { key: 'subsector_main', label: 'Podsektor' }, { key: 'work_type', label: 'Rodzaj robót' }, { key: 'formula', label: 'Formuła' },
+                  { key: 'public_id_value', label: 'Identyfikator' }, { key: 'project_status', label: 'Stan realizacji' }]}
+                invalidate={[['project', d.id]]} />
+                : <p className="text-xs text-slate-500">Dane tej inwestycji weryfikuje ekspert w swoim panelu.</p>}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )
@@ -160,74 +169,45 @@ function Overview({ d }: { d: Schemas['ProjectDetail'] }) {
 
 /* ------------------------------------------------------------------ links */
 
-function LinksTab({ projectId }: { projectId: string }) {
+function LinksTab({ projectId, expert }: { projectId: string; expert: boolean }) {
   const links = useLinks(projectId)
   const cands = useCandidates(projectId)
   const [relink, setRelink] = useState(false)
   return (
     <div className="space-y-4">
-      <Card>
-        <CardHeader title="Powiązane postępowania BZP" description="Metoda, pewność i składowe dopasowania – każda ze źródłem. Propozycje systemu czekają na decyzję eksperta."
-          actions={<Button size="sm" variant="outline" onClick={() => setRelink(true)}><Link2 size={14} />Wskaż inne postępowanie</Button>} />
-        <CardContent>
-          <QueryState q={links} empty={(l) => l.length === 0}>{(ls) => (
-            <div className="space-y-3">
-              {ls.map((l) => (
-                <div key={l.id} className={cn('rounded-md border p-3', l.status === 'rejected' ? 'border-rose-200 bg-rose-50/40 opacity-70' : 'border-slate-200')}>
-                  <div className="flex flex-wrap items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <div className="text-sm font-medium">{l.procedure_title}</div>
-                      <div className="text-xs text-slate-500">{l.bzp_number} · <span className="font-mono">{l.ocid}</span>{l.part_no ? ` · część ${l.part_no}` : ''}
-                        {l.is_override && <Badge variant="violet" className="ml-1">decyzja eksperta</Badge>}</div>
-                    </div>
-                    <div className="flex items-center gap-2"><MethodConfidence method={l.method} confidence={l.confidence} /><StatusBadge status={l.status} /></div>
-                  </div>
-                  <ComponentsTable comps={l.components} />
-                  {!!l.alternatives?.length && (
-                    <details className="mt-2 text-xs"><summary className="cursor-pointer text-slate-600">Alternatywy odrzucone przez system ({l.alternatives.length})</summary>
-                      <ul className="mt-1 space-y-1">{l.alternatives.map((a, i) => (
-                        <li key={i} className="rounded bg-slate-50 p-1.5"><b>{fmtNum(a.score)}</b> · {a.bzp_number ?? a.ocid} – {a.title}
-                          {a.why_not && <div className="text-amber-700">Dlaczego nie: {a.why_not}</div>}</li>))}</ul></details>)}
-                  <div className="mt-2"><ReviewActions objectType="project_procedure" objectId={l.id} status={l.status} proposal={l.proposal}
-                    onRelink={() => setRelink(true)} invalidate={[['links', projectId], ['project', projectId]]} /></div>
-                </div>
-              ))}
-            </div>
-          )}</QueryState>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader title="Kandydaci (wszystkie postępowania beneficjenta)" description="Świeże przeliczenie dopasowania – nic nie jest zapisywane." actions={<BlockLabel label="obliczenia" />} />
-        <CardContent>
-          <QueryState q={cands} empty={(c) => c.length === 0}>{(cs) => (
-            <DataTable dense data={cs} getRowId={(r) => String(r.procedure_id)} columns={[
-              { accessorKey: 'score', header: 'Wynik', cell: ({ getValue }) => <span className="tabular-nums font-semibold">{fmtNum(getValue() as number, 3)}</span> },
-              { accessorKey: 'bzp_number', header: 'Ogłoszenie', cell: ({ row }) => <span className="font-mono text-xs">{row.original.bzp_number ?? row.original.ocid}</span> },
-              { accessorKey: 'title', header: 'Tytuł', cell: ({ getValue }) => <span className="line-clamp-2 max-w-xl text-xs">{String(getValue() ?? '')}</span> },
-              { id: 'comps', header: 'Składowe', cell: ({ row }) => <span className="text-[11px] text-slate-600">{(row.original.components ?? []).map((c) => `${c.name} ${fmtNum(c.score)}`).join(' · ')}</span> },
-            ] as ColumnDef<Schemas['LinkCandidate']>[]} />
-          )}</QueryState>
-        </CardContent>
-      </Card>
-      <RelinkDialog open={relink} onClose={() => setRelink(false)} projectId={projectId} candidates={cands.data ?? []} />
+      <Intro can={[
+        'sprawdzić, dlaczego system uznał, że dane postępowanie dotyczy tej inwestycji (lista warunków ✓/✗, każdy ze źródłem)',
+        'zobaczyć, które inne postępowania tego samego zamawiającego system rozważył i dlaczego je odrzucił',
+        ...(expert ? ['zatwierdzić lub odrzucić powiązanie albo wskazać właściwe postępowanie – decyzja przetrwa ponowne pobranie danych'] : []),
+      ]}>
+        Inwestycja z listy jest opisana jednym numerem (ogłoszenia lub projektu KPO). System odnajduje w Biuletynie Zamówień Publicznych postępowanie, którego dotyczy, wraz ze wszystkimi ogłoszeniami (o zamówieniu, o wyniku, o zmianach i o wykonaniu umowy).
+      </Intro>
+      <QueryState q={links} empty={(l) => l.length === 0}>{(ls) => (
+        <div className="space-y-3">
+          {ls.map((l) => (
+            <Card key={l.id} className={cn(l.status === 'rejected' && 'opacity-60')}>
+              <CardHeader title={l.procedure_title} description={<>Ogłoszenie {l.bzp_number}{l.part_no ? ` · część ${l.part_no}` : ''}{l.is_override ? ' · wskazane przez eksperta' : ''}</>}
+                actions={<StatusBadge status={l.status} />} />
+              <CardContent className="space-y-3">
+                <LinkVerdict method={l.method} confidence={l.confidence} />
+                <LinkReasons comps={l.components} />
+                {!!l.alternatives?.length && (
+                  <details className="text-sm"><summary className="cursor-pointer text-slate-600">Inne postępowania tego zamawiającego, które system rozważył ({l.alternatives.length})</summary>
+                    <ul className="mt-2 space-y-1.5">{l.alternatives.map((a, i) => (
+                      <li key={i} className="rounded bg-slate-50 p-2 text-xs"><b>{a.title}</b> <span className="text-slate-500">(ogłoszenie {a.bzp_number}; dopasowanie {confidenceWords(a.score)})</span>
+                        {a.why_not && <div className="text-amber-800">Dlaczego nie: {a.why_not}</div>}</li>))}</ul></details>)}
+                {expert && <ReviewActions objectType="project_procedure" objectId={l.id} status={l.status} proposal={l.proposal}
+                  onRelink={() => setRelink(true)} invalidate={[['links', projectId], ['project', projectId]]} />}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}</QueryState>
+      {expert && <>
+        <div className="flex justify-end"><Button variant="outline" onClick={() => setRelink(true)}><Link2 size={14} />Wskaż inne postępowanie</Button></div>
+        <RelinkDialog open={relink} onClose={() => setRelink(false)} projectId={projectId} candidates={cands.data ?? []} />
+      </>}
     </div>
-  )
-}
-
-function ComponentsTable({ comps }: { comps?: Schemas['LinkComponent'][] }) {
-  if (!comps?.length) return null
-  return (
-    <table className="mt-2 w-full text-xs">
-      <thead className="text-left text-slate-500"><tr><th className="py-0.5 font-medium">Składowa</th><th className="font-medium">Wynik</th><th className="font-medium">Waga</th><th className="font-medium">Wyjaśnienie</th><th /></tr></thead>
-      <tbody>{comps.map((c, i) => (
-        <tr key={i} className="border-t border-slate-100">
-          <td className="py-0.5 font-mono">{c.name}</td>
-          <td className={cn('tabular-nums', c.score >= 0.8 ? 'text-emerald-700' : c.score < 0.5 ? 'text-rose-700' : 'text-amber-700')}>{fmtNum(c.score)}</td>
-          <td className="tabular-nums text-slate-500">{c.weight == null ? '—' : fmtNum(c.weight)}</td>
-          <td className="text-slate-700">{c.detail}</td>
-          <td>{c.evidence_id && <EvidenceChip ids={[c.evidence_id]} />}</td>
-        </tr>))}</tbody>
-    </table>
   )
 }
 
@@ -240,26 +220,26 @@ function RelinkDialog({ open, onClose, projectId, candidates }: { open: boolean;
   const m = useApiMutation<Schemas['ProjectRelinkIn'], Schemas['LinkOut']>({
     fn: async (body) => unwrap(await api.POST('/api/projects/{project_id}/relink', { params: { path: { project_id: projectId } }, body })),
     invalidate: [['links', projectId], ['project', projectId], ['projects'], ['review'], ['history']],
-    onSuccess: () => { toast({ kind: 'success', title: 'Powiązanie zmienione', description: 'Zapisano jako decyzję eksperta (przetrwa ponowne przeliczenie).' }); onClose() },
+    onSuccess: () => { toast({ kind: 'success', title: 'Powiązanie zmienione', description: 'Zapisano jako decyzję eksperta – przetrwa ponowne pobranie danych.' }); onClose() },
     onError: (e) => toast({ kind: 'error', title: 'Nie udało się zmienić powiązania', description: String(e) }),
   })
   return (
-    <Dialog open={open} onClose={onClose} title="Wskaż właściwe postępowanie" description="Wybierz kandydata albo podaj numer ogłoszenia BZP (zostanie pobrane z BZP)."
+    <Dialog open={open} onClose={onClose} title="Wskaż właściwe postępowanie" description="Wybierz jedno z postępowań tego zamawiającego albo wpisz numer ogłoszenia BZP – system pobierze je z BZP."
       footer={<><Button variant="outline" onClick={onClose}>Anuluj</Button>
-        <Button loading={m.isPending} disabled={!sel && !notice.trim() || !comment.trim()}
+        <Button loading={m.isPending} disabled={(!sel && !notice.trim()) || !comment.trim()}
           onClick={() => m.mutate({ procedure_id: sel || null, notice_number: notice.trim() || null, part_no: part ? Number(part) : null, comment, ocid: null })}>Zapisz powiązanie</Button></>}>
       <div className="space-y-3 text-sm">
         <div className="max-h-64 space-y-1 overflow-auto">
           {candidates.map((c) => (
             <label key={String(c.procedure_id)} className={cn('flex cursor-pointer items-start gap-2 rounded border p-2', sel === c.procedure_id ? 'border-brand bg-brand-soft' : 'border-slate-200')}>
               <input type="radio" name="cand" className="mt-1 accent-brand" checked={sel === c.procedure_id} onChange={() => { setSel(String(c.procedure_id)); setNotice('') }} />
-              <span><b className="tabular-nums">{fmtNum(c.score, 3)}</b> · <span className="font-mono text-xs">{c.bzp_number}</span><br /><span className="text-xs">{c.title}</span></span>
+              <span><span className="text-xs">{c.title}</span><br /><span className="text-[11px] text-slate-500">ogłoszenie {c.bzp_number} · dopasowanie {confidenceWords(c.score)}</span></span>
             </label>))}
         </div>
         <div className="grid grid-cols-3 gap-2">
           <div className="col-span-2"><Label htmlFor="rl-n">…albo numer ogłoszenia BZP</Label>
-            <Input id="rl-n" value={notice} onChange={(e) => { setNotice(e.target.value); setSel('') }} placeholder="2023/BZP 00110672/01" /></div>
-          <div><Label htmlFor="rl-p">Część</Label><Input id="rl-p" type="number" min={1} value={part} onChange={(e) => setPart(e.target.value)} /></div>
+            <Input id="rl-n" value={notice} onChange={(e) => { setNotice(e.target.value); setSel('') }} placeholder="np. 2023/BZP 00110672/01" /></div>
+          <div><Label htmlFor="rl-p">Część zamówienia</Label><Input id="rl-p" type="number" min={1} value={part} onChange={(e) => setPart(e.target.value)} /></div>
         </div>
         <div><Label htmlFor="rl-c">Uzasadnienie (wymagane)</Label><Textarea id="rl-c" value={comment} onChange={(e) => setComment(e.target.value)} rows={2} /></div>
       </div>
@@ -274,19 +254,21 @@ function ContractsTab({ projectId }: { projectId: string }) {
   const contracts = useContracts(projectId)
   return (
     <div className="space-y-4">
+      <Intro can={['porównać planowany termin z faktycznym i wartość umowy z wypłatą', 'przeczytać, dlaczego zmieniano umowę (cytat z ogłoszenia o zmianie)']}>
+        Postępowanie przetargowe (co zamawiający chciał kupić, za ile, ile ofert wpłynęło), zawarte umowy z wykonawcami i każda zmiana umowy wraz z podstawą prawną i powodem. Kwota szacunkowa jest netto, pozostałe kwoty brutto.
+      </Intro>
       <QueryState q={procs} empty={(x) => x.length === 0}>{(ps) => (
         <div className="grid gap-3 md:grid-cols-2">{ps.map((p) => (
           <Card key={p.id}>
-            <CardHeader title={p.title} description={<><span className="font-mono">{p.bzp_number}</span> · {p.mode ?? 'tryb ?'} · CPV {p.cpv_main ?? '—'}</>}
-              actions={<EvidenceChip ids={p.evidence_ids} />} />
-            <CardContent className="grid grid-cols-2 gap-2 text-xs">
-              <Kv k="Wartość szacunkowa (netto)" v={fmtPln(p.est_value_net)} />
-              <Kv k="Kwota na sfinansowanie (brutto)" v={fmtPln(p.budget_gross)} />
-              <Kv k="Liczba ofert" v={p.offers_count ?? '—'} />
-              <Kv k="Okres realizacji" v={p.planned_period_text ?? (p.planned_days ? `${p.planned_days} dni` : '—')} />
-              <Kv k="Części" v={p.parts ?? 1} />
-              <Kv k="Środki UE" v={p.eu_funded == null ? '—' : p.eu_funded ? `tak${p.eu_project_ref ? ` (${p.eu_project_ref})` : ''}` : 'nie'} />
-              {p.cancelled && <div className="col-span-2"><Badge variant="danger">Unieważnione: {p.cancel_basis}</Badge></div>}
+            <CardHeader title={p.title} description={<>Postępowanie, ogłoszenie {p.bzp_number}</>} actions={<EvidenceChip ids={p.evidence_ids} />} />
+            <CardContent className="grid grid-cols-2 gap-3 text-sm">
+              <Fact label="Wartość szacunkowa (netto)" value={fmtPln(p.est_value_net)} />
+              <Fact label="Kwota przeznaczona przez zamawiającego (brutto)" value={fmtPln(p.budget_gross)} />
+              <Fact label="Liczba ofert" value={p.offers_count ?? '—'} />
+              <Fact label="Planowany czas realizacji" value={p.planned_period_text ?? (p.planned_days ? `${p.planned_days} dni` : '—')} />
+              <Fact label="Tryb" value={p.mode ? p.mode.replace(/^Zamówienie udzielane jest w trybie /i, '').replace(/ na podstawie:.*/, '') : '—'} />
+              <Fact label="Środki UE" value={p.eu_funded == null ? '—' : p.eu_funded ? 'tak' : 'nie'} />
+              {p.cancelled && <div className="col-span-2"><Badge variant="danger">Postępowanie unieważnione</Badge></div>}
             </CardContent>
           </Card>))}</div>
       )}</QueryState>
@@ -296,34 +278,33 @@ function ContractsTab({ projectId }: { projectId: string }) {
           return (
             <Card key={c.id}>
               <CardHeader title={`Umowa${c.part_no ? ` – część ${c.part_no}` : ''}`}
-                description={c.contractor ? `Wykonawca: ${c.contractor.natural_person_flag ? 'osoba fizyczna (dane ukryte)' : c.contractor.name}${c.contractor.nip && !c.contractor.natural_person_flag ? ` · NIP ${c.contractor.nip}` : ''}` : undefined}
-                actions={<><EvidenceChip ids={c.evidence_ids} /><StatusBadge status={c.status} /></>} />
-              <CardContent>
-                <div className="grid grid-cols-2 gap-2 text-xs md:grid-cols-4">
-                  <Kv k="Zawarta" v={fmtDate(c.signed_at)} />
-                  <Kv k="Wartość (brutto)" v={fmtPln(c.value_gross)} />
-                  <Kv k="Planowany koniec" v={fmtDate(c.planned_end)} />
-                  <Kv k="Faktyczny koniec" v={fmtDate(c.actual_end)} />
-                  <Kv k="Wypłacono (brutto)" v={fmtPln(c.paid_gross)} warn={!!(c.paid_gross && c.value_gross && c.paid_gross > c.value_gross)} />
-                  <Kv k="Opóźnienie" v={delay == null ? '—' : `${delay} dni`} warn={(delay ?? 0) > 0} />
-                  <Kv k="W terminie" v={c.on_time == null ? '—' : c.on_time ? 'tak' : 'nie'} warn={c.on_time === false} />
-                  <Kv k="Należycie" v={c.proper == null ? '—' : c.proper ? 'tak' : 'nie'} warn={c.proper === false} />
+                description={c.contractor ? `Wykonawca: ${c.contractor.natural_person_flag ? 'osoba fizyczna (dane ukryte)' : c.contractor.name}` : undefined}
+                actions={<EvidenceChip ids={c.evidence_ids} />} />
+              <CardContent className="space-y-3">
+                <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
+                  <Fact label="Podpisana" value={fmtDate(c.signed_at)} />
+                  <Fact label="Wartość umowy" value={fmtPln(c.value_gross)} />
+                  <Fact label="Planowany koniec" value={fmtDate(c.planned_end)} />
+                  <Fact label="Faktyczny koniec" value={fmtDate(c.actual_end)} />
+                  <Fact label="Wypłacono" value={fmtPln(c.paid_gross)} warn={!!(c.paid_gross && c.value_gross && c.paid_gross > c.value_gross)} />
+                  <Fact label="Opóźnienie" value={delay == null ? '—' : delay > 0 ? `${delay} dni` : 'w terminie'} warn={(delay ?? 0) > 0} />
+                  <Fact label="Wykonana w terminie?" value={c.on_time == null ? '—' : c.on_time ? 'tak' : 'nie'} warn={c.on_time === false} />
+                  <Fact label="Wykonana należycie?" value={c.proper == null ? '—' : c.proper ? 'tak' : 'nie'} warn={c.proper === false} />
                 </div>
                 {!!c.changes?.length && (
-                  <div className="mt-3">
-                    <h3 className="mb-1 text-xs font-semibold text-slate-700">Zmiany umowy ({c.changes.length})</h3>
-                    <ul className="space-y-2">{c.changes.map((ch) => (
-                      <li key={ch.id} className="rounded border border-slate-200 p-2 text-xs">
+                  <div>
+                    <h3 className="mb-1 text-sm font-semibold">Zmiany umowy ({c.changes.length})</h3>
+                    <ol className="space-y-2">{c.changes.map((ch) => (
+                      <li key={ch.id} className="rounded-md border border-slate-200 p-2 text-sm">
                         <div className="flex flex-wrap items-center gap-2"><b>Zmiana nr {ch.change_no}</b>
-                          {ch.change_date && <span>{fmtDate(ch.change_date)}</span>}
-                          {ch.legal_basis_code && <Badge variant="info">{ch.legal_basis_code}</Badge>}
-                          {ch.new_end && <Badge>nowy termin {fmtDate(ch.new_end)}</Badge>}
+                          {ch.change_date && <span className="text-xs text-slate-500">{fmtDate(ch.change_date)}</span>}
+                          {ch.new_end && <Badge>nowy termin: {fmtDate(ch.new_end)}</Badge>}
                           {ch.value_delta != null && <Badge>{ch.value_delta > 0 ? '+' : ''}{fmtPln(ch.value_delta)}</Badge>}
-                          <EvidenceChip ids={ch.evidence_ids} />
+                          <EvidenceChip ids={ch.evidence_ids} className="ml-auto" />
                         </div>
-                        {ch.legal_basis && <div className="mt-1 text-slate-500">{ch.legal_basis}</div>}
-                        {ch.reason && <div className="mt-1 text-slate-700">„{ch.reason}”</div>}
-                      </li>))}</ul>
+                        {ch.legal_basis && <div className="mt-1 text-xs text-slate-500">Podstawa: {ch.legal_basis}</div>}
+                        {ch.reason && <div className="mt-1 text-slate-700">Powód: „{ch.reason}”</div>}
+                      </li>))}</ol>
                   </div>)}
               </CardContent>
             </Card>)
@@ -333,40 +314,40 @@ function ContractsTab({ projectId }: { projectId: string }) {
   )
 }
 
-function Kv({ k, v, warn }: { k: string; v: React.ReactNode; warn?: boolean }) {
-  return <div><div className="text-slate-500">{k}</div><div className={cn('font-medium', warn && 'text-rose-700')}>{v}</div></div>
-}
-
 /* ------------------------------------------------------------------ events */
 
-function EventsTab({ projectId }: { projectId: string }) {
+function EventsTab({ projectId, expert }: { projectId: string; expert: boolean }) {
   const ev = useEvents(projectId)
   return (
-    <QueryState q={ev} empty={(x) => x.length === 0}>{(items) => (
-      <div className="space-y-3">{items.map((e) => (
-        <Card key={e.id} className={cn(e.status === 'rejected' && 'opacity-60')}>
-          <CardHeader title={<span className="flex flex-wrap items-center gap-2">{e.title ?? EVENT_PL[e.event_type] ?? e.event_type}<RiskCodes codes={e.risk_codes} />{e.exemplary && <Badge variant="violet">wzorcowe</Badge>}</span>}
-            description={<>{EVENT_PL[e.event_type] ?? e.event_type} · {fmtDate(e.event_date)}</>}
-            actions={<><BlockLabel label={e.model_label ? 'wniosek_modelu' : 'dane_zrodlowe'} /><MethodConfidence method={e.method} confidence={e.confidence} compact /><StatusBadge status={e.status} /></>} />
-          <CardContent className="space-y-2 text-sm">
-            {e.quote && <blockquote className="border-l-2 border-teal-400 bg-teal-50/40 py-1 pl-2 text-xs text-slate-700">„{e.quote}” <EvidenceChip ids={e.evidence_ids} /></blockquote>}
-            {!e.quote && <EvidenceChip ids={e.evidence_ids} />}
-            <dl className="grid gap-x-4 gap-y-1 text-xs sm:grid-cols-2">
-              {e.cause && <div><dt className="text-slate-500">Przyczyna</dt><dd>{e.cause}</dd></div>}
-              {e.effect && <div><dt className="text-slate-500">Skutek</dt><dd>{e.effect}
-                {e.effect_days != null && ` · ${fmtNum(e.effect_days, 0)} dni`}{e.effect_pln != null && ` · ${fmtPln(e.effect_pln)}`}{e.effect_pct != null && ` · ${fmtNum(e.effect_pct, 1)}%`}</dd></div>}
-              {e.signal && <div><dt className="text-slate-500">Sygnał</dt><dd>{e.signal}</dd></div>}
-              {e.mitigation && <div><dt className="text-slate-500">Działanie zaradcze</dt><dd>{e.mitigation}{e.mitigation_effect && <Badge className="ml-1" variant={e.mitigation_effect === 'skuteczne' ? 'success' : 'warning'}>{e.mitigation_effect}</Badge>}</dd></div>}
-            </dl>
-            {e.model_label && <div className="text-[11px] text-violet-700">Wniosek modelu: {e.model_label}</div>}
-            <ReviewActions objectType="event" objectId={e.id} status={e.status} exemplary={e.exemplary} proposal={e.proposal}
-              values={e as unknown as Record<string, unknown>}
-              editFields={[{ key: 'risk_codes', label: 'Kategorie ryzyka', type: 'rcodes' }, { key: 'cause', label: 'Przyczyna', type: 'longtext' },
-                { key: 'effect', label: 'Skutek', type: 'longtext' }, { key: 'mitigation', label: 'Działanie zaradcze', type: 'longtext' }]}
-              invalidate={[['events', projectId]]} />
-          </CardContent>
-        </Card>))}</div>
-    )}</QueryState>
+    <div>
+      <Intro can={['kliknąć „Pokaż w źródle”, żeby zobaczyć ogłoszenie lub dokument z zaznaczonym fragmentem', ...(expert ? ['zatwierdzić zdarzenie, poprawić przyczynę lub kategorię ryzyka, oznaczyć je jako wzorcowe (system użyje go jako przykładu)'] : [])]}>
+        Co się wydarzyło w tej inwestycji (opóźnienie, zmiana umowy, wypłata ponad wartość umowy, kary…), dlaczego (przyczyna z cytatem) i jaki był skutek (dni, złote). Każde zdarzenie ma kategorię ryzyka z katalogu ekspertów (R01–R15). Etykieta „Wniosek modelu” oznacza, że przyczynę sklasyfikował model językowy – zawsze z cytatem sprawdzonym w źródle.
+      </Intro>
+      <QueryState q={ev} empty={(x) => x.length === 0}>{(items) => (
+        <div className="space-y-3">{items.map((e) => (
+          <Card key={e.id} className={cn(e.status === 'rejected' && 'opacity-60')}>
+            <CardHeader title={<span className="flex flex-wrap items-center gap-2">{e.title ?? EVENT_PL[e.event_type] ?? e.event_type}<RiskCodes codes={e.risk_codes} />{e.exemplary && <Badge variant="violet">wzorcowe</Badge>}</span>}
+              description={<>{EVENT_PL[e.event_type] ?? e.event_type}{e.event_date ? ` · ${fmtDate(e.event_date)}` : ''}</>}
+              actions={<><BlockLabel label={e.model_label ? 'wniosek_modelu' : 'dane_zrodlowe'} /><StatusBadge status={e.status} /></>} />
+            <CardContent className="space-y-2 text-sm">
+              {e.quote && <blockquote className="border-l-2 border-teal-400 bg-teal-50/40 py-1 pl-2 text-slate-700">„{e.quote}”</blockquote>}
+              <div className="flex"><EvidenceChip ids={e.evidence_ids} label="Pokaż w źródle" /></div>
+              <div className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                {e.cause && <Fact label="Przyczyna" value={<span className="font-normal">{e.cause}</span>} />}
+                {(e.effect || e.effect_days != null || e.effect_pln != null) && <Fact label="Skutek" value={<span className="font-normal">{e.effect}
+                  {e.effect_days != null && ` · ${fmtNum(e.effect_days, 0)} dni`}{e.effect_pln != null && ` · ${fmtPln(e.effect_pln)}`}</span>} />}
+                {e.mitigation && <Fact label="Działanie zaradcze" value={<span className="font-normal">{e.mitigation}{e.mitigation_effect && <Badge className="ml-1" variant={e.mitigation_effect === 'skuteczne' ? 'success' : 'warning'}>{e.mitigation_effect}</Badge>}</span>} />}
+              </div>
+              {e.model_label && <div className="text-[11px] text-amber-800">Przyczynę sklasyfikował: {e.model_label}; pewność {confidenceWords(e.confidence)}.</div>}
+              {expert && <ReviewActions objectType="event" objectId={e.id} status={e.status} exemplary={e.exemplary} proposal={e.proposal}
+                values={e as unknown as Record<string, unknown>}
+                editFields={[{ key: 'risk_codes', label: 'Kategorie ryzyka', type: 'rcodes' }, { key: 'cause', label: 'Przyczyna', type: 'longtext' },
+                  { key: 'effect', label: 'Skutek', type: 'longtext' }, { key: 'mitigation', label: 'Działanie zaradcze', type: 'longtext' }]}
+                invalidate={[['events', projectId]]} />}
+            </CardContent>
+          </Card>))}</div>
+      )}</QueryState>
+    </div>
   )
 }
 
@@ -375,83 +356,82 @@ function EventsTab({ projectId }: { projectId: string }) {
 function NoticesTab({ projectId, selected, section, quote, onSelect }: { projectId: string; selected?: string; section?: string; quote?: string; onSelect: (id: string) => void }) {
   const n = useNotices(projectId)
   return (
-    <QueryState q={n} empty={(x) => x.length === 0}>{(ns) => {
-      const cur = selected ?? ns[0]?.id
-      return (
-        <div className="grid gap-4 lg:grid-cols-[320px_1fr]">
-          <ul className="space-y-1">{ns.map((x) => (
-            <li key={x.id}><button onClick={() => onSelect(x.id)}
-              className={cn('w-full rounded border p-2 text-left text-xs cursor-pointer', cur === x.id ? 'border-brand bg-brand-soft' : 'border-slate-200 hover:bg-slate-50')}>
-              <div className="font-semibold">{NOTICE_PL[x.notice_type] ?? x.notice_type}</div>
-              <div className="font-mono">{x.notice_number}</div>
-              <div className="text-slate-500">{fmtDate(x.published_at)}</div>
-            </button></li>))}</ul>
-          <div>
-            {cur && (() => {
-              const x = ns.find((y) => y.id === cur)
-              return (<>
-                {x?.url && <a href={x.url} target="_blank" rel="noreferrer" className="mb-2 inline-flex items-center gap-1 text-xs text-brand hover:underline"><ExternalLink size={12} />Ogłoszenie w e-Zamówieniach (link stały)</a>}
-                <NoticeView noticeId={cur} section={section} quote={quote} />
-              </>)
-            })()}
+    <div>
+      <Intro can={['wybrać ogłoszenie z listy i przeczytać jego pełną treść podzieloną na punkty', 'wyszukać słowo w treści ogłoszenia', 'otworzyć oryginał w e-Zamówieniach']}>
+        Pełna treść wszystkich ogłoszeń z Biuletynu Zamówień Publicznych dotyczących tej inwestycji – w tej samej numeracji punktów co w oryginale.
+      </Intro>
+      <QueryState q={n} empty={(x) => x.length === 0}>{(ns) => {
+        const cur = selected ?? ns[0]?.id
+        return (
+          <div className="grid gap-4 lg:grid-cols-[300px_1fr]">
+            <ul className="space-y-1">{ns.map((x) => (
+              <li key={x.id}><button onClick={() => onSelect(x.id)}
+                className={cn('w-full cursor-pointer rounded border p-2 text-left text-xs', cur === x.id ? 'border-brand bg-brand-soft' : 'border-slate-200 bg-white hover:bg-slate-50')}>
+                <div className="font-semibold">{NOTICE_PL[x.notice_type] ?? x.notice_type}</div>
+                <div>{x.notice_number} · {fmtDate(x.published_at)}</div>
+              </button></li>))}</ul>
+            <div>
+              {cur && (() => {
+                const x = ns.find((y) => y.id === cur)
+                return (<>
+                  {x?.url && <a href={x.url} target="_blank" rel="noreferrer" className="mb-2 inline-flex items-center gap-1 text-xs text-brand hover:underline"><ExternalLink size={12} />Oryginał w e-Zamówieniach</a>}
+                  <NoticeView noticeId={cur} section={section} quote={quote} />
+                </>)
+              })()}
+            </div>
           </div>
-        </div>
-      )
-    }}</QueryState>
+        )
+      }}</QueryState>
+    </div>
   )
 }
 
 /* ------------------------------------------------------------------ documents */
 
-function DocumentsTab({ projectId }: { projectId: string }) {
+function DocumentsTab({ projectId, expert }: { projectId: string; expert: boolean }) {
   const docs = useDocuments(projectId)
   const ref = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
   const [url, setUrl] = useState('')
   const { toast } = useToast()
-  const qc = docs.refetch
   async function upload(f: File) {
     setBusy(true)
     try {
       const fd = new FormData()
-      fd.append('file', f)
-      fd.append('project_id', projectId)
-      const headers: Record<string, string> = {}
-      const u = localStorage.getItem('rm_user'); if (u) headers['X-User'] = u
-      const r = await fetch('/api/documents', { method: 'POST', body: fd, headers })
-      if (!r.ok) throw new Error(await r.text())
-      toast({ kind: 'success', title: 'Dokument dodany', description: 'Tekst wyodrębniony, fragmenty ryzyka zaproponowane.' })
-      qc()
+      fd.append('file', f); fd.append('project_id', projectId)
+      const token = localStorage.getItem('rm_token')
+      const r = await fetch('/api/documents', { method: 'POST', body: fd, headers: token ? { Authorization: `Bearer ${token}` } : {} })
+      if (!r.ok) throw new Error((await r.json().catch(() => ({})))?.detail ?? r.statusText)
+      toast({ kind: 'success', title: 'Dokument dodany', description: 'Tekst odczytany; fragmenty wskazujące ryzyko czekają na Twoją decyzję.' })
+      docs.refetch()
     } catch (e) { toast({ kind: 'error', title: 'Nie udało się dodać dokumentu', description: String(e) }) } finally {
       setBusy(false); if (ref.current) ref.current.value = ''
     }
   }
   async function fromUrl() {
     setBusy(true)
-    try {
-      unwrap(await api.POST('/api/documents/from-url', { body: { url, project_id: projectId, analysis_id: null, doc_type: null } }))
-      setUrl(''); qc()
-    } catch (e) { toast({ kind: 'error', title: 'Nie udało się pobrać', description: String(e) }) } finally { setBusy(false) }
+    try { unwrap(await api.POST('/api/documents/from-url', { body: { url, project_id: projectId, analysis_id: null, doc_type: null } })); setUrl(''); docs.refetch() }
+    catch (e) { toast({ kind: 'error', title: 'Nie udało się pobrać', description: String(e) }) } finally { setBusy(false) }
   }
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-end gap-2">
+      <Intro can={['otworzyć dokument w podglądzie', ...(expert ? ['dodać dokument (PDF, Word, Excel) albo podać adres URL – system odczyta tekst ze stronami i wskaże fragmenty, które mogą świadczyć o ryzyku', 'potem użyć „Przelicz zdarzenia”, żeby zobaczyć, co nowy dokument zmienił'] : [])]}>
+        Dokumenty inwestycji poza ogłoszeniami BZP: umowa, aneksy, protokoły, specyfikacja (SWZ), program funkcjonalno-użytkowy, raporty kontroli.
+      </Intro>
+      {expert && <div className="flex flex-wrap items-end gap-2">
         <input ref={ref} type="file" className="hidden" accept=".pdf,.docx,.xlsx,.xls,.csv,.html,.htm,.txt" onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} aria-label="Plik dokumentu" />
-        <Button variant="outline" loading={busy} onClick={() => ref.current?.click()}><FileUp size={14} />Dodaj dokument (PDF, DOCX, XLSX)</Button>
-        <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="…albo adres URL dokumentu" className="w-80" />
+        <Button variant="outline" loading={busy} onClick={() => ref.current?.click()}><FileUp size={14} />Dodaj dokument</Button>
+        <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="…albo adres dokumentu w internecie" className="w-80" />
         <Button variant="outline" disabled={!url.startsWith('http')} loading={busy} onClick={fromUrl}>Pobierz</Button>
-      </div>
+      </div>}
       <QueryState q={docs} empty={(x) => x.length === 0}>{(ds) => (
-        <DataTable data={ds} getRowId={(r) => r.id} columns={[
-          { accessorKey: 'title', header: 'Dokument', cell: ({ row }) => (
-            <Link to="/dokumenty/$documentId" params={{ documentId: row.original.id }} search={{}} className="font-medium text-brand hover:underline">{row.original.title ?? row.original.file_name}</Link>) },
-          { accessorKey: 'doc_type', header: 'Typ', cell: ({ getValue }) => <Badge>{String(getValue() ?? '—')}</Badge> },
-          { accessorKey: 'phase', header: 'Faza', cell: ({ getValue }) => <span className="text-xs">{String(getValue() ?? '—')}</span> },
-          { accessorKey: 'pages', header: 'Strony' },
-          { accessorKey: 'version', header: 'Wersja' },
-          { accessorKey: 'text_status', header: 'Tekst', cell: ({ getValue }) => <span className="text-xs">{String(getValue() ?? '—')}</span> },
-          { accessorKey: 'created_at', header: 'Dodano', cell: ({ getValue }) => <span className="text-xs">{fmtDateTime(getValue() as string)}</span> },
-        ] as ColumnDef<Schemas['DocumentOut']>[]} />
+        <ul className="grid gap-2 md:grid-cols-2">{ds.map((d) => (
+          <li key={d.id}><Link to="/dokumenty/$documentId" params={{ documentId: d.id }} search={{}}
+            className="flex items-start gap-2 rounded-lg border border-slate-200 bg-white p-3 hover:border-brand">
+            <FileText size={18} className="mt-0.5 shrink-0 text-slate-400" />
+            <span className="min-w-0"><span className="block truncate font-medium">{d.title ?? d.file_name}</span>
+              <span className="text-xs text-slate-500">{[d.doc_type, d.phase, d.pages ? `${d.pages} str.` : null, `dodano ${fmtDate(d.created_at)}`].filter(Boolean).join(' · ')}</span></span>
+          </Link></li>))}</ul>
       )}</QueryState>
     </div>
   )
@@ -463,20 +443,26 @@ function IssuesTab({ projectId }: { projectId: string }) {
   const c = useApi(['project', projectId, 'completeness'], async () =>
     unwrap(await api.GET('/api/projects/{project_id}/completeness', { params: { path: { project_id: projectId } } })))
   return (
-    <QueryState q={c}>{(d) => (
-      <div className="space-y-3">
-        <div className="flex items-center gap-3 text-sm"><span>Kompletność danych projektu:</span><Completeness value={d.score} /><BlockLabel label="obliczenia" /></div>
-        <p className="text-xs text-slate-500">Stany wg eksperta nie są równoważne: <b>nie ma w paczce</b> (nie znaczy, że dokument nie istnieje) · <b>dokument nie wspomina</b> · <b>brak potwierdzenia</b> · <b>potwierdzono, że nie wykonano</b>; <b>sprzeczne</b> – źródła podają różne wartości.</p>
-        <DataTable data={d.items} getRowId={(r) => r.id} columns={[
-          { accessorKey: 'state', header: 'Stan', cell: ({ getValue }) => <Badge variant={ISSUE_V[String(getValue())] ?? 'default'}>{ISSUE_L[String(getValue())] ?? String(getValue() ?? '—')}</Badge> },
-          { accessorKey: 'field', header: 'Pole', cell: ({ getValue }) => <span className="font-mono text-xs">{String(getValue() ?? '')}</span> },
-          { accessorKey: 'message', header: 'Opis', cell: ({ row }) => <div className="max-w-xl text-xs">{row.original.message}</div> },
-          { accessorKey: 'what_to_add', header: 'Co uzupełnić', cell: ({ getValue }) => <span className="text-xs">{String(getValue() ?? '')}</span> },
-          { accessorKey: 'impact', header: 'Wpływ na analizę', cell: ({ getValue }) => <span className="text-xs">{String(getValue() ?? '')}</span> },
-          { id: 'ev', header: 'Źródło', cell: ({ row }) => row.original.evidence_ids?.length ? <EvidenceChip ids={row.original.evidence_ids} /> : null },
-        ] as ColumnDef<Schemas['DataIssueOut']>[]} />
-      </div>
-    )}</QueryState>
+    <div>
+      <Intro can={['sprawdzić, jakich dokumentów lub informacji brakuje i jak to ogranicza analizę', 'zobaczyć, gdzie dwa źródła podają różne wartości']}>
+        Ekspert rozróżnia cztery sytuacje, które nie są równoważne: dokumentu <b>nie ma w zebranych materiałach</b> (nie znaczy, że nie istnieje), dokument <b>nie wspomina</b> o czymś, <b>brak potwierdzenia</b> (są tylko przesłanki) oraz <b>potwierdzono, że nie wykonano</b>. Osobno pokazujemy sprzeczności między źródłami.
+      </Intro>
+      <QueryState q={c}>{(d) => (
+        <div className="space-y-3">
+          <div className="flex items-center gap-3 text-sm"><span>Kompletność danych tej inwestycji:</span><Completeness value={d.score} /></div>
+          <ul className="space-y-2">{d.items.map((i) => {
+            const st = ISSUE[String(i.state)] ?? { label: String(i.state ?? '—'), tone: 'default' as const }
+            return (
+              <li key={i.id} className="rounded-lg border border-slate-200 bg-white p-3 text-sm">
+                <div className="flex flex-wrap items-center gap-2"><Badge variant={st.tone}>{st.label}</Badge><span className="font-medium">{i.message}</span>
+                  {!!i.evidence_ids?.length && <EvidenceChip ids={i.evidence_ids} className="ml-auto" />}</div>
+                {i.what_to_add && <div className="mt-1 text-xs"><span className="text-slate-500">Co uzupełnić: </span>{i.what_to_add}</div>}
+                {i.impact && <div className="text-xs"><span className="text-slate-500">Jak to wpływa na analizę: </span>{i.impact}</div>}
+              </li>)
+          })}</ul>
+        </div>
+      )}</QueryState>
+    </div>
   )
 }
 
@@ -485,17 +471,28 @@ function IssuesTab({ projectId }: { projectId: string }) {
 function HistoryTab({ projectId }: { projectId: string }) {
   const h = useHistory(projectId)
   return (
-    <QueryState q={h} empty={(x) => x.length === 0}>{(items) => (
-      <ol className="space-y-2">{items.map((r) => (
-        <li key={r.id} className="rounded border border-slate-200 bg-white p-2 text-xs">
-          <div className="flex flex-wrap items-center gap-2"><b>{fmtDateTime(r.at)}</b><span>{r.reviewer}</span>
-            <Badge>{ACTION_LABEL[r.action] ?? r.action}</Badge><span className="text-slate-500">{OBJECT_TYPE_LABEL[r.object_type] ?? r.object_type}</span></div>
-          {r.comment && <div className="mt-1 text-slate-700">„{r.comment}”</div>}
-          {r.after && <details className="mt-1"><summary className="cursor-pointer text-slate-500">Zmiana</summary>
-            <pre className="mt-1 max-h-48 overflow-auto rounded bg-slate-50 p-2 text-[11px]">{JSON.stringify({ przed: r.before, po: r.after }, null, 1)}</pre></details>}
-        </li>))}</ol>
-    )}</QueryState>
+    <div>
+      <Intro>Każda decyzja eksperta dotycząca tej inwestycji (zatwierdzenie, poprawka, odrzucenie, zmiana powiązania) – kto, kiedy, z jakim uzasadnieniem i co dokładnie zmienił.</Intro>
+      <QueryState q={h} empty={(x) => x.length === 0}>{(items) => (
+        <ol className="space-y-2">{items.map((r) => (
+          <li key={r.id} className="rounded-lg border border-slate-200 bg-white p-3 text-sm">
+            <div className="flex flex-wrap items-center gap-2"><b>{fmtDateTime(r.at)}</b><span>{r.reviewer}</span>
+              <Badge>{ACTION_LABEL[r.action] ?? r.action}</Badge><span className="text-slate-500">{OBJECT_TYPE_LABEL[r.object_type] ?? r.object_type}</span></div>
+            {r.comment && <div className="mt-1 text-slate-700">Uzasadnienie: „{r.comment}”</div>}
+            <ChangeList before={r.before} after={r.after} />
+          </li>))}</ol>
+      )}</QueryState>
+    </div>
   )
+}
+
+const SKIP = new Set(['id', 'created_at', 'updated_at', 'reviewed_at', 'evidence_ids', 'proposal', 'components', 'alternatives', 'import_row', 'features'])
+function ChangeList({ before, after }: { before?: Record<string, unknown> | null; after?: Record<string, unknown> | null }) {
+  if (!after) return null
+  const keys = Object.keys(after).filter((k) => !SKIP.has(k) && JSON.stringify(after[k]) !== JSON.stringify(before?.[k]))
+  if (!keys.length) return null
+  const v = (x: unknown) => (x == null || x === '' ? '—' : Array.isArray(x) ? x.join(', ') : typeof x === 'object' ? '…' : String(x))
+  return <ul className="mt-1 space-y-0.5 text-xs text-slate-600">{keys.map((k) => <li key={k}><span className="text-slate-500">{k}:</span> {v(before?.[k])} → <b>{v(after[k])}</b></li>)}</ul>
 }
 
 /* ------------------------------------------------------------------ re-analysis */
@@ -507,21 +504,21 @@ function Reanalyze({ projectId }: { projectId: string }) {
     fn: async () => unwrap(await api.POST('/api/projects/{project_id}/reanalyze', { params: { path: { project_id: projectId } } })),
     invalidate: [['events', projectId], ['project', projectId]],
     onSuccess: (d) => setDiff(d),
-    onError: (e) => toast({ kind: 'error', title: 'Ponowna analiza nie powiodła się', description: String(e) }),
+    onError: (e) => toast({ kind: 'error', title: 'Przeliczenie nie powiodło się', description: String(e) }),
   })
   const sec = (t: string, xs: { title?: string | null; event_type: string }[], v: 'success' | 'info' | 'danger') => (
-    <div><h3 className="mb-1 text-xs font-semibold">{t} <Badge variant={v}>{xs.length}</Badge></h3>
-      <ul className="list-disc pl-5 text-xs">{xs.map((x, i) => <li key={i}>{x.title ?? x.event_type}</li>)}</ul></div>)
+    <div><h3 className="mb-1 text-sm font-semibold">{t} <Badge variant={v}>{xs.length}</Badge></h3>
+      <ul className="list-disc pl-5 text-sm">{xs.map((x, i) => <li key={i}>{x.title ?? x.event_type}</li>)}</ul></div>)
   return (
     <>
-      <Button variant="outline" loading={m.isPending} onClick={() => m.mutate()}><Sparkles size={14} />Analizuj ponownie</Button>
-      <Dialog open={!!diff} onClose={() => setDiff(null)} title="Wynik ponownej analizy" description="Co się zmieniło po przeliczeniu reguł na aktualnych danych. Decyzje eksperta nie zostały nadpisane."
+      <Button variant="outline" loading={m.isPending} onClick={() => m.mutate()} title="Ponownie wylicza zdarzenia z aktualnych ogłoszeń i dokumentów i pokazuje różnice"><Sparkles size={14} />Przelicz zdarzenia</Button>
+      <Dialog open={!!diff} onClose={() => setDiff(null)} title="Co zmieniło się po przeliczeniu" description="System wyliczył zdarzenia od nowa na aktualnych danych. Twoje wcześniejsze decyzje nie zostały nadpisane – różnice czekają na Twoją ocenę."
         footer={<Button onClick={() => setDiff(null)}>OK</Button>}>
         {diff && <div className="space-y-3">
-          {sec('Nowe', diff.new ?? [], 'success')}
-          {sec('Zmienione (propozycja do przeglądu)', (diff.changed ?? []).map((c) => (c.event ?? {}) as { title?: string; event_type: string }), 'info')}
-          {sec('Potwierdzone', diff.confirmed ?? [], 'info')}
-          {sec('Zamknięte (nie występują w nowych danych)', diff.closed ?? [], 'danger')}
+          {sec('Nowe zdarzenia', diff.new ?? [], 'success')}
+          {sec('Zmienione (czekają na decyzję)', (diff.changed ?? []).map((c) => (c.event ?? {}) as { title?: string; event_type: string }), 'info')}
+          {sec('Bez zmian', diff.confirmed ?? [], 'info')}
+          {sec('Już nie występują w danych', diff.closed ?? [], 'danger')}
         </div>}
       </Dialog>
     </>

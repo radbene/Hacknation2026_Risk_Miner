@@ -132,4 +132,6 @@ def test_ops_endpoints(client):
     assert any(x["kind"] == "data" for x in lic) and any(x["kind"] == "library" for x in lic)
     assert client.get("/api/alerts").status_code == 200
     assert client.get("/api/quality").status_code in (200, 501)
-    assert client.post("/api/monitor/watch", json={}).status_code == 422
+    # monitoring is an expert-panel action: anonymous demo visitor (= user) is refused, the expert gets validation
+    assert client.post("/api/monitor/watch", json={}).status_code == 403
+    assert client.post("/api/monitor/watch", json={}, headers={"X-User": "ekspert"}).status_code == 422

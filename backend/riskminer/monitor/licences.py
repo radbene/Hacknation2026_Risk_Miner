@@ -32,6 +32,7 @@ DATA_SOURCES = [
 MODEL_LICENCES = {
     "anthropic": "usługa API (Anthropic Commercial Terms) – brak trenowania na danych API",
     "openai": "usługa API (OpenAI Services Agreement)",
+    "openai_compatible": "zależnie od modelu (Bielik: Apache-2.0)",
     "gemini": "usługa API (Google Gemini API Terms)",
     "litellm": "zależnie od wybranego dostawcy",
     "none": "brak modelu (reguły deterministyczne)",

@@ -1,4 +1,5 @@
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, ReferenceArea, ReferenceLine, ResponsiveContainer, Scatter, ScatterChart, Tooltip, XAxis, YAxis, ZAxis } from 'recharts'
+import { Link } from '@tanstack/react-router'
 import { useTimeline } from '@/api/cases'
 import type { Schemas } from '@/api/client'
 import { BlockLabel } from '@/components/BlockLabel'
@@ -17,7 +18,7 @@ const ts = (d?: string | null) => (d ? new Date(d).getTime() : NaN)
 
 export function TimelineTab({ projectId }: { projectId: string }) {
   const q = useTimeline(projectId)
-  return <QueryState q={q}>{(t) => (t.items.length ? <TimelineBody t={t} /> : <Empty>Brak danych o przebiegu – uruchom „Wzbogać”.</Empty>)}</QueryState>
+  return <QueryState q={q}>{(t) => (t.items.length ? <TimelineBody t={t} /> : <Empty>Brak danych o przebiegu tej inwestycji w BZP.</Empty>)}</QueryState>
 }
 
 function TimelineBody({ t }: { t: Schemas['TimelineOut'] }) {
@@ -107,7 +108,7 @@ function TimelineBody({ t }: { t: Schemas['TimelineOut'] }) {
       )}
 
       <Card>
-        <CardHeader title="Kroki przebiegu" description="Każdy krok z dowodem." />
+        <CardHeader title="Kroki przebiegu" description="Wszystkie ogłoszenia, umowy, zmiany i zdarzenia w kolejności dat – każdy krok z odnośnikiem do źródła." />
         <ol className="divide-y divide-slate-100">
           {t.items.map((i, k) => (
             <li key={k} className="flex flex-wrap items-center gap-3 px-4 py-2 text-sm">
@@ -116,7 +117,8 @@ function TimelineBody({ t }: { t: Schemas['TimelineOut'] }) {
               <span className="w-32 shrink-0 text-xs text-slate-500">{KIND[i.kind]}{i.planned ? ' (plan)' : ''}</span>
               <span className="min-w-0 flex-1">{i.label}</span>
               {i.value != null && i.value !== 0 && <span className="tabular-nums">{fmtPln(i.value)}</span>}
-              <EvidenceChip ids={i.evidence_ids} />
+              {i.evidence_ids?.length ? <EvidenceChip ids={i.evidence_ids} />
+                : i.notice_id ? <Link to="/ogloszenia/$noticeId" params={{ noticeId: i.notice_id }} search={{}} className="text-xs text-brand hover:underline">Zobacz ogłoszenie</Link> : null}
             </li>
           ))}
         </ol>

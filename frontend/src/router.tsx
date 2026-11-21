@@ -5,6 +5,7 @@ import AnalysisDetail from '@/pages/AnalysisDetail'
 import DocumentPage from '@/pages/DocumentPage'
 import HowToTest from '@/pages/HowToTest'
 import Knowledge from '@/pages/Knowledge'
+import Models from '@/pages/Models'
 import NewInvestment from '@/pages/NewInvestment'
 import NoticePage from '@/pages/NoticePage'
 import NotFound from '@/pages/NotFound'
@@ -63,6 +64,7 @@ const routeTree = root.addChildren([
   projectsRoute, projectRoute, noticeRoute, documentRoute, queueRoute, knowledgeRoute,
   createRoute({ getParentRoute: () => root, path: '/nowa-inwestycja', component: NewInvestment }),
   analysesRoute, analysisRoute, opsRoute,
+  createRoute({ getParentRoute: () => root, path: '/modele', component: Models }),
 ])
 
 export const router = createRouter({ routeTree, defaultPreload: 'intent', scrollRestoration: true })

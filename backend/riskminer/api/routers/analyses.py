@@ -138,6 +138,8 @@ def patch_item(analysis_id: uuid.UUID, item_id: uuid.UUID, body: AnalysisItemPat
     it = db.get(AnalysisItem, item_id)
     if not it or it.analysis_id != a.id:
         raise HTTPException(404, "Nie znaleziono elementu analizy")
+    if (body.status or body.payload is not None) and user.role not in ("expert", "admin"):
+        raise HTTPException(403, "Akceptację i poprawki elementów analizy wykonuje ekspert")
     before = row_dict(it)
     if body.payload is not None:
         it.payload = {**(it.payload or {}), **body.payload}

@@ -25,7 +25,7 @@ def _provider(name: str):
         return NoneProvider()
     if name == "anthropic":
         from riskminer.llm.providers.anthropic import Provider
-    elif name == "openai":
+    elif name in ("openai", "openai_compatible"):
         from riskminer.llm.providers.openai_compat import Provider
     elif name == "gemini":
         from riskminer.llm.providers.gemini import Provider
@@ -80,7 +80,7 @@ def complete(task: str, messages: list[dict[str, Any]], schema: type[BaseModel] 
     for name, prof in chain:
         if prof.provider == "none":
             return LLMResult(data=None, provider="none", profile=name, data_location="none", attempts=attempts)
-        h = cache.input_hash(prof.provider, prof.model, prompt_version,
+        h = cache.input_hash("openai" if prof.provider == "openai_compatible" else prof.provider, prof.model, prompt_version,
                              {"system": sys_prompt, "messages": messages, "schema": schema_json})
         if cfg.mode in ("cache", "replay"):
             hit = cache.get(task, h)
@@ -90,7 +90,7 @@ def complete(task: str, messages: list[dict[str, Any]], schema: type[BaseModel] 
                     _log_call(task=task, profile=name, provider=prof.provider, model=prof.model,
                               data_location=prof.data_location, prompt_version=prompt_version, input_hash=h,
                               cached=True, tokens_in=0, tokens_out=0, cost_usd=0.0, latency_ms=0)
-                    return LLMResult(data=data, raw_text=hit["raw"], provider=prof.provider, model=prof.model,
+                    return LLMResult(data=data, raw_text=hit["raw"], provider=prof.provider, display_name=prof.display_name, model=prof.model,
                                      profile=name, data_location=prof.data_location, cached=True, attempts=attempts)
                 except (ValidationError, ValueError):
                     pass
@@ -124,7 +124,7 @@ def complete(task: str, messages: list[dict[str, Any]], schema: type[BaseModel] 
             _log_call(task=task, profile=name, provider=prof.provider, model=prof.model,
                       data_location=prof.data_location, prompt_version=prompt_version, input_hash=h, cached=False,
                       tokens_in=usage.tokens_in, tokens_out=usage.tokens_out, cost_usd=cost, latency_ms=ms)
-            return LLMResult(data=data, raw_text=raw, usage=usage, cost=cost, provider=prof.provider,
+            return LLMResult(data=data, raw_text=raw, usage=usage, cost=cost, provider=prof.provider, display_name=prof.display_name,
                              model=prof.model, profile=name, data_location=prof.data_location, latency_ms=ms,
                              attempts=attempts)
         except Exception as e:  # noqa: BLE001 – fall through to the next profile

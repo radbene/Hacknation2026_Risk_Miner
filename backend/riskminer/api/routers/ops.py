@@ -10,7 +10,7 @@ from functools import lru_cache
 from fastapi import APIRouter, HTTPException
 from sqlalchemy import func, select, text
 
-from riskminer.api.deps import DB, USER, CurrentUser, Session
+from riskminer.api.deps import DB, EXPERT, USER, CurrentUser, Session
 from riskminer.core.config import get_config
 from riskminer.models import Alert, Job, LLMCall, OpLog
 from riskminer.schemas.common import Message, Page
@@ -243,7 +243,7 @@ def mark_alert_read(alert_id: uuid.UUID, read: bool = True, db: Session = DB, us
 
 
 @router.post("/monitor/watch", response_model=Message)
-def watch(body: WatchIn, db: Session = DB, user: CurrentUser = USER):
+def watch(body: WatchIn, db: Session = DB, user: CurrentUser = EXPERT):
     from riskminer.monitor.watch import set_watch
 
     if not body.procedure_ids and not body.project_ids:
@@ -255,7 +255,7 @@ def watch(body: WatchIn, db: Session = DB, user: CurrentUser = USER):
 
 
 @router.post("/monitor/run", response_model=Message)
-def monitor_run(body: MonitorRunIn, db: Session = DB, user: CurrentUser = USER):
+def monitor_run(body: MonitorRunIn, db: Session = DB, user: CurrentUser = EXPERT):
     """Replay (`as_of`) runs inline – it only reads the DB. A live check queries BZP, so it goes to the worker."""
     if body.as_of:
         from riskminer.monitor.watch import run_monitor

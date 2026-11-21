@@ -28,6 +28,38 @@ def get_evidence(evidence_id: uuid.UUID, db: Session = DB):
     return ev
 
 
+@router.get("/evidence/{evidence_id}/context")
+def evidence_context(evidence_id: uuid.UUID, db: Session = DB) -> dict:
+    """What the source preview needs beyond the evidence row. xlsx cell → the whole spreadsheet row (headers in file
+    order) with the cited column, so the UI can show the row and mark the cell."""
+    from riskminer.models import Project, RawRecord
+
+    ev = db.get(Evidence, evidence_id)
+    if not ev:
+        raise HTTPException(404, "Brak dowodu")
+    loc = ev.locator or {}
+    if ev.kind == "xlsx_cell":
+        row, file = loc.get("row"), loc.get("file")
+        p = db.execute(select(Project).where(Project.import_row["row"].astext == str(row),
+                                             Project.import_row["file"].astext == str(file))).scalars().first()
+        cells = ((p.import_row or {}).get("cells") or {}) if p else {}
+        headers = []
+        if ev.raw_record_id and (rr := db.get(RawRecord, ev.raw_record_id)) is not None:
+            headers = list((rr.payload or {}).get("headers") or [])
+        headers = [h for h in headers if h in cells] + [h for h in cells if h not in headers]
+        return {"type": "sheet", "file": file, "sheet": loc.get("sheet"), "row": row, "column": loc.get("column"),
+                "header": loc.get("header"), "cells": [{"header": h, "value": cells.get(h)} for h in headers],
+                "project_id": str(p.id) if p else None, "project_code": p.code if p else None}
+    if ev.notice_id:
+        return {"type": "notice", "notice_id": str(ev.notice_id), "section": loc.get("section"), "quote": ev.quote,
+                "field": loc.get("field")}
+    if ev.document_id:
+        return {"type": "document", "document_id": str(ev.document_id), "page": loc.get("page"), "quote": ev.quote}
+    if ev.derivation:
+        return {"type": "calculation"}
+    return {"type": "other"}
+
+
 @router.get("/evidence", response_model=list[EvidenceOut])
 def get_evidence_batch(ids: list[uuid.UUID] = Query(default=[]), db: Session = DB):
     if not ids:

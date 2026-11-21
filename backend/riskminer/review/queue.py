@@ -35,10 +35,11 @@ def _title_summary(t: str, o: Any, procs: dict[uuid.UUID, Procedure]) -> tuple[s
         return f"{o.code}: {o.title}", _cut(o.description)
     if t == "project_procedure":
         p = procs.get(o.procedure_id)
-        ref = (p.bzp_number or p.ocid) if p else str(o.procedure_id)
+        ref = p.bzp_number if p and p.bzp_number else "postępowanie BZP"
         part = f", część {o.part_no}" if o.part_no else ""
-        comps = ", ".join(f"{c.get('name')}={c.get('score')}" for c in (o.components or [])[:4] if isinstance(c, dict))
-        return f"Powiązanie z postępowaniem {ref}{part}", _cut((p.title if p else "") + (f" · {comps}" if comps else ""))
+        how = {"kpo_ref": "po numerze projektu KPO", "notice_no": "po numerze ogłoszenia", "xref": "przez odwołania między ogłoszeniami",
+               "fuzzy": "po podobieństwie nazwy, miejsca, daty i wartości", "expert": "decyzją eksperta"}.get(o.method or "", "automatycznie")
+        return f"Powiązanie z ogłoszeniem {ref}{part}", _cut(f"{p.title if p else ''} · dopasowano {how}")
     if t == "contract":
         p = procs.get(o.procedure_id)
         return (f"Umowa{f' część {o.part_no}' if o.part_no else ''} – {p.bzp_number if p else ''}".strip(" –"),
@@ -48,7 +49,8 @@ def _title_summary(t: str, o: Any, procs: dict[uuid.UUID, Procedure]) -> tuple[s
                 _cut(o.reason or o.description))
     if t == "fact":
         val = o.value_num if o.value_num is not None else (o.value_text or o.value_date)
-        return f"{o.fact_type} = {val}{' ' + o.unit if o.unit else ''}", None
+        names = {"project_value": "wartość projektu (z adnotacji instytucji)", "grant_value": "kwota dofinansowania (z adnotacji instytucji)"}
+        return f"{names.get(o.fact_type, o.fact_type.replace('_', ' '))}: {val}{' ' + o.unit if o.unit else ''}", None
     if t == "document":
         return o.title or o.file_name or "Dokument", _cut(f"{o.doc_type or ''} {o.phase or ''}".strip() or None)
     if t == "risk_category":

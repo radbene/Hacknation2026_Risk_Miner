@@ -36,7 +36,7 @@ def _routing_out(db: Session | None = None) -> LLMRoutingOut:
     for n, p in cfg.profiles.items():
         reason = routing.missing_credentials(p)
         profiles.append(LLMProfileOut(
-            name=n, provider=p.provider, model=p.model, base_url=p.base_url, data_location=p.data_location,
+            name=n, display_name=p.display_name, provider=p.provider, model=p.model, base_url=p.base_url, data_location=p.data_location,
             has_key=reason is None or p.provider == "none", effort=p.effort, available=reason is None,
             unavailable_reason=reason, max_tokens=p.max_tokens,
             price_known=p.provider == "none" or p.data_location == "local" or price_known(p.model)))
@@ -60,7 +60,7 @@ def get_llm_routing(db: Session = DB):
 
 
 @router.put("/settings/llm", response_model=LLMRoutingOut)
-def put_llm_routing(body: LLMRoutingIn, db: Session = DB, user: CurrentUser = ADMIN):
+def put_llm_routing(body: LLMRoutingIn, db: Session = DB, user: CurrentUser = EXPERT):
     """Persist routing in the DB (overrides config/settings.yaml); every change is versioned and in the history."""
     try:
         routing.save_override(db, body.model_dump(exclude_none=True, exclude={"comment"}), user.username, body.comment)
@@ -72,7 +72,7 @@ def put_llm_routing(body: LLMRoutingIn, db: Session = DB, user: CurrentUser = AD
 
 
 @router.delete("/settings/llm", response_model=LLMRoutingOut)
-def reset_llm_routing(db: Session = DB, user: CurrentUser = ADMIN):
+def reset_llm_routing(db: Session = DB, user: CurrentUser = EXPERT):
     """Drop the UI override – back to config/settings.yaml."""
     routing.reset_override(db, user.username)
     db.commit()
@@ -123,7 +123,10 @@ def demo_users():
     """Demo accounts for the login screen (names and roles only – the password is in the jury instructions)."""
     if not get_env().demo_mode:
         return []
-    return [{"username": u, "display_name": n, "role": r} for u, n, r in auth.DEMO_USERS]
+    import os
+
+    hint = "" if os.environ.get("DEMO_PASSWORD") else auth._DEMO_DEFAULT  # only the built-in demo default is shown
+    return [{"username": u, "display_name": n, "role": r, "password_hint": hint} for u, n, r in auth.DEMO_USERS]
 
 
 # ---------------------------------------------------------------- juror sandbox

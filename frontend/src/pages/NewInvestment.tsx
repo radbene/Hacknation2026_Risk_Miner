@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { api, unwrap, type Schemas } from '@/api/client'
 import { useApiMutation } from '@/api/hooks'
 import { FeaturesForm, type Features } from '@/components/analysis/FeaturesForm'
+import { Intro } from '@/components/Explain'
 import { PageHeader } from '@/components/PageHeader'
 import { Badge, Button, Card, CardContent, CardHeader, Input, Label, Textarea, useToast } from '@/components/ui'
 
@@ -40,7 +41,7 @@ export default function NewInvestment() {
       const fd = new FormData()
       fd.append('file', f)
       const headers: Record<string, string> = {}
-      const u = localStorage.getItem('rm_user'); if (u) headers['X-User'] = u
+      const token = localStorage.getItem('rm_token'); if (token) headers.Authorization = `Bearer ${token}`
       const r = await fetch('/api/documents', { method: 'POST', body: fd, headers })
       if (!r.ok) throw new Error(await r.text())
       const d = (await r.json()) as Schemas['DocumentOut']
@@ -55,8 +56,12 @@ export default function NewInvestment() {
 
   return (
     <div>
-      <PageHeader title="Nowa inwestycja"
-        description="Wklej opis planowanej inwestycji albo wgraj dokument (PDF, DOCX). System odczyta cechy (każda z cytatem), zada pytania o braki, a po Twoim potwierdzeniu znajdzie podobne zrealizowane inwestycje, policzy zakresy opóźnień i kosztów, oceni budżet i harmonogram oraz wskaże czerwone flagi i klauzule." />
+      <PageHeader title="Nowa analiza" />
+      <Intro can={['wkleić opis albo wgrać dokument (PDF, Word) – np. opis z wniosku o dofinansowanie lub program funkcjonalno-użytkowy',
+        'kliknąć „Odczytaj cechy” (trwa ok. 1–2 minut – opis czyta model językowy działający na naszym serwerze) i poprawić to, co się nie zgadza',
+        'kliknąć „Analizuj ryzyko” – wynik zapisze się w „Moich analizach”']}>
+        Opisz planowaną inwestycję wodno-kanalizacyjną własnymi słowami. Im więcej szczegółów (zakres i skala, lokalizacja, wartość netto lub brutto, czas realizacji, formuła, stan przygotowania terenu, decyzji i uzgodnień), tym trafniej system dobierze podobne zakończone inwestycje i wskaże ryzyka. Dokumenty i opis nie opuszczają serwera.
+      </Intro>
       <div className="grid gap-4 xl:grid-cols-[1fr_1.2fr]">
         <Card>
           <CardHeader title="1. Opis inwestycji" />
@@ -74,8 +79,8 @@ export default function NewInvestment() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader title="2. Potwierdź cechy" description="Popraw lub uzupełnij – wartości wpisane przez Ciebie mają pierwszeństwo przed odczytanymi z opisu."
-            actions={fx?.model_label ? <Badge variant="violet">Wniosek modelu: {fx.model_label}</Badge> : fx ? <Badge>reguły</Badge> : undefined} />
+          <CardHeader title="2. Sprawdź odczytane cechy" description="Przy każdej cesze widać zdanie z opisu, z którego ją odczytano. Popraw lub uzupełnij – Twoje wartości mają pierwszeństwo."
+            actions={fx?.model_label ? <Badge variant="violet" title="Cechy odczytały reguły; model językowy uzupełnił braki – tylko z cytatem z opisu">sprawdzone też przez: {fx.model_label}</Badge> : fx ? <Badge>odczytane regułami</Badge> : undefined} />
           <CardContent className="space-y-3">
             {!features && <p className="text-sm text-slate-500">Najpierw odczytaj cechy z opisu.</p>}
             {fx && (fx.questions ?? []).length > 0 && (

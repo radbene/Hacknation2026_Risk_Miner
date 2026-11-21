@@ -1,83 +1,96 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { FileUp, RefreshCw, Search } from 'lucide-react'
+import { CalendarClock, FileUp, MapPin, RefreshCw, Search } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useProjects } from '@/api/cases'
-import { api, isFallback, unwrap, type Schemas } from '@/api/client'
-import { EvidenceChip } from '@/components/evidence/EvidenceChip'
+import { api, unwrap, type Schemas } from '@/api/client'
+import { Intro } from '@/components/Explain'
 import { JobRunner } from '@/components/JobRunner'
 import { Completeness, LinkStatusBadge } from '@/components/LinkStatusBadge'
-import { MethodConfidence } from '@/components/MethodConfidence'
 import { PageHeader } from '@/components/PageHeader'
-import { StatusBadge } from '@/components/StatusBadge'
-import { Badge, Button, DataTable, Dialog, Input, QueryState, Select, useToast, type ColumnDef } from '@/components/ui'
-import { LINK_STATUS_LABEL, SUBSECTORS } from '@/lib/labels'
+import { Badge, Button, Card, Dialog, Input, QueryState, Select, useToast } from '@/components/ui'
+import { useAuth } from '@/lib/auth'
+import { SUBSECTORS } from '@/lib/labels'
 import { projectsRoute } from '@/router'
 
 type P = Schemas['ProjectListItem']
-
-const columns: ColumnDef<P>[] = [
-  { accessorKey: 'code', header: 'Kod', cell: ({ row }) => (
-    <Link to="/projekty/$projectId" params={{ projectId: row.original.id }} className="font-mono text-xs font-semibold text-brand hover:underline" onClick={(e) => e.stopPropagation()}>
-      {row.original.code}</Link>) },
-  { accessorKey: 'title', header: 'Przedsięwzięcie', cell: ({ row }) => (
-    <div className="min-w-64 max-w-md"><div className="line-clamp-2 font-medium">{row.original.title}</div>
-      <div className="text-xs text-slate-500">{row.original.beneficiary_name} · {row.original.voivodeship}
-        {row.original.record_scope && row.original.record_scope !== 'całe postępowanie' && <Badge variant="info" className="ml-1">{row.original.record_scope}</Badge>}</div></div>) },
-  { accessorKey: 'subsector_main', header: 'Podsektor', cell: ({ getValue }) => <span className="text-xs">{String(getValue() ?? '—')}</span> },
-  { accessorKey: 'public_id_value', header: 'Identyfikator', cell: ({ row }) => (
-    <div className="text-xs"><div className="text-slate-500">{row.original.public_id_type}</div><div className="flex items-center gap-1 font-mono">{row.original.public_id_value}
-      <EvidenceChip ids={row.original.evidence_ids} label="xlsx" /></div></div>) },
-  { accessorKey: 'link_status', header: 'Powiązanie', cell: ({ row }) => (
-    <div className="flex flex-col gap-1"><LinkStatusBadge status={row.original.link_status} /><MethodConfidence method={row.original.method} confidence={row.original.confidence} compact /></div>) },
-  { accessorKey: 'n_events', header: 'Zdarz.', cell: ({ getValue }) => <span className="tabular-nums">{String(getValue())}</span> },
-  { accessorKey: 'n_issues', header: 'Braki', cell: ({ getValue }) => <span className="tabular-nums">{String(getValue())}</span> },
-  { accessorKey: 'n_pending_review', header: 'Do przeglądu', cell: ({ getValue }) => {
-    const n = Number(getValue()); return n > 0 ? <Badge variant="warning">{n}</Badge> : <span className="text-xs text-slate-400">0</span> } },
-  { accessorKey: 'completeness', header: 'Kompletność', cell: ({ getValue }) => <Completeness value={getValue() as number | null} /> },
-  { accessorKey: 'status', header: 'Status', cell: ({ getValue }) => <StatusBadge status={getValue() as string} /> },
-]
+const PAGE = 60
 
 export default function Projects() {
   const s = projectsRoute.useSearch()
   const navigate = useNavigate({ from: '/projekty' })
+  const { isExpert } = useAuth()
   const set = (patch: Partial<typeof s>) => navigate({ search: { ...s, ...patch }, replace: true })
-  const q = useProjects({ q: s.q, tier: s.tier ?? 'deep', subsector: s.subsector, link_status: s.link_status, pending: s.pending })
+  const tier = s.tier ?? 'deep'
+  const q = useProjects({ q: s.q, tier, subsector: s.subsector, link_status: s.link_status, pending: s.pending })
   const [text, setText] = useState(s.q ?? '')
+  const [shown, setShown] = useState(PAGE)
 
   return (
     <div>
-      <PageHeader title="Baza przypadków" description="Projekty z pliku organizatora i automatycznie zebrane postępowania wod-kan. Każda wartość ma źródło; wszystko, co zaproponował system, czeka na decyzję eksperta."
-        actions={<>
+      <PageHeader title="Baza przypadków"
+        description="Zakończone i trwające inwestycje wodno-kanalizacyjne, z których system uczy się, co się w nich wydarzyło."
+        actions={isExpert ? <>
           <ImportXlsx />
-          <JobRunner label="Wzbogać wszystkie" icon={<RefreshCw size={14} />} invalidate={[['projects'], ['dashboard']]}
+          <JobRunner label="Pobierz aktualne dane z BZP" icon={<RefreshCw size={14} />} invalidate={[['projects']]}
             start={async () => unwrap(await api.POST('/api/enrich', { body: { project_ids: null, sources: null, as_of: null } }))} />
-        </>} />
-      <form className="mb-3 flex flex-wrap items-end gap-2" role="search" onSubmit={(e) => { e.preventDefault(); set({ q: text || undefined }) }}>
+        </> : undefined} />
+      <Intro can={[
+        'wyszukać inwestycję po nazwie, gminie lub numerze ogłoszenia',
+        'otworzyć kartę inwestycji: przebieg zamówień, zmiany umów, opóźnienia i ich przyczyny – z odnośnikami do oryginalnych ogłoszeń',
+        ...(isExpert ? ['zaimportować listę projektów (plik Excel) i pobrać z BZP nowe ogłoszenia dla wszystkich projektów – system dopasuje je do projektów i wyliczy zdarzenia; nic nie zostanie nadpisane bez Twojej decyzji'] : []),
+      ]}>
+        Baza ma dwie części: <b>22 projekty z listy przekazanej przez organizatora</b> – opisane szczegółowo i sprawdzane przez eksperta – oraz <b>ok. 34 tys. postępowań pobranych automatycznie</b> z Biuletynu Zamówień Publicznych (lata 2021–2026), które służą do porównań przy analizie nowych inwestycji.
+      </Intro>
+      <form className="mb-4 flex flex-wrap items-end gap-2" role="search" onSubmit={(e) => { e.preventDefault(); setShown(PAGE); set({ q: text || undefined }) }}>
         <label className="relative">
           <span className="sr-only">Szukaj</span>
           <Search size={14} className="absolute left-2.5 top-2.5 text-slate-400" aria-hidden />
-          <Input value={text} onChange={(e) => setText(e.target.value)} placeholder="Kod, tytuł, beneficjent, NIP, numer…" className="w-72 pl-8" />
+          <Input value={text} onChange={(e) => setText(e.target.value)} placeholder="Nazwa, gmina, NIP, numer ogłoszenia…" className="w-72 pl-8" />
         </label>
-        <Select aria-label="Warstwa" value={s.tier ?? 'deep'} onChange={(e) => set({ tier: e.target.value })}
-          options={[{ value: 'deep', label: 'Warstwa pogłębiona (22)' }, { value: 'auto', label: 'Warstwa automatyczna' }]} className="w-56" />
-        <Select aria-label="Podsektor" value={s.subsector ?? ''} onChange={(e) => set({ subsector: e.target.value || undefined })} placeholder="Wszystkie podsektory"
+        <Select aria-label="Która część bazy" value={tier} onChange={(e) => { setShown(PAGE); set({ tier: e.target.value }) }}
+          options={[{ value: 'deep', label: 'Projekty z listy organizatora (22)' }, { value: 'auto', label: 'Postępowania pobrane z BZP' }]} className="w-64" />
+        <Select aria-label="Podsektor" value={s.subsector ?? ''} onChange={(e) => set({ subsector: e.target.value || undefined })} placeholder="Każdy podsektor"
           options={SUBSECTORS.map((x) => ({ value: x, label: x }))} className="w-56" />
-        <Select aria-label="Status powiązania" value={s.link_status ?? ''} onChange={(e) => set({ link_status: e.target.value || undefined })} placeholder="Każde powiązanie"
-          options={Object.entries(LINK_STATUS_LABEL).map(([value, label]) => ({ value, label }))} className="w-44" />
-        <label className="flex h-9 items-center gap-1.5 text-sm"><input type="checkbox" checked={!!s.pending} onChange={(e) => set({ pending: e.target.checked || undefined })} className="accent-brand" />
-          Tylko do przeglądu</label>
+        {isExpert && tier === 'deep' && (
+          <label className="flex h-9 items-center gap-1.5 text-sm"><input type="checkbox" checked={!!s.pending} onChange={(e) => set({ pending: e.target.checked || undefined })} className="accent-brand" />
+            Tylko z pozycjami do zatwierdzenia</label>)}
         <Button type="submit" variant="outline">Szukaj</Button>
       </form>
       <QueryState q={q}>{(d) => (
         <>
-          <p className="mb-2 text-xs text-slate-500">{d.total} rekordów</p>
-          <DataTable data={d.items} columns={columns} getRowId={(r) => r.id}
-            onRowClick={(r) => navigate({ to: '/projekty/$projectId', params: { projectId: r.id } })}
-            rowClassName={(r) => (r.link_status === 'uncertain' ? 'bg-amber-50/50' : undefined)}
-            empty="Brak projektów dla wybranych filtrów." />
+          <p className="mb-2 text-xs text-slate-500">Znaleziono: {d.total.toLocaleString('pl-PL')}{d.items.length < d.total ? ` (pokazano ${Math.min(shown, d.items.length)})` : ''}</p>
+          <div className="grid gap-3 lg:grid-cols-2">{d.items.slice(0, shown).map((p) => <ProjectTile key={p.id} p={p} expert={isExpert} />)}</div>
+          {!d.items.length && <p className="py-8 text-center text-sm text-slate-500">Nic nie znaleziono – zmień wyszukiwanie lub filtry.</p>}
+          {d.items.length > shown && <div className="mt-4 text-center"><Button variant="outline" onClick={() => setShown((x) => x + PAGE)}>Pokaż więcej</Button></div>}
         </>
       )}</QueryState>
     </div>
+  )
+}
+
+function ProjectTile({ p, expert }: { p: P; expert: boolean }) {
+  return (
+    <Link to="/projekty/$projectId" params={{ projectId: p.id }} search={{}} className="group">
+      <Card className="h-full p-4 transition-colors group-hover:border-brand">
+        <div className="flex items-start justify-between gap-2">
+          <h2 className="line-clamp-2 font-medium text-slate-900">{p.title}</h2>
+          {p.tier === 'deep' && <span className="shrink-0 font-mono text-xs text-slate-400">{p.code}</span>}
+        </div>
+        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+          <span className="inline-flex items-center gap-1"><MapPin size={12} />{p.beneficiary_name ?? '—'}{p.voivodeship ? `, ${p.voivodeship}` : ''}</span>
+          {p.subsector_main && <span>{p.subsector_main}</span>}
+          {p.project_status && <span className="inline-flex items-center gap-1"><CalendarClock size={12} />{p.project_status}</span>}
+          {p.record_scope && p.record_scope !== 'całe postępowanie' && <Badge variant="info">{p.record_scope}</Badge>}
+        </div>
+        {p.tier === 'deep' && (
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
+            <span className="flex items-center gap-1">Dopasowanie do BZP: <LinkStatusBadge status={p.link_status} /></span>
+            <span>{p.n_events} {p.n_events === 1 ? 'zdarzenie' : 'zdarzeń'}</span>
+            <span className="flex items-center gap-1">Kompletność danych: <Completeness value={p.completeness} /></span>
+            {expert && p.n_pending_review > 0 && <Badge variant="warning">{p.n_pending_review} do zatwierdzenia</Badge>}
+          </div>)}
+      </Card>
+    </Link>
   )
 }
 
@@ -91,30 +104,28 @@ function ImportXlsx() {
     try {
       const fd = new FormData()
       fd.append('file', f)
-      const r = await fetch('/api/imports/xlsx?profile=organizer', { method: 'POST', body: fd, headers: { 'X-User': localStorage.getItem('rm_user') ?? '' } })
-      if (r.status === 501 || r.status >= 502) throw new TypeError('mock')
-      if (!r.ok) throw new Error(await r.text())
+      const token = localStorage.getItem('rm_token')
+      const r = await fetch('/api/imports/xlsx?profile=organizer', { method: 'POST', body: fd, headers: token ? { Authorization: `Bearer ${token}` } : {} })
+      if (!r.ok) throw new Error((await r.json().catch(() => ({})))?.detail ?? r.statusText)
       setReport(await r.json())
-    } catch (e) {
-      if (isFallback(e)) setReport({ file: f.name, sha256: '(tryb demonstracyjny)', rows: 22, created: 0, updated: 0, unchanged: 22,
-        issues: [{ row: 23, column: 'Identyfikator publiczny', value: '2023/BZP 00110672/01', message: 'Numer ogłoszenia nie istnieje w BZP – powiązanie przez łańcuch ogłoszeń' },
-          { row: 9, column: 'Zakres rekordu', value: 'część 1', message: 'Rekord dotyczy części – łączenie po „Umowa dla części nr N”' }] })
-      else toast({ kind: 'error', title: 'Import nie powiódł się', description: String(e) })
-    } finally { setBusy(false); if (ref.current) ref.current.value = '' }
+    } catch (e) { toast({ kind: 'error', title: 'Import nie powiódł się', description: String(e) }) } finally {
+      setBusy(false); if (ref.current) ref.current.value = ''
+    }
   }
   return (
     <>
-      <input ref={ref} type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])} aria-label="Plik xlsx" />
-      <Button variant="outline" onClick={() => ref.current?.click()} loading={busy}><FileUp size={14} />Importuj xlsx</Button>
-      <Dialog open={!!report} onClose={() => setReport(null)} title="Raport importu" description={report ? `${report.file} · SHA-256 ${report.sha256}` : ''}
+      <input ref={ref} type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])} aria-label="Plik z listą projektów" />
+      <Button variant="outline" onClick={() => ref.current?.click()} loading={busy} title="Wczytaj listę projektów z pliku Excel (format organizatora)"><FileUp size={14} />Importuj listę projektów (Excel)</Button>
+      <Dialog open={!!report} onClose={() => setReport(null)} title="Wynik importu listy projektów" description={report ? `Plik „${report.file}”` : ''}
         footer={<Button onClick={() => setReport(null)}>OK</Button>}>
         {report && (
-          <div className="text-sm">
-            <div className="grid grid-cols-4 gap-2">{(['rows', 'created', 'updated', 'unchanged'] as const).map((k) => (
-              <div key={k} className="rounded border border-slate-200 p-2"><div className="text-xs text-slate-500">{({ rows: 'Wiersze', created: 'Nowe', updated: 'Zmienione', unchanged: 'Bez zmian' })[k]}</div>
-                <div className="text-lg font-semibold">{report[k]}</div></div>))}</div>
-            <h3 className="mt-3 mb-1 font-semibold">Problemy jakości danych ({report.issues?.length ?? 0})</h3>
-            <ul className="list-disc pl-5 text-xs">{(report.issues ?? []).map((i, k) => <li key={k}>wiersz {String(i.row)}, „{String(i.column)}”: {String(i.message)}</li>)}</ul>
+          <div className="space-y-3 text-sm">
+            <p>Przeczytano <b>{report.rows}</b> wierszy: <b>{report.created}</b> nowych projektów, <b>{report.updated}</b> zmienionych, <b>{report.unchanged}</b> bez zmian.
+              Ponowny import tego samego pliku niczego nie dubluje.</p>
+            {(report.issues?.length ?? 0) > 0 && <>
+              <h3 className="font-semibold">Wartości do sprawdzenia ({report.issues!.length})</h3>
+              <ul className="list-disc space-y-1 pl-5 text-xs">{report.issues!.map((i, k) => (
+                <li key={k}>Wiersz {String(i.row)}{i.code ? ` (${String(i.code)})` : ''}: {String(i.message)}</li>))}</ul></>}
           </div>
         )}
       </Dialog>

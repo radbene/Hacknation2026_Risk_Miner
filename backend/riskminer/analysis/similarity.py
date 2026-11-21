@@ -25,7 +25,7 @@ DEFAULT_WEIGHTS = {"subsector_main": 0.25, "subsector_extra": 0.05, "work_type":
                    "value": 0.15, "length_km": 0.10, "voivodeship": 0.05, "tfidf": 0.10, "embedding": 0.10}
 LABELS = {"subsector_main": "podsektor główny", "subsector_extra": "podsektory dodatkowe", "work_type": "rodzaj robót",
           "formula": "formuła realizacji", "value": "skala (wartość)", "length_km": "długość sieci",
-          "voivodeship": "województwo", "tfidf": "podobieństwo opisu (TF-IDF)", "embedding": "podobieństwo semantyczne"}
+          "voivodeship": "województwo", "tfidf": "podobieństwo słów w opisie", "embedding": "podobieństwo znaczenia opisu"}
 VAT = 1.23
 STOP = set("oraz wraz dla przez przy będzie który która które jest się na w z do od i a o u po pod nad ul gmina gminy "
            "gminie miejscowości miejscowość budowa budowy zadanie zadania ramach realizacja realizacji".split())
@@ -182,9 +182,10 @@ def components(q: Query, c: Case, tfidf: float, emb: float | None) -> dict[str, 
         else:
             out["voivodeship"] = (None, "brak województwa")
     if q.text.strip():
-        out["tfidf"] = (float(min(1.0, tfidf)), f"cosinus {tfidf:.2f}")
+        lvl = "duża" if tfidf >= 0.3 else "średnia" if tfidf >= 0.12 else "mała"
+        out["tfidf"] = (float(min(1.0, tfidf)), f"{lvl} zbieżność słów (rzadkie wspólne słowa liczą się bardziej niż częste)")
     if emb is not None:
-        out["embedding"] = (float(emb), f"cosinus {emb:.2f}")
+        out["embedding"] = (float(emb), "zbieżność znaczenia opisów")
     return out
 
 

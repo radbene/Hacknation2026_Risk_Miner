@@ -61,9 +61,11 @@ llm:
   profiles:
     rules:
       provider: none
+      display_name: Reguły (bez modelu językowego)
       data_location: none
     claude:
       provider: anthropic
+      display_name: Claude Opus (Anthropic, poza UE)
       model: claude-opus-5-5
       api_key_env: ANTHROPIC_API_KEY
       data_location: non_eu
@@ -71,33 +73,39 @@ llm:
       effort: medium
     claude_fast:
       provider: anthropic
+      display_name: Claude Haiku (Anthropic, poza UE)
       model: claude-haiku-5-5
       api_key_env: ANTHROPIC_API_KEY
       data_location: non_eu
       max_tokens: 4000
     openai:
       provider: openai
+      display_name: OpenAI (poza UE)
       model: ""              # enter the current model id
       api_key_env: OPENAI_API_KEY
       data_location: non_eu
     azure_eu:
       provider: openai
+      display_name: Azure OpenAI (UE)
       model: ""
       base_url: https://<resource>.openai.azure.com/openai/v1/
       api_key_env: AZURE_OPENAI_API_KEY
       data_location: eu
     gemini:
       provider: gemini
+      display_name: Google Gemini (poza UE)
       model: ""              # enter the current model id
       api_key_env: GEMINI_API_KEY
       data_location: non_eu
     gemini_vertex_eu:
       provider: gemini
+      display_name: Google Gemini – Vertex AI (UE)
       model: ""
       data_location: eu
       extra: { vertexai: true, project: "", location: europe-west4 }
     local_bielik:
-      provider: openai       # any OpenAI-compatible endpoint (Ollama, vLLM, LM Studio)
+      provider: openai_compatible   # any server with the OpenAI chat API (Ollama, vLLM, LM Studio)
+      display_name: Bielik 11B v3.0 (lokalnie, na naszym serwerze)
       model: riskminer-bielik   # SpeakLeash/bielik-11b-v3.0-instruct:Q4_K_M + num_ctx 8192, see deploy/ollama/Modelfile
       base_url: http://localhost:11434/v1   # docker: http://host.docker.internal:11434/v1 or the `ollama` service
       api_key_env: OLLAMA_API_KEY            # optional for a local server

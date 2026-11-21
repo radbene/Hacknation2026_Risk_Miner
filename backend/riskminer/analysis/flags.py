@@ -120,7 +120,7 @@ def build_flags(session: Session, features: dict[str, Any], text: str, neighbour
                 f"U {h['k']} z {n_nb} najbliższych sąsiadów odnotowano zdarzenie z kategorią {code} "
                 f"({share:.0%}); przykłady poniżej z cytatami ze źródeł.",
                 n=n_nb, k=h["k"], case_ids=h["project_ids"], examples=h["events"],
-                formula="udział = sąsiedzi z ≥1 zdarzeniem danej kategorii / liczba sąsiadów; próg: ≥2 i ≥25%")
+                formula="Udział = liczba podobnych inwestycji, w których wystąpiło co najmniej jedno zdarzenie tej kategorii, podzielona przez liczbę podobnych inwestycji. Flaga pojawia się, gdy dotyczy to co najmniej 2 inwestycji i co najmniej co czwartej.")
 
     # 2. ranges
     def rng(name):

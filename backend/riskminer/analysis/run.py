@@ -141,7 +141,7 @@ def _summary(nb, neighbours, ranges, assessment, flags, cases) -> dict[str, Any]
     return {
         "n_cases": len(cases), "cases_by_tier": tiers, "n_pool": nb["n_pool"], "n_neighbours": len(neighbours),
         "weights": nb["weights"], "weights_source": nb["weights_source"],
-        "p_late": r("p_late", "estimate", "ci_low", "ci_high"), "delay_days": r("delay_days", "p50", "p80"),
+        "p_late": r("p_late", "k", "estimate", "ci_low", "ci_high"), "delay_days": r("delay_days", "p50", "p80", "p95"),
         "paid_ratio": r("paid_ratio", "p50", "p80", "p95"), "p_change": r("p_change", "estimate"),
         "share_cancelled_255_3": r("share_cancelled_255_3", "estimate"),
         "n_flags": len(flags), "flags_high": sum(1 for f in flags if f["severity"] == "wysoka"),

@@ -91,7 +91,7 @@ def missing_credentials(p: LLMProfile) -> str | None:
         return None
     if p.provider in ("gemini", "anthropic") and p.extra.get("vertexai"):
         return None if p.extra.get("project") or p.provider == "anthropic" else "brak projektu GCP (extra.project)"
-    if p.provider == "openai" and p.base_url and p.data_location == "local":
+    if p.provider in ("openai", "openai_compatible") and p.base_url and p.data_location == "local":
         return None  # local server, key optional
     if not p.model and p.provider != "anthropic":
         return "brak identyfikatora modelu"

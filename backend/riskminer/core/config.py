@@ -21,7 +21,9 @@ DataLocation = Literal["local", "eu", "non_eu", "none"]
 
 
 class LLMProfile(BaseModel):
-    provider: Literal["anthropic", "openai", "gemini", "litellm", "none"]
+    # openai_compatible = any server speaking the OpenAI chat API (Ollama, vLLM, LM Studio – e.g. local Bielik)
+    provider: Literal["anthropic", "openai", "openai_compatible", "gemini", "litellm", "none"]
+    display_name: str | None = None  # shown in the UI instead of provider/model
     model: str = ""
     base_url: str | None = None
     api_key_env: str | None = None

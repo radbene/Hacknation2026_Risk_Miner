@@ -51,6 +51,7 @@ class LLMUsageRow(BaseModel):
 
 class LLMProfileOut(BaseModel):
     name: str
+    display_name: str | None = None
     provider: str
     model: str
     base_url: str | None = None

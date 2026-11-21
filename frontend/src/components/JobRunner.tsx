@@ -55,7 +55,7 @@ export function JobRunner({ label, start, mockKind = 'enrich', mockParams = {}, 
       <Button variant={variant} onClick={running ? () => setOpen(true) : run} loading={starting}>
         {running ? <Loader2 size={14} className="animate-spin" /> : icon ?? <Play size={14} />}{running ? `${Math.round((job.progress ?? 0) * 100)}%` : label}
       </Button>
-      <Dialog open={open} onClose={() => setOpen(false)} title={<>{label} – przebieg</>} description={job ? `Zadanie ${job.kind} · ${job.id.slice(0, 8)} · start ${fmtDateTime(job.started_at ?? job.created_at)}` : undefined}
+      <Dialog open={open} onClose={() => setOpen(false)} title={label} description={job ? `Rozpoczęto ${fmtDateTime(job.started_at ?? job.created_at)} – zadanie działa w tle, możesz zamknąć to okno.` : undefined}
         footer={<Button variant="outline" onClick={() => setOpen(false)}>Zamknij</Button>}>
         {job && <JobReport job={job} />}
       </Dialog>
@@ -63,37 +63,36 @@ export function JobRunner({ label, start, mockKind = 'enrich', mockParams = {}, 
   )
 }
 
+/** Run report in plain sentences (per job kind), no ids. */
 export function JobReport({ job }: { job: Schemas['JobOut'] }) {
   const pct = Math.round((job.progress ?? 0) * 100)
-  const r = job.result as Record<string, unknown> | null | undefined
+  const r = (job.result ?? null) as Record<string, any> | null // eslint-disable-line @typescript-eslint/no-explicit-any
+  const lines: string[] = []
+  if (r && job.kind === 'enrich') {
+    lines.push(`Sprawdzono ogłoszenia ${r.buyers ?? '?'} zamawiających (${r.requests ?? 0} zapytań do BZP${r.offline_nips?.length ? `; dla ${r.offline_nips.length} użyto zapasowej kopii BZP` : ''}).`)
+    lines.push(`Ogłoszenia: ${r.notices ?? 0} – nowe ${r.inserted ?? 0}, zmienione ${r.updated ?? 0}, bez zmian ${r.unchanged ?? 0}. Postępowania: ${r.procedures ?? 0}.`)
+    const ls = r.link_summary ?? {}
+    lines.push(`Dopasowanie projektów: ${ls.linked ?? 0} powiązanych, ${ls.uncertain ?? 0} niepewnych, ${ls.unlinked ?? 0} bez powiązania${ls.override ? `, ${ls.override} wg decyzji eksperta` : ''}. Ponowne uruchomienie niczego nie dubluje.`)
+  } else if (r && job.kind === 'harvest') {
+    lines.push(`Wczytano ${(r.stored ?? 0).toLocaleString('pl-PL')} ogłoszeń (nowe ${(r.inserted ?? 0).toLocaleString('pl-PL')}), zbudowano ${(r.procedures ?? 0).toLocaleString('pl-PL')} postępowań i ${(r.auto_projects ?? 0).toLocaleString('pl-PL')} inwestycji do porównań.`)
+  } else if (r && job.kind === 'llm_test') {
+    lines.push(r.ok ? `Model odpowiada (czas odpowiedzi ${Math.round((r.latency_ms ?? 0) / 100) / 10} s): „${r.sample ?? ''}”` : `Model nie odpowiada: ${r.error ?? 'nieznany błąd'}`)
+  } else if (r && job.kind === 'extract') {
+    lines.push(`Wyliczono ${r.events ?? 0} zdarzeń dla ${r.projects?.length ?? 0} projektów.`)
+  } else if (r) {
+    for (const [k, v] of Object.entries(r)) if (typeof v === 'number') lines.push(`${REPORT_LABEL[k] ?? k}: ${v.toLocaleString('pl-PL')}`)
+  }
   return (
     <div className="flex flex-col gap-3 text-sm">
       <div className="flex items-center gap-2">
         {job.state === 'done' ? <CheckCircle2 className="text-emerald-600" size={18} /> : job.state === 'failed' ? <XCircle className="text-rose-600" size={18} /> : <Loader2 className="animate-spin text-brand" size={18} />}
-        <span>{job.state === 'done' ? 'Zakończono' : job.state === 'failed' ? 'Błąd' : job.message ?? 'W kolejce…'}</span>
+        <span>{job.state === 'done' ? 'Zakończono' : job.state === 'failed' ? 'Nie udało się' : job.message ?? 'Czeka na rozpoczęcie…'}</span>
       </div>
       <div className="h-2 overflow-hidden rounded-full bg-slate-200" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
         <div className="h-full bg-brand transition-all" style={{ width: `${pct}%` }} />
       </div>
-      {job.error && <pre className="whitespace-pre-wrap rounded bg-rose-50 p-2 text-xs text-rose-800">{job.error}</pre>}
-      {r && (
-        <div>
-          <h3 className="mb-2 text-sm font-semibold">Raport z przebiegu</h3>
-          <dl className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {Object.entries(r).filter(([, v]) => typeof v === 'number').map(([k, v]) => (
-              <div key={k} className="rounded border border-slate-200 p-2"><dt className="text-xs text-slate-500">{REPORT_LABEL[k] ?? k}</dt>
-                <dd className="text-lg font-semibold tabular-nums">{(v as number).toLocaleString('pl-PL')}</dd></div>
-            ))}
-          </dl>
-          {typeof r.by_source === 'object' && r.by_source && (
-            <table className="mt-3 w-full text-xs"><thead className="text-left text-slate-500"><tr><th>Źródło</th><th>Zapytania</th><th>OK</th><th>Błędy</th><th>Uwagi</th></tr></thead>
-              <tbody>{Object.entries(r.by_source as Record<string, Record<string, unknown>>).map(([k, v]) => (
-                <tr key={k} className="border-t border-slate-100"><td className="py-1 font-medium">{k}</td><td>{String(v.queries ?? '')}</td><td>{String(v.ok ?? '')}</td><td>{String(v.errors ?? '')}</td><td>{String(v.note ?? '')}</td></tr>
-              ))}</tbody></table>
-          )}
-          {typeof r.idempotent === 'string' && <p className="mt-2 text-xs text-emerald-700">{r.idempotent}</p>}
-        </div>
-      )}
+      {job.error && <p className="rounded bg-rose-50 p-2 text-xs text-rose-800">{job.error.split('\n').slice(-2).join(' ')}</p>}
+      {lines.length > 0 && <ul className="list-disc space-y-1 pl-5">{lines.map((l, i) => <li key={i}>{l}</li>)}</ul>}
     </div>
   )
 }

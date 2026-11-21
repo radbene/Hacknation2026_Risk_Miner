@@ -1,6 +1,6 @@
 /** Polish UI labels for contract enums. */
 export const STATUS_LABEL: Record<string, string> = {
-  proposed: 'Propozycja', approved: 'Zatwierdzone', edited: 'Poprawione', rejected: 'Odrzucone',
+  proposed: 'Czeka na eksperta', approved: 'Zatwierdzone przez eksperta', edited: 'Poprawione przez eksperta', rejected: 'Odrzucone przez eksperta',
 }
 export const LINK_STATUS_LABEL: Record<string, string> = {
   linked: 'Powiązany', uncertain: 'Niepewny', unlinked: 'Niepowiązany', rejected: 'Odrzucony',

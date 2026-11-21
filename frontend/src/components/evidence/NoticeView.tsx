@@ -41,7 +41,6 @@ function NoticeBody({ n, section, quote, compact }: { n: Schemas['NoticeDetail']
           {n.pdf_url && <a href={n.pdf_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-brand hover:underline">PDF <FileDown size={11} /></a>}
         </>} />
       <div className="flex flex-wrap items-center gap-3 border-b border-slate-100 px-4 py-2 text-xs text-slate-500">
-        <span>OCID: <span className="font-mono">{n.ocid}</span></span>
         <span>Pobrano: {fmtDateTime(n.retrieved_at)}{n.retrieved_from ? ` z ${new URL(n.retrieved_from).host}` : ''}</span>
         <label className="ml-auto flex items-center gap-1"><Search size={12} aria-hidden /><span className="sr-only">Szukaj w sekcjach</span>
           <Input value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Szukaj w sekcjach" className="h-7 w-48 text-xs" /></label>

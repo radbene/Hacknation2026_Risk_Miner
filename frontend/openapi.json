@@ -72,6 +72,52 @@
     }
    }
   },
+  "/api/evidence/{evidence_id}/context": {
+   "get": {
+    "tags": [
+     "common"
+    ],
+    "summary": "Evidence Context",
+    "description": "What the source preview needs beyond the evidence row. xlsx cell → the whole spreadsheet row (headers in file\norder) with the cited column, so the UI can show the row and mark the cell.",
+    "operationId": "evidence_context_api_evidence__evidence_id__context_get",
+    "parameters": [
+     {
+      "name": "evidence_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Evidence Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "additionalProperties": true,
+         "title": "Response Evidence Context Api Evidence  Evidence Id  Context Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/api/evidence": {
    "get": {
     "tags": [
@@ -9286,6 +9332,17 @@
      "name": {
       "type": "string",
       "title": "Name"
+     },
+     "display_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Display Name"
      },
      "provider": {
       "type": "string",

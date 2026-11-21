@@ -66,7 +66,7 @@ def assess(features: dict[str, Any], neighbours: list[Case], ranges: dict[str, d
     uv, how = comparable_value(value, vat, "gross")
     item: dict[str, Any] = {"metric": "budget_percentile", "title": "Budżet na tle wartości umów sąsiadów",
                             "n": len(nb_vals), "case_ids": [str(c.project_id) for c, _ in nb_vals], "basis": how,
-                            "formula": "percentyl = udział umów sąsiadów o wartości (4.4, brutto) ≤ budżetowi inwestycji"}
+                            "formula": "Percentyl budżetu = jaka część umów podobnych inwestycji (wartość z pkt 4.4, brutto) była tańsza lub równa budżetowi tej inwestycji; P90 oznacza, że budżet jest wyższy niż w 9 na 10 podobnych umów."}
     if uv is not None and nb_vals:
         pct = percentile_rank(uv, [v for _, v in nb_vals])
         item.update(value=round(uv, 2), percentile=pct, position=_position(pct), quantiles=_q([v for _, v in nb_vals]))
@@ -84,7 +84,7 @@ def assess(features: dict[str, Any], neighbours: list[Case], ranges: dict[str, d
     ad = [c.actual_days for c in neighbours if c.actual_days and c.actual_days > 0]
     item = {"metric": "schedule_percentile", "title": "Harmonogram na tle czasu realizacji sąsiadów",
             "n": len(ad), "n_planned": len(pd_), "case_ids": [str(c.project_id) for c in neighbours if c.actual_days],
-            "formula": "czas rzeczywisty = data wykonania (5.2) − data zawarcia (4.1); percentyl planu wśród czasów rzeczywistych sąsiadów"}
+            "formula": "Faktyczny czas realizacji podobnej umowy = data wykonania (pkt 5.2) minus data zawarcia (pkt 4.1). Percentyl harmonogramu = jaka część podobnych umów trwała krócej lub tyle samo co planowany czas tej inwestycji; niski percentyl oznacza ambitny harmonogram."}
     if months and ad:
         days = float(months) * 30
         pct_a = percentile_rank(days, ad)
@@ -113,7 +113,7 @@ def assess(features: dict[str, Any], neighbours: list[Case], ranges: dict[str, d
         unit_costs = [((c.paid_gross or c.value_gross) / getattr(c, attr), c) for c in pool]
         item = {"metric": metric, "title": f"Koszt na {unit}", "n": len(unit_costs), "pool": src,
                 "case_ids": [str(c.project_id) for _, c in unit_costs][:50],
-                "formula": f"(wypłata 5.5 albo wartość umowy 4.4, brutto) / {unit} z opisu przedmiotu; n przypadków z podaną skalą"}
+                "formula": f"Koszt jednostkowy = wypłata (pkt 5.5) albo wartość umowy (pkt 4.4), brutto, podzielona przez {unit} z opisu przedmiotu zamówienia; liczymy tylko podobne umowy, w których opis podaje tę skalę."}
         if size and unit_costs:
             vals = [u for u, _ in unit_costs]
             item["quantiles"] = _q(vals)

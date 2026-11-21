@@ -19,6 +19,8 @@ import numpy as np
 from riskminer.analysis.caseset import Case
 
 LEVELS = ["neighbours", "subsector", "wodkan", "works"]
+LEVEL_PL = {"neighbours": "najbardziej podobne inwestycje", "subsector": "wszystkie inwestycje z tego podsektora",
+            "wodkan": "wszystkie inwestycje wodno-kanalizacyjne", "works": "wszystkie roboty w bazie"}
 Z95 = 1.959963984540054
 
 
@@ -87,7 +89,11 @@ def proportion(levels: Levels, name: str, pred: Callable[[Case], bool | None], m
         "ci_low": lo, "ci_high": hi, "fallback_level": used, "period": _period(cs0),
         "case_ids": [str(c.project_id) for c in cs0],
         "parent": {"level": parent_lv, "k": rates[parent_lv][0], "n": rates[parent_lv][1]} if parent_lv else None,
-        "formula": f"{formula}; estymata = (k + m·p_rodzica)/(n + m), m={min_n}; CI: Wilson 95% dla k/n",
+        "formula": (f"{formula} Wygładzenie małej próbki: wynik = (k + m·p) / (n + m), gdzie p – ten sam odsetek w "
+                    f"szerszej grupie ({LEVEL_PL.get(parent_lv, parent_lv) if parent_lv else 'brak'}), m = {min_n} – tyle "
+                    "„przypadków” z szerszej grupy dokładamy, żeby kilka nietypowych inwestycji nie dawało skrajnego wyniku. "
+                    "Przedział 95% (metoda Wilsona): zakres, w którym z 95-procentową pewnością leży prawdziwy odsetek "
+                    "– im mniej przypadków, tym szerszy."),
     }
 
 
@@ -100,8 +106,11 @@ def quantiles(levels: Levels, name: str, value: Callable[[Case], float | None], 
     out: dict[str, Any] = {"metric": name, "n": len(xs_used), "fallback_level": lv_used, "period": _period([c for c, _ in xs_used]),
                            "n_neighbours_with_data": len(nb),
                            "case_ids": [str(c.project_id) for c, _ in (xs_used if lv_used == "neighbours" else nb)],
-                           "formula": formula + (f"; sąsiedzi mają {len(nb)} wartości (< {min_n}) → kwantyle z poziomu "
-                                                  f"„{lv_used}” (n={len(xs_used)})" if lv_used != "neighbours" else "")}
+                           "formula": formula + " P50 – wartość środkowa (połowa przypadków ma mniej, połowa więcej); "
+                                      "P80 – 8 na 10 przypadków ma nie więcej; P95 – 19 na 20 przypadków ma nie więcej."
+                                      + (f" Podobne inwestycje mają tylko {len(nb)} takich wartości (mniej niż {min_n}), więc "
+                                         f"liczymy na grupie: {LEVEL_PL.get(lv_used, lv_used)} (n = {len(xs_used)})."
+                                         if lv_used != "neighbours" else "")}
     vals = [v for _, v in xs_used]
     for p in ps:
         out[f"p{int(p * 100)}"] = round(quantile(vals, p), 4) if vals else None
@@ -116,28 +125,28 @@ def compute_ranges(neighbours: list[Case], all_cases: list[Case], subsector: str
     lv = Levels(neighbours, completed, subsector)
     out = [
         proportion(lv, "p_late", lambda c: c.late, min_n,
-                   "P(opóźnienie) = k/n; k = umowy, w których zamawiający podał „nie wykonano w pierwotnym terminie” (5.3)"),
+                   "Odsetek opóźnionych = k / n, gdzie n – liczba podobnych umów, dla których zamawiający podał w ogłoszeniu o wykonaniu umowy, czy dotrzymano terminu (pkt 5.3), a k – ile z nich wykonano po pierwotnym terminie."),
         quantiles(lv, "delay_days", lambda c: c.delay_days, min_n,
-                  "opóźnienie [dni] = max(0, data wykonania (5.2) − (data zawarcia (4.1) + okres realizacji (4.2))); kwantyle empiryczne",
+                  "Opóźnienie w dniach = faktyczna data wykonania (pkt 5.2 ogłoszenia o wykonaniu) minus planowany termin (data zawarcia umowy, pkt 4.1, plus okres realizacji, pkt 4.2); umowy wykonane w terminie liczą się jako 0.",
                   ps=(0.5, 0.8)),
         quantiles(lv, "delay_days_if_late", lambda c: c.delay_days if c.late else None, min_n,
-                  "opóźnienie [dni] tylko wśród umów opóźnionych; kwantyle empiryczne", ps=(0.5, 0.8)),
+                  "Opóźnienie w dniach liczone tylko dla umów, które wykonano po terminie – pokazuje, jak duże bywa opóźnienie, gdy już wystąpi.", ps=(0.5, 0.8)),
         quantiles(lv, "paid_ratio", lambda c: c.paid_ratio, min_n,
-                  "wypłacone wynagrodzenie (5.5) / wartość umowy (4.4), obie kwoty brutto, umowy wykonane; kwantyle empiryczne"),
+                  "Stosunek wypłaty do umowy = wynagrodzenie faktycznie wypłacone (pkt 5.5) / wartość zawartej umowy (pkt 4.4), obie kwoty brutto, tylko umowy wykonane; 1,10 oznacza wypłatę o 10% wyższą niż w umowie."),
         proportion(lv, "p_change", lambda c: (c.n_changes or 0) > 0 if c.n_changes is not None else None, min_n,
-                   "P(zmiana umowy) = k/n; k = umowy z liczbą zmian (5.4.1) > 0"),
+                   "Odsetek zmienianych umów = k / n, gdzie n – liczba podobnych umów z informacją o zmianach, a k – ile z nich zmieniono co najmniej raz (pkt 5.4.1 ogłoszenia o wykonaniu)."),
     ]
     # cancellation is measured on the similar *procedures* (completed + cancelled), not on completed contracts
     pool = similar_pool or neighbours
     lv2 = Levels(pool, all_cases, subsector)
     out.append(proportion(lv2, "share_cancelled", lambda c: c.cancelled, min_n,
-                          "udział unieważnionych postępowań wśród podobnych postępowań (zakończonych i unieważnionych)"))
+                          "Odsetek unieważnionych = k / n, gdzie n – liczba podobnych postępowań (zakończonych umową albo unieważnionych), a k – ile z nich unieważniono."))
     out.append(proportion(lv2, "share_cancelled_255_3", lambda c: c.cancelled_255_3, min_n,
-                          "udział unieważnień z art. 255 pkt 3 Pzp (oferta przewyższa kwotę na sfinansowanie)"))
+                          "Odsetek unieważnień z powodu ceny = k / n, gdzie n – liczba podobnych postępowań, a k – ile unieważniono na podstawie art. 255 pkt 3 Pzp (najtańsza oferta przewyższała kwotę, którą zamawiający mógł przeznaczyć)."))
     out.append(quantiles(lv, "offer_vs_budget", lambda c: (c.price_won / c.budget_gross) if c.price_won and c.budget_gross else None,
-                         min_n, "cena wybranej oferty (6.4, brutto) / kwota na sfinansowanie (brutto) – obie z VAT (Porady: porównuj kwoty tego samego rodzaju)"))
+                         min_n, "Cena / budżet = cena wybranej oferty (pkt 6.4, brutto) / kwota, którą zamawiający zamierzał przeznaczyć (brutto); 1,20 oznacza ofertę o 20% droższą niż budżet. Porównujemy tylko kwoty tego samego rodzaju (obie z VAT)."))
     out.append(quantiles(lv, "offer_vs_estimate", lambda c: (c.price_won / (c.est_value_net * 1.23)) if c.price_won and c.est_value_net else None,
-                         min_n, "cena wybranej oferty (brutto) / (wartość zamówienia netto (4.3) × 1,23) – ZAŁOŻENIE: stawka VAT 23% dla robót"))
+                         min_n, "Cena / szacunek = cena wybranej oferty (brutto) / (wartość zamówienia netto z pkt 4.3 × 1,23). Założenie: VAT 23% dla robót budowlanych."))
     return out
 
 

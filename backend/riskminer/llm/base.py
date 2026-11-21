@@ -42,11 +42,14 @@ class LLMResult:
     latency_ms: int = 0
     cached: bool = False
     attempts: list[dict[str, Any]] = field(default_factory=list)  # failed profiles before this one
+    display_name: str | None = None
 
     @property
     def label(self) -> str:
         """Shown in UI next to [Wniosek modelu]."""
-        return "reguły" if self.provider == "none" else f"{self.provider}/{self.model}"
+        if self.provider == "none":
+            return "reguły"
+        return self.display_name or f"{self.provider}/{self.model}"
 
 
 class LLMError(RuntimeError):

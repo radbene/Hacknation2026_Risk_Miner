@@ -7,7 +7,7 @@ import uuid
 from fastapi import APIRouter, HTTPException
 from sqlalchemy import func, select
 
-from riskminer.api.deps import DB, USER, CurrentUser, Session
+from riskminer.api.deps import DB, EXPERT, CurrentUser, Session
 from riskminer.core.jobs import enqueue
 from riskminer.models import DataIssue, Event, Lesson, Project
 from riskminer.schemas.common import JobOut, Page
@@ -68,7 +68,7 @@ def get_event(event_id: uuid.UUID, db: Session = DB):
 
 
 @router.patch("/events/{event_id}", response_model=EventOut)
-def patch_event(event_id: uuid.UUID, body: EventPatch, db: Session = DB, user: CurrentUser = USER):
+def patch_event(event_id: uuid.UUID, body: EventPatch, db: Session = DB, user: CurrentUser = EXPERT):
     from riskminer.review.audit import ReviewError, apply_action
 
     e = _event_or_404(db, event_id)
@@ -103,14 +103,14 @@ def project_completeness(project_id: uuid.UUID, db: Session = DB):
 
 
 @router.post("/projects/{project_id}/extract", response_model=JobOut)
-def extract_project(project_id: uuid.UUID, use_llm: bool = True, db: Session = DB, user: CurrentUser = USER):
+def extract_project(project_id: uuid.UUID, use_llm: bool = True, db: Session = DB, user: CurrentUser = EXPERT):
     if not db.get(Project, project_id):
         raise HTTPException(404, "Nie znaleziono projektu")
     return enqueue(db, "extract", {"project_ids": [str(project_id)], "use_llm": use_llm}, user=user.username)
 
 
 @router.post("/projects/{project_id}/reanalyze", response_model=ReanalysisDiff)
-def reanalyze_project(project_id: uuid.UUID, db: Session = DB, user: CurrentUser = USER):
+def reanalyze_project(project_id: uuid.UUID, db: Session = DB, user: CurrentUser = EXPERT):
     """Rerun rules (+ completeness) for one project and diff against the previous events."""
     from riskminer.extract.completeness import compute
     from riskminer.extract.rules import extract_project as run

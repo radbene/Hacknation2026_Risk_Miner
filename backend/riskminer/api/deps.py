@@ -23,8 +23,8 @@ def current_user(authorization: str | None = Header(default=None), x_user: str |
     1. `Authorization: Bearer <token>` from POST /api/auth/login (signed, 12 h) – the normal path.
     2. `X-User: <username>` – developer/test shortcut, accepted only when DEMO_MODE is on; demo account names
        map to their role (admin/ekspert/analityk/gosc), any other name is an expert.
-    3. No header: DEMO_MODE → anonymous expert "ekspert" (jury sandbox works without logging in);
-       otherwise a read-only viewer.
+    3. No header: DEMO_MODE → anonymous analyst (the end user: case base + new-investment analyses);
+       otherwise a read-only viewer. Expert actions need the expert login (the UI's "Panel eksperta").
     """
     from riskminer.core.config import get_env
     from riskminer.review import auth
@@ -42,7 +42,7 @@ def current_user(authorization: str | None = Header(default=None), x_user: str |
     if x_user and demo:
         return CurrentUser(username=x_user, role=auth.demo_role(x_user), display_name=x_user)
     if demo:
-        return CurrentUser(username="ekspert", role="expert", display_name="Ekspert (demo)")
+        return CurrentUser(username="analityk", role="analyst", display_name="Użytkownik (demo)")
     return CurrentUser(username="anonim", role="viewer", display_name="Gość")
 
 
@@ -63,4 +63,6 @@ def require_role(*roles: str):
     return Depends(dep)
 
 
-__all__ = ["DB", "USER", "CurrentUser", "Session", "not_implemented", "require_role"]
+EXPERT = require_role("expert")  # expert panel: changes to source data, links, events, knowledge, sources, models
+
+__all__ = ["DB", "USER", "EXPERT", "CurrentUser", "Session", "not_implemented", "require_role"]

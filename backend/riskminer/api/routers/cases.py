@@ -8,7 +8,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 from sqlalchemy import func, or_, select
 
-from riskminer.api.deps import DB, USER, CurrentUser, Session
+from riskminer.api.deps import DB, EXPERT, CurrentUser, Session
 from riskminer.models import (
     Contract,
     ContractChange,
@@ -147,7 +147,7 @@ def get_project(project_id: uuid.UUID, db: Session = DB):
 
 
 @router.patch("/projects/{project_id}", response_model=ProjectDetail)
-def patch_project(project_id: uuid.UUID, body: ProjectPatch, db: Session = DB, user: CurrentUser = USER):
+def patch_project(project_id: uuid.UUID, body: ProjectPatch, db: Session = DB, user: CurrentUser = EXPERT):
     from riskminer.review.audit import ReviewError, apply_action
 
     p = _project_or_404(db, project_id)

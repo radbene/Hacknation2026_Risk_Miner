@@ -1,35 +1,41 @@
-import { Link, useNavigate } from '@tanstack/react-router'
-import { Plus } from 'lucide-react'
-import { api, unwrap, type Schemas } from '@/api/client'
+import { Link } from '@tanstack/react-router'
+import { Flag, Plus, Users } from 'lucide-react'
+import { api, unwrap } from '@/api/client'
 import { useApi } from '@/api/hooks'
+import { Intro } from '@/components/Explain'
 import { PageHeader } from '@/components/PageHeader'
-import { StatusBadge } from '@/components/StatusBadge'
-import { Badge, Button, DataTable, QueryState, type ColumnDef } from '@/components/ui'
+import { Badge, Button, Card, QueryState } from '@/components/ui'
+import { useAuth } from '@/lib/auth'
 import { fmtDateTime } from '@/lib/utils'
 import { analysesRoute } from '@/router'
 
-type L = Schemas['AnalysisListItem']
-
 export default function Analyses() {
   const s = analysesRoute.useSearch()
-  const navigate = useNavigate()
+  const { isExpert } = useAuth()
   const q = useApi(['analyses', s], async () => unwrap(await api.GET('/api/analyses', { params: { query: { q: s.q ?? null, status: s.status ?? null, subsector: s.subsector ?? null, limit: 200 } } })))
   return (
     <div>
-      <PageHeader title="Analizy nowych inwestycji" description="Zapisane analizy – każdą można otworzyć, zmienić cechy, wykluczyć sąsiadów i wyeksportować (DOCX, JSON, CSV)."
-        actions={<Link to="/nowa-inwestycja"><Button><Plus size={14} />Nowa analiza</Button></Link>} />
+      <PageHeader title={isExpert ? 'Analizy użytkowników' : 'Moje analizy'}
+        actions={!isExpert ? <Link to="/nowa-inwestycja"><Button><Plus size={14} />Nowa analiza</Button></Link> : undefined} />
+      <Intro can={isExpert ? ['otworzyć analizę i zatwierdzić lub odrzucić jej flagi, zakresy i rekomendacje'] : ['otworzyć analizę, zmienić cechy inwestycji, pominąć niepasujące podobne inwestycje', 'pobrać kartę analizy jako dokument Word']}>
+        {isExpert ? 'Analizy nowych inwestycji przygotowane przez użytkowników. Ekspert ocenia ich elementy – zatwierdzone wnioski są wyraźnie oznaczone.'
+          : 'Zapisane analizy planowanych inwestycji. Każdą można otworzyć ponownie – wyniki są przeliczane na aktualnej bazie przypadków.'}
+      </Intro>
       <QueryState q={q}>{(d) => (
-        <DataTable data={d.items} getRowId={(r) => r.id} onRowClick={(r) => navigate({ to: '/analizy/$analysisId', params: { analysisId: r.id }, search: {} })}
-          empty="Brak analiz – utwórz pierwszą w „Nowa inwestycja”."
-          columns={[
-            { accessorKey: 'title', header: 'Analiza', cell: ({ getValue }) => <span className="font-medium">{String(getValue())}</span> },
-            { accessorKey: 'subsector_main', header: 'Podsektor', cell: ({ getValue }) => <span className="text-xs">{String(getValue() ?? '—')}</span> },
-            { accessorKey: 'n_neighbours', header: 'Sąsiedzi' },
-            { accessorKey: 'n_flags', header: 'Flagi', cell: ({ getValue }) => <Badge variant={Number(getValue()) ? 'warning' : 'default'}>{String(getValue())}</Badge> },
-            { accessorKey: 'created_by', header: 'Autor' },
-            { accessorKey: 'created_at', header: 'Utworzono', cell: ({ getValue }) => <span className="text-xs">{fmtDateTime(getValue() as string)}</span> },
-            { accessorKey: 'status', header: 'Status', cell: ({ getValue }) => <StatusBadge status={getValue() as string} /> },
-          ] as ColumnDef<L>[]} />
+        d.items.length === 0
+          ? <p className="py-8 text-center text-sm text-slate-500">Nie ma jeszcze analiz. <Link to="/nowa-inwestycja" className="text-brand hover:underline">Rozpocznij pierwszą</Link>.</p>
+          : <div className="grid gap-3 md:grid-cols-2">{d.items.map((a) => (
+            <Link key={a.id} to="/analizy/$analysisId" params={{ analysisId: a.id }} search={{}} className="group">
+              <Card className="h-full p-4 group-hover:border-brand">
+                <h2 className="font-medium">{a.title}</h2>
+                <div className="mt-1 text-xs text-slate-500">{a.subsector_main ?? 'podsektor nieustalony'} · {fmtDateTime(a.created_at)}{isExpert && a.created_by ? ` · ${a.created_by}` : ''}</div>
+                <div className="mt-2 flex flex-wrap gap-3 text-xs">
+                  <span className="inline-flex items-center gap-1"><Users size={12} />{a.n_neighbours} podobnych inwestycji</span>
+                  <span className="inline-flex items-center gap-1"><Flag size={12} />{a.n_flags} {a.n_flags === 1 ? 'flaga' : 'flag'}</span>
+                  {a.status !== 'proposed' && <Badge variant={a.status === 'rejected' ? 'danger' : 'success'}>{a.status === 'rejected' ? 'odrzucona przez eksperta' : 'zatwierdzona przez eksperta'}</Badge>}
+                </div>
+              </Card>
+            </Link>))}</div>
       )}</QueryState>
     </div>
   )

@@ -31,6 +31,8 @@ async def upload_document(file: UploadFile = File(...), project_id: uuid.UUID | 
                           db: Session = DB, user: CurrentUser = USER):
     from riskminer.extract.documents import ingest_bytes
 
+    if project_id and user.role not in ("expert", "admin"):
+        raise HTTPException(403, "Dokumenty do bazy przypadków dodaje ekspert (Panel eksperta)")
     data = await file.read()
     if not data:
         raise HTTPException(400, "Pusty plik")
@@ -50,6 +52,8 @@ async def upload_document(file: UploadFile = File(...), project_id: uuid.UUID | 
 def document_from_url(body: DocumentFromUrlIn, db: Session = DB, user: CurrentUser = USER):
     from riskminer.extract.documents import fetch_url
 
+    if body.project_id and user.role not in ("expert", "admin"):
+        raise HTTPException(403, "Dokumenty do bazy przypadków dodaje ekspert (Panel eksperta)")
     if not body.url.lower().startswith(("http://", "https://")):
         raise HTTPException(400, "Adres musi zaczynać się od http(s)://")
     try:
