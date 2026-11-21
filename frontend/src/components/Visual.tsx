@@ -28,8 +28,8 @@ export function Proportion({ k, n, estimate, low, high, what, tone = 'rose' }:
 export function Spread({ p50, p80, p95, unit = '', digits = 0, third = 'pesymistycznie' }: { p50?: number | null; p80?: number | null; p95?: number | null; unit?: string; digits?: number; third?: string }) {
   const f = (v?: number | null) => (v == null ? '—' : `${fmtNum(v, digits)}${unit}`)
   return (
-    <div className="grid grid-cols-3 gap-2 text-center">
-      {[['typowo', p50, 'P50'], ['z zapasem', p80, 'P80'], [third, p95, 'P95']].map(([l, v, code]) => (
+    <div className={`grid gap-2 text-center ${p95 == null ? 'grid-cols-2' : 'grid-cols-3'}`}>
+      {([['typowo', p50, 'P50'], ['z zapasem', p80, 'P80'], [third, p95, 'P95']] as const).filter(([, v, code]) => code !== 'P95' || v != null).map(([l, v, code]) => (
         <div key={String(code)} className="rounded-md bg-slate-50 px-2 py-1.5">
           <div className="text-[11px] text-slate-500">{l as string}</div>
           <div className="text-base font-semibold tabular-nums">{f(v as number | null)}</div>
