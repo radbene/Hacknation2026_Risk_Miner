@@ -47,3 +47,8 @@ def db(db_available):
     finally:
         s.rollback()
         s.close()
+
+
+import sys as _sys  # noqa: E402
+
+_sys.path.insert(0, str(Path(__file__).parent))  # test helpers (bzp_rows)

@@ -169,3 +169,13 @@ def to_float(v: Any) -> float | None:
         return float(v)
     except (TypeError, ValueError):
         return None
+
+
+def derivation_evidence(session: Session, *, key: tuple, inputs: list, formula: str,
+                        values: dict[str, Any] | None = None, quote: str | None = None) -> uuid.UUID:
+    """core.evidence.derivation_evidence with JSON-safe values (dates, Decimals) and no empty inputs."""
+    from riskminer.core.evidence import derivation_evidence as _d
+    from riskminer.core.upsert import jsonable
+
+    return _d(session, key=key, inputs=[i for i in inputs if i], formula=formula, values=jsonable(values or {}),
+              quote=quote)
