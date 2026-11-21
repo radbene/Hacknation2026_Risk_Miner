@@ -47,11 +47,10 @@ def _click_group():
 
 
 def command_exists(path: list[str]) -> bool:
-    import click
-
     node = _click_group()
     for name in path:
-        if not isinstance(node, click.Group) or name not in node.commands:
+        cmds = getattr(node, "commands", None)  # typer vendors click: duck-type groups
+        if not isinstance(cmds, dict) or name not in cmds:
             return False
         node = node.commands[name]
     return True
