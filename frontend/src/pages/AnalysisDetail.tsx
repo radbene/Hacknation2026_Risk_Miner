@@ -305,33 +305,53 @@ function Ranges({ items, a }: { items: Item[]; a: A }) {
 
 function Neighbours({ items, a }: { items: Item[]; a: A }) {
   const sorted = [...items].sort((x, y) => Number(x.excluded) - Number(y.excluded) || (y.payload as P).score - (x.payload as P).score)
+  const [open, setOpen] = useState<string | null>(null)
   return (
-    <div className="space-y-3">
-      <Intro can={['pominąć inwestycję, która nie pasuje; wyniki przeliczą się bez niej']}>
-        Zakończone inwestycje najbardziej zbliżone do opisanej. Pasek pokazuje zgodność każdej cechy, a <Term t="waga">waga</Term> jej znaczenie w ocenie <Term t="podobieństwo">podobieństwa</Term>. Na tych inwestycjach opierają się zakresy i flagi.
+    <div>
+      <Intro can={['otworzyć kafelek, żeby zobaczyć wynik inwestycji i zgodność każdej cechy', 'pominąć inwestycję, która nie pasuje; wyniki przeliczą się bez niej']}>
+        Zakończone inwestycje najbardziej zbliżone do opisanej. Na nich opierają się zakresy i flagi.
       </Intro>
-      {sorted.map((it) => {
-        const p = it.payload as P
-        const o = p.outcome ?? {}
-        return (
-          <Card key={it.id} className={cn(it.excluded && 'opacity-50')}>
-            <CardHeader title={<Link to="/projekty/$projectId" params={{ projectId: p.project_id }} search={{}} className="hover:underline">{p.title}</Link>}
-              description={<>Podobieństwo <b>{pct(p.score)}</b>{it.excluded ? ', pominięta w porównaniu' : ''}</>}
-              actions={<EvidenceChip ids={o.evidence_ids} label="Źródło wyniku" />} />
-            <CardContent className="space-y-3">
-              <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
-                <Fact label="Wartość umowy" value={fmtPln(o.value_gross)} />
-                <Fact label="Opóźnienie" value={o.delay_days == null ? '—' : o.delay_days > 0 ? `${o.delay_days} dni` : 'w terminie'} warn={(o.delay_days ?? 0) > 0} />
-                <Fact label="Wypłata / umowa" value={o.paid_ratio == null ? '—' : `${Math.round(o.paid_ratio * 100)}%`} warn={(o.paid_ratio ?? 0) > 1.05} />
-                <Fact label="Zmiany umowy" value={o.n_changes ?? '—'} />
-              </div>
-              <div className="grid gap-2 sm:grid-cols-2">{(p.breakdown ?? []).map((b: P) => (
-                <ScoreBar key={b.component} value={b.similarity} label={<>{b.label} <span className="font-normal text-slate-400">(waga {Math.round(b.weight * 100)}%)</span></>} detail={b.detail} />))}</div>
-              {!!p.shared_terms?.length && <p className="text-xs text-slate-500">Wspólne słowa w opisach: {p.shared_terms.join(', ')}</p>}
-              <ItemDecision a={a} it={it} allowExclude />
-            </CardContent>
-          </Card>)
-      })}
+      <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {sorted.map((it) => {
+          const p = it.payload as P
+          const o = p.outcome ?? {}
+          const isOpen = open === it.id
+          return (
+            <li key={it.id} className={cn(isOpen && 'md:col-span-2 xl:col-span-3')}>
+              <Card className={cn('h-full', it.excluded && 'opacity-50', isOpen && 'border-brand')}>
+                <button type="button" onClick={() => setOpen(isOpen ? null : it.id)} aria-expanded={isOpen}
+                  className="block w-full cursor-pointer rounded-lg px-4 py-3 text-left hover:bg-slate-50">
+                  <span className="line-clamp-2 font-semibold text-slate-900">{p.title}</span>
+                  <span className="mt-1 block text-sm text-slate-500">
+                    {p.subsector_main ?? 'Podsektor nieustalony'} · <span className="whitespace-nowrap">podobieństwo <b className="text-slate-700">{pct(p.score)}</b></span>
+                    {it.excluded && ', pominięta'}
+                  </span>
+                </button>
+                {isOpen && (
+                  <CardContent className="space-y-4 border-t border-slate-100">
+                    <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
+                      <Fact label="Wartość umowy" value={fmtPln(o.value_gross)} />
+                      <Fact label="Opóźnienie" value={o.delay_days == null ? '—' : o.delay_days > 0 ? `${o.delay_days} dni` : 'w terminie'} warn={(o.delay_days ?? 0) > 0} />
+                      <Fact label="Wypłata / umowa" value={o.paid_ratio == null ? '—' : `${Math.round(o.paid_ratio * 100)}%`} warn={(o.paid_ratio ?? 0) > 1.05} />
+                      <Fact label="Zmiany umowy" value={o.n_changes ?? '—'} />
+                    </div>
+                    <div>
+                      <div className="mb-1 text-xs font-semibold text-slate-600">Zgodność cech (<Term t="waga">waga</Term> w nawiasie)</div>
+                      <div className="grid gap-2 sm:grid-cols-2">{(p.breakdown ?? []).map((b: P) => (
+                        <ScoreBar key={b.component} value={b.similarity} label={<>{b.label} <span className="font-normal text-slate-400">({Math.round(b.weight * 100)}%)</span></>} detail={b.detail} />))}</div>
+                    </div>
+                    {!!p.shared_terms?.length && <p className="text-xs text-slate-500">Wspólne słowa w opisach: {p.shared_terms.join(', ')}</p>}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Link to="/projekty/$projectId" params={{ projectId: p.project_id }} search={{}} className="text-sm text-brand hover:underline">Karta inwestycji</Link>
+                      <EvidenceChip ids={o.evidence_ids} label="Źródło wyniku" />
+                      <div className="ml-auto"><ItemDecision a={a} it={it} allowExclude /></div>
+                    </div>
+                  </CardContent>
+                )}
+              </Card>
+            </li>)
+        })}
+      </ul>
     </div>
   )
 }
