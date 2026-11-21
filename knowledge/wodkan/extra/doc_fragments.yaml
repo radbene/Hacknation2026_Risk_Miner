@@ -1,0 +1,21 @@
+# Templates for document fragments in the expert format
+#   warunek/sygnał (quote from the document) → możliwe zdarzenie → możliwy wpływ (risks.yaml effects) → środki zaradcze
+# Used by extract/documents.py when no LLM is available. Team draft – needs expert approval.
+sector: wodkan
+name: doc_fragments
+rows:
+- {code: R01, event: "Ujawnienie robót nieujętych w opisie zakresu lub przedmiarze", mitigation: "Zweryfikować spójność OPZ/PFU, projektu i przedmiaru; przewidzieć w PPU procedurę robót zamiennych i dodatkowych (art. 455 ust. 1 pkt 1)", status: draft}
+- {code: R02, event: "Warunki gruntowo-wodne lub stan istniejącej infrastruktury inne niż założone", mitigation: "Uzupełnić badania geotechniczne i inwentaryzację; klauzula zmiany terminu i wynagrodzenia przy odmiennych warunkach gruntowych", status: draft}
+- {code: R03, event: "Brak dostępu do terenu, kolizja z siecią lub konieczność ustanowienia służebności", mitigation: "Potwierdzić prawo do dysponowania nieruchomościami i uzgodnienia z gestorami przed ogłoszeniem; klauzula przesunięcia terminu", status: draft}
+- {code: R04, event: "Opóźnienie decyzji, pozwolenia lub uzgodnienia podmiotu trzeciego", mitigation: "Harmonogram z buforem na decyzje; określić w umowie, kto i w jakim terminie uzyskuje decyzje", status: draft}
+- {code: R05, event: "Spór o to, która strona odpowiada za obowiązek, koszt lub termin", mitigation: "Macierz odpowiedzialności w PPU/SWU; hierarchia dokumentów", status: draft}
+- {code: R06, event: "Niedotrzymanie harmonogramu (sezon, zależności, okres prób)", mitigation: "Zweryfikować realność terminu na tle podobnych inwestycji; kamienie milowe i bufor na okres zimowy", status: draft}
+- {code: R07, event: "Nieprzewidziane roboty dodatkowe i aneks", mitigation: "Rezerwa budżetowa; klauzule zmian przewidzianych (art. 455 ust. 1 pkt 1) zamiast pkt 4", status: draft}
+- {code: R08, event: "Spór o rozliczenie przy wynagrodzeniu nieadekwatnym do niepewności zakresu", mitigation: "Dobrać model wynagrodzenia (ryczałt/kosztorys) do poziomu rozpoznania; klauzula waloryzacyjna", status: draft}
+- {code: R09, event: "Rozbieżna interpretacja wymagań technicznych lub równoważności", mitigation: "Mierzalne parametry i kryteria równoważności w OPZ/STWiORB", status: draft}
+- {code: R10, event: "Brak możliwości odbioru lub rozruchu zgodnie z wymaganiami", mitigation: "Określić program prób, rozruchu i kryteria odbioru w umowie", status: draft}
+- {code: R11, event: "Odwołanie, unieważnienie lub słaba konkurencja w postępowaniu", mitigation: "Proporcjonalne warunki udziału; konsultacje rynkowe; jasne kryteria", status: draft}
+- {code: R12, event: "Opóźnienie lub problemy jakościowe po stronie wykonawcy lub dostawców", mitigation: "Warunki doświadczenia i potencjału; kontrola podwykonawców; harmonogram dostaw kluczowych urządzeń", status: draft}
+- {code: R13, event: "Brak środków, utrata dofinansowania lub oferty powyżej budżetu", mitigation: "Urealnić kosztorys inwestorski; terminy kwalifikowalności w harmonogramie; rezerwa", status: draft}
+- {code: R14, event: "Wysokie koszty eksploatacji po odbiorze", mitigation: "Kryterium kosztów cyklu życia; wymagania energetyczne i serwisowe w OPZ", status: draft}
+- {code: R15, event: "Nieosiągnięcie efektu (RLM, przyłączenia, jakość wody/ścieków)", mitigation: "Zdefiniować mierzalny efekt i sposób jego potwierdzenia przy odbiorze", status: draft}
