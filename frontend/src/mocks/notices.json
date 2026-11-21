@@ -1,0 +1,2639 @@
+{
+ "2023/BZP 00464559/01": {
+  "object_id": "08dbd624-377a-f930-7d96-c40012609352",
+  "notice_type": "ContractPerformingNotice",
+  "ocid": "ocds-148610-646ba830-e435-11ed-9355-06954b8c6cb9",
+  "published_at": "2023-10-26T13:05:24.085Z",
+  "title": "BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,",
+  "org_name": "GMINA WOLIN",
+  "org_nip": "9860164852",
+  "contractors": [
+   {
+    "contractorName": "Miejskie Przedsiębiorstwo Gospodarki Komunalnej Sp. z o. o.",
+    "contractorCity": "Wolin",
+    "contractorProvince": "PL32",
+    "contractorCountry": "PL",
+    "contractorNationalId": "REGON : 384643387"
+   }
+  ],
+  "sections": [
+   {
+    "section": "1.1",
+    "label": "Nazwa zamawiającego",
+    "value": "GMINA WOLIN"
+   },
+   {
+    "section": "1.3",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON 811685510"
+   },
+   {
+    "section": "2.1",
+    "label": "Identyfikator postępowania",
+    "value": "ocds-148610-646ba830-e435-11ed-9355-06954b8c6cb9"
+   },
+   {
+    "section": "2.2",
+    "label": "Numer ogłoszenia",
+    "value": "2023/BZP 00464559"
+   },
+   {
+    "section": "2.3",
+    "label": "Wersja ogłoszenia",
+    "value": "01"
+   },
+   {
+    "section": "2.4",
+    "label": "Data ogłoszenia",
+    "value": "2023-10-26"
+   },
+   {
+    "section": "3.1",
+    "label": "Charakter zamówienia",
+    "value": "Zamówienie klasyczne - od 130 000 zł, ale o wartości mniejszej niż progi unijne"
+   },
+   {
+    "section": "3.2",
+    "label": "Zamówienie było poprzedzone ogłoszeniem o zamówieniu albo ogłoszeniem o zamiarze zawarcia umowy w BZP lub Dz. Urz. UE",
+    "value": "Tak"
+   },
+   {
+    "section": "3.2.1",
+    "label": "Numer ogłoszenia w BZP lub Dz. Urz. UE",
+    "value": "2023/BZP 00194168"
+   },
+   {
+    "section": "3.3",
+    "label": "Czy zamówienie dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej",
+    "value": "Nie"
+   },
+   {
+    "section": "3.5",
+    "label": "Tryb udzielenia zamówienia wraz z podstawą prawną",
+    "value": "Zamówienie udzielane jest w trybie zamówienia z wolnej ręki na podstawie: art. 305 pkt 1 ustawy w zw. z art. 214 ust. 1 pkt 11 ustawy"
+   },
+   {
+    "section": "3.6",
+    "label": "Rodzaj zamówienia",
+    "value": "Roboty budowlane"
+   },
+   {
+    "section": "3.7",
+    "label": "Nazwa zamówienia",
+    "value": "BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,"
+   },
+   {
+    "section": "3.8",
+    "label": "Krótki opis przedmiotu zamówienia",
+    "value": "1. Przedmiotem zamówienia jest zadanie inwestycyjne pn.: BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN, w tym wykonanie wszystkich prac prowadzących do osiągnięcia stanu zgodnie z Projektami budowlanymi, Specyfikacjami Technicznymi Wykonania i Odbioru Robót, Zaproszeniem do negocjacji oraz Projektowanymi Postanowieniami Umowy w sprawie zamówienia publicznego. 2. Przedmiot zamówienia obejmuje dwa zadania: Zadanie nr 1: BUDOWA ROZDZIELCZEJ SIECI WODOCIĄGOWEJ NA ODCINKU WARTOWO-SIEROSŁAW Zadanie nr 2: BUDOWA SIECI WODOCIĄGOWEJ NA ODCINKU WISEŁKA-ŻÓŁWINO -DOMYSŁÓW 3. Opis techniczny poszczególnych zadań: 3.1. Zadanie nr 1: BUDOWA ROZDZIELCZEJ SIECI WODOCIĄGOWEJ NA ODCINKU WARTOWO-SIEROSŁAW Zakres robót obejmuje: 1) roboty pomiarowe, 2) wykonane wykopów liniowych, 3) montaż rurociągów, 4) wykonanie przewiertów sterowanych, 5) montaż hydrantów pożarowych naziemnych, zasuw odcinających oraz studni "
+   },
+   {
+    "section": "3.9",
+    "label": "Główny kod CPV",
+    "value": "45231300-8 - Roboty budowlane w zakresie budowy wodociągów i rurociągów do odprowadzania ścieków"
+   },
+   {
+    "section": "3.10",
+    "label": "Dodatkowy kod CPV",
+    "value": "45111200-0 - Roboty w zakresie przygotowania terenu pod budowę i roboty ziemne 45233220-7 - Roboty w zakresie nawierzchni dróg"
+   },
+   {
+    "section": "4.1",
+    "label": "Data zawarcia umowy",
+    "value": "2023-05-25"
+   },
+   {
+    "section": "4.2",
+    "label": "Okres realizacji zamówienia",
+    "value": "10 miesiące"
+   },
+   {
+    "section": "4.3",
+    "label": "Dane wykonawcy, z którym zawarto umowę",
+    "value": ""
+   },
+   {
+    "section": "4.3.1",
+    "label": "Nazwa (firma) wykonawcy, któremu udzielono zamówienia (w przypadku wykonawców ubiegających się wspólnie o udzielenie zamówienia – dotyczy pełnomocnika, o którym mowa w art. 58 ust. 2 ustawy)",
+    "value": "Miejskie Przedsiębiorstwo Gospodarki Komunalnej Sp. z o. o."
+   },
+   {
+    "section": "4.3.2",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON : 384643387"
+   },
+   {
+    "section": "4.3.3",
+    "label": "Ulica",
+    "value": "ul. Adama Mickiewicza 2D"
+   },
+   {
+    "section": "4.3.4",
+    "label": "Miejscowość",
+    "value": "Wolin"
+   },
+   {
+    "section": "4.3.5",
+    "label": "Kod pocztowy",
+    "value": "72-510"
+   },
+   {
+    "section": "4.3.6",
+    "label": "Województwo",
+    "value": "zachodniopomorskie"
+   },
+   {
+    "section": "4.3.7",
+    "label": "Kraj",
+    "value": "Polska"
+   },
+   {
+    "section": "4.4",
+    "label": "Wartość umowy",
+    "value": "5154376,09 PLN"
+   },
+   {
+    "section": "4.5",
+    "label": "Numer ogłoszenia o wyniku postępowania w BZP lub Dz. Urz. UE",
+    "value": "2023/BZP 00232972/01"
+   },
+   {
+    "section": "5.1",
+    "label": "Czy umowa została wykonana",
+    "value": "Tak"
+   },
+   {
+    "section": "5.2",
+    "label": "Termin wykonania umowy",
+    "value": "2023-09-27"
+   },
+   {
+    "section": "5.3",
+    "label": "Czy umowę wykonano w pierwotnie określonym terminie",
+    "value": "Tak"
+   },
+   {
+    "section": "5.4",
+    "label": "Informacje o zmianach umowy",
+    "value": ""
+   },
+   {
+    "section": "5.4.1",
+    "label": "Liczba zmian",
+    "value": "2"
+   },
+   {
+    "section": "5.4.2",
+    "label": "Numer zmiany",
+    "value": "1"
+   },
+   {
+    "section": "5.4.3",
+    "label": "Podstawa prawna zmiany",
+    "value": "art. 455 ust. 2 ustawy"
+   },
+   {
+    "section": "5.4.4",
+    "label": "Przyczyny dokonania zmian",
+    "value": "W trakcie realizacji robót, ze względu na ukształtowanie terenu oraz niezinwentaryzowany drzewostan, w celu ochrony systemu korzeniowego, stwierdzono konieczność zmiany średnicy korpusu projektowanych 3 szt. studni owalnych polimerobetonowych z DN 2500 mm na mniejsze DN 1500 mm."
+   },
+   {
+    "section": "5.4.5",
+    "label": "Krótki opis zamówienia po zmianie",
+    "value": "Zaniechano wykonane części robót (powodujące zmniejszenie wynagrodzenia Wykonawcy o kwotę 79.704,00 zł brutto) i wprowadzono roboty zamienne (zwiększające wynagrodzenie Wykonawcy o kwotę 43.173,00 zł brutto), w zakresie zadania nr 2: Budowa sieci wodociągowej na odcinku Wisełka-Żółwino-Domysłów, co wpłynęło w konsekwencji na zmniejszenie wynagrodzenia wykonawcy o kwotę 36 531,00 zł brutto (łączne zmiany wynagrodzenia „in plus” oraz „in minus” poniżej 15% wartości pierwotnej umowy)."
+   },
+   {
+    "section": "5.4.6",
+    "label": "Wartość zmiany",
+    "value": "36531,00"
+   },
+   {
+    "section": "5.4.7",
+    "label": "Kod waluty",
+    "value": "PLN"
+   },
+   {
+    "section": "5.4.8",
+    "label": "Wzrost ceny w związku ze zmianą umowy/umowy ramowej",
+    "value": "Nie"
+   },
+   {
+    "section": "5.4.2",
+    "label": "Numer zmiany",
+    "value": "2"
+   },
+   {
+    "section": "5.4.3",
+    "label": "Podstawa prawna zmiany",
+    "value": "art. 455 ust. 2 ustawy"
+   },
+   {
+    "section": "5.4.4",
+    "label": "Przyczyny dokonania zmian",
+    "value": "W trakcie realizacji robót, ze względu na niezinwentaryzowany drzewostan, w celu ochrony systemu korzeniowego, zaszła konieczność zmiany średnicy korpusu projektowanej studni owalnej z DN 2500 mm na mniejszą DN 1500 mm. Ze względu na ukształtowanie terenu, zrezygnowano z montażu zaworów odpowietrzających od zo1 do zo7 – 7 szt. Dodatkowo konieczny stał się montaż hydrantów nadziemnych DN 80 – 3 szt."
+   },
+   {
+    "section": "5.4.5",
+    "label": "Krótki opis zamówienia po zmianie",
+    "value": "Zaniechano wykonanie części robót (powodujące zmniejszenie wynagrodzenia Wykonawcy o kwotę 46.020,49 zł brutto), wprowadzono roboty zamienne oraz dodatkowe (zwiększające wynagrodzenie Wykonawcy o kwotę 32.416,58 brutto), w zakresie zadania nr 1: Budowa rozdzielczej sieci wodociągowej na odcinku Wartowo-Sierosław, co wpłynęło w konsekwencji na zmniejszenie wynagrodzenia wykonawcy o kwotę 13.603,91 zł brutto (łączne zmiany wynagrodzenia „in plus” oraz „in minus” z uwzględnieniem wartości zmiany dokonanej na tej samej podstawie zgodnie z Aneksem Nr 1/2023 poniżej 15% wartości pierwotnej umowy)."
+   },
+   {
+    "section": "5.4.6",
+    "label": "Wartość zmiany",
+    "value": "13603,91"
+   },
+   {
+    "section": "5.4.7",
+    "label": "Kod waluty",
+    "value": "PLN"
+   },
+   {
+    "section": "5.4.8",
+    "label": "Wzrost ceny w związku ze zmianą umowy/umowy ramowej",
+    "value": "Nie"
+   },
+   {
+    "section": "5.5",
+    "label": "Łączna wartość wynagrodzenia wypłacona z tytułu zrealizowanej umowy",
+    "value": "5104241,18 PLN"
+   },
+   {
+    "section": "5.6",
+    "label": "Czy umowa została wykonana należycie",
+    "value": "Tak"
+   },
+   {
+    "section": "5.7",
+    "label": "Podczas realizacji zamówienia zamawiający kontrolował przewidziane w zawartej umowie wymagania",
+    "value": "nie dotyczy"
+   }
+  ]
+ },
+ "2023/BZP 00580488/01": {
+  "object_id": "08dc086e-d01e-5f27-b62e-d20011751fa3",
+  "notice_type": "ContractPerformingNotice",
+  "ocid": "ocds-148610-f193152b-b443-11ed-9236-36fed59ea7dd",
+  "published_at": "2023-12-29T13:05:21.074Z",
+  "title": "Budowa sieci wodociągowych i kanalizacji sanitarnej w Gminie Wolin",
+  "org_name": "GMINA WOLIN",
+  "org_nip": "9860164852",
+  "contractors": [
+   {
+    "contractorName": null,
+    "contractorCity": null,
+    "contractorProvince": null,
+    "contractorCountry": null,
+    "contractorNationalId": null
+   }
+  ],
+  "sections": [
+   {
+    "section": "1.1",
+    "label": "Nazwa zamawiającego",
+    "value": "GMINA WOLIN"
+   },
+   {
+    "section": "1.3",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON 811685510"
+   },
+   {
+    "section": "2.1",
+    "label": "Identyfikator postępowania",
+    "value": "ocds-148610-f193152b-b443-11ed-9236-36fed59ea7dd"
+   },
+   {
+    "section": "2.2",
+    "label": "Numer ogłoszenia",
+    "value": "2023/BZP 00580488"
+   },
+   {
+    "section": "2.3",
+    "label": "Wersja ogłoszenia",
+    "value": "01"
+   },
+   {
+    "section": "2.4",
+    "label": "Data ogłoszenia",
+    "value": "2023-12-29"
+   },
+   {
+    "section": "3.1",
+    "label": "Charakter zamówienia",
+    "value": "Zamówienie klasyczne - od 130 000 zł, ale o wartości mniejszej niż progi unijne"
+   },
+   {
+    "section": "3.2",
+    "label": "Zamówienie było poprzedzone ogłoszeniem o zamówieniu albo ogłoszeniem o zamiarze zawarcia umowy w BZP lub Dz. Urz. UE",
+    "value": "Tak"
+   },
+   {
+    "section": "3.2.1",
+    "label": "Numer ogłoszenia w BZP lub Dz. Urz. UE",
+    "value": "2023/BZP 00110672"
+   },
+   {
+    "section": "3.3",
+    "label": "Czy zamówienie dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej",
+    "value": "Nie"
+   },
+   {
+    "section": "3.5",
+    "label": "Tryb udzielenia zamówienia wraz z podstawą prawną",
+    "value": "Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 2 ustawy"
+   },
+   {
+    "section": "3.6",
+    "label": "Rodzaj zamówienia",
+    "value": "Roboty budowlane"
+   },
+   {
+    "section": "3.7",
+    "label": "Nazwa zamówienia",
+    "value": "Budowa sieci wodociągowych i kanalizacji sanitarnej w Gminie Wolin"
+   },
+   {
+    "section": "3.8",
+    "label": "Krótki opis przedmiotu zamówienia",
+    "value": "1. Przedmiotem zamówienia jest zadanie inwestycyjne pn.: „BUDOWA SIECI WODOCIĄGOWYCH I KANALIZACJI SANITARNEJ W GMINIE WOLIN”, realizowane w ramach Rządowego Funduszu Polski Ład: Program Inwestycji Strategicznych, w tym wykonanie wszystkich prac prowadzących do osiągnięcia stanu zgodnego z Dokumentacją Projektową, Specyfikacjami Technicznymi Wykonania i Odbioru Robót Budowlanych, SWZ oraz Projektowanymi Postanowieniami Umowy w sprawie zamówienia publicznego. Część nr 1: BUDOWA SIECI WODOCIĄGOWEJ W MIEJSCOWOŚCI DOMYSŁÓW WRAZ Z PRZYŁĄCZAMI Zakres robót obejmuje: 1) roboty pomiarowe, 2) wykonane wykopów liniowych, 3) montaż rurociągów z rur polietylenowych łączonych metodą zgrzewania, 4) wykonanie przewiertów sterowanych, 5) montaż hydrantów pożarowych naziemnych, zasuw odcinających oraz studni wodomierzowej, 6) zasypanie wykopów wraz z odpowiednim zagęszczeniem gruntu, 7) roboty odtworzeni"
+   },
+   {
+    "section": "3.9",
+    "label": "Główny kod CPV",
+    "value": "45231300-8 - Roboty budowlane w zakresie budowy wodociągów i rurociągów do odprowadzania ścieków"
+   },
+   {
+    "section": "3.10",
+    "label": "Dodatkowy kod CPV",
+    "value": "45111200-0 - Roboty w zakresie przygotowania terenu pod budowę i roboty ziemne"
+   },
+   {
+    "section": "4.1",
+    "label": "Data zawarcia umowy",
+    "value": "2023-04-11"
+   },
+   {
+    "section": "4.2",
+    "label": "Okres realizacji zamówienia",
+    "value": "5 miesiące"
+   },
+   {
+    "section": "4.3",
+    "label": "Dane wykonawcy, z którym zawarto umowę",
+    "value": ""
+   },
+   {
+    "section": "4.3.1",
+    "label": "Nazwa (firma) wykonawcy, któremu udzielono zamówienia (w przypadku wykonawców ubiegających się wspólnie o udzielenie zamówienia – dotyczy pełnomocnika, o którym mowa w art. 58 ust. 2 ustawy)",
+    "value": "PPH Artex sp. z o.o.,"
+   },
+   {
+    "section": "4.3.2",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "NIP:PL 6690503086"
+   },
+   {
+    "section": "4.3.3",
+    "label": "Ulica",
+    "value": "Na Skarpie 17"
+   },
+   {
+    "section": "4.3.4",
+    "label": "Miejscowość",
+    "value": "Koszalin"
+   },
+   {
+    "section": "4.3.5",
+    "label": "Kod pocztowy",
+    "value": "75-343"
+   },
+   {
+    "section": "4.3.6",
+    "label": "Województwo",
+    "value": "zachodniopomorskie"
+   },
+   {
+    "section": "4.3.7",
+    "label": "Kraj",
+    "value": "Polska"
+   },
+   {
+    "section": "4.4",
+    "label": "Wartość umowy",
+    "value": "2230851,00 PLN"
+   },
+   {
+    "section": "4.5",
+    "label": "Numer ogłoszenia o wyniku postępowania w BZP lub Dz. Urz. UE",
+    "value": "2023/BZP 00178669/01"
+   },
+   {
+    "section": "5.1",
+    "label": "Czy umowa została wykonana",
+    "value": "Tak"
+   },
+   {
+    "section": "5.2",
+    "label": "Termin wykonania umowy",
+    "value": "2023-08-31"
+   },
+   {
+    "section": "5.3",
+    "label": "Czy umowę wykonano w pierwotnie określonym terminie",
+    "value": "Tak"
+   },
+   {
+    "section": "5.4",
+    "label": "Informacje o zmianach umowy",
+    "value": ""
+   },
+   {
+    "section": "5.4.1",
+    "label": "Liczba zmian",
+    "value": "2"
+   },
+   {
+    "section": "5.4.2",
+    "label": "Numer zmiany",
+    "value": "1"
+   },
+   {
+    "section": "5.4.3",
+    "label": "Podstawa prawna zmiany",
+    "value": "art. 455 ust. 2 ustawy"
+   },
+   {
+    "section": "5.4.4",
+    "label": "Przyczyny dokonania zmian",
+    "value": "W trakcie realizacji Umowy powstała konieczność wykonania robót dodatkowych, zgodnie z Protokołem konieczności Nr 1/2023 z dnia 03.07.2023 r. Budowa sieci wodociągowej wraz z przyłączami w miejscowości Domysłów była realizowana na podstawie Dokumentacji projektowej z 2019 r. , nieuwzględniającej aktualnego stanu osadnictwa. Ekspansja zabudowy mieszkaniowej i rekreacyjnej na dotychczas dziewiczych terenach miejscowości powoduje konieczność rozbudowy zaprojektowanej infrastruktury wodociągowej poprzez wykonanie dodatkowych przyłączy w celu zaopatrzenia w wodę największej liczby odbiorców i wyeliminowanie indywidualnych ujęć."
+   },
+   {
+    "section": "5.4.5",
+    "label": "Krótki opis zamówienia po zmianie",
+    "value": "Rozszerzono zakres robót budowalnych o roboty dodatkowe obejmujące wykonanie przyłączy wodociągowych z rur polietylenowych: -DN 90: 500,6 m.b. -DN 110 :483 m.b. w wykopach otwartych oraz montaż 4 hydrantów"
+   },
+   {
+    "section": "5.4.6",
+    "label": "Wartość zmiany",
+    "value": "319316,59"
+   },
+   {
+    "section": "5.4.7",
+    "label": "Kod waluty",
+    "value": "PLN"
+   },
+   {
+    "section": "5.4.8",
+    "label": "Wzrost ceny w związku ze zmianą umowy/umowy ramowej",
+    "value": "Tak"
+   },
+   {
+    "section": "5.4.2",
+    "label": "Numer zmiany",
+    "value": "2"
+   },
+   {
+    "section": "5.4.3",
+    "label": "Podstawa prawna zmiany",
+    "value": "art. 455 ust. 1 pkt 3 ustawy"
+   },
+   {
+    "section": "5.4.4",
+    "label": "Przyczyny dokonania zmian",
+    "value": "W trakcie realizacji Umowy powstała konieczność wykonania robót dodatkowych, zgodnie z Protokołem konieczności Nr 2/2023 z dnia 28.07.2023r, podpisanym przez Zamawiającego, Wykonawcę i Inspektora Nadzoru branży sanitarnej, polegających na rozbudowie infrastruktury wodociągowej o dodatkowe przyłącza, co jest uzasadnione względami sanitarno- eksploatacyjnymi. Roboty dodatkowe stały się niezbędne dla wykonania zakresu zamówienia podstawowego, a ich zlecenie innemu wykonawcy jest niecelowe z powodów technicznych oraz niedogodności dla Zamawiającego, opisanych w w/w Protokole."
+   },
+   {
+    "section": "5.4.5",
+    "label": "Krótki opis zamówienia po zmianie",
+    "value": "Dodatkowy zakres robót obejmuje wykonanie przyłączy wodociągowych z rur polietylenowych o średnicy zewnętrznej 32, 50, 90 mm o łącznej długości: 593,61 m w wykopach otwartych oraz montaż 3 hydrantów nadziemnych."
+   },
+   {
+    "section": "5.4.6",
+    "label": "Wartość zmiany",
+    "value": "277384,80"
+   },
+   {
+    "section": "5.4.7",
+    "label": "Kod waluty",
+    "value": "PLN"
+   },
+   {
+    "section": "5.4.8",
+    "label": "Wzrost ceny w związku ze zmianą umowy/umowy ramowej",
+    "value": "Tak"
+   },
+   {
+    "section": "5.5",
+    "label": "Łączna wartość wynagrodzenia wypłacona z tytułu zrealizowanej umowy",
+    "value": "2827552,39 PLN"
+   },
+   {
+    "section": "5.6",
+    "label": "Czy umowa została wykonana należycie",
+    "value": "Tak"
+   },
+   {
+    "section": "5.7",
+    "label": "Podczas realizacji zamówienia zamawiający kontrolował przewidziane w zawartej umowie wymagania",
+    "value": "nie dotyczy"
+   }
+  ]
+ },
+ "2024/BZP 00621519/01": {
+  "object_id": "08dd0f9a-2990-af9e-985c-bb0001355be0",
+  "notice_type": "ContractPerformingNotice",
+  "ocid": "ocds-148610-f193152b-b443-11ed-9236-36fed59ea7dd",
+  "published_at": "2024-11-28T10:48:15.2943531Z",
+  "title": "Budowa sieci wodociągowych i kanalizacji sanitarnej w Gminie Wolin",
+  "org_name": "GMINA WOLIN",
+  "org_nip": "9860164852",
+  "contractors": [
+   {
+    "contractorName": null,
+    "contractorCity": null,
+    "contractorProvince": null,
+    "contractorCountry": null,
+    "contractorNationalId": null
+   }
+  ],
+  "sections": [
+   {
+    "section": "1.1",
+    "label": "Nazwa zamawiającego",
+    "value": "GMINA WOLIN"
+   },
+   {
+    "section": "1.3",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON 811685510"
+   },
+   {
+    "section": "2.1",
+    "label": "Identyfikator postępowania",
+    "value": "ocds-148610-f193152b-b443-11ed-9236-36fed59ea7dd"
+   },
+   {
+    "section": "2.2",
+    "label": "Numer ogłoszenia",
+    "value": "2024/BZP 00621519"
+   },
+   {
+    "section": "2.3",
+    "label": "Wersja ogłoszenia",
+    "value": "01"
+   },
+   {
+    "section": "2.4",
+    "label": "Data ogłoszenia",
+    "value": "2024-11-28"
+   },
+   {
+    "section": "3.1",
+    "label": "Charakter zamówienia",
+    "value": "Zamówienie klasyczne - od 130 000 zł, ale o wartości mniejszej niż progi unijne"
+   },
+   {
+    "section": "3.2",
+    "label": "Zamówienie było poprzedzone ogłoszeniem o zamówieniu albo ogłoszeniem o zamiarze zawarcia umowy w BZP lub Dz. Urz. UE",
+    "value": "Tak"
+   },
+   {
+    "section": "3.2.1",
+    "label": "Numer ogłoszenia w BZP lub Dz. Urz. UE",
+    "value": "2023/BZP 00110672"
+   },
+   {
+    "section": "3.3",
+    "label": "Czy zamówienie dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej",
+    "value": "Nie"
+   },
+   {
+    "section": "3.5",
+    "label": "Tryb udzielenia zamówienia wraz z podstawą prawną",
+    "value": "Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 2 ustawy"
+   },
+   {
+    "section": "3.6",
+    "label": "Rodzaj zamówienia",
+    "value": "Roboty budowlane"
+   },
+   {
+    "section": "3.7",
+    "label": "Nazwa zamówienia",
+    "value": "Budowa sieci wodociągowych i kanalizacji sanitarnej w Gminie Wolin"
+   },
+   {
+    "section": "3.8",
+    "label": "Krótki opis przedmiotu zamówienia",
+    "value": "1. Przedmiotem zamówienia jest zadanie inwestycyjne pn.: „BUDOWA SIECI WODOCIĄGOWYCH I KANALIZACJI SANITARNEJ W GMINIE WOLIN”, realizowane w ramach Rządowego Funduszu Polski Ład: Program Inwestycji Strategicznych, w tym wykonanie wszystkich prac prowadzących do osiągnięcia stanu zgodnego z Dokumentacją Projektową, Specyfikacjami Technicznymi Wykonania i Odbioru Robót Budowlanych, SWZ oraz Projektowanymi Postanowieniami Umowy w sprawie zamówienia publicznego. Część nr 2: BUDOWA SIECI KANALIZACJI SANITARNEJ ORAZ WODOCIĄGOWEJ W KOŁCZEWIE WRAZ Z ODTWORZENIAMI Zakres robót obejmuje: 1) roboty pomiarowe, 2) wykonane wykopów liniowych, 3) montaż rurociągów z rur polietylenowych oraz kamionkowych, 4) wykonanie przewiertów sterowanych, 5) montaż hydrantów pożarowych naziemnych i zasuw odcinających, 6) montaż przepompowni wraz z ułożeniem kabla zasilającego, 7) zasypanie wykopów wraz z odpowiednim"
+   },
+   {
+    "section": "3.9",
+    "label": "Główny kod CPV",
+    "value": "45231300-8 - Roboty budowlane w zakresie budowy wodociągów i rurociągów do odprowadzania ścieków"
+   },
+   {
+    "section": "3.10",
+    "label": "Dodatkowy kod CPV",
+    "value": "45233223-8 - Wymiana nawierzchni drogowej 45111200-0 - Roboty w zakresie przygotowania terenu pod budowę i roboty ziemne"
+   },
+   {
+    "section": "4.1",
+    "label": "Data zawarcia umowy",
+    "value": "2023-04-11"
+   },
+   {
+    "section": "4.2",
+    "label": "Okres realizacji zamówienia",
+    "value": "13 miesiące"
+   },
+   {
+    "section": "4.3",
+    "label": "Dane wykonawcy, z którym zawarto umowę",
+    "value": ""
+   },
+   {
+    "section": "4.3.1",
+    "label": "Nazwa (firma) wykonawcy, któremu udzielono zamówienia (w przypadku wykonawców ubiegających się wspólnie o udzielenie zamówienia – dotyczy pełnomocnika, o którym mowa w art. 58 ust. 2 ustawy)",
+    "value": "ZUBWIT RESKO Sp. z o.o. sp. k.,"
+   },
+   {
+    "section": "4.3.2",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "NIP:PL 8570210827"
+   },
+   {
+    "section": "4.3.3",
+    "label": "Ulica",
+    "value": "ul. Stefana Żeromskiego 43"
+   },
+   {
+    "section": "4.3.4",
+    "label": "Miejscowość",
+    "value": "Resko"
+   },
+   {
+    "section": "4.3.5",
+    "label": "Kod pocztowy",
+    "value": "72-315"
+   },
+   {
+    "section": "4.3.6",
+    "label": "Województwo",
+    "value": "zachodniopomorskie"
+   },
+   {
+    "section": "4.3.7",
+    "label": "Kraj",
+    "value": "Polska"
+   },
+   {
+    "section": "4.4",
+    "label": "Wartość umowy",
+    "value": "7098002,82 PLN"
+   },
+   {
+    "section": "4.5",
+    "label": "Numer ogłoszenia o wyniku postępowania zamieszczonego w BZP lub numer ogłoszenia o udzieleniu zamówienia opublikowanego w Dzienniku Urzędowym Unii Europejskiej",
+    "value": "2023/BZP 00178669/01"
+   },
+   {
+    "section": "5.1",
+    "label": "Czy umowa została wykonana",
+    "value": "Tak"
+   },
+   {
+    "section": "5.2",
+    "label": "Termin wykonania umowy",
+    "value": "2024-05-23"
+   },
+   {
+    "section": "5.3",
+    "label": "Czy umowę wykonano w pierwotnie określonym terminie",
+    "value": "Nie"
+   },
+   {
+    "section": "5.4",
+    "label": "Informacje o zmianach umowy",
+    "value": ""
+   },
+   {
+    "section": "5.4.1",
+    "label": "Liczba zmian",
+    "value": "2"
+   },
+   {
+    "section": "5.4.2",
+    "label": "Numer zmiany",
+    "value": "1"
+   },
+   {
+    "section": "5.4.3",
+    "label": "Podstawa prawna zmiany",
+    "value": "art. 455 ust. 1 pkt 1 ustawy"
+   },
+   {
+    "section": "5.4.4",
+    "label": "Przyczyny dokonania zmian",
+    "value": "Konieczność zlecenia dodatkowych robót dla prawidłowego wykonania podstawowego zakresu i uzyskania świadczenia zgodnego z potrzebami Zamawiającego."
+   },
+   {
+    "section": "5.4.5",
+    "label": "Krótki opis zamówienia po zmianie",
+    "value": "Zakres zamówienia rozszerzono o wymianę gruntów wysadzinowych w drogach. W toku realizacji prac Wykonawca stwierdził, iż pod nawierzchniami i konstrukcjami dróg znajduje się materiał wysadzinowy – glina, który uniemożliwia osiągnięcie wymaganych parametrów dla powtórnego użycia tj. zageszczenia oraz uzyskania wymaganej nośności dla odbudowy warstw konstrukcyjnych dróg. W związku z powyższym zaszła konieczność wymiany na materiał pozwalający osiągnąć niezbędne parametry techniczne (nośność i zagęszczenie). W związku z wprowadzeniem do zakresu Umowy robót dodatkowych (nieplanowanych), których wykonanie miało wpływ na termin wykonania zamówienia, zmieniono termin realizacji Umowy do dnia 24 czerwca 2024r. Zmiany dokonano na podstawie art. 455ust. 1 pkt 1 oraz art. 455 ust.2 ustawy Pzp ."
+   },
+   {
+    "section": "5.4.6",
+    "label": "Wartość zmiany",
+    "value": "452585,98"
+   },
+   {
+    "section": "5.4.7",
+    "label": "Kod waluty",
+    "value": "PLN"
+   },
+   {
+    "section": "5.4.8",
+    "label": "Wzrost ceny w związku ze zmianą umowy/umowy ramowej",
+    "value": "Tak"
+   },
+   {
+    "section": "5.4.2",
+    "label": "Numer zmiany",
+    "value": "2"
+   },
+   {
+    "section": "5.4.3",
+    "label": "Podstawa prawna zmiany",
+    "value": "art. 455 ust. 2 ustawy"
+   },
+   {
+    "section": "5.4.4",
+    "label": "Przyczyny dokonania zmian",
+    "value": "Zlecenie dodatkowych (nie planowanych) robót stało się konieczne dla prawidłowego wykonania podstawowego zakresu i uzyskania świadczenia zgodnego z potrzebami zamawiającego"
+   },
+   {
+    "section": "5.4.5",
+    "label": "Krótki opis zamówienia po zmianie",
+    "value": "Zakres zamówienia rozszerzono o: 1) Rozbiórkę dodatkowego zakresu utwardzenia z kamiennego bruku oraz skruszenie rozebranej warstwy wraz z wytworzeniem mieszanki do utwardzenia istniejących dróg gruntowych po wykonanych pracach wraz z wbudowaniem. 2) Zwiększenie zakresu odtworzeń nawierzchni. 3) Wykonanie ogrodzenia, oświetlenia i nawierzchni na potrzeby obsługi przepompowni. 4) Odtworzenie i utwardzenie nawierzchni ulicy Kościelnej. 5) Wykonanie dodatkowych przyłączy sanitarnych."
+   },
+   {
+    "section": "5.4.6",
+    "label": "Wartość zmiany",
+    "value": "318976,02"
+   },
+   {
+    "section": "5.4.7",
+    "label": "Kod waluty",
+    "value": "PLN"
+   },
+   {
+    "section": "5.4.8",
+    "label": "Wzrost ceny w związku ze zmianą umowy/umowy ramowej",
+    "value": "Tak"
+   },
+   {
+    "section": "5.5",
+    "label": "Łączna wartość wynagrodzenia wypłacona z tytułu zrealizowanej umowy",
+    "value": "7869564,82 PLN"
+   },
+   {
+    "section": "5.6",
+    "label": "Czy umowa została wykonana należycie",
+    "value": "Tak"
+   },
+   {
+    "section": "5.7",
+    "label": "Podczas realizacji zamówienia zamawiający kontrolował przewidziane w zawartej umowie wymagania",
+    "value": "nie dotyczy"
+   }
+  ]
+ },
+ "2026/BZP 00291637/01": {
+  "object_id": "08decb7b-ea1f-9e73-5fad-9500015f50ae",
+  "notice_type": "ContractPerformingNotice",
+  "ocid": "ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c",
+  "published_at": "2026-06-16T07:50:20.2422091Z",
+  "title": "Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo",
+  "org_name": "GMINA NOWOGARD",
+  "org_nip": "8590012007",
+  "contractors": [
+   {
+    "contractorName": "Konsorcjum firm: \"Starkan\" Sp.z o.o",
+    "contractorCity": "Stargard",
+    "contractorProvince": "PL32",
+    "contractorCountry": "PL",
+    "contractorNationalId": "369467516, 320468735"
+   }
+  ],
+  "sections": [
+   {
+    "section": "1.1",
+    "label": "Nazwa zamawiającego",
+    "value": "GMINA NOWOGARD"
+   },
+   {
+    "section": "1.3",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON 811684278"
+   },
+   {
+    "section": "2.1",
+    "label": "Identyfikator postępowania",
+    "value": "ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c"
+   },
+   {
+    "section": "2.2",
+    "label": "Numer ogłoszenia",
+    "value": "2026/BZP 00291637"
+   },
+   {
+    "section": "2.3",
+    "label": "Wersja ogłoszenia",
+    "value": "01"
+   },
+   {
+    "section": "2.4",
+    "label": "Data ogłoszenia",
+    "value": "2026-06-16"
+   },
+   {
+    "section": "3.1",
+    "label": "Charakter zamówienia",
+    "value": "Zamówienie klasyczne - od 130 000 zł, ale o wartości mniejszej niż progi unijne"
+   },
+   {
+    "section": "3.2",
+    "label": "Zamówienie było poprzedzone ogłoszeniem o zamówieniu albo ogłoszeniem o zamiarze zawarcia umowy w BZP lub Dz. Urz. UE",
+    "value": "Tak"
+   },
+   {
+    "section": "3.2.1",
+    "label": "Numer ogłoszenia w BZP lub Dz. Urz. UE",
+    "value": "2025/BZP 00113651"
+   },
+   {
+    "section": "3.3",
+    "label": "Czy zamówienie dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej",
+    "value": "Nie"
+   },
+   {
+    "section": "3.5",
+    "label": "Tryb udzielenia zamówienia wraz z podstawą prawną",
+    "value": "Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 2 ustawy"
+   },
+   {
+    "section": "3.6",
+    "label": "Rodzaj zamówienia",
+    "value": "Roboty budowlane"
+   },
+   {
+    "section": "3.7",
+    "label": "Nazwa zamówienia",
+    "value": "Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo"
+   },
+   {
+    "section": "3.8",
+    "label": "Krótki opis przedmiotu zamówienia",
+    "value": "Zadanie obejmuje przebudowę lokalnej oczyszczalni ścieków oraz budowę sieci kanalizacji sanitarnej z przyłączami i rozgałęzieni sieci wraz z niezbędną infrastrukturą techniczną w miejscowości Konarzewo gmina Nowogard. Wykonanie czasowej zmiany organizacji ruchu w przypadku jej koniecznościach wraz z jej zatwierdzeniem oraz uzyskanie w imieniu Zamawiającego pozwolenia na użytkowanie po zakończeniu robót budowlanych, jeśli wynika to z przepisów prawa. Informacje na temat szczegółowego określenia zakresu przedmiotu zamówienia zawarte są : projekcie architektoniczno-budowlanym, projekcie technicznym, projekcie zagospodarowania terenu, specyfikacji technicznej wykonania i odbioru robót (STEiOR), przedmiarze robót, sprawozdaniu z wstępnych badań geotechnicznych podłoża działki nr 3/36, informacji BIOZ, Decyzji nr 133/2024 Pozwolenie na budowę, pozwoleniu wodnoprawnym nr RKW-2021-6113 stanowiąc"
+   },
+   {
+    "section": "3.9",
+    "label": "Główny kod CPV",
+    "value": "45232421-9 - Roboty w zakresie oczyszczania ścieków"
+   },
+   {
+    "section": "3.10",
+    "label": "Dodatkowy kod CPV",
+    "value": "45252127-4 - Roboty budowlane w zakresie oczyszczalni ścieków 45262640-9 - Roboty w zakresie poprawy stanu środowiska naturalnego 45111200-0 - Roboty w zakresie przygotowania terenu pod budowę i roboty ziemne 45232400-6 - Roboty budowlane w zakresie kanałów ściekowych 45231300-8 - Roboty budowlane w zakresie budowy wodociągów i rurociągów do odprowadzania ścieków 45255600-5 - Roboty w zakresie kładzenia rur w kanalizacji 45232410-9 - Roboty w zakresie kanalizacji ściekowej 45232423-3 - Roboty budowlane w zakresie przepompowni ścieków 45310000-3 - Roboty instalacyjne elektryczne 45311100-1 - Roboty w zakresie okablowania elektrycznego 45312310-3 - Ochrona odgromowa 45233000-9 - Roboty w zakresie konstruowania, fundamentowania oraz wykonywania nawierzchni autostrad, dróg 45243510-0 - Budowa nasypów"
+   },
+   {
+    "section": "4.1",
+    "label": "Data zawarcia umowy",
+    "value": "2025-04-24"
+   },
+   {
+    "section": "4.2",
+    "label": "Okres realizacji zamówienia",
+    "value": "6 miesiące"
+   },
+   {
+    "section": "4.3",
+    "label": "Dane wykonawcy, z którym zawarto umowę",
+    "value": ""
+   },
+   {
+    "section": "4.3.1",
+    "label": "Nazwa (firma) wykonawcy, któremu udzielono zamówienia (w przypadku wykonawców ubiegających się wspólnie o udzielenie zamówienia – dotyczy pełnomocnika, o którym mowa w art. 58 ust. 2 ustawy)",
+    "value": "Konsorcjum firm: \"Starkan\" Sp.z o.o"
+   },
+   {
+    "section": "4.3.1.1",
+    "label": "Dane wykonawców wspólnie ubiegających się o udzielenie zamówienia",
+    "value": "Przedsiębiorstwo Usługowe \"Starkan\"Marcin Pardus"
+   },
+   {
+    "section": "4.3.2",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "369467516, 320468735"
+   },
+   {
+    "section": "4.3.3",
+    "label": "Ulica",
+    "value": "Podleśna 14R"
+   },
+   {
+    "section": "4.3.4",
+    "label": "Miejscowość",
+    "value": "Stargard"
+   },
+   {
+    "section": "4.3.5",
+    "label": "Kod pocztowy",
+    "value": "73-110"
+   },
+   {
+    "section": "4.3.6",
+    "label": "Województwo",
+    "value": "zachodniopomorskie"
+   },
+   {
+    "section": "4.3.7",
+    "label": "Kraj",
+    "value": "Polska"
+   },
+   {
+    "section": "4.4",
+    "label": "Wartość umowy",
+    "value": "1969611,30 PLN"
+   },
+   {
+    "section": "4.5",
+    "label": "Numer ogłoszenia o wyniku postępowania zamieszczonego w BZP lub numer ogłoszenia o udzieleniu zamówienia opublikowanego w Dzienniku Urzędowym Unii Europejskiej",
+    "value": "2025/BZP 00206455/01"
+   },
+   {
+    "section": "5.1",
+    "label": "Czy umowa została wykonana",
+    "value": "Tak"
+   },
+   {
+    "section": "5.2",
+    "label": "Termin wykonania umowy",
+    "value": "2026-04-27"
+   },
+   {
+    "section": "5.3",
+    "label": "Czy umowę wykonano w pierwotnie określonym terminie",
+    "value": "Nie"
+   },
+   {
+    "section": "5.4",
+    "label": "Informacje o zmianach umowy",
+    "value": ""
+   },
+   {
+    "section": "5.4.1",
+    "label": "Liczba zmian",
+    "value": "2"
+   },
+   {
+    "section": "5.4.2",
+    "label": "Numer zmiany",
+    "value": "1"
+   },
+   {
+    "section": "5.4.3",
+    "label": "Podstawa prawna zmiany",
+    "value": "art. 455 ust. 1 pkt 4 ustawy"
+   },
+   {
+    "section": "5.4.4",
+    "label": "Przyczyny dokonania zmian",
+    "value": "Konieczność ustanowienia służebności przesyłu na działce nr 3/39 obręb Konarzewo"
+   },
+   {
+    "section": "5.4.5",
+    "label": "Krótki opis zamówienia po zmianie",
+    "value": "Termin wykonania przedmiotu umowy : 30 listopada 2025 r."
+   },
+   {
+    "section": "5.4.8",
+    "label": "Wzrost ceny w związku ze zmianą umowy/umowy ramowej",
+    "value": "Nie"
+   },
+   {
+    "section": "5.4.2",
+    "label": "Numer zmiany",
+    "value": "2"
+   },
+   {
+    "section": "5.4.3",
+    "label": "Podstawa prawna zmiany",
+    "value": "art. 455 ust. 1 pkt 4 ustawy"
+   },
+   {
+    "section": "5.4.4",
+    "label": "Przyczyny dokonania zmian",
+    "value": "W trakcie realizacji prac ziemnych ujawniono niekorzystne warunki gruntowe oraz miejscowy wysoki poziom wód gruntowych. W celu prawidłowego wykonania zamówienia konieczne było wydłużenie terminu realizacji umowy."
+   },
+   {
+    "section": "5.4.5",
+    "label": "Krótki opis zamówienia po zmianie",
+    "value": "Termin wykonania przedmiotu umowy: 31.12.2025 r."
+   },
+   {
+    "section": "5.4.8",
+    "label": "Wzrost ceny w związku ze zmianą umowy/umowy ramowej",
+    "value": "Nie"
+   },
+   {
+    "section": "5.5",
+    "label": "Łączna wartość wynagrodzenia wypłacona z tytułu zrealizowanej umowy",
+    "value": "1719611,30 PLN"
+   },
+   {
+    "section": "5.6",
+    "label": "Czy umowa została wykonana należycie",
+    "value": "Tak"
+   },
+   {
+    "section": "5.7",
+    "label": "Podczas realizacji zamówienia zamawiający kontrolował przewidziane w zawartej umowie wymagania",
+    "value": "w zakresie zatrudnienia na podstawie stosunku pracy, w okolicznościach, o których mowa w art. 95 ustawy Łączna wartość wynagrodzenia została pomniejszona o kary umowne."
+   }
+  ]
+ },
+ "2023/BZP 00396503/01": {
+  "object_id": "08dbb509-9e6b-f6a6-b525-040012ce9d0a",
+  "notice_type": "AgreementUpdateNotice",
+  "ocid": "ocds-148610-f193152b-b443-11ed-9236-36fed59ea7dd",
+  "published_at": "2023-09-14T10:01:52.007Z",
+  "title": "Budowa sieci wodociągowych i kanalizacji sanitarnej w Gminie Wolin",
+  "org_name": "GMINA WOLIN",
+  "org_nip": "9860164852",
+  "contractors": [
+   {
+    "contractorName": null,
+    "contractorCity": null,
+    "contractorProvince": null,
+    "contractorCountry": null,
+    "contractorNationalId": null
+   }
+  ],
+  "sections": [
+   {
+    "section": "1.1",
+    "label": "Nazwa zamawiającego",
+    "value": "GMINA WOLIN"
+   },
+   {
+    "section": "1.3",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON 811685510"
+   },
+   {
+    "section": "2.1",
+    "label": "Ogłoszenie dotyczy zmiany",
+    "value": "Umowy"
+   },
+   {
+    "section": "2.2",
+    "label": "Identyfikator postępowania",
+    "value": "ocds-148610-f193152b-b443-11ed-9236-36fed59ea7dd"
+   },
+   {
+    "section": "2.3",
+    "label": "Numer ogłoszenia",
+    "value": "2023/BZP 00396503"
+   },
+   {
+    "section": "2.4",
+    "label": "Wersja ogłoszenia",
+    "value": "01"
+   },
+   {
+    "section": "2.5",
+    "label": "Data ogłoszenia",
+    "value": "2023-09-14"
+   },
+   {
+    "section": "3.1",
+    "label": "Zamówienie/umowa ramowa było poprzedzone ogłoszeniem o zamówieniu/ogłoszeniem o zamiarze zawarcia umowy",
+    "value": "Tak"
+   },
+   {
+    "section": "3.1.1",
+    "label": "Numer ogłoszenia",
+    "value": "2023/BZP 00178669"
+   },
+   {
+    "section": "3.2",
+    "label": "Czy zamówienie albo umowa ramowa dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej",
+    "value": "Nie"
+   },
+   {
+    "section": "3.4",
+    "label": "Tryb udzielenia zamówienia/zawarcia umowy ramowej wraz z podstawą prawną",
+    "value": "Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 2 ustawy"
+   },
+   {
+    "section": "3.5",
+    "label": "Rodzaj zamówienia",
+    "value": "Roboty budowlane"
+   },
+   {
+    "section": "3.6",
+    "label": "Nazwa zamówienia albo umowy ramowej",
+    "value": "Budowa sieci wodociągowych i kanalizacji sanitarnej w Gminie Wolin"
+   },
+   {
+    "section": "3.7",
+    "label": "Krótki opis przedmiotu zamówienia",
+    "value": "1. Przedmiotem zamówienia jest zadanie inwestycyjne pn.: „BUDOWA SIECI WODOCIĄGOWYCH I KANALIZACJI SANITARNEJ W GMINIE WOLIN”, realizowane w ramach Rządowego Funduszu Polski Ład: Program Inwestycji Strategicznych, w tym wykonanie wszystkich prac prowadzących do osiągnięcia stanu zgodnego z Dokumentacją Projektową, Specyfikacjami Technicznymi Wykonania i Odbioru Robót Budowlanych, SWZ oraz Projektowanymi Postanowieniami Umowy w sprawie zamówienia publicznego. Część nr 1: BUDOWA SIECI WODOCIĄGOWEJ W MIEJSCOWOŚCI DOMYSŁÓW WRAZ Z PRZYŁĄCZAMI Zakres robót obejmuje: 1) roboty pomiarowe, 2) wykonane wykopów liniowych, 3) montaż rurociągów z rur polietylenowych łączonych metodą zgrzewania, 4) wykonanie przewiertów sterowanych, 5) montaż hydrantów pożarowych naziemnych, zasuw odcinających oraz studni wodomierzowej, 6) zasypanie wykopów wraz z odpowiednim zagęszczeniem gruntu, 7) roboty odtworzeni"
+   },
+   {
+    "section": "3.8",
+    "label": "Główny kod CPV",
+    "value": "45231300-8 - Roboty budowlane w zakresie budowy wodociągów i rurociągów do odprowadzania ścieków"
+   },
+   {
+    "section": "3.9",
+    "label": "Dodatkowy kod CPV",
+    "value": "45111200-0 - Roboty w zakresie przygotowania terenu pod budowę i roboty ziemne"
+   },
+   {
+    "section": "4.1",
+    "label": "Data zawarcia umowy/umowy ramowej",
+    "value": "2023-04-11"
+   },
+   {
+    "section": "4.2",
+    "label": "Okres realizacji zamówienia/umowy ramowej",
+    "value": "5 miesiące"
+   },
+   {
+    "section": "4.3",
+    "label": "Dane wykonawcy, z którym zawarto umowę/umowę ramową",
+    "value": ""
+   },
+   {
+    "section": "4.3.1",
+    "label": "Nazwa (firma) wykonawcy, któremu udzielono zamówienia (w przypadku wykonawców ubiegających się wspólnie o udzielenie zamówienia – dotyczy pełnomocnika, o którym mowa w art. 58 ust. 2 ustawy)",
+    "value": "PPH Artex sp. z o.o.,"
+   },
+   {
+    "section": "4.3.2",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "NIP : 6690503086"
+   },
+   {
+    "section": "4.3.3",
+    "label": "Ulica",
+    "value": "Na Skarpie 17"
+   },
+   {
+    "section": "4.3.4",
+    "label": "Miejscowość",
+    "value": "Koszalin"
+   },
+   {
+    "section": "4.3.5",
+    "label": "Kod pocztowy",
+    "value": "75-343"
+   },
+   {
+    "section": "4.3.6",
+    "label": "Województwo",
+    "value": "zachodniopomorskie"
+   },
+   {
+    "section": "4.3.7",
+    "label": "Kraj",
+    "value": "Polska"
+   },
+   {
+    "section": "4.4",
+    "label": "Wartość umowy/umowy ramowej",
+    "value": "2230851,00 PLN"
+   },
+   {
+    "section": "4.5",
+    "label": "Numer ogłoszenia o wyniku postępowania w BZP",
+    "value": "2023/BZP 00178669/01"
+   },
+   {
+    "section": "5.1",
+    "label": "Data zmiany umowy/umowy ramowej)",
+    "value": "2023-08-16"
+   },
+   {
+    "section": "5.2",
+    "label": "Podstawa prawna zmiany umowy/umowy ramowej",
+    "value": "art. 455 ust. 1 pkt 3 ustawy"
+   },
+   {
+    "section": "5.3",
+    "label": "Przyczyny dokonania zmian umowy/umowy ramowej",
+    "value": "W trakcie realizacji Umowy powstała konieczność wykonania robót dodatkowych (zgodnie z Protokołem konieczności Nr 2/2023 z dnia 28.07.2023r. podpisanym przez Zamawiającego, Wykonawcę i Inspektora Nadzoru branży sanitarnej), polegających na rozbudowie infrastruktury wodociągowej o dodatkowe przyłącza, co jest uzasadnione względami sanitarno-eksploatacyjnymi. Roboty dodatkowe stały się niezbędne dla wykonania zakresu zamówienia podstawowego, a ich zlecenie innemu wykonawcy jest niecelowe z powodów technicznych oraz niedogodności dla Zamawiającego, opisanych w w/w Protokole. Przedmiotowa zmiana umowy powoduje zwiększenie kosztu ponoszonego przez Zamawiającego na wykonanie przedmiotu zamówienia i jednocześnie zwiększa wynagrodzenie Wykonawcy o kwotę 277.384,80zł zł brutto, nie prowadzi do wzrostu ceny przekraczającej 50% wartości pierwotnej umowy, przez co jest dopuszczalna na podstawie art."
+   },
+   {
+    "section": "5.4",
+    "label": "Krótki opis zmiany umowy/umowy ramowej",
+    "value": "Dodatkowy zakres robót obejmuje wykonanie przyłączy wodociągowych z rur polietylenowych o średnicy zewnętrznej 32, 50, 90 mm o łącznej długości: 593,61 m w wykopach otwartych oraz montaż 3 hydrantów nadziemnych."
+   },
+   {
+    "section": "5.5",
+    "label": "Wartość zmiany umowy",
+    "value": ""
+   },
+   {
+    "section": "5.5.1",
+    "label": "Wartość zmiany",
+    "value": "277384,80"
+   },
+   {
+    "section": "5.5.2",
+    "label": "Kod waluty",
+    "value": "PLN"
+   },
+   {
+    "section": "5.5.3",
+    "label": "Wzrost ceny w związku ze zmianą umowy/umowy ramowej",
+    "value": "Tak"
+   },
+   {
+    "section": "5.6",
+    "label": "Wcześniejsze zmiany umowy/umowy ramowej, obligujące do zamieszczenia ogłoszenia o zmianie umowy",
+    "value": "Nie"
+   }
+  ]
+ },
+ "2025/BZP 00558908/01": {
+  "object_id": "08de2d85-d74a-a060-0560-49000118fa8c",
+  "notice_type": "AgreementUpdateNotice",
+  "ocid": "ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c",
+  "published_at": "2025-11-27T07:23:19.8950998Z",
+  "title": "Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo",
+  "org_name": "GMINA NOWOGARD",
+  "org_nip": "8590012007",
+  "contractors": [
+   {
+    "contractorName": "Konsorcjum firm: \"Starkan\" Sp.z o.o",
+    "contractorCity": "Stargard",
+    "contractorProvince": "PL32",
+    "contractorCountry": "PL",
+    "contractorNationalId": "369467516, 320468735"
+   }
+  ],
+  "sections": [
+   {
+    "section": "1.1",
+    "label": "Nazwa zamawiającego",
+    "value": "GMINA NOWOGARD"
+   },
+   {
+    "section": "1.3",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON 811684278"
+   },
+   {
+    "section": "2.1",
+    "label": "Ogłoszenie dotyczy zmiany",
+    "value": "Umowy"
+   },
+   {
+    "section": "2.2",
+    "label": "Identyfikator postępowania",
+    "value": "ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c"
+   },
+   {
+    "section": "2.3",
+    "label": "Numer ogłoszenia",
+    "value": "2025/BZP 00558908"
+   },
+   {
+    "section": "2.4",
+    "label": "Wersja ogłoszenia",
+    "value": "01"
+   },
+   {
+    "section": "2.5",
+    "label": "Data ogłoszenia",
+    "value": "2025-11-27"
+   },
+   {
+    "section": "3.1",
+    "label": "Zamówienie/umowa ramowa było poprzedzone ogłoszeniem o zamówieniu/ogłoszeniem o zamiarze zawarcia umowy",
+    "value": "Tak"
+   },
+   {
+    "section": "3.1.1",
+    "label": "Numer ogłoszenia",
+    "value": "2025/BZP 00113651"
+   },
+   {
+    "section": "3.2",
+    "label": "Czy zamówienie albo umowa ramowa dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej",
+    "value": "Nie"
+   },
+   {
+    "section": "3.4",
+    "label": "Tryb udzielenia zamówienia/zawarcia umowy ramowej wraz z podstawą prawną",
+    "value": "Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 2 ustawy"
+   },
+   {
+    "section": "3.5",
+    "label": "Rodzaj zamówienia",
+    "value": "Roboty budowlane"
+   },
+   {
+    "section": "3.6",
+    "label": "Nazwa zamówienia albo umowy ramowej",
+    "value": "Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo"
+   },
+   {
+    "section": "3.7",
+    "label": "Krótki opis przedmiotu zamówienia",
+    "value": "Zadanie obejmuje przebudowę lokalnej oczyszczalni ścieków oraz budowę sieci kanalizacji sanitarnej z przyłączami i rozgałęzieni sieci wraz z niezbędną infrastrukturą techniczną w miejscowości Konarzewo gmina Nowogard. Wykonanie czasowej zmiany organizacji ruchu w przypadku jej koniecznościach wraz z jej zatwierdzeniem oraz uzyskanie w imieniu Zamawiającego pozwolenia na użytkowanie po zakończeniu robót budowlanych, jeśli wynika to z przepisów prawa. Informacje na temat szczegółowego określenia zakresu przedmiotu zamówienia zawarte są : projekcie architektoniczno-budowlanym, projekcie technicznym, projekcie zagospodarowania terenu, specyfikacji technicznej wykonania i odbioru robót (STEiOR), przedmiarze robót, sprawozdaniu z wstępnych badań geotechnicznych podłoża działki nr 3/36, informacji BIOZ, Decyzji nr 133/2024 Pozwolenie na budowę, pozwoleniu wodnoprawnym nr RKW-2021-6113 stanowiąc"
+   },
+   {
+    "section": "3.8",
+    "label": "Główny kod CPV",
+    "value": "45232421-9 - Roboty w zakresie oczyszczania ścieków"
+   },
+   {
+    "section": "3.9",
+    "label": "Dodatkowy kod CPV",
+    "value": "45252127-4 - Roboty budowlane w zakresie oczyszczalni ścieków 45262640-9 - Roboty w zakresie poprawy stanu środowiska naturalnego 45111200-0 - Roboty w zakresie przygotowania terenu pod budowę i roboty ziemne 45232400-6 - Roboty budowlane w zakresie kanałów ściekowych 45231300-8 - Roboty budowlane w zakresie budowy wodociągów i rurociągów do odprowadzania ścieków 45255600-5 - Roboty w zakresie kładzenia rur w kanalizacji 45232410-9 - Roboty w zakresie kanalizacji ściekowej 45232423-3 - Roboty budowlane w zakresie przepompowni ścieków 45310000-3 - Roboty instalacyjne elektryczne 45311100-1 - Roboty w zakresie okablowania elektrycznego 45312310-3 - Ochrona odgromowa 45233000-9 - Roboty w zakresie konstruowania, fundamentowania oraz wykonywania nawierzchni autostrad, dróg 45243510-0 - Budowa nasypów"
+   },
+   {
+    "section": "4.1",
+    "label": "Data zawarcia umowy/umowy ramowej",
+    "value": "2025-04-24"
+   },
+   {
+    "section": "4.2",
+    "label": "Okres realizacji zamówienia/umowy ramowej",
+    "value": "6 miesiące"
+   },
+   {
+    "section": "4.3",
+    "label": "Dane wykonawcy, z którym zawarto umowę/umowę ramową",
+    "value": ""
+   },
+   {
+    "section": "4.3.1",
+    "label": "Nazwa (firma) wykonawcy, któremu udzielono zamówienia (w przypadku wykonawców ubiegających się wspólnie o udzielenie zamówienia – dotyczy pełnomocnika, o którym mowa w art. 58 ust. 2 ustawy)",
+    "value": "Konsorcjum firm: \"Starkan\" Sp.z o.o"
+   },
+   {
+    "section": "4.3.1.1",
+    "label": "Dane wykonawców wspólnie ubiegających się o udzielenie zamówienia",
+    "value": "Przedsiębiorstwo Usługowe \"Starkan\"Marcin Pardus"
+   },
+   {
+    "section": "4.3.2",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "369467516, 320468735"
+   },
+   {
+    "section": "4.3.3",
+    "label": "Ulica",
+    "value": "Podleśna 14R"
+   },
+   {
+    "section": "4.3.4",
+    "label": "Miejscowość",
+    "value": "Stargard"
+   },
+   {
+    "section": "4.3.5",
+    "label": "Kod pocztowy",
+    "value": "73-110"
+   },
+   {
+    "section": "4.3.6",
+    "label": "Województwo",
+    "value": "zachodniopomorskie"
+   },
+   {
+    "section": "4.3.7",
+    "label": "Kraj",
+    "value": "Polska"
+   },
+   {
+    "section": "4.4",
+    "label": "Wartość umowy/umowy ramowej",
+    "value": "1969611,30 PLN"
+   },
+   {
+    "section": "4.5",
+    "label": "Numer ogłoszenia o wyniku postępowania w BZP",
+    "value": "2025/BZP 00206455/01"
+   },
+   {
+    "section": "5.1",
+    "label": "Data zmiany umowy/umowy ramowej)",
+    "value": "2025-11-03"
+   },
+   {
+    "section": "5.2",
+    "label": "Podstawa prawna zmiany umowy/umowy ramowej",
+    "value": "art. 455 ust. 1 pkt 4 ustawy"
+   },
+   {
+    "section": "5.3",
+    "label": "Przyczyny dokonania zmian umowy/umowy ramowej",
+    "value": "konieczność ustanowienia służebności przesyłu na działce nr 3/39 obręb Konarzewo"
+   },
+   {
+    "section": "5.4",
+    "label": "Krótki opis zmiany umowy/umowy ramowej",
+    "value": "Termin wykonania przedmiotu umowy : 30 listopada 2025 r."
+   },
+   {
+    "section": "5.5",
+    "label": "Wartość zmiany umowy",
+    "value": ""
+   },
+   {
+    "section": "5.5.3",
+    "label": "Wzrost ceny w związku ze zmianą umowy/umowy ramowej",
+    "value": "Nie"
+   },
+   {
+    "section": "5.6",
+    "label": "Wcześniejsze zmiany umowy/umowy ramowej, obligujące do zamieszczenia ogłoszenia o zmianie umowy",
+    "value": "Nie"
+   }
+  ]
+ },
+ "2026/BZP 00280220/01": {
+  "object_id": "08dec5fd-7ce8-b24c-5fad-9500015c76a8",
+  "notice_type": "AgreementUpdateNotice",
+  "ocid": "ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c",
+  "published_at": "2026-06-09T08:02:44.6097238Z",
+  "title": "Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo",
+  "org_name": "GMINA NOWOGARD",
+  "org_nip": "8590012007",
+  "contractors": [
+   {
+    "contractorName": "Konsorcjum firm: \"Starkan\" Sp.z o.o",
+    "contractorCity": "Stargard",
+    "contractorProvince": "PL32",
+    "contractorCountry": "PL",
+    "contractorNationalId": "369467516, 320468735"
+   }
+  ],
+  "sections": [
+   {
+    "section": "1.1",
+    "label": "Nazwa zamawiającego",
+    "value": "GMINA NOWOGARD"
+   },
+   {
+    "section": "1.3",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON 811684278"
+   },
+   {
+    "section": "2.1",
+    "label": "Ogłoszenie dotyczy zmiany",
+    "value": "Umowy"
+   },
+   {
+    "section": "2.2",
+    "label": "Identyfikator postępowania",
+    "value": "ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c"
+   },
+   {
+    "section": "2.3",
+    "label": "Numer ogłoszenia",
+    "value": "2026/BZP 00280220"
+   },
+   {
+    "section": "2.4",
+    "label": "Wersja ogłoszenia",
+    "value": "01"
+   },
+   {
+    "section": "2.5",
+    "label": "Data ogłoszenia",
+    "value": "2026-06-09"
+   },
+   {
+    "section": "3.1",
+    "label": "Zamówienie/umowa ramowa było poprzedzone ogłoszeniem o zamówieniu/ogłoszeniem o zamiarze zawarcia umowy",
+    "value": "Tak"
+   },
+   {
+    "section": "3.1.1",
+    "label": "Numer ogłoszenia",
+    "value": "2025/BZP 00113651"
+   },
+   {
+    "section": "3.2",
+    "label": "Czy zamówienie albo umowa ramowa dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej",
+    "value": "Nie"
+   },
+   {
+    "section": "3.4",
+    "label": "Tryb udzielenia zamówienia/zawarcia umowy ramowej wraz z podstawą prawną",
+    "value": "Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 2 ustawy"
+   },
+   {
+    "section": "3.5",
+    "label": "Rodzaj zamówienia",
+    "value": "Roboty budowlane"
+   },
+   {
+    "section": "3.6",
+    "label": "Nazwa zamówienia albo umowy ramowej",
+    "value": "Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo"
+   },
+   {
+    "section": "3.7",
+    "label": "Krótki opis przedmiotu zamówienia",
+    "value": "Zadanie obejmuje przebudowę lokalnej oczyszczalni ścieków oraz budowę sieci kanalizacji sanitarnej z przyłączami i rozgałęzieni sieci wraz z niezbędną infrastrukturą techniczną w miejscowości Konarzewo gmina Nowogard. Wykonanie czasowej zmiany organizacji ruchu w przypadku jej koniecznościach wraz z jej zatwierdzeniem oraz uzyskanie w imieniu Zamawiającego pozwolenia na użytkowanie po zakończeniu robót budowlanych, jeśli wynika to z przepisów prawa. Informacje na temat szczegółowego określenia zakresu przedmiotu zamówienia zawarte są : projekcie architektoniczno-budowlanym, projekcie technicznym, projekcie zagospodarowania terenu, specyfikacji technicznej wykonania i odbioru robót (STEiOR), przedmiarze robót, sprawozdaniu z wstępnych badań geotechnicznych podłoża działki nr 3/36, informacji BIOZ, Decyzji nr 133/2024 Pozwolenie na budowę, pozwoleniu wodnoprawnym nr RKW-2021-6113 stanowiąc"
+   },
+   {
+    "section": "3.8",
+    "label": "Główny kod CPV",
+    "value": "45232421-9 - Roboty w zakresie oczyszczania ścieków"
+   },
+   {
+    "section": "3.9",
+    "label": "Dodatkowy kod CPV",
+    "value": "45252127-4 - Roboty budowlane w zakresie oczyszczalni ścieków 45262640-9 - Roboty w zakresie poprawy stanu środowiska naturalnego 45111200-0 - Roboty w zakresie przygotowania terenu pod budowę i roboty ziemne 45232400-6 - Roboty budowlane w zakresie kanałów ściekowych 45231300-8 - Roboty budowlane w zakresie budowy wodociągów i rurociągów do odprowadzania ścieków 45255600-5 - Roboty w zakresie kładzenia rur w kanalizacji 45232410-9 - Roboty w zakresie kanalizacji ściekowej 45232423-3 - Roboty budowlane w zakresie przepompowni ścieków 45310000-3 - Roboty instalacyjne elektryczne 45311100-1 - Roboty w zakresie okablowania elektrycznego 45312310-3 - Ochrona odgromowa 45233000-9 - Roboty w zakresie konstruowania, fundamentowania oraz wykonywania nawierzchni autostrad, dróg 45243510-0 - Budowa nasypów"
+   },
+   {
+    "section": "4.1",
+    "label": "Data zawarcia umowy/umowy ramowej",
+    "value": "2025-04-24"
+   },
+   {
+    "section": "4.2",
+    "label": "Okres realizacji zamówienia/umowy ramowej",
+    "value": "6 miesiące"
+   },
+   {
+    "section": "4.3",
+    "label": "Dane wykonawcy, z którym zawarto umowę/umowę ramową",
+    "value": ""
+   },
+   {
+    "section": "4.3.1",
+    "label": "Nazwa (firma) wykonawcy, któremu udzielono zamówienia (w przypadku wykonawców ubiegających się wspólnie o udzielenie zamówienia – dotyczy pełnomocnika, o którym mowa w art. 58 ust. 2 ustawy)",
+    "value": "Konsorcjum firm: \"Starkan\" Sp.z o.o"
+   },
+   {
+    "section": "4.3.1.1",
+    "label": "Dane wykonawców wspólnie ubiegających się o udzielenie zamówienia",
+    "value": "Przedsiębiorstwo Usługowe \"Starkan\"Marcin Pardus"
+   },
+   {
+    "section": "4.3.2",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "369467516, 320468735"
+   },
+   {
+    "section": "4.3.3",
+    "label": "Ulica",
+    "value": "Podleśna 14R"
+   },
+   {
+    "section": "4.3.4",
+    "label": "Miejscowość",
+    "value": "Stargard"
+   },
+   {
+    "section": "4.3.5",
+    "label": "Kod pocztowy",
+    "value": "73-110"
+   },
+   {
+    "section": "4.3.6",
+    "label": "Województwo",
+    "value": "zachodniopomorskie"
+   },
+   {
+    "section": "4.3.7",
+    "label": "Kraj",
+    "value": "Polska"
+   },
+   {
+    "section": "4.4",
+    "label": "Wartość umowy/umowy ramowej",
+    "value": "1969611,30 PLN"
+   },
+   {
+    "section": "4.5",
+    "label": "Numer ogłoszenia o wyniku postępowania w BZP",
+    "value": "2025/BZP 00206455/01"
+   },
+   {
+    "section": "5.1",
+    "label": "Data zmiany umowy/umowy ramowej)",
+    "value": "2025-12-01"
+   },
+   {
+    "section": "5.2",
+    "label": "Podstawa prawna zmiany umowy/umowy ramowej",
+    "value": "art. 455 ust. 1 pkt 4 ustawy"
+   },
+   {
+    "section": "5.3",
+    "label": "Przyczyny dokonania zmian umowy/umowy ramowej",
+    "value": "W trakcie realizacji prac ziemnych ujawniono niekorzystne warunki gruntowe oraz miejscowy wysoki poziom wód gruntowych. W celu prawidłowego wykonania zamówienia konieczne było wydłużenie terminu realizacji umowy."
+   },
+   {
+    "section": "5.4",
+    "label": "Krótki opis zmiany umowy/umowy ramowej",
+    "value": "Termin wykonania przedmiotu umowy: 31.12.2025 r."
+   },
+   {
+    "section": "5.5",
+    "label": "Wartość zmiany umowy",
+    "value": ""
+   },
+   {
+    "section": "5.5.3",
+    "label": "Wzrost ceny w związku ze zmianą umowy/umowy ramowej",
+    "value": "Nie"
+   },
+   {
+    "section": "5.6",
+    "label": "Wcześniejsze zmiany umowy/umowy ramowej, obligujące do zamieszczenia ogłoszenia o zmianie umowy",
+    "value": "Tak"
+   },
+   {
+    "section": "5.7",
+    "label": "Numer ogłoszenia w BZP o zmianie umowy",
+    "value": "2025/BZP 00558908/01"
+   }
+  ]
+ },
+ "2023/BZP 00232972/01": {
+  "object_id": "08db5d0b-a5cb-2bd7-a85e-9800117c1e72",
+  "notice_type": "TenderResultNotice",
+  "ocid": "ocds-148610-646ba830-e435-11ed-9355-06954b8c6cb9",
+  "published_at": "2023-05-25T10:34:41.042Z",
+  "title": "BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,",
+  "org_name": "GMINA WOLIN",
+  "org_nip": "9860164852",
+  "contractors": [
+   {
+    "contractorName": "Miejskie Przedsiębiorstwo Gospodarki Komunalnej Sp. z o. o.",
+    "contractorCity": "Wolin",
+    "contractorProvince": "PL32",
+    "contractorCountry": "PL",
+    "contractorNationalId": "REGON : 384643387"
+   }
+  ],
+  "sections": [
+   {
+    "section": "1.2",
+    "label": "Nazwa zamawiającego",
+    "value": "GMINA WOLIN"
+   },
+   {
+    "section": "1.4",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON 811685510"
+   },
+   {
+    "section": "2.1",
+    "label": "Ogłoszenie dotyczy",
+    "value": "Zamówienia publicznego"
+   },
+   {
+    "section": "2.2",
+    "label": "Ogłoszenie dotyczy usług społecznych i innych szczególnych usług",
+    "value": "Nie"
+   },
+   {
+    "section": "2.3",
+    "label": "Nazwa zamówienia albo umowy ramowej",
+    "value": "BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,"
+   },
+   {
+    "section": "2.4",
+    "label": "Identyfikator postępowania",
+    "value": "ocds-148610-646ba830-e435-11ed-9355-06954b8c6cb9"
+   },
+   {
+    "section": "2.5",
+    "label": "Numer ogłoszenia",
+    "value": "2023/BZP 00232972"
+   },
+   {
+    "section": "2.6",
+    "label": "Wersja ogłoszenia",
+    "value": "01"
+   },
+   {
+    "section": "2.7",
+    "label": "Data ogłoszenia",
+    "value": "2023-05-25"
+   },
+   {
+    "section": "2.8",
+    "label": "Zamówienie albo umowa ramowa zostały ujęte w planie postępowań",
+    "value": "Tak"
+   },
+   {
+    "section": "2.9",
+    "label": "Numer planu postępowań w BZP",
+    "value": "2023/BZP 00062054/01/P"
+   },
+   {
+    "section": "2.10",
+    "label": "Identyfikator pozycji planu postępowań",
+    "value": "1.1.2 Budowa sieci wodociągowych w gminie Wolin"
+   },
+   {
+    "section": "2.11",
+    "label": "Czy zamówienie albo umowa ramowa dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej",
+    "value": "Nie"
+   },
+   {
+    "section": "2.13",
+    "label": "Zamówienie/umowa ramowa było poprzedzone ogłoszeniem o zamówieniu/ogłoszeniem o zamiarze zawarcia umowy",
+    "value": "Tak"
+   },
+   {
+    "section": "2.14",
+    "label": "Numer ogłoszenia",
+    "value": "2023/BZP 00194168"
+   },
+   {
+    "section": "3.1",
+    "label": "Tryb udzielenia zamówienia wraz z podstawą prawną",
+    "value": "Zamówienie udzielane jest w trybie zamówienia z wolnej ręki na podstawie: art. 305 pkt 1 ustawy w zw. z art. 214 ust. 1 pkt 11 ustawy"
+   },
+   {
+    "section": "3.1.1",
+    "label": "Uzasadnienie faktyczne i prawne wyboru trybu negocjacji bez ogłoszenia albo zamówienia z wolnej ręki",
+    "value": "Zamawiający podjął decyzję o zleceniu realizacji przedmiotowego zamówienia osobie prawnej - Miejskiemu Przedsiębiorstwu Gospodarki Komunalnej Sp. z o.o., ul. Mickiewicza 2D, 72- 510 Wolin, dalej „MPGK Sp. z o.o.\" gdyż spełnione są łącznie warunki zastosowania art. 214 ust. 1 pkt 11 ustawy Prawo zamówień publicznych tj.: a) Zamawiający Gmina Wolin sprawuje nad MPGK Sp. z .o.o. kontrolę odpowiadającą kontroli sprawowanej nad własnymi jednostkami, polegającą na dominującym wpływie na cele strategiczne oraz istotne decyzje dotyczące zarządzania sprawami tej osoby prawnej. b) Ponad 90 % działalności MPGK Sp. z o.o. dotyczy wykonywania zadań powierzonych jej przez Gminę Wolin, sprawującą nad nią kontrolę, c) W MPGK Sp. Sp. z o.o. nie ma bezpośredniego udziału kapitału prywatnego. Poprzez powierzenie realizacji zadania MPGK Sp. z o.o. zostaną spełnione w sposób optymalny cele przedmiotowego zam"
+   },
+   {
+    "section": "4.1",
+    "label": "Numer referencyjny",
+    "value": "ZP.271.11.2023.HP"
+   },
+   {
+    "section": "4.2",
+    "label": "Zamawiający udziela zamówienia w częściach, z których każda stanowi przedmiot odrębnego postępowania",
+    "value": "Nie"
+   },
+   {
+    "section": "4.4",
+    "label": "Rodzaj zamówienia",
+    "value": "Roboty budowlane"
+   },
+   {
+    "section": "4.5.1",
+    "label": "Krótki opis przedmiotu zamówienia",
+    "value": "1. Przedmiotem zamówienia jest zadanie inwestycyjne pn.: BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN, w tym wykonanie wszystkich prac prowadzących do osiągnięcia stanu zgodnie z Projektami budowlanymi, Specyfikacjami Technicznymi Wykonania i Odbioru Robót, Zaproszeniem do negocjacji oraz Projektowanymi Postanowieniami Umowy w sprawie zamówienia publicznego. 2. Przedmiot zamówienia obejmuje dwa zadania: Zadanie nr 1: BUDOWA ROZDZIELCZEJ SIECI WODOCIĄGOWEJ NA ODCINKU WARTOWO-SIEROSŁAW Zadanie nr 2: BUDOWA SIECI WODOCIĄGOWEJ NA ODCINKU WISEŁKA-ŻÓŁWINO -DOMYSŁÓW 3. Opis techniczny poszczególnych zadań: 3.1. Zadanie nr 1: BUDOWA ROZDZIELCZEJ SIECI WODOCIĄGOWEJ NA ODCINKU WARTOWO-SIEROSŁAW Zakres robót obejmuje: 1) roboty pomiarowe, 2) wykonane wykopów liniowych, 3) montaż rurociągów, 4) wykonanie przewiertów sterowanych, 5) montaż hydrantów pożarowych naziemnych, zasuw odcinających oraz studni "
+   },
+   {
+    "section": "4.5.3",
+    "label": "Główny kod CPV",
+    "value": "45231300-8 - Roboty budowlane w zakresie budowy wodociągów i rurociągów do odprowadzania ścieków"
+   },
+   {
+    "section": "4.5.4",
+    "label": "Dodatkowy kod CPV",
+    "value": "45111200-0 - Roboty w zakresie przygotowania terenu pod budowę i roboty ziemne 45233220-7 - Roboty w zakresie nawierzchni dróg"
+   },
+   {
+    "section": "5.1",
+    "label": "Postępowanie zakończyło się zawarciem umowy albo unieważnieniem postępowania",
+    "value": "Postępowanie/cześć postępowania zakończyła się zawarciem umowy"
+   },
+   {
+    "section": "6.1",
+    "label": "Liczba otrzymanych ofert lub wniosków",
+    "value": "0"
+   },
+   {
+    "section": "6.1.1",
+    "label": "Liczba otrzymanych ofert wariantowych",
+    "value": "0"
+   },
+   {
+    "section": "6.1.2",
+    "label": "Liczba ofert dodatkowych",
+    "value": "0"
+   },
+   {
+    "section": "6.1.3",
+    "label": "Liczba otrzymanych od MŚP",
+    "value": "0"
+   },
+   {
+    "section": "6.1.4",
+    "label": "Liczba ofert wykonawców z siedzibą w państwach EOG innych niż państwo zamawiającego",
+    "value": "0"
+   },
+   {
+    "section": "6.1.5",
+    "label": "Liczba ofert wykonawców z siedzibą w państwie spoza EOG",
+    "value": "0"
+   },
+   {
+    "section": "6.1.6",
+    "label": "Liczba ofert odrzuconych, w tym liczba ofert zawierających rażąco niską cenę lub koszt",
+    "value": "0"
+   },
+   {
+    "section": "6.1.7",
+    "label": "Liczba ofert zawierających rażąco niską cenę lub koszt",
+    "value": "0"
+   },
+   {
+    "section": "6.2",
+    "label": "Cena lub koszt oferty z najniższą ceną lub kosztem",
+    "value": "0"
+   },
+   {
+    "section": "6.3",
+    "label": "Cena lub koszt oferty z najwyższą ceną lub kosztem",
+    "value": "5154376,09 PLN"
+   },
+   {
+    "section": "6.4",
+    "label": "Cena lub koszt oferty wykonawcy, któremu udzielono zamówienia",
+    "value": "5154376,09 PLN"
+   },
+   {
+    "section": "6.5",
+    "label": "Do wyboru najkorzystniejszej oferty zastosowano aukcję elektroniczną",
+    "value": "Nie"
+   },
+   {
+    "section": "6.6",
+    "label": "Oferta wybranego wykonawcy jest ofertą wariantową",
+    "value": "Nie"
+   },
+   {
+    "section": "7.1",
+    "label": "Czy zamówienie zostało udzielone wykonawcom wspólnie ubiegającym się o udzielenie zamówienia",
+    "value": "Nie"
+   },
+   {
+    "section": "7.2",
+    "label": "Wielkość przedsiębiorstwa wykonawcy",
+    "value": "Średni przedsiębiorca"
+   },
+   {
+    "section": "7.3",
+    "label": "Dane (firmy) wykonawcy, któremu udzielono zamówienia",
+    "value": ""
+   },
+   {
+    "section": "7.3.1",
+    "label": "Nazwa (firma) wykonawcy, któremu udzielono zamówienia",
+    "value": "Miejskie Przedsiębiorstwo Gospodarki Komunalnej Sp. z o. o."
+   },
+   {
+    "section": "7.3.2",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON : 384643387"
+   },
+   {
+    "section": "7.3.3",
+    "label": "Ulica",
+    "value": "ul. Adama Mickiewicza 2D"
+   },
+   {
+    "section": "7.3.4",
+    "label": "Miejscowość",
+    "value": "Wolin"
+   },
+   {
+    "section": "7.3.5",
+    "label": "Kod pocztowy",
+    "value": "72-510"
+   },
+   {
+    "section": "7.3.6",
+    "label": "Województwo",
+    "value": "zachodniopomorskie"
+   },
+   {
+    "section": "7.3.7",
+    "label": "Kraj",
+    "value": "Polska"
+   },
+   {
+    "section": "7.4",
+    "label": "Czy wykonawca przewiduje powierzenie wykonania części zamówienia podwykonawcom?",
+    "value": "Nie"
+   },
+   {
+    "section": "8.1",
+    "label": "Data zawarcia umowy",
+    "value": "2023-05-25"
+   },
+   {
+    "section": "8.2",
+    "label": "Wartość umowy/umowy ramowej",
+    "value": "5154376,09 PLN"
+   },
+   {
+    "section": "8.3",
+    "label": "Okres realizacji zamówienia albo umowy ramowej",
+    "value": "10 miesiące"
+   },
+   {
+    "section": "8.4",
+    "label": "Zamawiający przewiduje następujące wymagania związane z realizacją zamówienia",
+    "value": "w zakresie zatrudnienia na podstawie stosunku pracy, w okolicznościach, o których mowa w art. 95 ustawy"
+   }
+  ]
+ },
+ "2025/BZP 00206455/01": {
+  "object_id": "08dd83e7-8600-d7d9-eaaa-350001a3b6fb",
+  "notice_type": "TenderResultNotice",
+  "ocid": "ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c",
+  "published_at": "2025-04-25T10:54:16.5169444Z",
+  "title": "Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo",
+  "org_name": "GMINA NOWOGARD",
+  "org_nip": "8590012007",
+  "contractors": [
+   {
+    "contractorName": "Konsorcjum firm: \"Starkan\" Sp.z o.o",
+    "contractorCity": "Stargard",
+    "contractorProvince": "PL32",
+    "contractorCountry": "PL",
+    "contractorNationalId": "369467516, 320468735"
+   }
+  ],
+  "sections": [
+   {
+    "section": "1.2",
+    "label": "Nazwa zamawiającego",
+    "value": "GMINA NOWOGARD"
+   },
+   {
+    "section": "1.4",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON 811684278"
+   },
+   {
+    "section": "2.1",
+    "label": "Ogłoszenie dotyczy",
+    "value": "Zamówienia publicznego"
+   },
+   {
+    "section": "2.2",
+    "label": "Ogłoszenie dotyczy usług społecznych i innych szczególnych usług",
+    "value": "Nie"
+   },
+   {
+    "section": "2.3",
+    "label": "Nazwa zamówienia albo umowy ramowej",
+    "value": "Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo"
+   },
+   {
+    "section": "2.4",
+    "label": "Identyfikator postępowania",
+    "value": "ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c"
+   },
+   {
+    "section": "2.5",
+    "label": "Numer ogłoszenia",
+    "value": "2025/BZP 00206455"
+   },
+   {
+    "section": "2.6",
+    "label": "Wersja ogłoszenia",
+    "value": "01"
+   },
+   {
+    "section": "2.7",
+    "label": "Data ogłoszenia",
+    "value": "2025-04-25"
+   },
+   {
+    "section": "2.8",
+    "label": "Zamówienie albo umowa ramowa zostały ujęte w planie postępowań",
+    "value": "Tak"
+   },
+   {
+    "section": "2.9",
+    "label": "Numer planu postępowań w BZP",
+    "value": "2024/BZP 00672688/08/P"
+   },
+   {
+    "section": "2.10",
+    "label": "Identyfikator pozycji planu postępowań",
+    "value": "1.1.5 Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo"
+   },
+   {
+    "section": "2.11",
+    "label": "Czy zamówienie albo umowa ramowa dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej",
+    "value": "Nie"
+   },
+   {
+    "section": "2.13",
+    "label": "Zamówienie/umowa ramowa było poprzedzone ogłoszeniem o zamówieniu/ogłoszeniem o zamiarze zawarcia umowy",
+    "value": "Tak"
+   },
+   {
+    "section": "2.14",
+    "label": "Numer ogłoszenia",
+    "value": "2025/BZP 00113651"
+   },
+   {
+    "section": "3.1",
+    "label": "Tryb udzielenia zamówienia wraz z podstawą prawną",
+    "value": "Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 2 ustawy"
+   },
+   {
+    "section": "4.1",
+    "label": "Numer referencyjny",
+    "value": "WZP.271.4.2025.AA.MT"
+   },
+   {
+    "section": "4.2",
+    "label": "Zamawiający udziela zamówienia w częściach, z których każda stanowi przedmiot odrębnego postępowania",
+    "value": "Nie"
+   },
+   {
+    "section": "4.3",
+    "label": "Wartość zamówienia",
+    "value": "2207285,70 PLN"
+   },
+   {
+    "section": "4.4",
+    "label": "Rodzaj zamówienia",
+    "value": "Roboty budowlane"
+   },
+   {
+    "section": "4.5.1",
+    "label": "Krótki opis przedmiotu zamówienia",
+    "value": "Zadanie obejmuje przebudowę lokalnej oczyszczalni ścieków oraz budowę sieci kanalizacji sanitarnej z przyłączami i rozgałęzieni sieci wraz z niezbędną infrastrukturą techniczną w miejscowości Konarzewo gmina Nowogard. Wykonanie czasowej zmiany organizacji ruchu w przypadku jej koniecznościach wraz z jej zatwierdzeniem oraz uzyskanie w imieniu Zamawiającego pozwolenia na użytkowanie po zakończeniu robót budowlanych, jeśli wynika to z przepisów prawa. Informacje na temat szczegółowego określenia zakresu przedmiotu zamówienia zawarte są : projekcie architektoniczno-budowlanym, projekcie technicznym, projekcie zagospodarowania terenu, specyfikacji technicznej wykonania i odbioru robót (STEiOR), przedmiarze robót, sprawozdaniu z wstępnych badań geotechnicznych podłoża działki nr 3/36, informacji BIOZ, Decyzji nr 133/2024 Pozwolenie na budowę, pozwoleniu wodnoprawnym nr RKW-2021-6113 stanowiąc"
+   },
+   {
+    "section": "4.5.3",
+    "label": "Główny kod CPV",
+    "value": "45232421-9 - Roboty w zakresie oczyszczania ścieków"
+   },
+   {
+    "section": "4.5.4",
+    "label": "Dodatkowy kod CPV",
+    "value": "45252127-4 - Roboty budowlane w zakresie oczyszczalni ścieków 45262640-9 - Roboty w zakresie poprawy stanu środowiska naturalnego 45111200-0 - Roboty w zakresie przygotowania terenu pod budowę i roboty ziemne"
+   },
+   {
+    "section": "5.1",
+    "label": "Postępowanie zakończyło się zawarciem umowy albo unieważnieniem postępowania",
+    "value": "Postępowanie/cześć postępowania zakończyła się zawarciem umowy"
+   },
+   {
+    "section": "6.1",
+    "label": "Liczba otrzymanych ofert lub wniosków",
+    "value": "10"
+   },
+   {
+    "section": "6.1.1",
+    "label": "Liczba otrzymanych ofert wariantowych",
+    "value": "0"
+   },
+   {
+    "section": "6.1.2",
+    "label": "Liczba ofert dodatkowych",
+    "value": "0"
+   },
+   {
+    "section": "6.1.3",
+    "label": "Liczba otrzymanych od MŚP",
+    "value": "10"
+   },
+   {
+    "section": "6.1.4",
+    "label": "Liczba ofert wykonawców z siedzibą w państwach EOG innych niż państwo zamawiającego",
+    "value": "0"
+   },
+   {
+    "section": "6.1.5",
+    "label": "Liczba ofert wykonawców z siedzibą w państwie spoza EOG",
+    "value": "0"
+   },
+   {
+    "section": "6.1.6",
+    "label": "Liczba ofert odrzuconych, w tym liczba ofert zawierających rażąco niską cenę lub koszt",
+    "value": "0"
+   },
+   {
+    "section": "6.1.7",
+    "label": "Liczba ofert zawierających rażąco niską cenę lub koszt",
+    "value": "0"
+   },
+   {
+    "section": "6.2",
+    "label": "Cena lub koszt oferty z najniższą ceną lub kosztem",
+    "value": "1969611,30 PLN"
+   },
+   {
+    "section": "6.3",
+    "label": "Cena lub koszt oferty z najwyższą ceną lub kosztem",
+    "value": "3479874,18 PLN"
+   },
+   {
+    "section": "6.4",
+    "label": "Cena lub koszt oferty wykonawcy, któremu udzielono zamówienia",
+    "value": "1969611,30 PLN"
+   },
+   {
+    "section": "6.5",
+    "label": "Do wyboru najkorzystniejszej oferty zastosowano aukcję elektroniczną",
+    "value": "Nie"
+   },
+   {
+    "section": "6.6",
+    "label": "Oferta wybranego wykonawcy jest ofertą wariantową",
+    "value": "Nie"
+   },
+   {
+    "section": "7.1",
+    "label": "Czy zamówienie zostało udzielone wykonawcom wspólnie ubiegającym się o udzielenie zamówienia",
+    "value": "Tak"
+   },
+   {
+    "section": "7.2",
+    "label": "Wielkość przedsiębiorstwa wykonawcy",
+    "value": "Mały przedsiębiorca"
+   },
+   {
+    "section": "7.3",
+    "label": "Dane (firmy) wykonawcy, któremu udzielono zamówienia",
+    "value": ""
+   },
+   {
+    "section": "7.3.1",
+    "label": "Nazwa (firma) wykonawcy, któremu udzielono zamówienia (dotyczy pełnomocnika, o którym mowa w art. 58 ust. 2 ustawy)",
+    "value": "Konsorcjum firm: \"Starkan\" Sp.z o.o"
+   },
+   {
+    "section": "7.3.2",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "369467516, 320468735"
+   },
+   {
+    "section": "7.3.3",
+    "label": "Ulica",
+    "value": "Podleśna 14R"
+   },
+   {
+    "section": "7.3.4",
+    "label": "Miejscowość",
+    "value": "Stargard"
+   },
+   {
+    "section": "7.3.5",
+    "label": "Kod pocztowy",
+    "value": "73-110"
+   },
+   {
+    "section": "7.3.6",
+    "label": "Województwo",
+    "value": "zachodniopomorskie"
+   },
+   {
+    "section": "7.3.7",
+    "label": "Kraj",
+    "value": "Polska"
+   },
+   {
+    "section": "7.4",
+    "label": "Czy wykonawca przewiduje powierzenie wykonania części zamówienia podwykonawcom?",
+    "value": "Tak"
+   },
+   {
+    "section": "7.4.1",
+    "label": "Informacja o częściach zamówienia, których wykonanie zamierza powierzyć podwykonawcom, oraz nazwy ewentualnych podwykonawców, jeżeli są już znani",
+    "value": "Biuro Projektów \"Elektro-Projekt Zbigniew Kozak"
+   },
+   {
+    "section": "8.1",
+    "label": "Data zawarcia umowy",
+    "value": "2025-04-24"
+   },
+   {
+    "section": "8.2",
+    "label": "Wartość umowy/umowy ramowej",
+    "value": "1969611,30 PLN"
+   },
+   {
+    "section": "8.3",
+    "label": "Okres realizacji zamówienia albo umowy ramowej",
+    "value": "6 miesiące"
+   },
+   {
+    "section": "8.4",
+    "label": "Zamawiający przewiduje następujące wymagania związane z realizacją zamówienia",
+    "value": "w zakresie zatrudnienia na podstawie stosunku pracy, w okolicznościach, o których mowa w art. 95 ustawy"
+   }
+  ]
+ },
+ "2025/BZP 00113651/01": {
+  "object_id": "08dd51ab-134e-2276-8f1b-b600017c84ad",
+  "notice_type": "ContractNotice",
+  "ocid": "ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c",
+  "published_at": "2025-02-20T12:35:36.1483919Z",
+  "title": "Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo",
+  "org_name": "GMINA NOWOGARD",
+  "org_nip": "8590012007",
+  "contractors": [],
+  "sections": [
+   {
+    "section": "1.2",
+    "label": "Nazwa zamawiającego",
+    "value": "GMINA NOWOGARD"
+   },
+   {
+    "section": "1.4",
+    "label": "Krajowy Numer Identyfikacyjny",
+    "value": "REGON 811684278"
+   },
+   {
+    "section": "2.1",
+    "label": "Ogłoszenie dotyczy",
+    "value": "Zamówienia publicznego"
+   },
+   {
+    "section": "2.2",
+    "label": "Ogłoszenie dotyczy usług społecznych i innych szczególnych usług",
+    "value": "Nie"
+   },
+   {
+    "section": "2.3",
+    "label": "Nazwa zamówienia albo umowy ramowej",
+    "value": "Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo"
+   },
+   {
+    "section": "2.4",
+    "label": "Identyfikator postępowania",
+    "value": "ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c"
+   },
+   {
+    "section": "2.5",
+    "label": "Numer ogłoszenia",
+    "value": "2025/BZP 00113651"
+   },
+   {
+    "section": "2.6",
+    "label": "Wersja ogłoszenia",
+    "value": "01"
+   },
+   {
+    "section": "2.7",
+    "label": "Data ogłoszenia",
+    "value": "2025-02-20"
+   },
+   {
+    "section": "2.8",
+    "label": "Zamówienie albo umowa ramowa zostały ujęte w planie postępowań",
+    "value": "Tak"
+   },
+   {
+    "section": "2.9",
+    "label": "Numer planu postępowań w BZP",
+    "value": "2024/BZP 00672688/05/P"
+   },
+   {
+    "section": "2.10",
+    "label": "Identyfikator pozycji planu postępowań",
+    "value": "1.1.5 Budowa kanalizacji sanitarnej wraz z oczyszczalnią ścieków na terenie gminy Nowogard w m. Konarzewo"
+   },
+   {
+    "section": "2.11",
+    "label": "O udzielenie zamówienia mogą ubiegać się wyłącznie wykonawcy, o których mowa w art. 94 ustawy",
+    "value": "Nie"
+   },
+   {
+    "section": "2.14",
+    "label": "Czy zamówienie albo umowa ramowa dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej",
+    "value": "Nie"
+   },
+   {
+    "section": "2.16",
+    "label": "Tryb udzielenia zamówienia wraz z podstawą prawną",
+    "value": "Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 2 ustawy"
+   },
+   {
+    "section": "3.1",
+    "label": "Adres strony internetowej prowadzonego postępowania",
+    "value": "https://platformazakupowa.pl/transakcja/1060050"
+   },
+   {
+    "section": "3.2",
+    "label": "Zamawiający zastrzega dostęp do dokumentów zamówienia",
+    "value": "Nie"
+   },
+   {
+    "section": "3.4",
+    "label": "Wykonawcy zobowiązani są do składania ofert, wniosków o dopuszczenie do udziału w postępowaniu, oświadczeń oraz innych dokumentów wyłącznie przy użyciu środków komunikacji elektronicznej",
+    "value": "Tak"
+   },
+   {
+    "section": "3.5",
+    "label": "Informacje o środkach komunikacji elektronicznej, przy użyciu których zamawiający będzie komunikował się z wykonawcami - adres strony internetowej",
+    "value": "https://platformazakupowa.pl/transakcja/1060050"
+   },
+   {
+    "section": "3.6",
+    "label": "Wymagania techniczne i organizacyjne dotyczące korespondencji elektronicznej",
+    "value": "Szczegółowe wymagania techniczne dot. korespondencji elektronicznej określone są w rozdziale 12. Informacje o sposobie komunikowania się przez Zamawiającego z Wykonawcami SWZ"
+   },
+   {
+    "section": "3.8",
+    "label": "Zamawiający wymaga sporządzenia i przedstawienia ofert przy użyciu narzędzi elektronicznego modelowania danych budowlanych lub innych podobnych narzędzi, które nie są ogólnie dostępne",
+    "value": "Nie"
+   },
+   {
+    "section": "3.12",
+    "label": "Oferta - katalog elektroniczny",
+    "value": "Zamawiający wymaga złożenia oferty w postaci katalogu elektronicznego"
+   },
+   {
+    "section": "3.14",
+    "label": "Języki, w jakich mogą być sporządzane dokumenty składane w postępowaniu",
+    "value": "polski"
+   },
+   {
+    "section": "3.15",
+    "label": "RODO (obowiązek informacyjny)",
+    "value": "Zgodnie z art. 13 ust. 1 i ust. 2 Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (Ogólne Rozporządzenie o Ochronie Danych) (zwanego dalej RODO), informujemy: 1. Administratorem danych osobowych jest Gmina Nowogard, reprezentowana przez Burmistrza Nowogardu, adres: Plac Wolności 1, 72-200 Nowogard, tel. 91 39 26 200, email: sekretariat@nowogard.pl. 2. 2.Kontakt z Inspektorem Ochrony Danych - Urząd Miejski w Nowogardzie, Plac Wolności 1, 72-200 Nowogard, tel. 91 39 26 201, e-mail: iodo@nowogard.pl. 3.Dane osobowe przetwarzane są: - na podstawie art. 6 ust. 1 lit. a) RODO - to jest na podstawie zgody osoby, której dane dotyczą - na podstawie art. 6 ust. 1 lit. b) RODO - w celu realizacji umów, "
+   },
+   {
+    "section": "4.1",
+    "label": "Informacje ogólne odnoszące się do przedmiotu zamówienia.",
+    "value": ""
+   },
+   {
+    "section": "4.1.1",
+    "label": "Przed wszczęciem postępowania przeprowadzono konsultacje rynkowe",
+    "value": "Nie"
+   },
+   {
+    "section": "4.1.2",
+    "label": "Numer referencyjny",
+    "value": "WZP.271.4.2025.AA.MT"
+   },
+   {
+    "section": "4.1.3",
+    "label": "Rodzaj zamówienia",
+    "value": "Roboty budowlane"
+   },
+   {
+    "section": "4.1.4",
+    "label": "Zamawiający udziela zamówienia w częściach, z których każda stanowi przedmiot odrębnego postępowania",
+    "value": "Nie"
+   },
+   {
+    "section": "4.1.8",
+    "label": "Możliwe jest składanie ofert częściowych",
+    "value": "Nie"
+   },
+   {
+    "section": "4.1.13",
+    "label": "Zamawiający uwzględnia aspekty społeczne, środowiskowe lub etykiety w opisie przedmiotu zamówienia",
+    "value": "Nie"
+   },
+   {
+    "section": "4.2",
+    "label": "Informacje szczegółowe odnoszące się do przedmiotu zamówienia",
+    "value": ""
+   },
+   {
+    "section": "4.2.2",
+    "label": "Krótki opis przedmiotu zamówienia",
+    "value": "Zadanie obejmuje przebudowę lokalnej oczyszczalni ścieków oraz budowę sieci kanalizacji sanitarnej z przyłączami i rozgałęzieni sieci wraz z niezbędną infrastrukturą techniczną w miejscowości Konarzewo gmina Nowogard. Wykonanie czasowej zmiany organizacji ruchu w przypadku jej koniecznościach wraz z jej zatwierdzeniem oraz uzyskanie w imieniu Zamawiającego pozwolenia na użytkowanie po zakończeniu robót budowlanych, jeśli wynika to z przepisów prawa. Informacje na temat szczegółowego określenia zakresu przedmiotu zamówienia zawarte są : projekcie architektoniczno-budowlanym, projekcie technicznym, projekcie zagospodarowania terenu, specyfikacji technicznej wykonania i odbioru robót (STEiOR), przedmiarze robót, sprawozdaniu z wstępnych badań geotechnicznych podłoża działki nr 3/36, informacji BIOZ, Decyzji nr 133/2024 Pozwolenie na budowę, pozwoleniu wodnoprawnym nr RKW-2021-6113 stanowiąc"
+   },
+   {
+    "section": "4.2.6",
+    "label": "Główny kod CPV",
+    "value": "45232421-9 - Roboty w zakresie oczyszczania ścieków"
+   },
+   {
+    "section": "4.2.7",
+    "label": "Dodatkowy kod CPV",
+    "value": "45252127-4 - Roboty budowlane w zakresie oczyszczalni ścieków 45262640-9 - Roboty w zakresie poprawy stanu środowiska naturalnego 45111200-0 - Roboty w zakresie przygotowania terenu pod budowę i roboty ziemne"
+   },
+   {
+    "section": "4.2.8",
+    "label": "Zamówienie obejmuje opcje",
+    "value": "Nie"
+   },
+   {
+    "section": "4.2.10",
+    "label": "Okres realizacji zamówienia albo umowy ramowej",
+    "value": "8 miesiące"
+   },
+   {
+    "section": "4.2.11",
+    "label": "Zamawiający przewiduje wznowienia",
+    "value": "Nie"
+   },
+   {
+    "section": "4.2.13",
+    "label": "Zamawiający przewiduje udzielenie dotychczasowemu wykonawcy zamówień na podobne usługi lub roboty budowlane",
+    "value": "Nie"
+   },
+   {
+    "section": "4.3",
+    "label": "Kryteria oceny ofert",
+    "value": ""
+   },
+   {
+    "section": "4.3.1",
+    "label": "Sposób oceny ofert",
+    "value": "1. Wykonawca poda cenę oferty w Formularzu ofertowym sporządzonym według wzoru stanowiącego załącznik nr 1 do SWZ, jako cenę brutto (z uwzględnieniem kwoty podatku od towarów i usług) z wyszczególnieniem stawki podatku od towarów i usług (VAT). 2. Cena oferty stanowi wynagrodzenie ryczałtowe. 3. Podstawą do obliczenia ceny jest Program Funkcjonalno-Użytkowy. Przy dokonywaniu wyceny przedmiotu zamówienia należy uwzględnić wszystkie dane z analizy programu funkcjonalno-użytkowego. 4. Cena oferty winna zawierać wszelkie koszty niezbędne do zrealizowania zamówienia z uwzględnieniem ryzyka Wykonawcy, w tym także opłaty związane z kosztem robocizny, materiałów, pracy sprzętu, środków transportu niezbędnego do wykonania robót, koszt nakładów, prac i robót nieprzewidzianych, a niezbędnych do wykonania zamówienia oraz wszystkie inne koszty, które będą musiały być poniesione przy wykonywaniu zamów"
+   },
+   {
+    "section": "4.3.2",
+    "label": "Sposób określania wagi kryteriów oceny ofert",
+    "value": "Punktowo"
+   },
+   {
+    "section": "4.3.3",
+    "label": "Stosowane kryteria oceny ofert",
+    "value": "Kryterium ceny oraz kryteria jakościowe"
+   },
+   {
+    "section": "4.3.5",
+    "label": "Nazwa kryterium",
+    "value": "Cena"
+   },
+   {
+    "section": "4.3.6",
+    "label": "Waga",
+    "value": "60"
+   },
+   {
+    "section": "4.3.4",
+    "label": "Rodzaj kryterium",
+    "value": "inne."
+   },
+   {
+    "section": "4.3.5",
+    "label": "Nazwa kryterium",
+    "value": "Termin realizacji"
+   },
+   {
+    "section": "4.3.6",
+    "label": "Waga",
+    "value": "20"
+   },
+   {
+    "section": "4.3.4",
+    "label": "Rodzaj kryterium",
+    "value": "inne."
+   },
+   {
+    "section": "4.3.5",
+    "label": "Nazwa kryterium",
+    "value": "Okres gwarancji"
+   },
+   {
+    "section": "4.3.6",
+    "label": "Waga",
+    "value": "20"
+   },
+   {
+    "section": "4.3.10",
+    "label": "Zamawiający określa aspekty społeczne, środowiskowe lub innowacyjne, żąda etykiet lub stosuje rachunek kosztów cyklu życia w odniesieniu do kryterium oceny ofert",
+    "value": "Nie"
+   },
+   {
+    "section": "5.1",
+    "label": "Zamawiający przewiduje fakultatywne podstawy wykluczenia",
+    "value": "Tak"
+   },
+   {
+    "section": "5.2",
+    "label": "Fakultatywne podstawy wykluczenia",
+    "value": "Art. 109 ust. 1 pkt 1 Art. 109 ust. 1 pkt 4 Art. 109 ust. 1 pkt 5"
+   },
+   {
+    "section": "5.3",
+    "label": "Warunki udziału w postępowaniu",
+    "value": "Tak"
+   },
+   {
+    "section": "5.4",
+    "label": "Nazwa i opis warunków udziału w postępowaniu.",
+    "value": "1. O udzielenie zamówienia mogą ubiegać się wykonawcy, którzy: 1) nie podlegają wykluczeniu; 2) spełniają warunki udziału w postępowaniu. 2. Opis warunków udziału w postępowaniu. 1) Zdolność do występowania w obrocie gospodarczym Zamawiający nie precyzuje w tym zakresie żadnych szczegółowych wymagań, których spełnianie Wykonawca zobowiązany jest wykazać."
+   },
+   {
+    "section": "5.5",
+    "label": "Zamawiający wymaga złożenia oświadczenia, o którym mowa w art.125 ust. 1 ustawy",
+    "value": "Tak"
+   },
+   {
+    "section": "5.6",
+    "label": "Wykaz podmiotowych środków dowodowych na potwierdzenie niepodlegania wykluczeniu",
+    "value": "1. Do oferty wykonawca dołącza oświadczenie o niepodleganiu wykluczeniu oraz spełnianiu warunków udziału w postępowaniu w zakresie wskazanym przez Zamawiającego. 2. Zamawiający wezwie Wykonawcę, którego oferta została najwyżej oceniona, do złożenia w wyznaczonym terminie, nie krótszym niż 5 dni od dnia wezwania, podmiotowych środków dowodowych, aktualnych na dzień złożenia podmiotowych środków dowodowych. 3. W celu potwierdzenia braku podstaw wykluczenia z udziału w postępowaniu o udzielenie zamówienia publicznego, zamawiający zażąda: 1) oświadczenia o aktualności informacji zawartych w oświadczeniu, o którym mowa w art. 125 ust. 1 ustawy Pzp, w zakresie podstaw wykluczenia z postępowania wskazanych przez zamawiającego (załącznik nr 4 do SWZ) 4. W celu potwierdzenia spełniania przez wykonawcę warunków udziału w postępowaniu zamawiający zażąda: 1) dokumentów potwierdzających, że wykonawca"
+   },
+   {
+    "section": "5.7",
+    "label": "Wykaz podmiotowych środków dowodowych na potwierdzenie spełniania warunków udziału w postępowaniu",
+    "value": "1. Do oferty wykonawca dołącza oświadczenie o niepodleganiu wykluczeniu oraz spełnianiu warunków udziału w postępowaniu w zakresie wskazanym przez Zamawiającego. 2. Zamawiający wezwie Wykonawcę, którego oferta została najwyżej oceniona, do złożenia w wyznaczonym terminie, nie krótszym niż 5 dni od dnia wezwania, podmiotowych środków dowodowych, aktualnych na dzień złożenia podmiotowych środków dowodowych. 3. W celu potwierdzenia braku podstaw wykluczenia z udziału w postępowaniu o udzielenie zamówienia publicznego, zamawiający zażąda: 1) oświadczenia o aktualności informacji zawartych w oświadczeniu, o którym mowa w art. 125 ust. 1 ustawy Pzp, w zakresie podstaw wykluczenia z postępowania wskazanych przez zamawiającego (załącznik nr 4 do SWZ) 4. W celu potwierdzenia spełniania przez wykonawcę warunków udziału w postępowaniu zamawiający zażąda: 1) dokumentów potwierdzających, że wykonawca"
+   },
+   {
+    "section": "5.8",
+    "label": "Wykaz przedmiotowych środków dowodowych",
+    "value": "W celu potwierdzenia spełniania przez wykonawcę warunków udziału w postępowaniu zamawiający zażąda: 1) dokumentów potwierdzających, że wykonawca jest ubezpieczony od odpowiedzialności cywilnej w zakresie prowadzonej działalności związanej z przedmiotem zamówienia ze wskazaniem sumy gwarancyjnej tego ubezpieczenia; 2) wykazu wykonanych zadań polegających na budowie co najmniej jednej roboty budowlanej polegającej na budowie sieci wodnej i/lub kanalizacyjnej o wartości nie mniejszej niż 1.000.000,00 zł która została wykonana w okresie ostatnich dwóch lat przed upływem terminu składania ofert, a jeżeli okres prowadzenia działalności jest krótszy - w tym okresie, wraz z podaniem ich rodzaju, wartości, daty i miejsca wykonania oraz podmiotów, na rzecz których roboty te zostały wykonane, oraz załączeniem dowodów określających, czy te roboty budowlane zostały wykonane należycie, przy czym dowod"
+   },
+   {
+    "section": "5.9",
+    "label": "Zamawiający przewiduje uzupełnienie przedmiotowych środków dowodowych",
+    "value": "Nie"
+   },
+   {
+    "section": "6.1",
+    "label": "Zamawiający wymaga albo dopuszcza oferty wariantowe",
+    "value": "Nie"
+   },
+   {
+    "section": "6.3",
+    "label": "Zamawiający przewiduje aukcję elektroniczną",
+    "value": "Nie"
+   },
+   {
+    "section": "6.4",
+    "label": "Zamawiający wymaga wadium",
+    "value": "Tak"
+   },
+   {
+    "section": "6.4.1",
+    "label": "Informacje dotyczące wadium",
+    "value": "Wykonawca przystępujący do postępowania jest zobowiązany, przed upływem terminu składania ofert, wnieść wadium w wysokości: 30.000,00zł brutto (słownie: trzydzieści tysięcy złotych 00/100) 1. Wadium musi obejmować pełen okres związania ofertą. 2. Wadium może być wniesione w jednej lub kilku formach wskazanych w art. 97 ust. 7 ustawy Pzp. 3. Wadium wnoszone w pieniądzu należy wpłacić przelewem na rachunek bankowy w banku Pekao S. A. I Oddział w Nowogardzie numer rachunku 68 1240 3884 1111 0000 4209 2441 .Wadium musi wpłynąć na wskazany rachunek bankowy zamawiającego najpóźniej przed upływem terminu składania ofert (decyduje data wpływu na rachunek bankowy zamawiającego). 4. Wadium wnoszone w poręczeniach lub gwarancjach należy załączyć do oferty w oryginale w postaci dokumentu elektronicznego podpisanego kwalifikowanym podpisem elektronicznym przez wystawcę dokumentu i powinno zawierać na"
+   },
+   {
+    "section": "6.5",
+    "label": "Zamawiający wymaga zabezpieczenia należytego wykonania umowy",
+    "value": "Tak"
+   },
+   {
+    "section": "6.6",
+    "label": "Wymagania dotyczące składania oferty przez wykonawców wspólnie ubiegających się o udzielenie zamówienia",
+    "value": "1. Od wykonawcy, którego oferta zostanie wybrana jako najkorzystniejsza, wymagane będzie wniesienie, przed zawarciem umowy, zabezpieczenie należytego wykonania umowy w wysokości 5% ceny całkowitej (brutto) podanej w ofercie za wykonanie całości przedmiotu zamówienia. Zabezpieczenie służy pokryciu roszczeń z tytułu niewykonania lub nienależytego wykonania umowy. 2. Zabezpieczenie może być wnoszone, według wyboru Wykonawcy, w jednej lub w kilku następujących formach: 1) pieniądzu 2) poręczeniach bankowych lub poręczeniach spółdzielczej kasy oszczędnościowo – kredytowej, z tym że zobowiązanie kasy jest zawsze zobowiązaniem pieniężnym; 3) gwarancjach bankowych; 4) gwarancjach ubezpieczeniowych;"
+   },
+   {
+    "section": "6.7",
+    "label": "Zamawiający przewiduje unieważnienie postępowania, jeśli środki publiczne, które zamierzał przeznaczyć na sfinansowanie całości lub części zamówienia nie zostały przyznane",
+    "value": "Nie"
+   },
+   {
+    "section": "7.1",
+    "label": "Zamawiający przewiduje udzielenia zaliczek",
+    "value": "Nie"
+   },
+   {
+    "section": "7.3",
+    "label": "Zamawiający przewiduje zmiany umowy",
+    "value": "Tak"
+   },
+   {
+    "section": "7.4",
+    "label": "Rodzaj i zakres zmian umowy oraz warunki ich wprowadzenia",
+    "value": "1.Wszelkie zmiany, niniejszej umowy wymagają aneksu sporządzonego z zachowaniem formy pisemnej pod rygorem nieważności. 2.Zmiana umowy może być dokonana w przypadku okoliczności, których nie można było przewidzieć w chwili zawarcia umowy, a w szczególności zmianie uległy przepisy prawne istotne dla realizacji przedmiotu umowy, z powodu działań osób trzecich uniemożliwiających wykonanie prac, które to działania nie są konsekwencją winy którejkolwiek ze stron. 3.Zamawiający przewiduje możliwość wprowadzenia istotnych zmian postanowień niniejszej umowy w stosunku do treści oferty, polegających na: 1) zmianie terminu zakończenia przedmiotu umowy, 2) zmianie sposobu spełnienia świadczenia 4. Zmiana terminu zakończenia przedmiotu umowy, może nastąpić w następujących przypadkach:"
+   },
+   {
+    "section": "7.5",
+    "label": "Zamawiający uwzględnił aspekty społeczne, środowiskowe, innowacyjne lub etykiety związane z realizacją zamówienia",
+    "value": "Nie"
+   },
+   {
+    "section": "8.1",
+    "label": "Termin składania ofert",
+    "value": "2025-03-03 12:00"
+   },
+   {
+    "section": "8.2",
+    "label": "Miejsce składania ofert",
+    "value": "https://platformazakupowa.pl/transakcja/1060050"
+   },
+   {
+    "section": "8.3",
+    "label": "Termin otwarcia ofert",
+    "value": "2025-03-03 12:15"
+   },
+   {
+    "section": "8.4",
+    "label": "Termin związania ofertą",
+    "value": "do 2025-04-08"
+   },
+   {
+    "section": "8.5",
+    "label": "Zamawiający przewiduje wybór najkorzystniejszej oferty z możliwością negocjacji",
+    "value": "Tak"
+   }
+  ]
+ }
+}
