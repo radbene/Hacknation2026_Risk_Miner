@@ -81,8 +81,25 @@ def _project_filter(t: str, model: type, project_id: uuid.UUID):
     return None
 
 
+def _tier_filter(t: str, model: type, tier: str | None):
+    """Default queue = deep tier: auto-tier rows (harvested from BZP by OCID) are records, not proposals to review."""
+    if not tier or tier == "all":
+        return None
+    cols = model.__table__.columns
+    if t == "project" or "tier" in cols:
+        return model.tier == tier
+    tier_projects = select(Project.id).where(Project.tier == tier)
+    if "project_id" in cols:
+        return or_(model.project_id.in_(tier_projects), model.project_id.is_(None)) if t != "project_procedure" \
+            else model.project_id.in_(tier_projects)
+    if "procedure_id" in cols:
+        return model.procedure_id.in_(select(Procedure.id).where(Procedure.tier == tier))
+    return None
+
+
 def queue(session: Session, *, object_type: str | None = None, project_id: uuid.UUID | None = None,
-          status: str = "proposed", offset: int = 0, limit: int = 50) -> tuple[list[dict[str, Any]], int]:
+          status: str = "proposed", offset: int = 0, limit: int = 50,
+          tier: str | None = "deep") -> tuple[list[dict[str, Any]], int]:
     types = [object_type] if object_type else list(models.REVIEWABLE)
     rows: list[tuple[str, Any]] = []
     total = 0
@@ -98,6 +115,8 @@ def queue(session: Session, *, object_type: str | None = None, project_id: uuid.
             if f is None:
                 continue
             q = q.where(f)
+        elif (tf := _tier_filter(t, model, tier)) is not None:
+            q = q.where(tf)
         total += session.execute(select(func.count()).select_from(q.subquery())).scalar_one()
         q = q.order_by(model.proposal.is_(None), func.coalesce(model.confidence, 0.5), model.created_at.desc())
         rows += [(t, o) for o in session.execute(q.limit(offset + limit)).scalars()]
@@ -150,11 +169,13 @@ def _is_uuid(v: Any) -> bool:
         return False
 
 
-def counts(session: Session) -> dict[str, int]:
+def counts(session: Session, tier: str | None = "deep") -> dict[str, int]:
     """Pending (proposed or with proposal) per object type – for the dashboard badge."""
     out = {}
     for t, name in models.REVIEWABLE.items():
         m = getattr(models, name)
-        out[t] = session.execute(select(func.count()).select_from(m).where(
-            or_(m.status == ReviewStatus.proposed.value, m.proposal.is_not(None)))).scalar_one()
+        q = select(func.count()).select_from(m).where(or_(m.status == ReviewStatus.proposed.value, m.proposal.is_not(None)))
+        if (tf := _tier_filter(t, m, tier)) is not None:
+            q = q.where(tf)
+        out[t] = session.execute(q).scalar_one()
     return out

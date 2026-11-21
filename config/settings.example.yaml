@@ -19,8 +19,9 @@ upload_dir: data/uploads
 user_agent: "riskminer-hacknation/0.1 (+https://github.com/hacknation-2026-solutions/risk-miner)"
 licence: Apache-2.0
 data_processing_note: >-
-  Baza (Postgres), pliki i embeddingi przetwarzane na serwerze w UE (Hetzner, DE/FI).
-  Wywołania LLM wg profilu – zob. data_location; domyślny profil demonstracyjny: non_eu (Anthropic API).
+  Baza (Postgres), pliki i dokumenty przetwarzane na naszym serwerze. Wywołania LLM wg profilu – zob. data_location;
+  domyślnie model lokalny Bielik 11B (Ollama na naszym serwerze, dane nie opuszczają serwera); Claude (poza UE)
+  tylko jako zapas, gdy skonfigurowano klucz API, a model lokalny jest niedostępny.
 
 connectors:
   bzp:

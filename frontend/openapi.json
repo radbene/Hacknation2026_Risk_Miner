@@ -3248,7 +3248,7 @@
      "review"
     ],
     "summary": "Review Queue",
-    "description": "Proposed-first, uncertain items on top (status: proposed | approved | edited | rejected | all).",
+    "description": "Proposed-first, uncertain items on top (status: proposed | approved | edited | rejected | all).\ntier: deep (default – the expert's queue) | auto | all.",
     "operationId": "review_queue_api_review_queue_get",
     "parameters": [
      {
@@ -3310,6 +3310,16 @@
       }
      },
      {
+      "name": "tier",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "deep",
+       "title": "Tier"
+      }
+     },
+     {
       "name": "offset",
       "in": "query",
       "required": false,
@@ -3362,17 +3372,39 @@
     "summary": "Review Counts",
     "description": "Pending items per object type (badge in navigation).",
     "operationId": "review_counts_api_review_counts_get",
+    "parameters": [
+     {
+      "name": "tier",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "deep",
+       "title": "Tier"
+      }
+     }
+    ],
     "responses": {
      "200": {
       "description": "Successful Response",
       "content": {
        "application/json": {
         "schema": {
+         "type": "object",
          "additionalProperties": {
           "type": "integer"
          },
-         "type": "object",
          "title": "Response Review Counts Api Review Counts Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
         }
        }
       }

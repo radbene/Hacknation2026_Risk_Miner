@@ -29,7 +29,8 @@ def predicted_notices(session: Session) -> dict[str, dict[str, dict[str, Any]]]:
     """{rm_code: {object_id: {method, confidence, status, procedure_id}}}"""
     out: dict[str, dict[str, dict[str, Any]]] = {}
     rows = session.execute(select(ProjectProcedure, Project).join(Project, Project.id == ProjectProcedure.project_id)
-                           .where(ProjectProcedure.status != ReviewStatus.rejected.value)).all()
+                           .where(ProjectProcedure.status != ReviewStatus.rejected.value,
+                                  Project.tier == "deep")).all()  # the gold set covers the deep tier only
     for link, proj in rows:
         notices = session.execute(select(Notice).where(Notice.procedure_id == link.procedure_id)).scalars().all()
         allowed: set | None = None

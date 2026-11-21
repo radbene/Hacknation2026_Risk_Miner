@@ -7,7 +7,7 @@ import { Badge, Card, CardContent, CardHeader, QueryState } from '@/components/u
 import { fmtDateTime } from '@/lib/utils'
 
 const COUNT_PL: Record<string, string> = {
-  projects: 'Projekty', procedures: 'Postępowania', notices: 'Ogłoszenia BZP', contracts: 'Umowy', changes: 'Zmiany umów', contract_changes: 'Zmiany umów',
+  projects: 'Projekty', procedures: 'Postępowania', links: 'Powiązania', project_procedure: 'Powiązania', notices: 'Ogłoszenia BZP', contracts: 'Umowy', changes: 'Zmiany umów', contract_changes: 'Zmiany umów',
   events: 'Zdarzenia', pending_review: 'Do decyzji eksperta', analyses: 'Analizy', documents: 'Dokumenty', evidence: 'Dowody (źródła)', lessons: 'Lekcje',
   op_log: 'Zapytania do źródeł', data_issues: 'Braki danych',
 }

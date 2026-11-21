@@ -847,6 +847,7 @@ export interface paths {
         /**
          * Review Queue
          * @description Proposed-first, uncertain items on top (status: proposed | approved | edited | rejected | all).
+         *     tier: deep (default – the expert's queue) | auto | all.
          */
         get: operations["review_queue_api_review_queue_get"];
         put?: never;
@@ -5326,6 +5327,7 @@ export interface operations {
                 object_type?: ("project" | "project_procedure" | "contract" | "contract_change" | "fact" | "document" | "risk_category" | "lesson" | "clause" | "event" | "data_issue" | "analysis" | "analysis_item") | null;
                 project_id?: string | null;
                 status?: string;
+                tier?: string;
                 offset?: number;
                 limit?: number;
             };
@@ -5357,7 +5359,9 @@ export interface operations {
     };
     review_counts_api_review_counts_get: {
         parameters: {
-            query?: never;
+            query?: {
+                tier?: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -5373,6 +5377,15 @@ export interface operations {
                     "application/json": {
                         [key: string]: number;
                     };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

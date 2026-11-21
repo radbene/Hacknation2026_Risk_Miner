@@ -34,17 +34,18 @@ def _err(e: audit.ReviewError) -> HTTPException:
 
 @router.get("/review/queue", response_model=Page[QueueItem])
 def review_queue(object_type: ObjectType | None = None, project_id: uuid.UUID | None = None,
-                 status: str = "proposed", offset: int = 0, limit: int = 50, db: Session = DB):
-    """Proposed-first, uncertain items on top (status: proposed | approved | edited | rejected | all)."""
+                 status: str = "proposed", tier: str = "deep", offset: int = 0, limit: int = 50, db: Session = DB):
+    """Proposed-first, uncertain items on top (status: proposed | approved | edited | rejected | all).
+    tier: deep (default – the expert's queue) | auto | all."""
     items, total = rq.queue(db, object_type=object_type, project_id=project_id, status=status,
-                            offset=offset, limit=min(limit, 500))
+                            offset=offset, limit=min(limit, 500), tier=tier)
     return Page(items=items, total=total, offset=offset, limit=limit)
 
 
 @router.get("/review/counts", response_model=dict[str, int])
-def review_counts(db: Session = DB):
+def review_counts(tier: str = "deep", db: Session = DB):
     """Pending items per object type (badge in navigation)."""
-    return rq.counts(db)
+    return rq.counts(db, tier)
 
 
 @router.post("/review/bulk-confirm", response_model=BulkResult)
