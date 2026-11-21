@@ -68,8 +68,17 @@ function KnowledgeInner() {
     <div>
       <PageHeader title="Wiedza ekspercka"
         actions={<Button variant="outline" loading={reimport.isPending} onClick={() => reimport.mutate()} title="Tabele z katalogu knowledge/, np. po imporcie nowego dokumentu eksperckiego"><Upload size={14} aria-hidden />Wczytaj z plików</Button>} />
-      <Intro can={['zmieniać wartości, dodawać i usuwać wiersze; każdą zmianę cofniesz przyciskiem „Cofnij”', 'zapisać zmiany jako nową wersję; dopiero wtedy obowiązują, a wyjście bez zapisu je porzuca', 'przywrócić poprzednią wersję']}>
-        Wiedza, której system używa w każdej analizie: katalog ryzyk, podsektory, listy kontrolne, zapisy umowne, reguły rozpoznawania zdarzeń i wagi podobieństwa. Część tabel pochodzi z materiałów eksperckich MFiPR, część to propozycje zespołu do zatwierdzenia. Nowy sektor to nowy zestaw tabel, bez zmian w programie.
+      <Intro title="Do czego służy wiedza ekspercka"
+        can={['zmieniać wartości, dodawać i usuwać wiersze; każdą zmianę cofniesz przyciskiem „Cofnij”', 'zapisać zmiany jako nową wersję; dopiero wtedy obowiązują, a wyjście bez zapisu je porzuca', 'przywrócić poprzednią wersję']}>
+        <p>To zasady, według których system ocenia inwestycje. Program ich nie zgaduje: odczytuje je z tych tabel, więc zmiana tutaj zmienia wyniki bez zmian w kodzie. Na przykład:</p>
+        <ul className="mt-1 list-disc space-y-0.5 pl-5">
+          <li><b>Katalog ryzyk R01–R15</b>: kategorie, które dostaje każde zdarzenie i każda czerwona flaga.</li>
+          <li><b>Sygnały ryzyka</b>: słowa, po których system rozpoznaje przyczynę zmiany umowy, np. „służebność” to R03.</li>
+          <li><b>Lista kontrolna</b>: punkty, których brak w opisie nowej inwestycji daje flagę „brak informacji”.</li>
+          <li><b>Klauzule umowne</b>: zapisy, które analiza proponuje dla wykrytych ryzyk.</li>
+          <li><b>Wagi podobieństwa i progi</b>: jak system dobiera podobne inwestycje i od ilu przypadków liczy zakresy.</li>
+        </ul>
+        <p className="mt-1">Część tabel pochodzi z materiałów eksperckich MFiPR, część to propozycje zespołu do Twojej weryfikacji. Zapisana zmiana działa w kolejnych analizach i przeliczeniach; każda wersja zostaje w historii. Nowy sektor, np. drogi, to nowy zestaw takich tabel.</p>
       </Intro>
       <QueryState q={tables} empty={(t) => t.length === 0}>{(ts) => {
         const cur = s.table ?? 'risks'
@@ -105,6 +114,7 @@ function TableEditor({ name }: { name: string }) {
   const [filter, setFilter] = useState('')
   const [save, setSave] = useState(false)
   const [versions, setVersions] = useState(false)
+  const [fresh, setFresh] = useState<string | null>(null)
   useEffect(() => { if (t.data) { setHist([{ rows: withKeys(t.data.rows as Record<string, unknown>[]), note: 'wersja zapisana' }]); setIdx(0) } }, [t.data])
   const rows = hist[idx]?.rows ?? []
   const dirty = idx > 0
@@ -136,7 +146,11 @@ function TableEditor({ name }: { name: string }) {
         <div className="sticky top-0 z-10 flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-white/95 p-2 backdrop-blur">
           <Button size="sm" variant="outline" disabled={idx === 0} onClick={() => setIdx((i) => i - 1)} title={hist[idx]?.note ? `Cofnij: ${hist[idx].note}` : 'Cofnij'}><Undo2 size={14} />Cofnij</Button>
           <Button size="sm" variant="outline" disabled={idx >= hist.length - 1} onClick={() => setIdx((i) => i + 1)}><Redo2 size={14} />Ponów</Button>
-          <Button size="sm" variant="outline" onClick={() => push([...rows, { _k: `r${++seq}` }], 'dodano wiersz')}><Plus size={14} />Dodaj wiersz</Button>
+          <Button size="sm" variant="outline" onClick={() => {
+            const k = `r${++seq}`
+            setFilter(''); setFresh(k); push([{ _k: k }, ...rows], 'dodano wiersz')
+            requestAnimationFrame(() => document.getElementById(`${k}-${cols[0]?.key}`)?.focus())
+          }}><Plus size={14} aria-hidden />Dodaj wiersz</Button>
           <label className="relative ml-auto"><span className="sr-only">Szukaj w tabeli</span><Search size={13} className="absolute left-2 top-2 text-slate-400" />
             <Input value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Szukaj w tabeli" className="h-8 w-48 pl-7 text-xs" /></label>
           {dirty ? <Badge variant="warning">{idx} {idx === 1 ? 'niezapisana zmiana' : 'niezapisanych zmian'}</Badge> : <Badge variant="success">bez zmian</Badge>}
@@ -144,9 +158,9 @@ function TableEditor({ name }: { name: string }) {
         </div>
         {dirty && <p className="text-xs text-slate-500">Ostatnia zmiana: {hist[idx]?.note}</p>}
         <div className="space-y-2">{shown.map(({ r, i }) => (
-          <Card key={r._k} className="p-3">
+          <Card key={r._k} className={cn('p-3', r._k === fresh && 'border-brand ring-1 ring-brand')}>
             <div className="mb-2 flex items-center justify-between gap-2">
-              <span className="text-sm font-semibold">{titleKey && r[titleKey] != null ? String(r[titleKey]) : `Wiersz ${i + 1}`}</span>
+              <span className="text-sm font-semibold">{titleKey && r[titleKey] != null && r[titleKey] !== '' ? String(r[titleKey]) : r._k === fresh ? 'Nowy wiersz' : `Wiersz ${i + 1}`}</span>
               <button aria-label={`Usuń: ${titleKey && r[titleKey] ? String(r[titleKey]) : `wiersz ${i + 1}`}`} className="cursor-pointer rounded p-1 text-slate-400 hover:bg-rose-50 hover:text-rose-600"
                 onClick={() => push(rows.filter((x) => x._k !== r._k), `usunięto „${titleKey && r[titleKey] ? String(r[titleKey]).slice(0, 40) : `wiersz ${i + 1}`}”`)}><Trash2 size={15} /></button>
             </div>
