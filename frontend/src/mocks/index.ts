@@ -3,6 +3,8 @@ import type { Schemas } from '@/api/client'
 import { mockProjectItems } from './projects'
 
 export * from './cases'
+export * from './documents'
+export * from './jobs'
 export * from './evidence'
 export * from './projects'
 export * from './store'
