@@ -1,0 +1,5 @@
+# Sector stub (P2): becomes active once its tables (risks.yaml, subsector_rules.yaml …) are added here.
+code: drogi
+name: Drogi
+active: false
+cpv_prefixes: ["45233"]

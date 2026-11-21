@@ -97,7 +97,7 @@ llm:
       extra: { vertexai: true, project: "", location: europe-west4 }
     local_bielik:
       provider: openai       # any OpenAI-compatible endpoint
-      model: SpeakLeash/bielik-11b-v2.3-instruct:Q4_K_M
+      model: SpeakLeash/bielik-11b-v3.0-instruct:Q4_K_M
       base_url: http://localhost:11434/v1
       api_key_env: OLLAMA_API_KEY
       data_location: local

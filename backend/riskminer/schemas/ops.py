@@ -57,6 +57,10 @@ class LLMProfileOut(BaseModel):
     data_location: str
     has_key: bool
     effort: str | None = None
+    available: bool = True  # can be called live now (key/model/endpoint configured)
+    unavailable_reason: str | None = None
+    max_tokens: int | None = None
+    price_known: bool = False
 
 
 class LLMRoutingOut(BaseModel):
@@ -64,11 +68,36 @@ class LLMRoutingOut(BaseModel):
     profiles: list[LLMProfileOut]
     tasks: dict[str, list[str]]
     active_data_locations: list[str]  # for the banner
+    default: list[str] = Field(default_factory=list)
+    data_location_labels: dict[str, str] = Field(default_factory=dict)  # local → "lokalnie (nasz serwer)" ...
+    task_locations: dict[str, str] = Field(default_factory=dict)  # task → data location of its first profile
+    overridden: bool = False  # routing changed in the UI (DB) vs settings.yaml
+    data_processing_note: str | None = None
+    version: int | None = None
+    updated_by: str | None = None
 
 
 class LLMRoutingIn(BaseModel):
     mode: str | None = None
     tasks: dict[str, list[str]] | None = None
+    default: list[str] | None = None
+    # profile field overrides or new profiles (no secrets: only api_key_env names the variable)
+    profiles: dict[str, dict[str, Any]] | None = None
+    comment: str | None = None
+
+
+class LLMTestIn(BaseModel):
+    profile: str
+    model: str | None = None
+
+
+class SandboxStatus(BaseModel):
+    database: str
+    golden: str
+    golden_exists: bool
+    golden_size_mb: float | None = None
+    golden_created_at: str | None = None
+    demo_mode: bool
 
 
 class LicenceOut(BaseModel):

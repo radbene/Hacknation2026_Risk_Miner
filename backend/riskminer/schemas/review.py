@@ -29,7 +29,8 @@ class QueueItem(BaseModel):
 
 
 class ReviewActionIn(BaseModel):
-    action: Literal["accept", "edit", "reject", "exemplary", "unexemplary", "reopen"]
+    action: Literal["accept", "edit", "reject", "exemplary", "unexemplary", "reopen", "accept_proposal",
+                    "dismiss_proposal"]
     changes: dict[str, Any] | None = None  # for edit
     comment: str | None = None
     accept_proposal: bool = False  # take the pending rerun proposal
@@ -40,6 +41,17 @@ class BulkConfirmIn(BaseModel):
     ids: list[uuid.UUID] | None = None
     min_confidence: float | None = 1.0  # e.g. confirm all key-based links with confidence 1.0
     project_id: uuid.UUID | None = None
+    method: str | None = None  # e.g. only key-based links (kpo_ref / notice_no / ocid)
+    comment: str | None = None
+
+
+class RelinkIn(BaseModel):
+    """Expert relink: a candidate procedure id, or an OCID / BZP notice number (fetched later if unknown)."""
+
+    procedure_id: uuid.UUID | None = None
+    ocid: str | None = None
+    notice_number: str | None = None
+    part_no: int | None = None
     comment: str | None = None
 
 
