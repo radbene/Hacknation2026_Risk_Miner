@@ -489,92 +489,6 @@
     }
    }
   },
-  "/api/projects/{project_id}/timeline": {
-   "get": {
-    "tags": [
-     "cases"
-    ],
-    "summary": "Project Timeline",
-    "operationId": "project_timeline_api_projects__project_id__timeline_get",
-    "parameters": [
-     {
-      "name": "project_id",
-      "in": "path",
-      "required": true,
-      "schema": {
-       "type": "string",
-       "format": "uuid",
-       "title": "Project Id"
-      }
-     }
-    ],
-    "responses": {
-     "200": {
-      "description": "Successful Response",
-      "content": {
-       "application/json": {
-        "schema": {
-         "$ref": "#/components/schemas/TimelineOut"
-        }
-       }
-      }
-     },
-     "422": {
-      "description": "Validation Error",
-      "content": {
-       "application/json": {
-        "schema": {
-         "$ref": "#/components/schemas/HTTPValidationError"
-        }
-       }
-      }
-     }
-    }
-   }
-  },
-  "/api/projects/{project_id}/graph": {
-   "get": {
-    "tags": [
-     "cases"
-    ],
-    "summary": "Project Graph",
-    "operationId": "project_graph_api_projects__project_id__graph_get",
-    "parameters": [
-     {
-      "name": "project_id",
-      "in": "path",
-      "required": true,
-      "schema": {
-       "type": "string",
-       "format": "uuid",
-       "title": "Project Id"
-      }
-     }
-    ],
-    "responses": {
-     "200": {
-      "description": "Successful Response",
-      "content": {
-       "application/json": {
-        "schema": {
-         "$ref": "#/components/schemas/GraphOut"
-        }
-       }
-      }
-     },
-     "422": {
-      "description": "Validation Error",
-      "content": {
-       "application/json": {
-        "schema": {
-         "$ref": "#/components/schemas/HTTPValidationError"
-        }
-       }
-      }
-     }
-    }
-   }
-  },
   "/api/projects/{project_id}/procedures": {
    "get": {
     "tags": [
@@ -699,6 +613,92 @@
           "$ref": "#/components/schemas/NoticeOut"
          },
          "title": "Response Project Notices Api Projects  Project Id  Notices Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/projects/{project_id}/timeline": {
+   "get": {
+    "tags": [
+     "cases"
+    ],
+    "summary": "Project Timeline",
+    "operationId": "project_timeline_api_projects__project_id__timeline_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/TimelineOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/projects/{project_id}/graph": {
+   "get": {
+    "tags": [
+     "cases"
+    ],
+    "summary": "Project Graph",
+    "operationId": "project_graph_api_projects__project_id__graph_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/GraphOut"
         }
        }
       }
@@ -1312,6 +1312,7 @@
      "links"
     ],
     "summary": "Link Candidates",
+    "description": "All scored candidates (buyer's procedures) with components – fresh scoring, nothing written.",
     "operationId": "link_candidates_api_projects__project_id__candidates_get",
     "parameters": [
      {
@@ -1410,7 +1411,7 @@
      "content": {
       "application/json": {
        "schema": {
-        "$ref": "#/components/schemas/RelinkIn"
+        "$ref": "#/components/schemas/riskminer__schemas__cases__RelinkIn"
        }
       }
      }
@@ -1896,6 +1897,7 @@
      "events"
     ],
     "summary": "Reanalyze Project",
+    "description": "Rerun rules (+ completeness) for one project and diff against the previous events.",
     "operationId": "reanalyze_project_api_projects__project_id__reanalyze_post",
     "parameters": [
      {
@@ -3199,6 +3201,23 @@
        ],
        "title": "Status"
       }
+     },
+     {
+      "name": "tier",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": "deep",
+       "title": "Tier"
+      }
      }
     ],
     "responses": {
@@ -3229,7 +3248,7 @@
      "review"
     ],
     "summary": "Review Queue",
-    "description": "Proposed-first, uncertain items on top.",
+    "description": "Proposed-first, uncertain items on top (status: proposed | approved | edited | rejected | all).",
     "operationId": "review_queue_api_review_queue_get",
     "parameters": [
      {
@@ -3318,6 +3337,193 @@
        "application/json": {
         "schema": {
          "$ref": "#/components/schemas/Page_QueueItem_"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/review/counts": {
+   "get": {
+    "tags": [
+     "review"
+    ],
+    "summary": "Review Counts",
+    "description": "Pending items per object type (badge in navigation).",
+    "operationId": "review_counts_api_review_counts_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": {
+          "type": "integer"
+         },
+         "type": "object",
+         "title": "Response Review Counts Api Review Counts Get"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/review/bulk-confirm": {
+   "post": {
+    "tags": [
+     "review"
+    ],
+    "summary": "Bulk Confirm",
+    "operationId": "bulk_confirm_api_review_bulk_confirm_post",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "name": "x-user",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-User"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/BulkConfirmIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BulkResult"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/review/project_procedure/{object_id}/relink": {
+   "post": {
+    "tags": [
+     "review"
+    ],
+    "summary": "Relink",
+    "description": "Replace a link: pick a candidate (procedure_id) or give an OCID / notice number (fetched by S1 later).\nStored as a link_override rule that survives rebuilds.",
+    "operationId": "relink_api_review_project_procedure__object_id__relink_post",
+    "parameters": [
+     {
+      "name": "object_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Object Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "name": "x-user",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-User"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/riskminer__schemas__review__RelinkIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ReviewOut"
         }
        }
       }
@@ -3444,64 +3650,61 @@
     }
    }
   },
-  "/api/review/bulk-confirm": {
-   "post": {
+  "/api/review/{object_type}/{object_id}/fields": {
+   "get": {
     "tags": [
      "review"
     ],
-    "summary": "Bulk Confirm",
-    "operationId": "bulk_confirm_api_review_bulk_confirm_post",
+    "summary": "Editable Fields",
+    "description": "Fields the expert may edit on this object type (UI edit form).",
+    "operationId": "editable_fields_api_review__object_type___object_id__fields_get",
     "parameters": [
      {
-      "name": "authorization",
-      "in": "header",
-      "required": false,
+      "name": "object_type",
+      "in": "path",
+      "required": true,
       "schema": {
-       "anyOf": [
-        {
-         "type": "string"
-        },
-        {
-         "type": "null"
-        }
+       "enum": [
+        "project",
+        "project_procedure",
+        "contract",
+        "contract_change",
+        "fact",
+        "document",
+        "risk_category",
+        "lesson",
+        "clause",
+        "event",
+        "data_issue",
+        "analysis",
+        "analysis_item"
        ],
-       "title": "Authorization"
+       "type": "string",
+       "title": "Object Type"
       }
      },
      {
-      "name": "x-user",
-      "in": "header",
-      "required": false,
+      "name": "object_id",
+      "in": "path",
+      "required": true,
       "schema": {
-       "anyOf": [
-        {
-         "type": "string"
-        },
-        {
-         "type": "null"
-        }
-       ],
-       "title": "X-User"
+       "type": "string",
+       "format": "uuid",
+       "title": "Object Id"
       }
      }
     ],
-    "requestBody": {
-     "required": true,
-     "content": {
-      "application/json": {
-       "schema": {
-        "$ref": "#/components/schemas/BulkConfirmIn"
-       }
-      }
-     }
-    },
     "responses": {
      "200": {
       "description": "Successful Response",
       "content": {
        "application/json": {
         "schema": {
-         "$ref": "#/components/schemas/BulkResult"
+         "type": "array",
+         "items": {
+          "type": "string"
+         },
+         "title": "Response Editable Fields Api Review  Object Type   Object Id  Fields Get"
         }
        }
       }
@@ -3644,6 +3847,7 @@
      "knowledge"
     ],
     "summary": "Sectors",
+    "description": "Sectors = folders under knowledge/ (+ their DB profile). A new sector is just new files.",
     "operationId": "sectors_api_knowledge_sectors_get",
     "responses": {
      "200": {
@@ -3780,7 +3984,7 @@
      "knowledge"
     ],
     "summary": "Save Table",
-    "description": "Creates a new version; old ones are kept.",
+    "description": "Creates a new version (old ones are kept); every save is in the history.",
     "operationId": "save_table_api_knowledge__sector__tables__name__put",
     "parameters": [
      {
@@ -3923,6 +4127,99 @@
     }
    }
   },
+  "/api/knowledge/{sector}/tables/{name}/restore/{version}": {
+   "post": {
+    "tags": [
+     "knowledge"
+    ],
+    "summary": "Restore Version",
+    "description": "Roll back = copy an old version as the new current one (history stays linear).",
+    "operationId": "restore_version_api_knowledge__sector__tables__name__restore__version__post",
+    "parameters": [
+     {
+      "name": "sector",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Sector"
+      }
+     },
+     {
+      "name": "name",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Name"
+      }
+     },
+     {
+      "name": "version",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Version"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "name": "x-user",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-User"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/KnowledgeTableOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/api/knowledge/{sector}/import": {
    "post": {
     "tags": [
@@ -4037,6 +4334,22 @@
        ],
        "title": "Status"
       }
+     },
+     {
+      "name": "sector",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Sector"
+      }
      }
     ],
     "responses": {
@@ -4073,6 +4386,7 @@
      "settings"
     ],
     "summary": "Get Llm Routing",
+    "description": "Profiles, per-task fallback order and the active data locations (banner).",
     "operationId": "get_llm_routing_api_settings_llm_get",
     "responses": {
      "200": {
@@ -4092,6 +4406,7 @@
      "settings"
     ],
     "summary": "Put Llm Routing",
+    "description": "Persist routing in the DB (overrides config/settings.yaml); every change is versioned and in the history.",
     "operationId": "put_llm_routing_api_settings_llm_put",
     "parameters": [
      {
@@ -4144,6 +4459,146 @@
        "application/json": {
         "schema": {
          "$ref": "#/components/schemas/LLMRoutingOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "settings"
+    ],
+    "summary": "Reset Llm Routing",
+    "description": "Drop the UI override – back to config/settings.yaml.",
+    "operationId": "reset_llm_routing_api_settings_llm_delete",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "name": "x-user",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-User"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LLMRoutingOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/settings/llm/test": {
+   "post": {
+    "tags": [
+     "settings"
+    ],
+    "summary": "Test Llm Profile",
+    "description": "'Testuj połączenie': one tiny live call through a profile, run as a job (local models can take a minute).\nPoll GET /api/jobs/{id}; result = {ok, latency_ms, provider, model, data_location, sample | error}.",
+    "operationId": "test_llm_profile_api_settings_llm_test_post",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "name": "x-user",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-User"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/LLMTestIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/JobOut"
         }
        }
       }
@@ -4267,13 +4722,132 @@
     }
    }
   },
+  "/api/auth/users": {
+   "get": {
+    "tags": [
+     "settings"
+    ],
+    "summary": "List Users",
+    "operationId": "list_users_api_auth_users_get",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "name": "x-user",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-User"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/UserOut"
+         },
+         "title": "Response List Users Api Auth Users Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/auth/demo-users": {
+   "get": {
+    "tags": [
+     "settings"
+    ],
+    "summary": "Demo Users",
+    "description": "Demo accounts for the login screen (names and roles only – the password is in the jury instructions).",
+    "operationId": "demo_users_api_auth_demo_users_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "additionalProperties": {
+           "type": "string"
+          },
+          "type": "object"
+         },
+         "type": "array",
+         "title": "Response Demo Users Api Auth Demo Users Get"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/admin/demo-status": {
+   "get": {
+    "tags": [
+     "settings"
+    ],
+    "summary": "Demo Status",
+    "operationId": "demo_status_api_admin_demo_status_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/SandboxStatus"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/api/admin/reset-demo": {
    "post": {
     "tags": [
      "settings"
     ],
     "summary": "Reset Demo",
-    "description": "'Przywróć stan demo' – restore the golden DB snapshot for the juror sandbox.",
+    "description": "'Przywróć stan demo' – restore the golden DB snapshot for the juror sandbox (see review/sandbox.py).",
     "operationId": "reset_demo_api_admin_reset_demo_post",
     "parameters": [
      {
@@ -4396,6 +4970,49 @@
       }
      },
      {
+      "name": "operation",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Operation"
+      }
+     },
+     {
+      "name": "errors_only",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "boolean",
+       "default": false,
+       "title": "Errors Only"
+      }
+     },
+     {
+      "name": "since",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "date-time"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Since"
+      }
+     },
+     {
       "name": "offset",
       "in": "query",
       "required": false,
@@ -4472,17 +5089,46 @@
     ],
     "summary": "Llm Usage",
     "operationId": "llm_usage_api_ops_llm_usage_get",
+    "parameters": [
+     {
+      "name": "since",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "date-time"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Since"
+      }
+     }
+    ],
     "responses": {
      "200": {
       "description": "Successful Response",
       "content": {
        "application/json": {
         "schema": {
+         "type": "array",
          "items": {
           "$ref": "#/components/schemas/LLMUsageRow"
          },
-         "type": "array",
          "title": "Response Llm Usage Api Ops Llm Usage Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
         }
        }
       }
@@ -4497,17 +5143,45 @@
     ],
     "summary": "Licences",
     "operationId": "licences_api_ops_licences_get",
+    "parameters": [
+     {
+      "name": "kind",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Kind"
+      }
+     }
+    ],
     "responses": {
      "200": {
       "description": "Successful Response",
       "content": {
        "application/json": {
         "schema": {
+         "type": "array",
          "items": {
           "$ref": "#/components/schemas/LicenceOut"
          },
-         "type": "array",
          "title": "Response Licences Api Ops Licences Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
         }
        }
       }
@@ -4554,6 +5228,49 @@
        "default": false,
        "title": "Unread Only"
       }
+     },
+     {
+      "name": "kind",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Kind"
+      }
+     },
+     {
+      "name": "project_id",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "uuid"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "default": 200,
+       "title": "Limit"
+      }
      }
     ],
     "responses": {
@@ -4567,6 +5284,91 @@
           "$ref": "#/components/schemas/AlertOut"
          },
          "title": "Response Alerts Api Alerts Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/alerts/{alert_id}/read": {
+   "post": {
+    "tags": [
+     "ops"
+    ],
+    "summary": "Mark Alert Read",
+    "operationId": "mark_alert_read_api_alerts__alert_id__read_post",
+    "parameters": [
+     {
+      "name": "alert_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Alert Id"
+      }
+     },
+     {
+      "name": "read",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "boolean",
+       "default": true,
+       "title": "Read"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "name": "x-user",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-User"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/Message"
         }
        }
       }
@@ -4665,6 +5467,7 @@
      "ops"
     ],
     "summary": "Monitor Run",
+    "description": "Replay (`as_of`) runs inline – it only reads the DB. A live check queries BZP, so it goes to the worker.",
     "operationId": "monitor_run_api_monitor_run_post",
     "parameters": [
      {
@@ -5455,6 +6258,17 @@
        }
       ],
       "title": "Project Id"
+     },
+     "method": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Method"
      },
      "comment": {
       "anyOf": [
@@ -8478,6 +9292,38 @@
        }
       ],
       "title": "Effort"
+     },
+     "available": {
+      "type": "boolean",
+      "title": "Available",
+      "default": true
+     },
+     "unavailable_reason": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unavailable Reason"
+     },
+     "max_tokens": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Max Tokens"
+     },
+     "price_known": {
+      "type": "boolean",
+      "title": "Price Known",
+      "default": false
      }
     },
     "type": "object",
@@ -8519,6 +9365,46 @@
        }
       ],
       "title": "Tasks"
+     },
+     "default": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Default"
+     },
+     "profiles": {
+      "anyOf": [
+       {
+        "additionalProperties": {
+         "additionalProperties": true,
+         "type": "object"
+        },
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Profiles"
+     },
+     "comment": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Comment"
      }
     },
     "type": "object",
@@ -8553,6 +9439,65 @@
       },
       "type": "array",
       "title": "Active Data Locations"
+     },
+     "default": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Default"
+     },
+     "data_location_labels": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Data Location Labels"
+     },
+     "task_locations": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Task Locations"
+     },
+     "overridden": {
+      "type": "boolean",
+      "title": "Overridden",
+      "default": false
+     },
+     "data_processing_note": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Data Processing Note"
+     },
+     "version": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Version"
+     },
+     "updated_by": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Updated By"
      }
     },
     "type": "object",
@@ -8563,6 +9508,30 @@
      "active_data_locations"
     ],
     "title": "LLMRoutingOut"
+   },
+   "LLMTestIn": {
+    "properties": {
+     "profile": {
+      "type": "string",
+      "title": "Profile"
+     },
+     "model": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Model"
+     }
+    },
+    "type": "object",
+    "required": [
+     "profile"
+    ],
+    "title": "LLMTestIn"
    },
    "LLMUsageRow": {
     "properties": {
@@ -11082,69 +12051,6 @@
     ],
     "title": "ReanalysisDiff"
    },
-   "RelinkIn": {
-    "properties": {
-     "procedure_id": {
-      "anyOf": [
-       {
-        "type": "string",
-        "format": "uuid"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Procedure Id"
-     },
-     "ocid": {
-      "anyOf": [
-       {
-        "type": "string"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Ocid"
-     },
-     "notice_number": {
-      "anyOf": [
-       {
-        "type": "string"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Notice Number"
-     },
-     "part_no": {
-      "anyOf": [
-       {
-        "type": "integer"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Part No"
-     },
-     "comment": {
-      "anyOf": [
-       {
-        "type": "string"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Comment"
-     }
-    },
-    "type": "object",
-    "title": "RelinkIn",
-    "description": "Pick a candidate, or give an OCID / notice number (triggers a fetch)."
-   },
    "ReviewActionIn": {
     "properties": {
      "action": {
@@ -11155,7 +12061,9 @@
        "reject",
        "exemplary",
        "unexemplary",
-       "reopen"
+       "reopen",
+       "accept_proposal",
+       "dismiss_proposal"
       ],
       "title": "Action"
      },
@@ -11428,6 +12336,56 @@
      "name"
     ],
     "title": "RiskCategoryOut"
+   },
+   "SandboxStatus": {
+    "properties": {
+     "database": {
+      "type": "string",
+      "title": "Database"
+     },
+     "golden": {
+      "type": "string",
+      "title": "Golden"
+     },
+     "golden_exists": {
+      "type": "boolean",
+      "title": "Golden Exists"
+     },
+     "golden_size_mb": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Golden Size Mb"
+     },
+     "golden_created_at": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Golden Created At"
+     },
+     "demo_mode": {
+      "type": "boolean",
+      "title": "Demo Mode"
+     }
+    },
+    "type": "object",
+    "required": [
+     "database",
+     "golden",
+     "golden_exists",
+     "demo_mode"
+    ],
+    "title": "SandboxStatus"
    },
    "SearchHit": {
     "properties": {
@@ -11771,6 +12729,132 @@
     },
     "type": "object",
     "title": "WatchIn"
+   },
+   "riskminer__schemas__cases__RelinkIn": {
+    "properties": {
+     "procedure_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Procedure Id"
+     },
+     "ocid": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Ocid"
+     },
+     "notice_number": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notice Number"
+     },
+     "part_no": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Part No"
+     },
+     "comment": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Comment"
+     }
+    },
+    "type": "object",
+    "title": "RelinkIn",
+    "description": "Pick a candidate, or give an OCID / notice number (triggers a fetch)."
+   },
+   "riskminer__schemas__review__RelinkIn": {
+    "properties": {
+     "procedure_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Procedure Id"
+     },
+     "ocid": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Ocid"
+     },
+     "notice_number": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notice Number"
+     },
+     "part_no": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Part No"
+     },
+     "comment": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Comment"
+     }
+    },
+    "type": "object",
+    "title": "RelinkIn",
+    "description": "Expert relink: a candidate procedure id, or an OCID / BZP notice number (fetched later if unknown)."
    }
   }
  }

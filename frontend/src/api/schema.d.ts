@@ -124,40 +124,6 @@ export interface paths {
         patch: operations["patch_project_api_projects__project_id__patch"];
         trace?: never;
     };
-    "/api/projects/{project_id}/timeline": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Project Timeline */
-        get: operations["project_timeline_api_projects__project_id__timeline_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/projects/{project_id}/graph": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Project Graph */
-        get: operations["project_graph_api_projects__project_id__graph_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/projects/{project_id}/procedures": {
         parameters: {
             query?: never;
@@ -201,6 +167,40 @@ export interface paths {
         };
         /** Project Notices */
         get: operations["project_notices_api_projects__project_id__notices_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/projects/{project_id}/timeline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Project Timeline */
+        get: operations["project_timeline_api_projects__project_id__timeline_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/projects/{project_id}/graph": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Project Graph */
+        get: operations["project_graph_api_projects__project_id__graph_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -375,7 +375,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Link Candidates */
+        /**
+         * Link Candidates
+         * @description All scored candidates (buyer's procedures) with components – fresh scoring, nothing written.
+         */
         get: operations["link_candidates_api_projects__project_id__candidates_get"];
         put?: never;
         post?: never;
@@ -500,7 +503,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Reanalyze Project */
+        /**
+         * Reanalyze Project
+         * @description Rerun rules (+ completeness) for one project and diff against the previous events.
+         */
         post: operations["reanalyze_project_api_projects__project_id__reanalyze_post"];
         delete?: never;
         options?: never;
@@ -840,11 +846,69 @@ export interface paths {
         };
         /**
          * Review Queue
-         * @description Proposed-first, uncertain items on top.
+         * @description Proposed-first, uncertain items on top (status: proposed | approved | edited | rejected | all).
          */
         get: operations["review_queue_api_review_queue_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/review/counts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Review Counts
+         * @description Pending items per object type (badge in navigation).
+         */
+        get: operations["review_counts_api_review_counts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/review/bulk-confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Bulk Confirm */
+        post: operations["bulk_confirm_api_review_bulk_confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/review/project_procedure/{object_id}/relink": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Relink
+         * @description Replace a link: pick a candidate (procedure_id) or give an OCID / notice number (fetched by S1 later).
+         *     Stored as a link_override rule that survives rebuilds.
+         */
+        post: operations["relink_api_review_project_procedure__object_id__relink_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -868,17 +932,20 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/review/bulk-confirm": {
+    "/api/review/{object_type}/{object_id}/fields": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /**
+         * Editable Fields
+         * @description Fields the expert may edit on this object type (UI edit form).
+         */
+        get: operations["editable_fields_api_review__object_type___object_id__fields_get"];
         put?: never;
-        /** Bulk Confirm */
-        post: operations["bulk_confirm_api_review_bulk_confirm_post"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -909,7 +976,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Sectors */
+        /**
+         * Sectors
+         * @description Sectors = folders under knowledge/ (+ their DB profile). A new sector is just new files.
+         */
         get: operations["sectors_api_knowledge_sectors_get"];
         put?: never;
         post?: never;
@@ -947,7 +1017,7 @@ export interface paths {
         get: operations["get_table_api_knowledge__sector__tables__name__get"];
         /**
          * Save Table
-         * @description Creates a new version; old ones are kept.
+         * @description Creates a new version (old ones are kept); every save is in the history.
          */
         put: operations["save_table_api_knowledge__sector__tables__name__put"];
         post?: never;
@@ -968,6 +1038,26 @@ export interface paths {
         get: operations["table_versions_api_knowledge__sector__tables__name__versions_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/knowledge/{sector}/tables/{name}/restore/{version}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Restore Version
+         * @description Roll back = copy an old version as the new current one (history stays linear).
+         */
+        post: operations["restore_version_api_knowledge__sector__tables__name__restore__version__post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1018,11 +1108,42 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get Llm Routing */
+        /**
+         * Get Llm Routing
+         * @description Profiles, per-task fallback order and the active data locations (banner).
+         */
         get: operations["get_llm_routing_api_settings_llm_get"];
-        /** Put Llm Routing */
+        /**
+         * Put Llm Routing
+         * @description Persist routing in the DB (overrides config/settings.yaml); every change is versioned and in the history.
+         */
         put: operations["put_llm_routing_api_settings_llm_put"];
         post?: never;
+        /**
+         * Reset Llm Routing
+         * @description Drop the UI override – back to config/settings.yaml.
+         */
+        delete: operations["reset_llm_routing_api_settings_llm_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/settings/llm/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Test Llm Profile
+         * @description 'Testuj połączenie': one tiny live call through a profile, run as a job (local models can take a minute).
+         *     Poll GET /api/jobs/{id}; result = {ok, latency_ms, provider, model, data_location, sample | error}.
+         */
+        post: operations["test_llm_profile_api_settings_llm_test_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1063,6 +1184,60 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/auth/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Users */
+        get: operations["list_users_api_auth_users_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth/demo-users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Demo Users
+         * @description Demo accounts for the login screen (names and roles only – the password is in the jury instructions).
+         */
+        get: operations["demo_users_api_auth_demo_users_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/demo-status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Demo Status */
+        get: operations["demo_status_api_admin_demo_status_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/reset-demo": {
         parameters: {
             query?: never;
@@ -1074,7 +1249,7 @@ export interface paths {
         put?: never;
         /**
          * Reset Demo
-         * @description 'Przywróć stan demo' – restore the golden DB snapshot for the juror sandbox.
+         * @description 'Przywróć stan demo' – restore the golden DB snapshot for the juror sandbox (see review/sandbox.py).
          */
         post: operations["reset_demo_api_admin_reset_demo_post"];
         delete?: never;
@@ -1205,6 +1380,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/alerts/{alert_id}/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Mark Alert Read */
+        post: operations["mark_alert_read_api_alerts__alert_id__read_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/monitor/watch": {
         parameters: {
             query?: never;
@@ -1231,7 +1423,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Monitor Run */
+        /**
+         * Monitor Run
+         * @description Replay (`as_of`) runs inline – it only reads the DB. A live check queries BZP, so it goes to the worker.
+         */
         post: operations["monitor_run_api_monitor_run_post"];
         delete?: never;
         options?: never;
@@ -1482,6 +1677,8 @@ export interface components {
             min_confidence: number | null;
             /** Project Id */
             project_id?: string | null;
+            /** Method */
+            method?: string | null;
             /** Comment */
             comment?: string | null;
         };
@@ -2293,6 +2490,20 @@ export interface components {
             has_key: boolean;
             /** Effort */
             effort?: string | null;
+            /**
+             * Available
+             * @default true
+             */
+            available: boolean;
+            /** Unavailable Reason */
+            unavailable_reason?: string | null;
+            /** Max Tokens */
+            max_tokens?: number | null;
+            /**
+             * Price Known
+             * @default false
+             */
+            price_known: boolean;
         };
         /** LLMRoutingIn */
         LLMRoutingIn: {
@@ -2302,6 +2513,16 @@ export interface components {
             tasks?: {
                 [key: string]: string[];
             } | null;
+            /** Default */
+            default?: string[] | null;
+            /** Profiles */
+            profiles?: {
+                [key: string]: {
+                    [key: string]: unknown;
+                };
+            } | null;
+            /** Comment */
+            comment?: string | null;
         };
         /** LLMRoutingOut */
         LLMRoutingOut: {
@@ -2315,6 +2536,34 @@ export interface components {
             };
             /** Active Data Locations */
             active_data_locations: string[];
+            /** Default */
+            default?: string[];
+            /** Data Location Labels */
+            data_location_labels?: {
+                [key: string]: string;
+            };
+            /** Task Locations */
+            task_locations?: {
+                [key: string]: string;
+            };
+            /**
+             * Overridden
+             * @default false
+             */
+            overridden: boolean;
+            /** Data Processing Note */
+            data_processing_note?: string | null;
+            /** Version */
+            version?: number | null;
+            /** Updated By */
+            updated_by?: string | null;
+        };
+        /** LLMTestIn */
+        LLMTestIn: {
+            /** Profile */
+            profile: string;
+            /** Model */
+            model?: string | null;
         };
         /** LLMUsageRow */
         LLMUsageRow: {
@@ -3135,29 +3384,13 @@ export interface components {
             /** Closed */
             closed?: components["schemas"]["EventOut"][];
         };
-        /**
-         * RelinkIn
-         * @description Pick a candidate, or give an OCID / notice number (triggers a fetch).
-         */
-        RelinkIn: {
-            /** Procedure Id */
-            procedure_id?: string | null;
-            /** Ocid */
-            ocid?: string | null;
-            /** Notice Number */
-            notice_number?: string | null;
-            /** Part No */
-            part_no?: number | null;
-            /** Comment */
-            comment?: string | null;
-        };
         /** ReviewActionIn */
         ReviewActionIn: {
             /**
              * Action
              * @enum {string}
              */
-            action: "accept" | "edit" | "reject" | "exemplary" | "unexemplary" | "reopen";
+            action: "accept" | "edit" | "reject" | "exemplary" | "unexemplary" | "reopen" | "accept_proposal" | "dismiss_proposal";
             /** Changes */
             changes?: {
                 [key: string]: unknown;
@@ -3251,6 +3484,21 @@ export interface components {
              * @default 1
              */
             version: number;
+        };
+        /** SandboxStatus */
+        SandboxStatus: {
+            /** Database */
+            database: string;
+            /** Golden */
+            golden: string;
+            /** Golden Exists */
+            golden_exists: boolean;
+            /** Golden Size Mb */
+            golden_size_mb?: number | null;
+            /** Golden Created At */
+            golden_created_at?: string | null;
+            /** Demo Mode */
+            demo_mode: boolean;
         };
         /** SearchHit */
         SearchHit: {
@@ -3367,6 +3615,38 @@ export interface components {
              * @default true
              */
             watched: boolean;
+        };
+        /**
+         * RelinkIn
+         * @description Pick a candidate, or give an OCID / notice number (triggers a fetch).
+         */
+        riskminer__schemas__cases__RelinkIn: {
+            /** Procedure Id */
+            procedure_id?: string | null;
+            /** Ocid */
+            ocid?: string | null;
+            /** Notice Number */
+            notice_number?: string | null;
+            /** Part No */
+            part_no?: number | null;
+            /** Comment */
+            comment?: string | null;
+        };
+        /**
+         * RelinkIn
+         * @description Expert relink: a candidate procedure id, or an OCID / BZP notice number (fetched later if unknown).
+         */
+        riskminer__schemas__review__RelinkIn: {
+            /** Procedure Id */
+            procedure_id?: string | null;
+            /** Ocid */
+            ocid?: string | null;
+            /** Notice Number */
+            notice_number?: string | null;
+            /** Part No */
+            part_no?: number | null;
+            /** Comment */
+            comment?: string | null;
         };
     };
     responses: never;
@@ -3630,68 +3910,6 @@ export interface operations {
             };
         };
     };
-    project_timeline_api_projects__project_id__timeline_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                project_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TimelineOut"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    project_graph_api_projects__project_id__graph_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                project_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GraphOut"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
     project_procedures_api_projects__project_id__procedures_get: {
         parameters: {
             query?: never;
@@ -3772,6 +3990,68 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["NoticeOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    project_timeline_api_projects__project_id__timeline_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TimelineOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    project_graph_api_projects__project_id__graph_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GraphOut"];
                 };
             };
             /** @description Validation Error */
@@ -4123,7 +4403,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["RelinkIn"];
+                "application/json": components["schemas"]["riskminer__schemas__cases__RelinkIn"];
             };
         };
         responses: {
@@ -5010,6 +5290,7 @@ export interface operations {
                 format?: string;
                 project_id?: string | null;
                 status?: string | null;
+                tier?: string | null;
             };
             header?: never;
             path: {
@@ -5074,6 +5355,102 @@ export interface operations {
             };
         };
     };
+    review_counts_api_review_counts_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: number;
+                    };
+                };
+            };
+        };
+    };
+    bulk_confirm_api_review_bulk_confirm_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "x-user"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkConfirmIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    relink_api_review_project_procedure__object_id__relink_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "x-user"?: string | null;
+            };
+            path: {
+                object_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["riskminer__schemas__review__RelinkIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     review_action_api_review__object_type___object_id__post: {
         parameters: {
             query?: never;
@@ -5113,21 +5490,17 @@ export interface operations {
             };
         };
     };
-    bulk_confirm_api_review_bulk_confirm_post: {
+    editable_fields_api_review__object_type___object_id__fields_get: {
         parameters: {
             query?: never;
-            header?: {
-                authorization?: string | null;
-                "x-user"?: string | null;
+            header?: never;
+            path: {
+                object_type: "project" | "project_procedure" | "contract" | "contract_change" | "fact" | "document" | "risk_category" | "lesson" | "clause" | "event" | "data_issue" | "analysis" | "analysis_item";
+                object_id: string;
             };
-            path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["BulkConfirmIn"];
-            };
-        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
             200: {
@@ -5135,7 +5508,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BulkResult"];
+                    "application/json": string[];
                 };
             };
             /** @description Validation Error */
@@ -5341,6 +5714,42 @@ export interface operations {
             };
         };
     };
+    restore_version_api_knowledge__sector__tables__name__restore__version__post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "x-user"?: string | null;
+            };
+            path: {
+                sector: string;
+                name: string;
+                version: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KnowledgeTableOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     import_knowledge_api_knowledge__sector__import_post: {
         parameters: {
             query?: never;
@@ -5380,6 +5789,7 @@ export interface operations {
             query?: {
                 risk_code?: string | null;
                 status?: string | null;
+                sector?: string | null;
             };
             header?: never;
             path?: never;
@@ -5463,6 +5873,74 @@ export interface operations {
             };
         };
     };
+    reset_llm_routing_api_settings_llm_delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "x-user"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LLMRoutingOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    test_llm_profile_api_settings_llm_test_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "x-user"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LLMTestIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     login_api_auth_login_post: {
         parameters: {
             query?: never;
@@ -5528,6 +6006,80 @@ export interface operations {
             };
         };
     };
+    list_users_api_auth_users_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "x-user"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    demo_users_api_auth_demo_users_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    }[];
+                };
+            };
+        };
+    };
+    demo_status_api_admin_demo_status_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SandboxStatus"];
+                };
+            };
+        };
+    };
     reset_demo_api_admin_reset_demo_post: {
         parameters: {
             query?: never;
@@ -5585,6 +6137,9 @@ export interface operations {
             query?: {
                 connector?: string | null;
                 job_id?: string | null;
+                operation?: string | null;
+                errors_only?: boolean;
+                since?: string | null;
                 offset?: number;
                 limit?: number;
             };
@@ -5636,7 +6191,9 @@ export interface operations {
     };
     llm_usage_api_ops_llm_usage_get: {
         parameters: {
-            query?: never;
+            query?: {
+                since?: string | null;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -5652,11 +6209,22 @@ export interface operations {
                     "application/json": components["schemas"]["LLMUsageRow"][];
                 };
             };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
         };
     };
     licences_api_ops_licences_get: {
         parameters: {
-            query?: never;
+            query?: {
+                kind?: string | null;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -5670,6 +6238,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LicenceOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -5698,6 +6275,9 @@ export interface operations {
         parameters: {
             query?: {
                 unread_only?: boolean;
+                kind?: string | null;
+                project_id?: string | null;
+                limit?: number;
             };
             header?: never;
             path?: never;
@@ -5712,6 +6292,42 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AlertOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    mark_alert_read_api_alerts__alert_id__read_post: {
+        parameters: {
+            query?: {
+                read?: boolean;
+            };
+            header?: {
+                authorization?: string | null;
+                "x-user"?: string | null;
+            };
+            path: {
+                alert_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Message"];
                 };
             };
             /** @description Validation Error */

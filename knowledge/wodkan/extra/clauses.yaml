@@ -1,0 +1,111 @@
+# Contract-clause / preventive-action catalogue per risk code (team draft – needs expert approval in "Wiedza ekspercka").
+# Loaded into the `clause` table by `riskminer knowledge load`; path B recommends them for flagged risks.
+# Legal references are to the Prawo zamówień publicznych (Pzp, Dz.U. 2019 poz. 2019 ze zm.); verify wording before use.
+sector: wodkan
+name: clauses
+rows:
+- code: K-R01
+  risk_code: R01
+  title: Jednoznaczny i kompletny opis przedmiotu zamówienia
+  trigger: Zakres opisany ogólnie, brak przedmiaru/PFU, rozbieżności między dokumentacją a opisem
+  legal_basis: art. 99 i art. 103 Pzp
+  text: Przed ogłoszeniem przeprowadzić przegląd spójności dokumentacji projektowej, STWiORB i przedmiaru (lub PFU); w SWZ określić hierarchię dokumentów na wypadek sprzeczności oraz zasady rozliczania robót zamiennych.
+  status: draft
+- code: K-R02
+  risk_code: R02
+  title: Rozpoznanie warunków gruntowych i infrastruktury istniejącej
+  trigger: Brak badań geotechnicznych, inwentaryzacji uzbrojenia, wody gruntowe w historii podobnych inwestycji
+  legal_basis: art. 455 ust. 1 pkt 1 Pzp (zmiany przewidziane w umowie)
+  text: Wykonać badania geotechniczne i inwentaryzację uzbrojenia przed wyceną; w umowie przewidzieć jasną procedurę i sposób wyceny robót wynikających z odmiennych od opisanych warunków gruntowych (klauzula przeglądowa) z limitem wartości.
+  status: draft
+- code: K-R03
+  risk_code: R03
+  title: Prawo do dysponowania nieruchomościami przed wszczęciem postępowania
+  trigger: Trasa przez działki prywatne, brak zgód właścicieli/służebności, kolizje z drogami
+  legal_basis: art. 455 ust. 1 pkt 1 Pzp
+  text: Uzyskać zgody właścicieli i ustanowić służebności przesyłu przed ogłoszeniem; w umowie przewidzieć zmianę terminu o czas oczekiwania na wejście na teren niezależne od wykonawcy, z obowiązkiem niezwłocznego zgłoszenia przeszkody.
+  status: draft
+- code: K-R04
+  risk_code: R04
+  title: Decyzje i uzgodnienia jako warunek wszczęcia
+  trigger: Brak decyzji środowiskowej, pozwolenia wodnoprawnego, uzgodnień z zarządcą drogi lub gestorami sieci
+  legal_basis: art. 455 ust. 1 pkt 1 Pzp
+  text: Ogłaszać postępowanie po uzyskaniu kluczowych decyzji; w umowie wskazać, kto odpowiada za każdą decyzję, oraz przewidzieć przesunięcie terminu o czas opóźnienia organu, jeżeli wniosek złożono kompletny i w terminie.
+  status: draft
+- code: K-R05
+  risk_code: R05
+  title: Macierz odpowiedzialności stron
+  trigger: Formuła „zaprojektuj i wybuduj”, wielu uczestników (operator, gmina, gestorzy)
+  legal_basis: art. 433 Pzp (zakazane postanowienia umowne)
+  text: Dołączyć do umowy macierz odpowiedzialności (projekt, nieruchomości, decyzje, odbiory, rozruch, eksploatacja); nie przerzucać na wykonawcę odpowiedzialności za okoliczności leżące po stronie zamawiającego.
+  status: draft
+- code: K-R06
+  risk_code: R06
+  title: Realistyczny harmonogram z buforem
+  trigger: Krótki okres realizacji przy dużej wartości, koniec robót ziemnych w okresie zimowym
+  legal_basis: art. 436 pkt 1 Pzp (termin wykonania)
+  text: Termin realizacji ustalić na podstawie czasu trwania podobnych umów (percentyl P80 z bazy doświadczeń) z rezerwą na okres zimowy; przewidzieć harmonogram rzeczowo-finansowy aktualizowany co miesiąc.
+  status: draft
+- code: K-R07
+  risk_code: R07
+  title: Rezerwa na roboty nieprzewidziane i tryb ich zlecania
+  trigger: Wysoki udział zmian umów u podobnych inwestycji, wypłata powyżej wartości umowy
+  legal_basis: art. 455 ust. 1 pkt 1 oraz ust. 2 Pzp
+  text: Zaplanować rezerwę budżetową na poziomie P80 relacji wypłaty do wartości umowy u podobnych inwestycji; w umowie opisać tryb zlecania i wyceny robót dodatkowych (protokół konieczności, ceny jednostkowe z oferty).
+  status: draft
+- code: K-R08
+  risk_code: R08
+  title: Waloryzacja i model wynagrodzenia dopasowany do niepewności
+  trigger: Umowa dłuższa niż 6 miesięcy, wynagrodzenie ryczałtowe przy niepewnym zakresie
+  legal_basis: art. 439 Pzp (obowiązkowa klauzula waloryzacyjna)
+  text: Zastosować klauzulę waloryzacyjną (wskaźnik GUS cen produkcji budowlano-montażowej, próg i limit zmiany); przy niepewnym zakresie rozważyć wynagrodzenie kosztorysowe dla części robót.
+  status: draft
+- code: K-R09
+  risk_code: R09
+  title: Mierzalne wymagania techniczne i kryteria równoważności
+  trigger: Ogólne parametry, wskazanie znaków towarowych, brak kryteriów odbioru
+  legal_basis: art. 99 ust. 5–6 Pzp
+  text: Określić parametry w sposób mierzalny i sprawdzalny przy odbiorze; przy wskazaniu produktu podać kryteria równoważności i sposób ich wykazania.
+  status: draft
+- code: K-R10
+  risk_code: R10
+  title: Procedura prób, rozruchu i odbioru
+  trigger: Stacje uzdatniania, oczyszczalnie, przepompownie – parametry technologiczne
+  legal_basis: art. 436 Pzp
+  text: Opisać w umowie program prób i rozruchu, parametry gwarantowane, sposób ich pomiaru i skutki nieosiągnięcia; odbiór końcowy uzależnić od potwierdzonych parametrów.
+  status: draft
+- code: K-R11
+  risk_code: R11
+  title: Warunki udziału proporcjonalne do przedmiotu
+  trigger: Jedna oferta w podobnych postępowaniach, odwołania do KIO
+  legal_basis: art. 112 ust. 1 Pzp
+  text: Ustalić warunki udziału proporcjonalne do zakresu; przed ogłoszeniem rozważyć dialog techniczny lub konsultacje rynkowe; rozważyć podział na części.
+  status: draft
+- code: K-R12
+  risk_code: R12
+  title: Zabezpieczenie należytego wykonania i kontrola podwykonawców
+  trigger: Wykonawcy z historią opóźnień, duży udział podwykonawstwa
+  legal_basis: art. 449–453 oraz art. 463–465 Pzp
+  text: Wymagać zabezpieczenia należytego wykonania umowy, akceptacji umów o podwykonawstwo i dowodów zapłaty podwykonawcom przed płatnością częściową.
+  status: draft
+- code: K-R13
+  risk_code: R13
+  title: Kwota na sfinansowanie urealniona względem rynku
+  trigger: Unieważnienia z art. 255 pkt 3 w podobnych postępowaniach, budżet poniżej percentyla P50 sąsiadów
+  legal_basis: art. 255 pkt 3 Pzp
+  text: Przed otwarciem ofert zweryfikować kwotę na sfinansowanie z rozkładem cen ofert w podobnych postępowaniach (brutto do brutto); zapewnić możliwość zwiększenia kwoty, aby uniknąć unieważnienia.
+  status: draft
+- code: K-R14
+  risk_code: R14
+  title: Koszty eksploatacji w kryteriach i dokumentacji
+  trigger: Urządzenia energochłonne, brak operatora na etapie przygotowania
+  legal_basis: art. 245 Pzp (koszt cyklu życia)
+  text: Uwzględnić koszt cyklu życia lub zużycie energii jako kryterium oceny ofert; uzgodnić z operatorem wymagania eksploatacyjne przed projektem.
+  status: draft
+- code: K-R15
+  risk_code: R15
+  title: Potwierdzenie efektu (przyłączenia, RLM) przed realizacją
+  trigger: Brak deklaracji przyłączenia, wskaźniki projektu (RLM, liczba przyłączy) wymagane przez KPO/FEnIKS
+  legal_basis: warunki umowy o dofinansowanie
+  text: Zebrać deklaracje przyłączenia od mieszkańców przed realizacją; w harmonogramie przewidzieć wykonanie przyłączy w okresie trwałości wskaźników.
+  status: draft
