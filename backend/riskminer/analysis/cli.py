@@ -23,8 +23,19 @@ def register(app: typer.Typer) -> None:
 
                 d = ingest_bytes(s, path.read_bytes(), path.name, uploaded_by="cli", fragments=False)
                 doc_ids = [d.id]
-            a = create(s, title=title or path.stem.replace("_", " "), text=text, features=None, document_ids=doc_ids,
-                       actor="cli", use_llm=llm)
+            name = title or path.stem.replace("_", " ")
+            from sqlalchemy import select
+
+            from riskminer.analysis.run import compute
+            from riskminer.models import Analysis
+
+            a = s.execute(select(Analysis).where(Analysis.title == name, Analysis.input_text == text,
+                                                 Analysis.created_by == "cli")).scalars().first() if text else None
+            if a is not None:  # idempotent rerun (make demo): recompute, expert decisions on items survive
+                a.params = {**(a.params or {}), "use_llm": llm}
+                compute(s, a, "cli")
+            else:
+                a = create(s, title=name, text=text, features=None, document_ids=doc_ids, actor="cli", use_llm=llm)
             sm = a.summary
             typer.echo(f"{a.id}  {a.title}: cases {sm.get('n_cases')} {sm.get('cases_by_tier')}, neighbours "
                        f"{sm.get('n_neighbours')}, P(late) {(sm.get('p_late') or {}).get('estimate')}, flags {sm.get('n_flags')} "
