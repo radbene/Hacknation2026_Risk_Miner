@@ -1,9 +1,29 @@
+# Edge proxy. DOMAIN examples:
+#   1.2.3.4.sslip.io   → automatic HTTPS (Let's Encrypt), HTTP redirects to HTTPS
+#   :80                → plain HTTP on any host name (local prod-stack test)
 {$DOMAIN} {
-	encode gzip
+	encode zstd gzip
+	request_body {
+		max_size 60MB
+	}
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Frame-Options SAMEORIGIN
+		-Server
+	}
 	handle /api/* {
-		reverse_proxy api:8040
+		reverse_proxy api:8040 {
+			transport http {
+				read_timeout 300s
+			}
+		}
 	}
 	handle {
 		reverse_proxy web:80
+	}
+	log {
+		output stdout
+		format console
 	}
 }

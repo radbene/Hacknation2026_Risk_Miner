@@ -1,0 +1,16 @@
+**/.git
+.git
+**/.venv
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+frontend/dist
+data/
+exports/
+.env
+config/settings.yaml
+**/.llm_cache
+docs/
+.claude/
+deploy/
