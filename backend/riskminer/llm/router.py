@@ -10,9 +10,10 @@ from typing import Any
 
 from pydantic import BaseModel, ValidationError
 
-from riskminer.core.config import LLMProfile, get_config
+from riskminer.core.config import LLMProfile
 from riskminer.llm import cache
 from riskminer.llm.base import LLMError, LLMResult, Usage, estimate_cost
+from riskminer.llm.routing import effective_llm, missing_credentials
 from riskminer.llm.safety import UNTRUSTED_SYSTEM_RULE
 
 log = logging.getLogger("riskminer.llm")
@@ -62,7 +63,7 @@ def _log_call(**kw: Any) -> None:
 
 
 def chain_for(task: str) -> list[tuple[str, LLMProfile]]:
-    cfg = get_config().llm
+    cfg = effective_llm()
     names = cfg.tasks.get(task) or cfg.default
     return [(n, cfg.profiles[n]) for n in names if n in cfg.profiles]
 
@@ -70,8 +71,8 @@ def chain_for(task: str) -> list[tuple[str, LLMProfile]]:
 def complete(task: str, messages: list[dict[str, Any]], schema: type[BaseModel] | None = None, *,
              system: str | None = None, prompt_version: str = "v1", untrusted: bool = True,
              max_tokens: int | None = None, profiles: list[str] | None = None) -> LLMResult:
-    cfg = get_config().llm
-    chain = [(n, cfg.profiles[n]) for n in profiles] if profiles else chain_for(task)
+    cfg = effective_llm()
+    chain = [(n, cfg.profiles[n]) for n in profiles if n in cfg.profiles] if profiles else chain_for(task)
     sys_prompt = "\n\n".join(x for x in (system, UNTRUSTED_SYSTEM_RULE if untrusted else None) if x)
     attempts: list[dict[str, Any]] = []
     schema_json = schema.model_json_schema() if schema else None
@@ -96,6 +97,10 @@ def complete(task: str, messages: list[dict[str, Any]], schema: type[BaseModel] 
             if cfg.mode == "replay":
                 attempts.append({"profile": name, "error": "replay: no cached output"})
                 continue
+        missing = missing_credentials(prof)
+        if missing:  # no key → skip quickly (cached outputs above are still served offline)
+            attempts.append({"profile": name, "error": missing})
+            continue
         t0 = time.monotonic()
         try:
             provider = _provider(prof.provider)
@@ -109,7 +114,8 @@ def complete(task: str, messages: list[dict[str, Any]], schema: type[BaseModel] 
                                       "Zwróć wyłącznie poprawny JSON zgodny ze schematem."}]
                 raw, usage2 = provider.complete(prof, system=sys_prompt, messages=repair, schema=schema,
                                                 max_tokens=max_tokens or prof.max_tokens)
-                usage = Usage(usage.tokens_in + usage2.tokens_in, usage.tokens_out + usage2.tokens_out)
+                usage = Usage(usage.tokens_in + usage2.tokens_in, usage.tokens_out + usage2.tokens_out,
+                              usage.cache_read + usage2.cache_read, usage.cache_write + usage2.cache_write)
                 data = _parse(raw, schema)
             ms = int((time.monotonic() - t0) * 1000)
             cost = estimate_cost(prof.model, usage)

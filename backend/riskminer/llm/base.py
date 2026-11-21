@@ -65,16 +65,27 @@ class Provider(Protocol):
         ...
 
 
-# USD per 1M tokens (input, output). Update when models change; unknown → 0 and flagged in usage page.
+# USD per 1M tokens (input, output), first-party list prices (Claude: claude-api skill, cached 2026-11-03).
+# Update when models change; unknown models → cost 0 and flagged "brak cennika" on the usage page.
+# Local models (Ollama/vLLM) cost 0 by definition (data_location local).
 PRICES: dict[str, tuple[float, float]] = {
-    "claude-opus-5-5": (5.0, 25.0),
-    "claude-sonnet-5-5": (3.0, 15.0),
-    "claude-haiku-5-5": (1.0, 5.0),
+    "claude-opus-5-5": (4.0, 20.0),
+    "claude-opus-5": (5.0, 25.0),
+    "claude-sonnet-5-5": (2.0, 10.0),
+    "claude-haiku-5-5": (0.10, 0.50),
+    "claude-fable-5-2": (8.0, 40.0),
 }
+CACHE_READ_FACTOR = 0.1   # Anthropic cache read ≈ 0.1× input price
+CACHE_WRITE_FACTOR = 1.25  # 5-minute cache write ≈ 1.25× input price
+
+
+def price_known(model: str | None) -> bool:
+    return (model or "") in PRICES
 
 
 def estimate_cost(model: str | None, usage: Usage) -> float:
     p = PRICES.get(model or "")
     if not p:
         return 0.0
-    return (usage.tokens_in * p[0] + usage.tokens_out * p[1]) / 1_000_000
+    inp = usage.tokens_in + usage.cache_read * CACHE_READ_FACTOR + usage.cache_write * CACHE_WRITE_FACTOR
+    return (inp * p[0] + usage.tokens_out * p[1]) / 1_000_000
