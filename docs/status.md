@@ -15,6 +15,39 @@ Updated by each session; merged by the main session at checkpoints.
 
 **Open (user)**: HackTribe task selection (by 20:00) · mentor questions (`docs/pytania_do_mentorow.md`) · API keys in `.env` · host (Hetzner) · GitHub repo (no `gh` CLI on this machine).
 
+## Checkpoint 19:00 (main session, 21.11 ~19:00)
+All six branches merged into `main` (sessions stopped at 17:48 on the usage limit; their uncommitted WIP was
+committed on their branches first). Main session wired the missing CLI/jobs/routers.
+
+**Działa (sprawdzone na bazie `riskminer`)**
+- Ścieżka A od końca do końca: `riskminer import-xlsx` → `riskminer enrich` (na żywo: 156 zapytań do lustra BZP,
+  952 ogłoszenia, 371 postępowań; zapas: kopia organizatora per NIP) → powiązania 22/22, złoty zbiór
+  P = R = 1,0 (76/76 ogłoszeń, 0 wabików) → `riskminer extract` (83 zdarzenia z reguł, kompletność, problemy danych)
+  → `riskminer links-csv` (`exports/links.csv`).
+- API ścieżki A (wcześniej 501): projekty (lista z filtrami i statusem powiązania, karta, edycja z audytem, oś czasu
+  plan vs wykonanie, graf relacji, postępowania, umowy ze zmianami, ogłoszenia z sekcjami), powiązania (lista,
+  links.csv, kandydaci z rozbiciem, ręczne przepięcie z regułą override i pobraniem ogłoszenia), import xlsx,
+  zlecenia `enrich`/`harvest`, zdarzenia (lista, edycja z audytem), problemy danych, kompletność, `extract` (zlecenie),
+  ponowna analiza jako diff (nowe / potwierdzone / zmienione / zamknięte), kategorie ryzyka, lekcje, dokumenty
+  (upload, z URL, fragmenty, plik dla PDF.js, wyszukiwanie pełnotekstowe).
+- Ścieżka B: klasyfikacja bazy przypadków (`riskminer classify`), czerwone flagi z uzasadnieniem (historia zdarzeń
+  sąsiadów, zakresy, ocena budżetu/harmonogramu, sygnały i braki w opisie, lista kontrolna eksperta), działania
+  (klauzule K-R01…K-R15 – projekt zespołu do zatwierdzenia, lekcje NIK, wzorcowe zdarzenia), zapis analizy jako
+  elementy do akceptacji (decyzje eksperta przeżywają przeliczenie, wykluczenie sąsiada → przeliczenie),
+  eksport karty analizy JSON/CSV/DOCX, eksport dowolnego zbioru JSON/CSV i paczka `bundle.zip`
+  (`riskminer export` → `exports/przyklad/`). `riskminer analyse <plik>` na fixture 01: 12 sąsiadów, 16 flag.
+- Frontend: lista „Baza przypadków” działa na prawdziwym API.
+
+**W toku**
+- Warstwa automatyczna: `riskminer harvest` z pełnej kopii (113k ogłoszeń) – uruchomione ~18:45.
+
+**Znane problemy / do zrobienia**
+- Frontend: karta projektu, kolejka eksperta, wiedza, nowa inwestycja, analizy, źródła i operacje, start, „Jak testować”
+  – jeszcze zaślepki „W budowie (S4)”.
+- Przypadki pogłębione nie mają podsektora do czasu `riskminer classify`; P(zmiana) na samych 22 projektach jest
+  zawyżone (próba organizatora) – po załadowaniu warstwy automatycznej zakresy liczone z ~20 tys. umów.
+- Biała lista VAT, TED, KRS, KIO – nie zaimplementowane (zaprojektowane).
+
 ## S1 Acquisition & linking
 ## S2 Extraction & documents
 ## S3 Analysis
