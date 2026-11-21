@@ -149,41 +149,69 @@ function ItemDecision({ a, it, allowExclude }: { a: A; it: Item; allowExclude?: 
   )
 }
 
+/* ------------------------------------------------------------------ tiles */
+
+/** Compact tile: title + one line with the key figure; click opens the details across the full row. */
+function Tile({ open, onToggle, title, sub, dim, accent, children }: {
+  open: boolean; onToggle: () => void; title: React.ReactNode; sub?: React.ReactNode; dim?: boolean; accent?: string; children: React.ReactNode
+}) {
+  return (
+    <li className={cn(open && 'md:col-span-2 xl:col-span-3')}>
+      <Card className={cn('h-full', dim && 'opacity-50', open ? 'border-brand' : accent)}>
+        <button type="button" onClick={onToggle} aria-expanded={open} className="block w-full cursor-pointer rounded-lg px-4 py-3 text-left hover:bg-slate-50">
+          <span className="line-clamp-2 font-semibold text-slate-900">{title}</span>
+          {sub && <span className="mt-1 block text-sm text-slate-500">{sub}</span>}
+        </button>
+        {open && <CardContent className="space-y-3 border-t border-slate-100 pt-3 text-sm">{children}</CardContent>}
+      </Card>
+    </li>
+  )
+}
+
+function useOpen() {
+  const [open, setOpen] = useState<string | null>(null)
+  return { isOpen: (id: string) => open === id, toggle: (id: string) => setOpen((o) => (o === id ? null : id)) }
+}
+
+const Grid = ({ children }: { children: React.ReactNode }) => <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">{children}</ul>
+
 /* ------------------------------------------------------------------ flags */
 
+const SEV_ACCENT: Record<string, string> = { wysoka: 'border-l-4 border-l-rose-500', 'średnia': 'border-l-4 border-l-amber-400', niska: '' }
+
 function Flags({ items, a }: { items: Item[]; a: A }) {
+  const t = useOpen()
   return (
     <div>
       <Intro>
         Sprawy, które w podobnych inwestycjach prowadziły do opóźnień, zmian umów lub wzrostu kosztów, oraz ryzyka wynikające z Twojego opisu, np. brak zgód właścicieli. Najpierw <b>ważne</b>, potem <b>do sprawdzenia</b> i <b>informacyjne</b>. Fioletowy kod to <Term t="kategoria ryzyka" />.
       </Intro>
       {!items.length && <p className="text-sm text-slate-500">Brak flag.</p>}
-      <div className="space-y-3">{items.map((it) => {
+      <Grid>{items.map((it) => {
         const p = it.payload as P
         const sev = SEV[p.severity] ?? SEV.niska
         return (
-          <Card key={it.id} className={cn(it.status === 'rejected' && 'opacity-60')}>
-            <CardHeader title={<span className="flex flex-wrap items-center gap-2"><Badge variant={sev.v}>{sev.t}</Badge>{it.title}</span>}
-              description={AXIS_PL[p.axis] ?? p.axis} actions={<><RiskCodes codes={it.risk_codes} /><BlockLabel label={it.label} /></>} />
-            <CardContent className="space-y-2 text-sm">
-              <p>{p.why}</p>
-              {(it.risk_codes ?? []).map((c) => RISK_NAMES[c] ? <p key={c} className="text-xs text-slate-500">{c}: {RISK_NAMES[c]}</p> : null)}
-              {p.quote && <blockquote className="border-l-2 border-teal-400 bg-teal-50/40 py-1 pl-2 text-sm">„{p.quote}” <span className="text-xs text-slate-500">(z Twojego opisu)</span></blockquote>}
-              {!!p.examples?.length && (
-                <details className="text-sm"><summary className="cursor-pointer text-slate-600">Jak to wyglądało w podobnych inwestycjach ({p.examples.length})</summary>
-                  <ul className="mt-2 space-y-1.5">{p.examples.map((e: P) => (
-                    <li key={e.event_id} className="rounded bg-slate-50 p-2 text-xs">
-                      <Link to="/projekty/$projectId" params={{ projectId: e.project_id }} search={{ tab: 'zdarzenia' }} className="font-medium text-brand hover:underline">{e.title}</Link>
-                      {e.quote && <div className="mt-0.5 text-slate-600">„{e.quote}”</div>}
-                      {!!e.evidence_ids?.length && <EvidenceChip ids={e.evidence_ids} label="Pokaż w źródle" className="mt-1" />}
-                    </li>))}</ul></details>)}
-              {!!p.items?.length && (
-                <ul className="list-disc pl-5 text-sm">{p.items.map((x: P) => <li key={x.no}>{x.item} <span className="text-xs text-slate-500">(poradnik, rozdz. {x.guide_sections})</span></li>)}</ul>)}
-              {p.formula && <HowCalculated>{p.formula}</HowCalculated>}
-              <ItemDecision a={a} it={it} />
-            </CardContent>
-          </Card>)
-      })}</div>
+          <Tile key={it.id} open={t.isOpen(it.id)} onToggle={() => t.toggle(it.id)} dim={it.status === 'rejected'} accent={SEV_ACCENT[p.severity]}
+            title={it.title} sub={<>{sev.t}{(it.risk_codes ?? []).length ? ` · ${(it.risk_codes ?? []).join(', ')}` : ''}</>}>
+            <div className="flex flex-wrap items-center gap-2"><Badge variant={sev.v}>{sev.t}</Badge><span className="text-xs text-slate-500">{AXIS_PL[p.axis] ?? p.axis}</span>
+              <span className="ml-auto flex items-center gap-2"><RiskCodes codes={it.risk_codes} /><BlockLabel label={it.label} /></span></div>
+            <p>{p.why}</p>
+            {(it.risk_codes ?? []).map((c) => RISK_NAMES[c] ? <p key={c} className="text-xs text-slate-500">{c}: {RISK_NAMES[c]}</p> : null)}
+            {p.quote && <blockquote className="border-l-2 border-teal-400 bg-teal-50/40 py-1 pl-2">„{p.quote}” <span className="text-xs text-slate-500">(z Twojego opisu)</span></blockquote>}
+            {!!p.examples?.length && (
+              <div><div className="mb-1 text-xs font-semibold text-slate-600">Jak to wyglądało w podobnych inwestycjach</div>
+                <ul className="grid gap-2 md:grid-cols-2">{p.examples.map((e: P) => (
+                  <li key={e.event_id} className="rounded bg-slate-50 p-2 text-xs">
+                    <Link to="/projekty/$projectId" params={{ projectId: e.project_id }} search={{ tab: 'zdarzenia' }} className="font-medium text-brand hover:underline">{e.title}</Link>
+                    {e.quote && <div className="mt-0.5 text-slate-600">„{e.quote}”</div>}
+                    {!!e.evidence_ids?.length && <EvidenceChip ids={e.evidence_ids} label="Pokaż w źródle" className="mt-1" />}
+                  </li>))}</ul></div>)}
+            {!!p.items?.length && (
+              <ul className="list-disc pl-5">{p.items.map((x: P) => <li key={x.no}>{x.item} <span className="text-xs text-slate-500">(poradnik, rozdz. {x.guide_sections})</span></li>)}</ul>)}
+            {p.formula && <HowCalculated>{p.formula}</HowCalculated>}
+            <ItemDecision a={a} it={it} />
+          </Tile>)
+      })}</Grid>
     </div>
   )
 }
@@ -191,29 +219,38 @@ function Flags({ items, a }: { items: Item[]; a: A }) {
 /* ------------------------------------------------------------------ actions */
 
 function Actions({ items, a }: { items: Item[]; a: A }) {
+  const t = useOpen()
   const llm = items.find((i) => i.label === 'wniosek_modelu')
   const rest = items.filter((i) => i !== llm)
+  const n = (x: number, one: string, few: string, many: string) => `${x} ${x === 1 ? one : x % 10 >= 2 && x % 10 <= 4 && (x % 100 < 10 || x % 100 >= 20) ? few : many}`
   return (
-    <div className="space-y-3">
+    <div>
       <Intro can={['skopiować zapis do projektu umowy lub SWZ po weryfikacji prawnej']}>
-        Dla każdej kategorii ryzyka z flag: zapis umowny lub działanie zapobiegawcze z podstawą prawną, wnioski z kontroli NIK i wzorcowe przypadki z bazy. Podsumowanie na górze przygotował model językowy z liczb tej analizy.
+        Dla każdej kategorii ryzyka z flag: zapis umowny lub działanie zapobiegawcze z podstawą prawną, wnioski z kontroli NIK i wzorcowe przypadki z bazy. Podsumowanie przygotował model językowy z liczb tej analizy.
       </Intro>
-      {llm && (() => {
-        const p = llm.payload as P
-        return (
-          <Card className="border-amber-200">
-            <CardHeader title="Podsumowanie" actions={<BlockLabel label="wniosek_modelu" />} description={`${(p.model_label ?? 'Model językowy').replace(/\s*\(.*\)$/, '')}, na podstawie liczb z tej analizy`} />
-            <CardContent className="space-y-2 text-sm"><p>{p.summary}</p>
+      <Grid>
+        {llm && (() => {
+          const p = llm.payload as P
+          return (
+            <Tile open={t.isOpen(llm.id)} onToggle={() => t.toggle(llm.id)} accent="border-l-4 border-l-amber-400"
+              title="Podsumowanie i najważniejsze działania" sub={<>{(p.model_label ?? 'Model językowy').replace(/\s*\(.*\)$/, '')} · {n((p.top_actions ?? []).length, 'działanie', 'działania', 'działań')}</>}>
+              <div className="flex justify-end"><BlockLabel label="wniosek_modelu" /></div>
+              <p>{p.summary}</p>
               <ol className="list-decimal space-y-0.5 pl-5">{(p.top_actions ?? []).map((x: string, i: number) => <li key={i}>{x}</li>)}</ol>
-              <ItemDecision a={a} it={llm} /></CardContent>
-          </Card>)
-      })()}
-      {rest.map((it) => {
-        const p = it.payload as P
-        return (
-          <Card key={it.id}>
-            <CardHeader title={`${p.risk_code}: ${p.risk_name ?? ''}`} actions={<BlockLabel label={it.label} />} />
-            <CardContent className="space-y-2 text-sm">
+              <ItemDecision a={a} it={llm} />
+            </Tile>)
+        })()}
+        {rest.map((it) => {
+          const p = it.payload as P
+          const parts = [
+            (p.clauses ?? []).length ? n(p.clauses.length, 'zapis umowny', 'zapisy umowne', 'zapisów umownych') : null,
+            (p.lessons ?? []).length ? n(p.lessons.length, 'wniosek z kontroli', 'wnioski z kontroli', 'wniosków z kontroli') : null,
+            (p.examples ?? []).length ? n(p.examples.length, 'wzorcowy przypadek', 'wzorcowe przypadki', 'wzorcowych przypadków') : null,
+          ].filter(Boolean)
+          return (
+            <Tile key={it.id} open={t.isOpen(it.id)} onToggle={() => t.toggle(it.id)} dim={it.status === 'rejected'}
+              title={`${p.risk_code}: ${p.risk_name ?? ''}`} sub={parts.join(' · ') || 'brak zapisów w katalogu'}>
+              <div className="flex justify-end"><BlockLabel label={it.label} /></div>
               {(p.clauses ?? []).map((c: P) => (
                 <div key={c.id} className="rounded-md border border-slate-200 p-3">
                   <div className="flex flex-wrap items-center gap-2 font-medium">{c.title}
@@ -226,39 +263,48 @@ function Actions({ items, a }: { items: Item[]; a: A }) {
               {(p.examples ?? []).map((e: P) => (
                 <div key={e.id} className="rounded-md bg-emerald-50 p-2 text-xs"><b>Wzorcowy przypadek:</b> {e.title}. {e.mitigation} {e.mitigation_effect && `(${e.mitigation_effect})`}</div>))}
               <ItemDecision a={a} it={it} />
-            </CardContent>
-          </Card>)
-      })}
+            </Tile>)
+        })}
+      </Grid>
     </div>
   )
 }
 
 /* ------------------------------------------------------------------ assessment */
 
+function assessmentHeadline(p: P): string {
+  if (p.percentile != null) return p.position ?? `P${Math.round(p.percentile * 100)}`
+  if (p.estimate != null) return `${pct(p.estimate)} podobnych postępowań`
+  if (p.p50 != null) return `typowo ${fmtNum(p.p50, 2)}`
+  if (p.message) return `nie porównano: ${p.message}`
+  if (!p.n) return 'brak danych w podobnych inwestycjach'
+  return `${p.n} podobnych przypadków`
+}
+
 function Assessment({ items }: { items: Item[]; a: A }) {
+  const t = useOpen()
   return (
     <div>
       <Intro>
         Budżet, harmonogram i koszt jednostkowy tej inwestycji na tle umów podobnych inwestycji. Porównujemy tylko kwoty tego samego rodzaju: netto z netto, brutto z brutto. <Term t="percentyl">Percentyl</Term> P20 oznacza wartość niższą niż w 8 na 10 podobnych przypadków.
       </Intro>
-      <div className="grid gap-3 md:grid-cols-2">{items.map((it) => {
+      <Grid>{items.map((it) => {
         const p = it.payload as P
         return (
-          <Card key={it.id}>
-            <CardHeader title={it.title} actions={<BlockLabel label={it.label} />} />
-            <CardContent className="space-y-2 text-sm">
-              {p.percentile != null && <ScoreBar value={p.percentile} label={<>Pozycja na tle podobnych: P{Math.round(p.percentile * 100)}</>} detail={p.position} />}
-              {p.value != null && <Fact label="Wartość tej inwestycji" value={fmtNum(p.value)} hint={p.basis} />}
-              {p.quantiles && <><div className="text-xs text-slate-500">Podobne umowy:</div><Spread p50={p.quantiles.p50} p80={p.quantiles.p80} p95={p.quantiles.p90} third="9 na 10 nie więcej" /></>}
-              {p.reserve_p80 && <p>Z zapasem (jak w 8 na 10 podobnych) warto przewidzieć <b>{fmtPln(p.reserve_p80.amount)}</b>.</p>}
-              {p.estimate != null && <Proportion k={p.k} n={p.n} estimate={p.estimate} low={p.ci_low} high={p.ci_high} what="podobnych postępowań" tone="amber" />}
-              {(p.p50 != null && p.estimate == null) && <Spread p50={p.p50} p80={p.p80} p95={p.p95} digits={2} />}
-              {p.message && <p className="rounded bg-amber-50 p-2 text-xs text-amber-900">{p.message}</p>}
-              <p className="text-xs text-slate-500">Na podstawie <Term t="n">{p.n ?? 0} przypadków</Term>{p.fallback_level ? ` (${LEVEL_PL[p.fallback_level] ?? p.fallback_level})` : ''}.</p>
-              {p.formula && <HowCalculated>{p.formula}</HowCalculated>}
-            </CardContent>
-          </Card>)
-      })}</div>
+          <Tile key={it.id} open={t.isOpen(it.id)} onToggle={() => t.toggle(it.id)} title={it.title} sub={assessmentHeadline(p)}>
+            <div className="flex justify-end"><BlockLabel label={it.label} /></div>
+            {p.percentile != null && <ScoreBar value={p.percentile} label={<>Pozycja na tle podobnych: P{Math.round(p.percentile * 100)}</>} detail={p.position} />}
+            {p.value != null && <Fact label="Wartość tej inwestycji" value={fmtNum(p.value)} hint={p.basis} />}
+            {p.quantiles && <><div className="text-xs text-slate-500">Podobne umowy:</div><Spread p50={p.quantiles.p50} p80={p.quantiles.p80} p95={p.quantiles.p90} third="9 na 10 nie więcej" /></>}
+            {p.reserve_p80 && <p>Z zapasem (jak w 8 na 10 podobnych) warto przewidzieć <b>{fmtPln(p.reserve_p80.amount)}</b>.</p>}
+            {p.note && <p>{p.note}.</p>}
+            {p.estimate != null && <Proportion k={p.k} n={p.n} estimate={p.estimate} low={p.ci_low} high={p.ci_high} what="podobnych postępowań" tone="amber" />}
+            {(p.p50 != null && p.estimate == null) && <Spread p50={p.p50} p80={p.p80} p95={p.p95} digits={2} />}
+            {p.message && <p className="rounded bg-amber-50 p-2 text-xs text-amber-900">{p.message}</p>}
+            <p className="text-xs text-slate-500">Na podstawie <Term t="n">{p.n ?? 0} przypadków</Term>{p.fallback_level ? ` (${LEVEL_PL[p.fallback_level] ?? p.fallback_level})` : ''}.</p>
+            {p.formula && <HowCalculated>{p.formula}</HowCalculated>}
+          </Tile>)
+      })}</Grid>
     </div>
   )
 }
@@ -276,27 +322,28 @@ const RANGE_Q: Record<string, { q: string; what: string; tone?: 'rose' | 'amber'
 }
 
 function Ranges({ items, a }: { items: Item[]; a: A }) {
+  const t = useOpen()
   return (
     <div>
       <Intro>
         Jak często i o ile podobne inwestycje się opóźniały, czy wypłata przekraczała umowę, jak często zmieniano umowy i unieważniano przetargi. Przy małej liczbie podobnych liczymy na szerszej grupie i stosujemy <Term t="wygładzenie" />. Przy odsetkach podajemy <Term t="przedział 95%">przedział</Term>, w którym prawdopodobnie leży prawdziwa wartość.
       </Intro>
-      <div className="grid gap-3 md:grid-cols-2">{items.map((it) => {
+      <Grid>{items.map((it) => {
         const p = it.payload as P
         const m = RANGE_Q[p.metric] ?? { q: it.title ?? p.metric, what: '' }
         const isProp = p.estimate !== undefined && p.p50 === undefined
+        const sub = isProp ? (p.n ? <>W <b className="text-slate-700">{p.k}</b> z {p.n} · po wygładzeniu <b className="text-slate-700">{pct(p.estimate)}</b></> : 'brak danych')
+          : p.p50 != null ? <>typowo <b className="text-slate-700">{fmtNum(p.p50, m.digits ?? 0)}{m.unit ?? ''}</b> · z zapasem {fmtNum(p.p80, m.digits ?? 0)}{m.unit ?? ''}</> : 'brak danych'
         return (
-          <Card key={it.id} className={cn(it.status === 'rejected' && 'opacity-60')}>
-            <CardHeader title={m.q} actions={<BlockLabel label={it.label} />} />
-            <CardContent className="space-y-2">
-              {isProp ? <Proportion k={p.k} n={p.n} estimate={p.estimate} low={p.ci_low} high={p.ci_high} what={m.what} tone={m.tone} />
-                : <Spread p50={p.p50} p80={p.p80} p95={p.p95} unit={m.unit} digits={m.digits ?? 0} />}
-              <p className="text-xs text-slate-500">Policzono na <Term t="n">{p.n} przypadkach</Term>: {LEVEL_PL[p.fallback_level] ?? p.fallback_level}{p.period ? `, lata ${p.period}` : ''}.</p>
-              {p.formula && <HowCalculated>{p.formula}</HowCalculated>}
-              <ItemDecision a={a} it={it} />
-            </CardContent>
-          </Card>)
-      })}</div>
+          <Tile key={it.id} open={t.isOpen(it.id)} onToggle={() => t.toggle(it.id)} dim={it.status === 'rejected'} title={m.q} sub={sub}>
+            <div className="flex justify-end"><BlockLabel label={it.label} /></div>
+            {isProp ? <Proportion k={p.k} n={p.n} estimate={p.estimate} low={p.ci_low} high={p.ci_high} what={m.what} tone={m.tone} />
+              : <Spread p50={p.p50} p80={p.p80} p95={p.p95} unit={m.unit} digits={m.digits ?? 0} />}
+            <p className="text-xs text-slate-500">Policzono na <Term t="n">{p.n} przypadkach</Term>: {LEVEL_PL[p.fallback_level] ?? p.fallback_level}{p.period ? `, lata ${p.period}` : ''}.</p>
+            {p.formula && <HowCalculated>{p.formula}</HowCalculated>}
+            <ItemDecision a={a} it={it} />
+          </Tile>)
+      })}</Grid>
     </div>
   )
 }
@@ -305,53 +352,37 @@ function Ranges({ items, a }: { items: Item[]; a: A }) {
 
 function Neighbours({ items, a }: { items: Item[]; a: A }) {
   const sorted = [...items].sort((x, y) => Number(x.excluded) - Number(y.excluded) || (y.payload as P).score - (x.payload as P).score)
-  const [open, setOpen] = useState<string | null>(null)
+  const t = useOpen()
   return (
     <div>
       <Intro can={['otworzyć kafelek, żeby zobaczyć wynik inwestycji i zgodność każdej cechy', 'pominąć inwestycję, która nie pasuje; wyniki przeliczą się bez niej']}>
         Zakończone inwestycje najbardziej zbliżone do opisanej. Na nich opierają się zakresy i flagi.
       </Intro>
-      <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-        {sorted.map((it) => {
-          const p = it.payload as P
-          const o = p.outcome ?? {}
-          const isOpen = open === it.id
-          return (
-            <li key={it.id} className={cn(isOpen && 'md:col-span-2 xl:col-span-3')}>
-              <Card className={cn('h-full', it.excluded && 'opacity-50', isOpen && 'border-brand')}>
-                <button type="button" onClick={() => setOpen(isOpen ? null : it.id)} aria-expanded={isOpen}
-                  className="block w-full cursor-pointer rounded-lg px-4 py-3 text-left hover:bg-slate-50">
-                  <span className="line-clamp-2 font-semibold text-slate-900">{p.title}</span>
-                  <span className="mt-1 block text-sm text-slate-500">
-                    {p.subsector_main ?? 'Podsektor nieustalony'} · <span className="whitespace-nowrap">podobieństwo <b className="text-slate-700">{pct(p.score)}</b></span>
-                    {it.excluded && ', pominięta'}
-                  </span>
-                </button>
-                {isOpen && (
-                  <CardContent className="space-y-4 border-t border-slate-100">
-                    <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
-                      <Fact label="Wartość umowy" value={fmtPln(o.value_gross)} />
-                      <Fact label="Opóźnienie" value={o.delay_days == null ? '—' : o.delay_days > 0 ? `${o.delay_days} dni` : 'w terminie'} warn={(o.delay_days ?? 0) > 0} />
-                      <Fact label="Wypłata / umowa" value={o.paid_ratio == null ? '—' : `${Math.round(o.paid_ratio * 100)}%`} warn={(o.paid_ratio ?? 0) > 1.05} />
-                      <Fact label="Zmiany umowy" value={o.n_changes ?? '—'} />
-                    </div>
-                    <div>
-                      <div className="mb-1 text-xs font-semibold text-slate-600">Zgodność cech (<Term t="waga">waga</Term> w nawiasie)</div>
-                      <div className="grid gap-2 sm:grid-cols-2">{(p.breakdown ?? []).map((b: P) => (
-                        <ScoreBar key={b.component} value={b.similarity} label={<>{b.label} <span className="font-normal text-slate-400">({Math.round(b.weight * 100)}%)</span></>} detail={b.detail} />))}</div>
-                    </div>
-                    {!!p.shared_terms?.length && <p className="text-xs text-slate-500">Wspólne słowa w opisach: {p.shared_terms.join(', ')}</p>}
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Link to="/projekty/$projectId" params={{ projectId: p.project_id }} search={{}} className="text-sm text-brand hover:underline">Karta inwestycji</Link>
-                      <EvidenceChip ids={o.evidence_ids} label="Źródło wyniku" />
-                      <div className="ml-auto"><ItemDecision a={a} it={it} allowExclude /></div>
-                    </div>
-                  </CardContent>
-                )}
-              </Card>
-            </li>)
-        })}
-      </ul>
+      <Grid>{sorted.map((it) => {
+        const p = it.payload as P
+        const o = p.outcome ?? {}
+        return (
+          <Tile key={it.id} open={t.isOpen(it.id)} onToggle={() => t.toggle(it.id)} dim={it.excluded} title={p.title}
+            sub={<>{p.subsector_main ?? 'Podsektor nieustalony'} · <span className="whitespace-nowrap">podobieństwo <b className="text-slate-700">{pct(p.score)}</b></span>{it.excluded && ', pominięta'}</>}>
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+              <Fact label="Wartość umowy" value={fmtPln(o.value_gross)} />
+              <Fact label="Opóźnienie" value={o.delay_days == null ? '—' : o.delay_days > 0 ? `${o.delay_days} dni` : 'w terminie'} warn={(o.delay_days ?? 0) > 0} />
+              <Fact label="Wypłata / umowa" value={o.paid_ratio == null ? '—' : `${Math.round(o.paid_ratio * 100)}%`} warn={(o.paid_ratio ?? 0) > 1.05} />
+              <Fact label="Zmiany umowy" value={o.n_changes ?? '—'} />
+            </div>
+            <div>
+              <div className="mb-1 text-xs font-semibold text-slate-600">Zgodność cech (<Term t="waga">waga</Term> w nawiasie)</div>
+              <div className="grid gap-2 sm:grid-cols-2">{(p.breakdown ?? []).map((b: P) => (
+                <ScoreBar key={b.component} value={b.similarity} label={<>{b.label} <span className="font-normal text-slate-400">({Math.round(b.weight * 100)}%)</span></>} detail={b.detail} />))}</div>
+            </div>
+            {!!p.shared_terms?.length && <p className="text-xs text-slate-500">Wspólne słowa w opisach: {p.shared_terms.join(', ')}</p>}
+            <div className="flex flex-wrap items-center gap-2">
+              <Link to="/projekty/$projectId" params={{ projectId: p.project_id }} search={{}} className="text-brand hover:underline">Karta inwestycji</Link>
+              <EvidenceChip ids={o.evidence_ids} label="Źródło wyniku" />
+              <div className="ml-auto"><ItemDecision a={a} it={it} allowExclude /></div>
+            </div>
+          </Tile>)
+      })}</Grid>
     </div>
   )
 }

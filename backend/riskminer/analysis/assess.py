@@ -42,12 +42,12 @@ def _q(vals: list[float]) -> dict[str, float | None]:
 
 def _position(pct: float) -> str:
     if pct < 0.1:
-        return "poniżej 10. percentyla sąsiadów"
+        return "niżej niż 9 na 10 podobnych"
     if pct < 0.5:
-        return "poniżej mediany sąsiadów"
+        return "niżej niż połowa podobnych"
     if pct <= 0.9:
-        return "powyżej mediany sąsiadów"
-    return "powyżej 90. percentyla sąsiadów"
+        return "wyżej niż połowa podobnych"
+    return "wyżej niż 9 na 10 podobnych"
 
 
 def assess(features: dict[str, Any], neighbours: list[Case], ranges: dict[str, dict[str, Any]],
@@ -64,7 +64,7 @@ def assess(features: dict[str, Any], neighbours: list[Case], ranges: dict[str, d
     # 1. budget position among neighbours' contract values (gross)
     nb_vals = [(c, c.value_gross) for c in neighbours if c.value_gross]
     uv, how = comparable_value(value, vat, "gross")
-    item: dict[str, Any] = {"metric": "budget_percentile", "title": "Budżet na tle wartości umów sąsiadów",
+    item: dict[str, Any] = {"metric": "budget_percentile", "title": "Budżet na tle podobnych umów",
                             "n": len(nb_vals), "case_ids": [str(c.project_id) for c, _ in nb_vals], "basis": how,
                             "formula": "Percentyl budżetu = jaka część umów podobnych inwestycji (wartość z pkt 4.4, brutto) była tańsza lub równa budżetowi tej inwestycji; P90 oznacza, że budżet jest wyższy niż w 9 na 10 podobnych umów."}
     if uv is not None and nb_vals:
@@ -76,29 +76,29 @@ def assess(features: dict[str, Any], neighbours: list[Case], ranges: dict[str, d
                                    "note": f"budżet × P80(wypłata/wartość) = {uv:,.0f} × {pr['p80']:.3f} (poziom: {pr['fallback_level']}, n={pr['n']})".replace(",", " ")}
     else:
         item["status"] = "not_compared"
-        item["message"] = how if uv is None else "brak wartości umów u sąsiadów"
+        item["message"] = how if uv is None else "podobne inwestycje nie mają wartości umów"
     out.append(item)
 
     # 2. schedule: planned duration vs neighbours' planned and actual durations
     pd_ = [c.planned_days for c in neighbours if c.planned_days]
     ad = [c.actual_days for c in neighbours if c.actual_days and c.actual_days > 0]
-    item = {"metric": "schedule_percentile", "title": "Harmonogram na tle czasu realizacji sąsiadów",
+    item = {"metric": "schedule_percentile", "title": "Harmonogram na tle podobnych umów",
             "n": len(ad), "n_planned": len(pd_), "case_ids": [str(c.project_id) for c in neighbours if c.actual_days],
             "formula": "Faktyczny czas realizacji podobnej umowy = data wykonania (pkt 5.2) minus data zawarcia (pkt 4.1). Percentyl harmonogramu = jaka część podobnych umów trwała krócej lub tyle samo co planowany czas tej inwestycji; niski percentyl oznacza ambitny harmonogram."}
     if months and ad:
         days = float(months) * 30
         pct_a = percentile_rank(days, ad)
-        item.update(value_days=round(days), percentile_actual=pct_a, position=_position(pct_a),
+        item.update(value_days=round(days), percentile=pct_a, percentile_actual=pct_a, position=_position(pct_a), quantiles=_q(ad),
                     actual_quantiles=_q(ad), planned_quantiles=_q(pd_) if pd_ else None,
                     percentile_planned=percentile_rank(days, pd_) if pd_ else None)
         dl = ranges.get("delay_days") or {}
         if dl.get("p80") is not None:
             item["p80_end_days"] = round(days + dl["p80"])
-            item["note"] = f"plan {days:.0f} dni + P80 opóźnienia {dl['p80']:.0f} dni (poziom {dl['fallback_level']}, n={dl['n']})"
+            item["note"] = f"Plan {days:.0f} dni; z opóźnieniem takim jak w 8 na 10 podobnych umów: {days + dl['p80']:.0f} dni"
         item["tight"] = pct_a < 0.25
     else:
         item["status"] = "not_compared"
-        item["message"] = "brak planowanego czasu realizacji" if not months else "brak dat realizacji u sąsiadów"
+        item["message"] = "brak planowanego czasu realizacji w opisie" if not months else "podobne inwestycje nie mają dat realizacji"
     out.append(item)
 
     # 3. cost per km / per RLM (gross paid or contract value)
@@ -128,8 +128,8 @@ def assess(features: dict[str, Any], neighbours: list[Case], ranges: dict[str, d
         out.append(item)
 
     # 4. winning offer vs estimate / budget among neighbours (like-for-like only)
-    for metric, title in (("offer_vs_budget", "Cena oferty a kwota na sfinansowanie (brutto/brutto)"),
-                          ("offer_vs_estimate", "Cena oferty a wartość szacunkowa (brutto / netto×1,23)")):
+    for metric, title in (("offer_vs_budget", "Cena oferty a budżet zamawiającego"),
+                          ("offer_vs_estimate", "Cena oferty a wartość szacunkowa")):
         r = ranges.get(metric) or {}
         out.append({"metric": metric, "title": title, "n": r.get("n", 0), "p50": r.get("p50"), "p80": r.get("p80"),
                     "p95": r.get("p95"), "fallback_level": r.get("fallback_level"), "case_ids": r.get("case_ids", []),
@@ -137,7 +137,7 @@ def assess(features: dict[str, Any], neighbours: list[Case], ranges: dict[str, d
 
     # 5. cancellations under art. 255 pkt 3 (offer above the financing amount)
     r = ranges.get("share_cancelled_255_3") or {}
-    out.append({"metric": "cancelled_255_3", "title": "Unieważnienia – art. 255 pkt 3 Pzp wśród podobnych postępowań",
+    out.append({"metric": "cancelled_255_3", "title": "Unieważnienia z powodu ceny (art. 255 pkt 3 Pzp)",
                 "n": r.get("n", 0), "k": r.get("k"), "estimate": r.get("estimate"), "ci_low": r.get("ci_low"),
                 "ci_high": r.get("ci_high"), "fallback_level": r.get("fallback_level"), "case_ids": r.get("case_ids", []),
                 "formula": r.get("formula")})

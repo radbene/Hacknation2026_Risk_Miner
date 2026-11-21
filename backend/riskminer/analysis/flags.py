@@ -29,7 +29,7 @@ CUE_RISKS = {
     "environment": (["R02", "R04"], "Uwarunkowania środowiskowe lub gruntowo-wodne", "średnia"),
     "collisions": (["R03", "R02"], "Kolizje z istniejącą infrastrukturą", "średnia"),
     "existing_asset": (["R06", "R10"], "Roboty przy czynnym obiekcie", "średnia"),
-    "pfu": (["R01", "R05", "R09"], "Formuła „zaprojektuj i wybuduj” (PFU) – ryzyko zakresu i odpowiedzialności", "średnia"),
+    "pfu": (["R01", "R05", "R09"], "Formuła „zaprojektuj i wybuduj” (PFU): ryzyko zakresu i odpowiedzialności", "średnia"),
     "lump_sum": (["R08"], "Wynagrodzenie ryczałtowe przy niepewnym zakresie", "niska"),
     "startup": (["R10"], "Rozruch / próby / odbiór parametrów", "niska"),
 }
@@ -115,7 +115,7 @@ def build_flags(session: Session, features: dict[str, Any], text: str, neighbour
         share = h["k"] / n_nb if n_nb else 0
         if h["k"] >= 2 and share >= 0.25:
             sev = "wysoka" if share >= 0.5 else "średnia"
-            add(f"N-{code}", f"{names.get(code, code)} – występowało u {h['k']} z {n_nb} podobnych inwestycji",
+            add(f"N-{code}", f"{names.get(code, code)}: u {h['k']} z {n_nb} podobnych inwestycji",
                 [code], sev, "realizacja",
                 f"U {h['k']} z {n_nb} najbliższych sąsiadów odnotowano zdarzenie z kategorią {code} "
                 f"({share:.0%}); przykłady poniżej z cytatami ze źródeł.",
@@ -166,7 +166,7 @@ def build_flags(session: Session, features: dict[str, Any], text: str, neighbour
                 n=a.get("n"), case_ids=a.get("case_ids", [])[:50], formula=a.get("formula"))
         if str(a.get("metric", "")).startswith("unit_cost") and pct <= 0.15:
             add("A-UNIT", f"Niski koszt jednostkowy ({a.get('title')}, percentyl {pct:.0%})", ["R13", "R01"], "średnia",
-                "przygotowanie", "Koszt na jednostkę skali poniżej 15% podobnych umów – sprawdź kompletność zakresu i budżet.",
+                "przygotowanie", "Koszt na jednostkę skali jest niższy niż w 85% podobnych umów. Sprawdź kompletność zakresu i budżet.",
                 n=a.get("n"), case_ids=a.get("case_ids", [])[:50], formula=a.get("formula"))
 
     # 4. description
@@ -194,11 +194,11 @@ def build_flags(session: Session, features: dict[str, Any], text: str, neighbour
         if key.startswith("gap_") and isinstance(cv, dict) and cv.get("quote"):
             codes = _signal_codes(cv["quote"], session) or ["R01"]
             add(f"D-{key}", "Opis wskazuje brak lub niepewność", codes[:3], "średnia", "przygotowanie",
-                "Zdanie z opisu sygnalizuje brak/niepewność – do wyjaśnienia przed ogłoszeniem.", quote=cv["quote"],
+                "Zdanie z opisu wskazuje brak lub niepewność. Wyjaśnij to przed ogłoszeniem przetargu.", quote=cv["quote"],
                 source="opis")
     if (_fv(features, "vat_basis") or "unknown") == "unknown" and value:
         add("Q-VAT", "Nie wiadomo, czy kwota jest netto czy brutto", [], "niska", "dane",
-            "Kwoty porównujemy tylko tego samego rodzaju (Porady: kwoty netto i brutto) – ocena budżetu wstrzymana.")
+            "Porównujemy tylko kwoty tego samego rodzaju, więc ocena budżetu czeka na tę informację.")
 
     # 5. checklist (water network)
     sub = _fv(features, "subsector_main")
@@ -219,7 +219,7 @@ def build_flags(session: Session, features: dict[str, Any], text: str, neighbour
     if missing_items:
         codes = sorted({c for m in missing_items for c in m["risk_codes"]})
         add("C-CHECK", f"Brak informacji dla {len(missing_items)} punktów listy kontrolnej eksperta", codes, "niska",
-            "dane", "Opis nie zawiera informacji wymaganych listą kontrolną – uzupełnij przed analizą ryzyka.",
+            "dane", "Opis nie zawiera informacji z listy kontrolnej eksperta. Uzupełnij je przed analizą ryzyka.",
             items=missing_items)
     flags.sort(key=lambda f: (SEV_ORDER.get(f["severity"], 3), f["code"]))
     return flags
