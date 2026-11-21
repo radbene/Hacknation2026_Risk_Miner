@@ -60,10 +60,21 @@ body { @apply bg-paper font-sans text-ink antialiased; }
 @keyframes pick-swing { 0% { transform: rotate(0) } 35% { transform: rotate(-28deg) } 60% { transform: rotate(6deg) } 100% { transform: rotate(0) } }
 .pick-swing { animation: pick-swing .45s steps(6, end) 1; }
 .group:hover .pick-swing { animation: pick-swing .9s steps(6, end) infinite; }
+/* mining loader (MiningLoader.tsx): the impact lands at 54% of the swing = 378 ms */
+@keyframes pick-strike { 0% { transform: rotate(32deg) } 40% { transform: rotate(38deg) } 54% { transform: rotate(0deg) } 62% { transform: rotate(3deg) } 100% { transform: rotate(32deg) } }
+.pick-strike { animation: pick-strike .7s ease-in both; }
+@keyframes rock-shake { 0%, 100% { transform: translate(0, 0) } 25% { transform: translate(-.6px, .3px) } 50% { transform: translate(.5px, -.3px) } 75% { transform: translate(-.3px, 0) } }
+.rock-shake { animation: rock-shake .22s steps(4, end) 1; }
+@keyframes rock-fly { to { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); opacity: 0 } }
+.rock-fly { animation: rock-fly 1s cubic-bezier(.2, .7, .4, 1) forwards; }
+@keyframes rock-chip { 0% { transform: translate(0, 0); opacity: 1 } 60% { transform: translate(calc(var(--dx) * .7), var(--dy)); opacity: 1 } 100% { transform: translate(var(--dx), calc(var(--dy) + 9px)); opacity: 0 } }
+.rock-chip { animation: rock-chip .6s ease-out forwards; }
+@keyframes gem-reveal { 0% { transform: scale(.4); opacity: 0 } 50% { transform: scale(1.25); opacity: 1 } 100% { transform: scale(1); opacity: 1 } }
+.gem-reveal { animation: gem-reveal .7s steps(7, end) .15s both; }
 @media (prefers-reduced-motion: reduce) {
   .press, .lift { transition: none; }
   .press:hover, .lift:hover { transform: none; }
-  .twinkle, .pick-swing, .group:hover .pick-swing { animation: none; }
+  .twinkle, .pick-swing, .group:hover .pick-swing, .pick-strike, .rock-shake, .rock-chip { animation: none; }
 }
 mark.quote { @apply bg-yellow-200 px-0.5; }
 

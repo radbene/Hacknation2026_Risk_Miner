@@ -5,6 +5,7 @@ import { api, unwrap, type Schemas } from '@/api/client'
 import { useApiMutation } from '@/api/hooks'
 import { FeaturesForm, type Features } from '@/components/analysis/FeaturesForm'
 import { Intro } from '@/components/Explain'
+import { MiningLoader } from '@/components/MiningLoader'
 import { PageHeader } from '@/components/PageHeader'
 import { Badge, Button, Card, CardContent, CardHeader, Input, Label, Textarea, useToast } from '@/components/ui'
 
@@ -21,6 +22,7 @@ export default function NewInvestment() {
   const [fx, setFx] = useState<Schemas['FeatureExtractOut'] | null>(null)
   const [features, setFeatures] = useState<Features | null>(null)
   const [busy, setBusy] = useState(false)
+  const [resultId, setResultId] = useState<string | null>(null)
   const ref = useRef<HTMLInputElement>(null)
 
   const extract = useApiMutation<Schemas['FeatureExtractIn'], Schemas['FeatureExtractOut']>({
@@ -31,7 +33,7 @@ export default function NewInvestment() {
   const create = useApiMutation<Schemas['AnalysisCreateIn'], Schemas['AnalysisOut']>({
     fn: async (body) => unwrap(await api.POST('/api/analyses', { body })),
     invalidate: [['analyses']],
-    onSuccess: (a) => navigate({ to: '/analizy/$analysisId', params: { analysisId: a.id }, search: {} }),
+    onSuccess: (a) => setResultId(a.id), // the mining screen shatters the rock first, then opens the result
     onError: (e) => toast({ kind: 'error', title: 'Analiza nie powiodła się', description: String(e) }),
   })
 
@@ -57,6 +59,8 @@ export default function NewInvestment() {
   return (
     <div>
       <PageHeader title="Nowa analiza" />
+      <MiningLoader pending={create.isPending} failed={create.isError}
+        onFinished={() => resultId && navigate({ to: '/analizy/$analysisId', params: { analysisId: resultId }, search: {} })} />
       <Intro can={['wkleić opis albo wgrać dokument (PDF, Word)', 'poprawić odczytane cechy', 'zapisać analizę w „Moich analizach”']}>
         Opisz planowaną inwestycję wodno-kanalizacyjną: zakres i skalę, lokalizację, wartość netto lub brutto, czas realizacji, formułę oraz stan przygotowania terenu, decyzji i uzgodnień. Odczytanie cech trwa 1–2 minuty, bo opis czyta model językowy na naszym serwerze.
       </Intro>

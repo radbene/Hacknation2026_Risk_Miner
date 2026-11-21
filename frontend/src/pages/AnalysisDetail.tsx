@@ -7,6 +7,7 @@ import { FeaturesForm, type Features } from '@/components/analysis/FeaturesForm'
 import { BlockLabel } from '@/components/BlockLabel'
 import { EvidenceChip } from '@/components/evidence/EvidenceChip'
 import { HowCalculated, Intro, Term } from '@/components/Explain'
+import { MiningLoader } from '@/components/MiningLoader'
 import { RiskCodes } from '@/components/LinkStatusBadge'
 import { PageHeader } from '@/components/PageHeader'
 import { StatusBadge } from '@/components/StatusBadge'
@@ -42,6 +43,7 @@ export default function AnalysisDetail() {
       const sm = a.summary as P
       return (
         <div>
+          <MiningLoader pending={recompute.isPending} failed={recompute.isError} title="Przeliczamy ryzyko" />
           <PageHeader back title={a.title}
             description={<>Porównanie z {Number(sm.n_cases ?? 0).toLocaleString('pl-PL')} zakończonymi inwestycjami</>}
             actions={<>
