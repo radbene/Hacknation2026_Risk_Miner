@@ -1411,7 +1411,7 @@
      "content": {
       "application/json": {
        "schema": {
-        "$ref": "#/components/schemas/riskminer__schemas__cases__RelinkIn"
+        "$ref": "#/components/schemas/ProjectRelinkIn"
        }
       }
      }
@@ -3512,7 +3512,7 @@
      "content": {
       "application/json": {
        "schema": {
-        "$ref": "#/components/schemas/riskminer__schemas__review__RelinkIn"
+        "$ref": "#/components/schemas/RelinkIn"
        }
       }
      }
@@ -11829,6 +11829,69 @@
     "title": "ProjectPatch",
     "description": "Expert edit of any input field; every change is audited."
    },
+   "ProjectRelinkIn": {
+    "properties": {
+     "procedure_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Procedure Id"
+     },
+     "ocid": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Ocid"
+     },
+     "notice_number": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notice Number"
+     },
+     "part_no": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Part No"
+     },
+     "comment": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Comment"
+     }
+    },
+    "type": "object",
+    "title": "ProjectRelinkIn",
+    "description": "Pick a candidate, or give an OCID / notice number (triggers a fetch)."
+   },
    "QualityMetrics": {
     "properties": {
      "gold_set": {
@@ -12050,6 +12113,69 @@
      "project_id"
     ],
     "title": "ReanalysisDiff"
+   },
+   "RelinkIn": {
+    "properties": {
+     "procedure_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Procedure Id"
+     },
+     "ocid": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Ocid"
+     },
+     "notice_number": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notice Number"
+     },
+     "part_no": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Part No"
+     },
+     "comment": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Comment"
+     }
+    },
+    "type": "object",
+    "title": "RelinkIn",
+    "description": "Expert relink: a candidate procedure id, or an OCID / BZP notice number (fetched later if unknown)."
    },
    "ReviewActionIn": {
     "properties": {
@@ -12729,132 +12855,6 @@
     },
     "type": "object",
     "title": "WatchIn"
-   },
-   "riskminer__schemas__cases__RelinkIn": {
-    "properties": {
-     "procedure_id": {
-      "anyOf": [
-       {
-        "type": "string",
-        "format": "uuid"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Procedure Id"
-     },
-     "ocid": {
-      "anyOf": [
-       {
-        "type": "string"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Ocid"
-     },
-     "notice_number": {
-      "anyOf": [
-       {
-        "type": "string"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Notice Number"
-     },
-     "part_no": {
-      "anyOf": [
-       {
-        "type": "integer"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Part No"
-     },
-     "comment": {
-      "anyOf": [
-       {
-        "type": "string"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Comment"
-     }
-    },
-    "type": "object",
-    "title": "RelinkIn",
-    "description": "Pick a candidate, or give an OCID / notice number (triggers a fetch)."
-   },
-   "riskminer__schemas__review__RelinkIn": {
-    "properties": {
-     "procedure_id": {
-      "anyOf": [
-       {
-        "type": "string",
-        "format": "uuid"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Procedure Id"
-     },
-     "ocid": {
-      "anyOf": [
-       {
-        "type": "string"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Ocid"
-     },
-     "notice_number": {
-      "anyOf": [
-       {
-        "type": "string"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Notice Number"
-     },
-     "part_no": {
-      "anyOf": [
-       {
-        "type": "integer"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Part No"
-     },
-     "comment": {
-      "anyOf": [
-       {
-        "type": "string"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Comment"
-     }
-    },
-    "type": "object",
-    "title": "RelinkIn",
-    "description": "Expert relink: a candidate procedure id, or an OCID / BZP notice number (fetched later if unknown)."
    }
   }
  }

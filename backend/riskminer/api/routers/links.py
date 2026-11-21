@@ -10,7 +10,7 @@ from sqlalchemy import func, select
 
 from riskminer.api.deps import DB, USER, CurrentUser, Session
 from riskminer.models import Entity, Procedure, Project, ProjectProcedure
-from riskminer.schemas.cases import LinkCandidate, LinkComponent, LinkOut, RelinkIn
+from riskminer.schemas.cases import LinkCandidate, LinkComponent, LinkOut, ProjectRelinkIn
 from riskminer.schemas.common import Page
 
 router = APIRouter(tags=["links"])
@@ -112,7 +112,7 @@ def _cand(c) -> LinkCandidate:
 
 
 @router.post("/projects/{project_id}/relink", response_model=LinkOut)
-def relink(project_id: uuid.UUID, body: RelinkIn, db: Session = DB, user: CurrentUser = USER):
+def relink(project_id: uuid.UUID, body: ProjectRelinkIn, db: Session = DB, user: CurrentUser = USER):
     """Expert relink: pick a candidate, or give an OCID / notice number (fetches it). Stored as override."""
     from riskminer.link.matcher import link_project
     from riskminer.review.audit import ReviewError

@@ -3302,6 +3302,22 @@ export interface components {
             /** Comment */
             comment?: string | null;
         };
+        /**
+         * ProjectRelinkIn
+         * @description Pick a candidate, or give an OCID / notice number (triggers a fetch).
+         */
+        ProjectRelinkIn: {
+            /** Procedure Id */
+            procedure_id?: string | null;
+            /** Ocid */
+            ocid?: string | null;
+            /** Notice Number */
+            notice_number?: string | null;
+            /** Part No */
+            part_no?: number | null;
+            /** Comment */
+            comment?: string | null;
+        };
         /** QualityMetrics */
         QualityMetrics: {
             /** Gold Set */
@@ -3383,6 +3399,22 @@ export interface components {
             }[];
             /** Closed */
             closed?: components["schemas"]["EventOut"][];
+        };
+        /**
+         * RelinkIn
+         * @description Expert relink: a candidate procedure id, or an OCID / BZP notice number (fetched later if unknown).
+         */
+        RelinkIn: {
+            /** Procedure Id */
+            procedure_id?: string | null;
+            /** Ocid */
+            ocid?: string | null;
+            /** Notice Number */
+            notice_number?: string | null;
+            /** Part No */
+            part_no?: number | null;
+            /** Comment */
+            comment?: string | null;
         };
         /** ReviewActionIn */
         ReviewActionIn: {
@@ -3615,38 +3647,6 @@ export interface components {
              * @default true
              */
             watched: boolean;
-        };
-        /**
-         * RelinkIn
-         * @description Pick a candidate, or give an OCID / notice number (triggers a fetch).
-         */
-        riskminer__schemas__cases__RelinkIn: {
-            /** Procedure Id */
-            procedure_id?: string | null;
-            /** Ocid */
-            ocid?: string | null;
-            /** Notice Number */
-            notice_number?: string | null;
-            /** Part No */
-            part_no?: number | null;
-            /** Comment */
-            comment?: string | null;
-        };
-        /**
-         * RelinkIn
-         * @description Expert relink: a candidate procedure id, or an OCID / BZP notice number (fetched later if unknown).
-         */
-        riskminer__schemas__review__RelinkIn: {
-            /** Procedure Id */
-            procedure_id?: string | null;
-            /** Ocid */
-            ocid?: string | null;
-            /** Notice Number */
-            notice_number?: string | null;
-            /** Part No */
-            part_no?: number | null;
-            /** Comment */
-            comment?: string | null;
         };
     };
     responses: never;
@@ -4403,7 +4403,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["riskminer__schemas__cases__RelinkIn"];
+                "application/json": components["schemas"]["ProjectRelinkIn"];
             };
         };
         responses: {
@@ -5427,7 +5427,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["riskminer__schemas__review__RelinkIn"];
+                "application/json": components["schemas"]["RelinkIn"];
             };
         };
         responses: {

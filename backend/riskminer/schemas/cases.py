@@ -200,7 +200,7 @@ class LinkOut(ReviewFields):
     rank: int = 1
 
 
-class RelinkIn(BaseModel):
+class ProjectRelinkIn(BaseModel):
     """Pick a candidate, or give an OCID / notice number (triggers a fetch)."""
 
     procedure_id: uuid.UUID | None = None
