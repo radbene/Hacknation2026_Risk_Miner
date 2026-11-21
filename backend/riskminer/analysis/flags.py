@@ -59,11 +59,32 @@ def _signal_codes(sentence: str, session: Session | None) -> list[str]:
     return out
 
 
-def neighbour_history(session: Session, neighbour_ids: list[uuid.UUID]) -> dict[str, dict[str, Any]]:
-    """{R-code: {k: #neighbours with an event of that code, events:[…]}} from the neighbours' events."""
+def neighbour_history(session: Session, neighbour_ids: list[uuid.UUID], cases: list | None = None) -> dict[str, dict[str, Any]]:
+    """{R-code: {k: #neighbours with an event of that code, events:[…]}}.
+
+    Deep-tier neighbours: their events (rules + expert decisions). Auto-tier neighbours have no event rows, so
+    their contract-change reasons (BZP section 7.x / 5.4) are classified to R-codes with the same rule classifier.
+    """
+    from riskminer.extract.reasons import classify_reason
+
     out: dict[str, dict[str, Any]] = defaultdict(lambda: {"projects": set(), "events": []})
     if not neighbour_ids:
         return {}
+    with_events = set(session.execute(select(Event.project_id).where(Event.project_id.in_(neighbour_ids))).scalars())
+    for c in cases or []:
+        if c.project_id in with_events:
+            continue
+        for ch in c.change_reasons:
+            for h in classify_reason(ch.get("reason")):
+                if not h.code.startswith("R"):
+                    continue
+                d = out[h.code]
+                d["projects"].add(c.project_id)
+                if len(d["events"]) < 5:
+                    d["events"].append({"event_id": f"{c.project_id}:{h.code}:{len(d['events'])}", "project_id": str(c.project_id),
+                                        "title": f"{c.code}: zmiana umowy ({ch.get('code') or 'podstawa ?'})",
+                                        "cause": ch.get("reason", "")[:300], "quote": ch.get("reason", "")[:300], "match": h.match,
+                                        "evidence_ids": ch.get("evidence_ids", [])[:3]})
     evs = session.execute(select(Event).where(Event.project_id.in_(neighbour_ids), Event.status != "rejected")).scalars()
     for e in evs:
         for code in e.risk_codes or []:
@@ -89,7 +110,7 @@ def build_flags(session: Session, features: dict[str, Any], text: str, neighbour
     # 1. neighbours' history
     nb_ids = [n["case"].project_id for n in neighbours]
     n_nb = len(nb_ids)
-    hist = neighbour_history(session, nb_ids)
+    hist = neighbour_history(session, nb_ids, [n["case"] for n in neighbours])
     for code, h in sorted(hist.items(), key=lambda kv: -kv[1]["k"]):
         share = h["k"] / n_nb if n_nb else 0
         if h["k"] >= 2 and share >= 0.25:
