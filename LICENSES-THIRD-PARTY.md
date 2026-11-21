@@ -2,7 +2,7 @@
 
 Plik generowany: `cd backend && uv run riskminer licences --check` (źródła: `backend/uv.lock`, `frontend/package-lock.json`, `config/settings.example.yaml`). Kod projektu: **Apache-2.0**.
 
-- zależności Python: 150, npm: 223
+- zależności Python: 150, npm: 225
 - **GPL/AGPL: 0** ✓
 - wymagające uwagi (LGPL/MPL): 15 – certifi (Mozilla Public License 2.0 (MPL 2.0)), psycopg (LGPL-3.0-only), psycopg-binary (LGPL-3.0-only), lightningcss (MPL-2.0), lightningcss-android-arm64 (MPL-2.0), lightningcss-darwin-arm64 (MPL-2.0), lightningcss-darwin-x64 (MPL-2.0), lightningcss-freebsd-x64 (MPL-2.0), lightningcss-linux-arm-gnueabihf (MPL-2.0), lightningcss-linux-arm64-gnu (MPL-2.0), lightningcss-linux-arm64-musl (MPL-2.0), lightningcss-linux-x64-gnu (MPL-2.0), lightningcss-linux-x64-musl (MPL-2.0), lightningcss-win32-arm64-msvc (MPL-2.0), lightningcss-win32-x64-msvc (MPL-2.0)
 - bez deklaracji licencji w metadanych: 0
@@ -35,7 +35,7 @@ Plik generowany: `cd backend && uv run riskminer licences --check` (źródła: `
 | azure_eu: openai/- | usługa API (OpenAI Services Agreement) | przetwarzanie: eu |
 | gemini: gemini/- | usługa API (Google Gemini API Terms) | przetwarzanie: non_eu |
 | gemini_vertex_eu: gemini/- | usługa API (Google Gemini API Terms) | przetwarzanie: eu |
-| local_bielik: openai/SpeakLeash/bielik-11b-v2.3-instruct:Q4_K_M | Apache-2.0 (SpeakLeash Bielik 11B v2.x) | przetwarzanie: local |
+| local_bielik: openai_compatible/riskminer-bielik | Apache-2.0 (SpeakLeash Bielik 11B v2.x) | przetwarzanie: local |
 | sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 | Apache-2.0 | embeddingi, lokalnie (opcjonalnie) |
 
 ## Python (backend/uv.lock)
@@ -141,6 +141,7 @@ Plik generowany: `cd backend && uv run riskminer licences --check` (źródła: `
 | @emnapi/runtime | 1.11.3 | MIT | ok (dev) |
 | @emnapi/wasi-threads | 2.2.0 | MIT | ok (dev) |
 | @emnapi/wasi-threads | 1.2.3 | MIT | ok (dev) |
+| @fontsource-variable/inter | 5.3.0 | OFL-1.1 | ok |
 | @jridgewell/gen-mapping | 0.3.13 | MIT | ok (dev) |
 | @jridgewell/remapping | 2.3.5 | MIT | ok (dev) |
 | @jridgewell/resolve-uri | 3.1.3 | MIT | ok (dev) |
@@ -327,6 +328,7 @@ Plik generowany: `cd backend && uv run riskminer licences --check` (źródła: `
 | react | 19.3.1 | MIT | ok |
 | react-compiler-runtime | 1.0.0 | MIT | ok |
 | react-dom | 19.3.1 | MIT | ok |
+| react-is | 19.3.1 | MIT | ok |
 | react-redux | 9.3.1 | MIT | ok |
 | recharts | 3.11.0 | MIT | ok |
 | redux | 5.0.1 | MIT | ok |
