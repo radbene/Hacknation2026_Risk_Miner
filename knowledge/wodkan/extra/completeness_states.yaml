@@ -1,0 +1,8 @@
+# From "Porady – Brak dokumentu a brak działania": the four non-equivalent states.
+sector: wodkan
+name: completeness_states
+rows:
+- {state: nie_ma_w_paczce, label: "nie ma w paczce", meaning: "dokumentu nie przekazano / nie pozyskano – nie znaczy, że nie istnieje"}
+- {state: dokument_nie_wspomina, label: "dokument nie wspomina", meaning: "dostępny dokument nie zawiera informacji"}
+- {state: brak_potwierdzenia, label: "brak potwierdzenia", meaning: "są przesłanki, ale brak dowodu"}
+- {state: potwierdzono_niewykonanie, label: "potwierdzono, że nie wykonano", meaning: "dowód, że czynność/element nie został wykonany"}

@@ -1,0 +1,67 @@
+# RISK MINER – full stack: db, api, worker, web, caddy (auto-HTTPS).
+#   local:  docker compose up -d db          (dev: API/web run from the host, see Makefile)
+#   server: DOMAIN=riskminer.example.org docker compose --profile prod up -d --build
+name: riskminer
+
+x-backend: &backend
+  build: { context: ., dockerfile: backend/Dockerfile }
+  env_file: [.env]
+  environment:
+    DATABASE_URL: postgresql+psycopg://riskminer:${POSTGRES_PASSWORD:-riskminer}@db:5432/riskminer
+    SETTINGS_FILE: /app/config/settings.yaml
+  volumes:
+    - ./config:/app/config:ro
+    - ./knowledge:/app/knowledge
+    - ./data:/app/data
+    - ./exports:/app/exports
+  depends_on:
+    db: { condition: service_healthy }
+  restart: unless-stopped
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: riskminer
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-riskminer}
+      POSTGRES_DB: riskminer
+    ports: ["127.0.0.1:${DB_PORT:-55432}:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U riskminer -d riskminer"]
+      interval: 3s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    <<: *backend
+    profiles: [prod]
+    command: ["sh", "-c", "alembic upgrade head && uvicorn riskminer.api.main:app --host 0.0.0.0 --port 8040 --proxy-headers"]
+    expose: ["8040"]
+
+  worker:
+    <<: *backend
+    profiles: [prod]
+    command: ["riskminer", "worker"]
+
+  web:
+    build: { context: frontend, dockerfile: Dockerfile }
+    profiles: [prod]
+    expose: ["80"]
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    profiles: [prod]
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on: [api, web]
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  caddy_data:

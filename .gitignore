@@ -1,0 +1,12 @@
+config/settings.yaml
+data/
+data/llm_cache/
+*.egg-info/
+.env
+frontend/dist/
+.llm_cache/calls.jsonl
+node_modules/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.venv/

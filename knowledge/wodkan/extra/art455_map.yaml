@@ -1,0 +1,8 @@
+sector: wodkan
+name: art455_map
+rows:
+- {basis: "art. 455 ust. 1 pkt 1", code: "455.1.1", change_type: przewidziana, note: "zmiana przewidziana w dokumentach – ryzyko zidentyfikowane i zaadresowane klauzulą", status: draft}
+- {basis: "art. 455 ust. 1 pkt 2", code: "455.1.2", change_type: wykonawca, default_risk_codes: [R12], status: draft}
+- {basis: "art. 455 ust. 1 pkt 3", code: "455.1.3", change_type: dodatkowe, default_risk_codes: [R01, R07], status: draft}
+- {basis: "art. 455 ust. 1 pkt 4", code: "455.1.4", change_type: nieprzewidziana, default_risk_codes: [R07], note: "brak klauzuli przewidującej zmianę – kandydat na rekomendację klauzuli pkt 1", status: draft}
+- {basis: "art. 455 ust. 2", code: "455.2", change_type: de_minimis, status: draft}

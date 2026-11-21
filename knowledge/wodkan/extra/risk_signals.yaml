@@ -1,0 +1,19 @@
+# Seed patterns for the rule pre-labeler (extract/rules.py, extract/reasons.py). Draft – S2 extends.
+sector: wodkan
+name: risk_signals
+rows:
+- {code: R01, patterns: [zakres, roboty dodatkowe, roboty zamienne, pominięt, przedmiar, niespójn, rozbieżnoś], status: draft}
+- {code: R02, patterns: [warunki gruntowe, wody gruntowe, geotechni, nieinwentaryzowan, niezinwentaryzowan, stan istniejący, kurzawk, grunt nienośn], status: draft}
+- {code: R03, patterns: [służebnoś, kolizj, dostęp do terenu, właściciel, wejście na teren, prawo do dysponowania, wywłaszcz, zgod. właściciel], status: draft}
+- {code: R04, patterns: [pozwoleni, decyzj, uzgodnieni, warunki techniczne, operat wodnoprawny, zezwoleni, ZRID, gestor, zarządca drogi], status: draft}
+- {code: R05, patterns: [odpowiedzialnoś, podział, po stronie zamawiającego, po stronie wykonawcy, spór], status: draft}
+- {code: R06, patterns: [harmonogram, termin nierealny, okres zimowy, warunki atmosferyczne, opady, mrozy, zależnoś], status: draft}
+- {code: R07, patterns: [nieprzewidzian, roboty dodatkowe, okoliczności, których zamawiający nie mógł przewidzieć, art. 455 ust. 1 pkt 4, wstrzyman], status: draft}
+- {code: R08, patterns: [ryczałt, kosztorysow, waloryzacj, wynagrodzenie ryczałtowe, zmiana cen, inflacj], status: draft}
+- {code: R09, patterns: [parametr, wymagania techniczne, równoważn, specyfikacj, STWiORB, niejednoznaczn], status: draft}
+- {code: R10, patterns: [rozruch, odbiór, próby, badania, odbioru końcowego, parametry technologiczne], status: draft}
+- {code: R11, patterns: [odwołanie, KIO, jedna oferta, jedną ofertę, unieważni, ograniczenie konkurencji, wadium], status: draft}
+- {code: R12, patterns: [wykonawca, podwykonaw, dostaw, materiałów, upadłoś, likwidacj, brak potencjału, sprzęt, zamiana materiałów], status: draft}
+- {code: R13, patterns: [przekracza kwotę, kwotę, jaką zamawiający zamierza przeznaczyć, art. 255 pkt 3, dofinansowani, budżet, środki finansowe, płatnoś], status: draft}
+- {code: R14, patterns: [eksploatacj, koszty utrzymania, energochłonn, serwis], status: draft}
+- {code: R15, patterns: [efekt ekologiczny, RLM, przyłączeń, wskaźnik, efekt projektu, jakość wody, parametry ścieków], status: draft}

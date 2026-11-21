@@ -1,0 +1,12 @@
+sector: wodkan
+name: similarity_weights
+rows:
+- {component: subsector_main, weight: 0.25, status: draft}
+- {component: subsector_extra, weight: 0.05, status: draft}
+- {component: work_type, weight: 0.10, status: draft}
+- {component: formula, weight: 0.10, status: draft}
+- {component: value, weight: 0.15, status: draft}
+- {component: length_km, weight: 0.10, status: draft}
+- {component: voivodeship, weight: 0.05, status: draft}
+- {component: tfidf, weight: 0.10, status: draft}
+- {component: embedding, weight: 0.10, status: draft}

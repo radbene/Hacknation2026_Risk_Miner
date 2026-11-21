@@ -1,0 +1,31 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env: { POSTGRES_USER: riskminer, POSTGRES_PASSWORD: riskminer, POSTGRES_DB: riskminer }
+        ports: ["5432:5432"]
+        options: --health-cmd "pg_isready -U riskminer" --health-interval 3s --health-retries 20
+    env:
+      DATABASE_URL: postgresql+psycopg://riskminer:riskminer@localhost:5432/riskminer
+      LLM_MODE: replay
+    defaults: { run: { working-directory: backend } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync
+      - run: uv run ruff check riskminer tests
+      - run: uv run alembic upgrade head
+      - run: uv run pytest -q
+  frontend:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: frontend } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci
+      - run: npm run build

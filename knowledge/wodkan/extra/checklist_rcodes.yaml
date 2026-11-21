@@ -1,0 +1,13 @@
+# Mapping of the 9-point water-supply checklist to R-codes (team proposal, needs expert approval).
+sector: wodkan
+name: checklist_rcodes
+rows:
+- {no: 1, risk_codes: [R01, R15], applies_to: [Sieć wodociągowa, Uzdatnianie i zaopatrzenie w wodę], status: draft}
+- {no: 2, risk_codes: [R01, R15], applies_to: [Sieć wodociągowa], status: draft}
+- {no: 3, risk_codes: [R14, R15], applies_to: [Sieć wodociągowa], status: draft}
+- {no: 4, risk_codes: [R01, R08], applies_to: [Sieć wodociągowa], status: draft}
+- {no: 5, risk_codes: [R04, R15], applies_to: [Sieć wodociągowa], status: draft}
+- {no: 6, risk_codes: [R03], applies_to: [Sieć wodociągowa], status: draft}
+- {no: 7, risk_codes: [R02, R03, R06], applies_to: [Sieć wodociągowa], status: draft}
+- {no: 8, risk_codes: [R04], applies_to: [Sieć wodociągowa], status: draft}
+- {no: 9, risk_codes: [R05], applies_to: [Sieć wodociągowa], status: draft}

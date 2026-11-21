@@ -1,0 +1,130 @@
+[
+ {
+  "submittingOffersDate": null,
+  "procedureResult": null,
+  "organizationCountry": "PL",
+  "orderType": "Works",
+  "contractors": [
+   {
+    "contractorName": "WYKONAWCA PRZYKLADOWY",
+    "contractorCity": "Miejscowosc",
+    "contractorProvince": "PL02",
+    "contractorCountry": "PL",
+    "contractorNationalId": "0000000000"
+   }
+  ],
+  "clientType": "1.1.12",
+  "tenderType": "2.1",
+  "noticeType": "ContractPerformingNotice",
+  "noticeNumber": "2026/BZP 00534981/01",
+  "bzpNumber": "2026/BZP 00534981",
+  "isTenderAmountBelowEU": false,
+  "publicationDate": "2026-11-12T10:28:26.366497Z",
+  "orderObject": "Remont pomieszczeń w bud. nr 3 na potrzeby RCMC",
+  "cpvCode": "45453000-7 (Roboty remontowe i renowacyjne)",
+  "organizationName": "4. Wojskowy Szpital Kliniczny z Polikliniką Samodzielny Publiczny Zakład Opieki Zdrowotnej we Wrocławiu",
+  "organizationCity": "Wrocław",
+  "organizationProvince": "PL02",
+  "organizationNationalId": "8992228956",
+  "organizationId": "5077",
+  "tenderId": "ocds-148610-b37c024f-bf9a-44b2-88b2-231c6508be49",
+  "htmlBody": "<html><head><meta></head><body><header><table><tr><td>Ogłoszenie nr 2026/BZP 00534981 z dnia 2026-11-12</td></tr></table></header><main><h1>Ogłoszenie o wykonaniu umowy<br/> Roboty budowlane<br/> Remont pomieszczeń w bud. nr 3 na potrzeby RCMC </h1><h2>SEKCJA I - ZAMAWIAJĄCY</h2><h3> 1.1.) Nazwa zamawiającego: <span>4. Wojskowy Szpital Kliniczny z Polikliniką Samodzielny Publiczny Zakład Opieki Zdrowotnej we Wrocławiu</span></h3><h3>1.3.) Krajowy Numer Identyfikacyjny: <span>REGON 930090240</span></h3><h3>1.4) Adres zamawiającego</h3><h3>1.4.1.) Ulica: <span>Weigla 5</span></h3><h3>1.4.2.) Miejscowość: <span>Wrocław</span></h3><h3>1.4.3.) Kod pocztowy: <span>50-981</span></h3><h3>1.4.4.) Województwo: <span>dolnośląskie</span></h3><h3>1.4.5.) Kraj: <span>Polska</span></h3><h3>1.4.6.) Lokalizacja NUTS 3: <span>PL514 - Miasto Wrocław</span></h3><h3>1.4.9.) Adres poczty elektronicznej: <span>kontakt@example.invalid</span></h3><h3>1.4.10.) Adres strony internetowej zamawiającego: <span>www.4wsk.pl</span></h3><h3>1.5.) Rodzaj zamawiającego: <span>Zamawiający publiczny - jednostka sektora finansów publicznych - samodzielny publiczny zakład opieki zdrowotnej</span></h3><h2>SEKCJA II – INFORMACJE PODSTAWOWE</h2><h3>2.1.) Identyfikator postępowania: <span>ocds-148610-b37c024f-bf9a-44b2-88b2-231c6508be49</span></h3><h3> 2.2.) Numer ogłoszenia: <span>2026/BZP 00534981</span></h3><h3>2.3.) Wersja ogłoszenia: <span>01</span></h3><h3>2.4.) Data ogłoszenia: <span>2026-11-12</span></h3><h2>SEKCJA III – PODSTAWOWE INFORMACJE O POSTĘPOWANIU W WYNIKU KTÓREGO ZOSTAŁA ZAWARTA UMOWA</h2><h3>3.1.) Charakter zamówienia: </h3><p>Zamówienie klasyczne - wartości równej lub przekraczającej progi unijne</p><h3>3.2.) Zamówienie było poprzedzone ogłoszeniem o zamówieniu albo ogłoszeniem o zamiarze zawarcia umowy w BZP lub Dz. Urz. UE: <span>Tak</span></h3><h3> 3.2.1.) Numer ogłoszenia w BZP lub Dz. Urz. UE: <span>37125-2026</span></h3><h3> 3.3.) Czy zamówienie dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej: </h3><p>Nie</p><h3>3.5.) Tryb udzielenia zamówienia wraz z podstawą prawną: </h3><p>Zamówienie udzielane jest w trybie przetargu nieograniczonego na podstawie: art. 132 ustawy</p><h3>3.6.) Rodzaj zamówienia: </h3><p>Roboty budowlane</p><h3>3.7.) Nazwa zamówienia: </h3><p>Remont pomieszczeń w bud. nr 3 na potrzeby RCMC</p><h3>3.8.) Krótki opis przedmiotu zamówienia: </h3><p>Przedmiot zamówienia obejmuje remont pomieszczeń w budynku nr 3 na potrzeby Regionalnego Centrum mEDYCYNY cYFROWEJ</p><h3>3.9.) Główny kod CPV: <span>45453000-7 - Roboty remontowe i renowacyjne</span></h3><h2>SEKCJA IV – PODSTAWOWE INFORMACJE O ZAWARTEJ UMOWIE</h2><h3>4.1.) Data zawarcia umowy: <span>2025-02-26</span></h3><h3>4.2.) Okres realizacji zamówienia: </h3> 3 miesiące<h3>4.3.) Dane wykonawcy, z którym zawarto umowę: </h3><h3>4.3.1.) Nazwa (firma) wykonawcy, któremu udzielono zamówienia (w przypadku wykonawców ubiegających się wspólnie o udzielenie zamówienia – dotyczy pełnomocnika, o którym mowa w art. 58 ust. 2 ustawy): <span>WYKONAWCA PRZYKLADOWY</span></h3><h3>4.3.4.) Miejscowość: <span>Miejscowosc</span></h3><h3>4.3.6.) Województwo: <span>dolnośląskie</span></h3><h3>4.3.7.) Kraj: <span>Polska</span></h3><h3> 4.4.) Wartość umowy: <span> 897204,90 PLN </span></h3><h3> 4.5.) Numer ogłoszenia o wyniku postępowania zamieszczonego w BZP lub numer ogłoszenia o udzieleniu zamówienia opublikowanego w Dzienniku Urzędowym Unii Europejskiej: <span>37125-2026</span></h3><h2>SEKCJA V PRZEBIEG REALIZACJI UMOWY</h2><h3>5.1.) Czy umowa została wykonana: <span>Tak</span></h3><h3>5.2.) Termin wykonania umowy: <span>2025-06-08</span></h3><h3>5.3.) Czy umowę wykonano w pierwotnie określonym terminie: <span>Nie</span></h3><h3>5.4.) Informacje o zmianach umowy</h3><h3> 5.4.1.) Liczba zmian: <span>1</span></h3><h3> 5.4.2.) Numer zmiany: <span>1</span></h3><h3>5.4.3.) Podstawa prawna zmiany: </h3><p>art. 455 ust. 2 ustawy</p><h3>5.4.4.) Przyczyny dokonania zmian: </h3><p>Zwiększenie zakresu przedmiotu zamówienia o niezbędne prace remontowe oraz zmiana terminu wykonania umowy</p><h3>5.4.5.) Krótki opis zamówienia po zmianie: </h3><p>Wykonanie posadzki betonowej, monumentu pod lodówki niskotemperaturowe i montaż dodatkowego klimatyzatora</p><h3> 5.4.6.) Wartość zmiany: <span>52559,66</span></h3><h3> 5.4.7.) Kod waluty: <span>PLN</span></h3><h3> 5.4.8.) Wzrost ceny w związku ze zmianą umowy/umowy ramowej: <span>Tak</span></h3><h3> 5.5.) Łączna wartość wynagrodzenia wypłacona z tytułu zrealizowanej umowy: <span> 949764,56 PLN </span></h3><h3> 5.6.) Czy umowa została wykonana należycie: <span>Tak</span></h3><h3> 5.7.) Podczas realizacji zamówienia zamawiający kontrolował przewidziane w zawartej umowie wymagania: </h3><p>nie dotyczy</p></main><footer><table><tr><td>2026-11-12 Biuletyn Zamówień Publicznych</td><td>Ogłoszenie o wykonaniu umowy - Zamówienie udzielane jest w trybie przetargu nieograniczonego na podstawie: art. 132 ustawy - Roboty budowlane</td></tr></table></footer></body></html>",
+  "objectId": "08df40a7-afd7-e1d2-c1c5-d50001940d2a"
+ },
+ {
+  "submittingOffersDate": null,
+  "procedureResult": null,
+  "organizationCountry": "PL",
+  "orderType": "Works",
+  "contractors": [
+   {
+    "contractorName": "WYKONAWCA PRZYKLADOWY",
+    "contractorCity": "Miejscowosc",
+    "contractorProvince": "PL02",
+    "contractorCountry": "PL",
+    "contractorNationalId": "0000000000"
+   }
+  ],
+  "clientType": "1.1.2",
+  "tenderType": "1.1.1",
+  "noticeType": "ContractPerformingNotice",
+  "noticeNumber": "2026/BZP 00535773/01",
+  "bzpNumber": "2026/BZP 00535773",
+  "isTenderAmountBelowEU": true,
+  "publicationDate": "2026-11-12T12:46:39.520517Z",
+  "orderObject": "Przebudowa i rozbudowa budynku szkoły podstawowej w Nienadowej",
+  "cpvCode": "45000000-7 (Roboty budowlane),45112000-5 (Roboty w zakresie usuwania gleby)",
+  "organizationName": "MIASTO I GMINA DUBIECKO",
+  "organizationCity": "Dubiecko",
+  "organizationProvince": "PL18",
+  "organizationNationalId": "7952311403",
+  "organizationId": "3934",
+  "tenderId": "ocds-148610-4f3a639b-fa49-4a90-a7fd-2eee29f831ce",
+  "htmlBody": "<html><head><meta></head><body><header><table><tr><td>Ogłoszenie nr 2026/BZP 00535773 z dnia 2026-11-12</td></tr></table></header><main><h1>Ogłoszenie o wykonaniu umowy<br/> Roboty budowlane<br/> Przebudowa i rozbudowa budynku szkoły podstawowej w Nienadowej </h1><h2>SEKCJA I - ZAMAWIAJĄCY</h2><h3> 1.1.) Nazwa zamawiającego: <span>MIASTO I GMINA DUBIECKO</span></h3><h3>1.3.) Krajowy Numer Identyfikacyjny: <span>REGON 650900453</span></h3><h3>1.5.) Rodzaj zamawiającego: <span>Zamawiający publiczny - jednostka sektora finansów publicznych - jednostka samorządu terytorialnego</span></h3><h2>SEKCJA II – INFORMACJE PODSTAWOWE</h2><h3>2.1.) Identyfikator postępowania: <span>ocds-148610-4f3a639b-fa49-4a90-a7fd-2eee29f831ce</span></h3><h3> 2.2.) Numer ogłoszenia: <span>2026/BZP 00535773</span></h3><h3>2.3.) Wersja ogłoszenia: <span>01</span></h3><h3>2.4.) Data ogłoszenia: <span>2026-11-12</span></h3><h2>SEKCJA III – PODSTAWOWE INFORMACJE O POSTĘPOWANIU W WYNIKU KTÓREGO ZOSTAŁA ZAWARTA UMOWA</h2><h3>3.1.) Charakter zamówienia: </h3><p>Zamówienie klasyczne - od kwoty określonej w art. 2 ust. 1 pkt 1 ustawy, ale o wartości mniejszej niż progi unijne</p><h3>3.2.) Zamówienie było poprzedzone ogłoszeniem o zamówieniu albo ogłoszeniem o zamiarze zawarcia umowy w BZP lub Dz. Urz. UE: <span>Tak</span></h3><h3> 3.2.1.) Numer ogłoszenia w BZP lub Dz. Urz. UE: <span>2025/BZP 00498554</span></h3><h3> 3.3.) Czy zamówienie dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej: </h3><p>Tak</p><h3>3.4.) Nazwa projektu lub programu: </h3><p>„Integracyjny Rozwój Szkolnej Infrastruktury: edukacja i innowacja w Gminie Dubiecko”, realizowanego w ramach programu Fundusze Europejskie dla Podkarpacia na lata 2021–2027</p><h3>3.5.) Tryb udzielenia zamówienia wraz z podstawą prawną: </h3><p>Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 1 ustawy</p><h3>3.6.) Rodzaj zamówienia: </h3><p>Roboty budowlane</p><h3>3.7.) Nazwa zamówienia: </h3><p>Przebudowa i rozbudowa budynku szkoły podstawowej w Nienadowej</p><h3>3.8.) Krótki opis przedmiotu zamówienia: </h3><p>1. Przedmiotem zamówienia jest przebudowa i rozbudowa budynku szkoły podstawowej w Nienadowej wraz z zagospodarowaniem terenu i infrastrukturą towarzyszącą – zewnętrzną instalacją gazu. [skrócono w próbce]</p><h3>3.9.) Główny kod CPV: <span>45000000-7 - Roboty budowlane</span></h3><h3>3.10.) Dodatkowy kod CPV: <span><p>45112000-5 - Roboty w zakresie usuwania gleby</p><p>45262311-4 - Betonowanie konstrukcji</p></span></h3><h2>SEKCJA IV – PODSTAWOWE INFORMACJE O ZAWARTEJ UMOWIE</h2><h3>4.1.) Data zawarcia umowy: <span>2025-12-23</span></h3><h3>4.2.) Okres realizacji zamówienia: </h3> 300 dni<h3>4.3.) Dane wykonawcy, z którym zawarto umowę: </h3><h3>4.3.1.) Nazwa (firma) wykonawcy, któremu udzielono zamówienia (w przypadku wykonawców ubiegających się wspólnie o udzielenie zamówienia – dotyczy pełnomocnika, o którym mowa w art. 58 ust. 2 ustawy): <span>WYKONAWCA PRZYKLADOWY</span></h3><h3>4.3.2.) Krajowy Numer Identyfikacyjny: <span>0000000000</span></h3><h3>4.3.4.) Miejscowość: <span>Miejscowosc</span></h3><h3>4.3.6.) Województwo: <span>podkarpackie</span></h3><h3>4.3.7.) Kraj: <span>Polska</span></h3><h3> 4.4.) Wartość umowy: <span> 4410000,00 PLN </span></h3><h3> 4.5.) Numer ogłoszenia o wyniku postępowania zamieszczonego w BZP lub numer ogłoszenia o udzieleniu zamówienia opublikowanego w Dzienniku Urzędowym Unii Europejskiej: <span>2025/BZP 00621677/01</span></h3><h2>SEKCJA V PRZEBIEG REALIZACJI UMOWY</h2><h3>5.1.) Czy umowa została wykonana: <span>Nie</span></h3><h3>5.4.) Informacje o zmianach umowy</h3><h3> 5.4.1.) Liczba zmian: <span>0</span></h3><h3> 5.5.) Łączna wartość wynagrodzenia wypłacona z tytułu zrealizowanej umowy: <span> 0 PLN </span></h3><h3> 5.6.) Czy umowa została wykonana należycie: <span>Nie</span></h3><h3> 5.7.) Podczas realizacji zamówienia zamawiający kontrolował przewidziane w zawartej umowie wymagania: </h3><p>nie dotyczy</p></main><footer><table><tr><td>2026-11-12 Biuletyn Zamówień Publicznych</td><td>Ogłoszenie o wykonaniu umowy - Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 1 ustawy - Roboty budowlane</td></tr></table></footer></body></html>",
+  "objectId": "08df40ba-ff0d-97e5-c1c5-d5000194110b"
+ },
+ {
+  "submittingOffersDate": null,
+  "procedureResult": "uniewaznienie",
+  "organizationCountry": "PL",
+  "orderType": "Works",
+  "contractors": [
+   {
+    "contractorName": "WYKONAWCA PRZYKLADOWY",
+    "contractorCity": "Miejscowosc",
+    "contractorProvince": "PL02",
+    "contractorCountry": "PL",
+    "contractorNationalId": "0000000000"
+   }
+  ],
+  "clientType": "1.1.2",
+  "tenderType": "1.1.1",
+  "noticeType": "TenderResultNotice",
+  "noticeNumber": "2026/BZP 00536300/01",
+  "bzpNumber": "2026/BZP 00536300",
+  "isTenderAmountBelowEU": true,
+  "publicationDate": "2026-11-12T14:16:04.8718859Z",
+  "orderObject": "Remont budynku hali sportowej przy ul. Ludowej w Koluszkach.",
+  "cpvCode": "45000000-7 (Roboty budowlane),45212290-5 (Usługi napraw i konserwacji obiektów sportowych)",
+  "organizationName": "Gmina Koluszki",
+  "organizationCity": "Koluszki",
+  "organizationProvince": "PL10",
+  "organizationNationalId": "7282471753",
+  "organizationId": "6621",
+  "tenderId": "ocds-148610-15d250af-882b-4106-953b-59805fd70d5b",
+  "htmlBody": "<html><head><meta></head><body><header><table><tr><td>Ogłoszenie nr 2026/BZP 00536300 z dnia 2026-11-12</td></tr></table></header><main><h1>Ogłoszenie o wyniku postępowania<br/> Roboty budowlane<br/> Remont budynku hali sportowej przy ul. Ludowej w Koluszkach. </h1><h2>SEKCJA I - ZAMAWIAJĄCY</h2><h3>1.1.) Rola zamawiającego </h3>Postępowanie prowadzone jest samodzielnie przez zamawiającego <h3>1.2.) Nazwa zamawiającego: <span>Gmina Koluszki</span></h3><h3>1.4) Krajowy Numer Identyfikacyjny: <span>REGON 590648362</span></h3><h3>1.7.) Rodzaj zamawiającego: <span>Zamawiający publiczny - jednostka sektora finansów publicznych - jednostka samorządu terytorialnego</span></h3><h3>1.8.) Przedmiot działalności zamawiającego: <span>Ogólne usługi publiczne</span></h3><h2>SEKCJA II – INFORMACJE PODSTAWOWE</h2><h3>2.1.) Ogłoszenie dotyczy: </h3><p> Zamówienia publicznego </p><h3>2.2.) Ogłoszenie dotyczy usług społecznych i innych szczególnych usług: <span>Nie</span></h3><h3>2.3.) Nazwa zamówienia albo umowy ramowej: </h3> Remont budynku hali sportowej przy ul. Ludowej w Koluszkach. <h3>2.4.) Identyfikator postępowania: <span>ocds-148610-15d250af-882b-4106-953b-59805fd70d5b</span></h3><h3>2.5.) Numer ogłoszenia: <span>2026/BZP 00536300</span></h3><h3>2.6.) Wersja ogłoszenia: <span>01</span></h3><h3>2.7.) Data ogłoszenia: <span>2026-11-12</span></h3><h3>2.8.) Zamówienie albo umowa ramowa zostały ujęte w planie postępowań: <span>Tak</span></h3><h3>2.9.) Numer planu postępowań w BZP: <span>2026/BZP 00048545/08/P</span></h3><h3>2.10.) Identyfikator pozycji planu postępowań: </h3><p>1.1.12 Remont budynku hali sportowej przy ul. Ludowej w Koluszkach.</p><h3>2.11.) Czy zamówienie albo umowa ramowa dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej: <span>Nie</span></h3><h3>2.13.) Zamówienie/umowa ramowa było poprzedzone ogłoszeniem o zamówieniu/ogłoszeniem o zamiarze zawarcia umowy: <span>Tak</span></h3><h3>2.14.) Numer ogłoszenia: <span>2026/BZP 00417774</span></h3><h2>SEKCJA III – TRYB UDZIELENIA ZAMÓWIENIA LUB ZAWARCIA UMOWY RAMOWEJ</h2><h3>3.1.) Tryb udzielenia zamówienia wraz z podstawą prawną <span>Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 1 ustawy</span></h3><h2>SEKCJA IV – PRZEDMIOT ZAMÓWIENIA</h2><h3>4.1.) Numer referencyjny: <span>OPZ.271.74.(37).2026</span></h3><h3>4.2.) Zamawiający udziela zamówienia w częściach, z których każda stanowi przedmiot odrębnego postępowania: <span>Nie</span></h3><h3> 4.3.) Wartość zamówienia: <span> 1769286,54 PLN </span></h3><h3>4.4.) Rodzaj zamówienia: <span>Roboty budowlane</span></h3><h3>4.5.1.) Krótki opis przedmiotu zamówienia</h3><p> 1. Przedmiotem zamówienia jest remont zaplecza sportowego hali sportowej w Koluszkach przy ul. Ludowej 16. [skrócono w próbce]</p><h3>4.5.3.) Główny kod CPV: <span>45000000-7 - Roboty budowlane</span></h3><h3>4.5.4.) Dodatkowy kod CPV: </h3><p>45212290-5 - Usługi napraw i konserwacji obiektów sportowych</p><h2>SEKCJA V ZAKOŃCZENIE POSTĘPOWANIA</h2><h3>5.1.) Postępowanie zakończyło się zawarciem umowy albo unieważnieniem postępowania: <span>Postępowanie/cześć postępowania zakończyła się unieważnieniem</span></h3><h3>5.2.) Podstawa prawna unieważnienia postępowania: <span>art. 255 pkt 3 ustawy</span></h3><h3>5.2.1.) Przyczyna unieważnienia postępowania: </h3>Cena najkorzystniejszej oferty przewyższa kwotę, jaką zamawiający zamierza przeznaczyć na sfinansowanie zamówienia. Zamawiający zweryfikował swoje możliwości finansowe i po ich analizie stwierdził, że nie posiada dodatkowych środków finansowych, które pozwolą na sfinansowanie tego zamówienia po zaoferowanych cenach. <h2>SEKCJA VI OFERTY</h2><h3>6.1.) Liczba otrzymanych ofert lub wniosków: <span>2</span></h3><h3>6.1.1.) Liczba otrzymanych ofert wariantowych: <span>0</span></h3><h3>6.1.2.) Liczba ofert dodatkowych: <span>0</span></h3><h3>6.1.3.) Liczba otrzymanych od MŚP: <span>2</span></h3><h3>6.1.4.) Liczba ofert wykonawców z siedzibą w państwach EOG innych niż państwo zamawiającego: <span>0</span></h3><h3>6.1.5.) Liczba ofert wykonawców z siedzibą w państwie spoza EOG: <span>0</span></h3><h3>6.1.6.) Liczba ofert odrzuconych, w tym liczba ofert zawierających rażąco niską cenę lub koszt: <span>0</span></h3><h3>6.1.7.) Liczba ofert zawierających rażąco niską cenę lub koszt: <span>0</span></h3><h3>6.2.) Cena lub koszt oferty z najniższą ceną lub kosztem: <span>2127026,39 PLN</span></h3><h3>6.3.) Cena lub koszt oferty z najwyższą ceną lub kosztem: <span>2431341,00 PLN</span></h3></main><footer><table><tr><td>2026-11-12 Biuletyn Zamówień Publicznych</td><td>Ogłoszenie o wyniku postępowania - - Roboty budowlane</td></tr></table></footer></body></html>",
+  "objectId": "08df40c7-7cf7-c7b0-c1c5-d50001941394"
+ },
+ {
+  "submittingOffersDate": null,
+  "procedureResult": null,
+  "organizationCountry": "PL",
+  "orderType": "Works",
+  "contractors": [
+   {
+    "contractorName": "WYKONAWCA PRZYKLADOWY",
+    "contractorCity": "Miejscowosc",
+    "contractorProvince": "PL02",
+    "contractorCountry": "PL",
+    "contractorNationalId": "0000000000"
+   }
+  ],
+  "clientType": "1.2",
+  "tenderType": "1.1.2",
+  "noticeType": "AgreementUpdateNotice",
+  "noticeNumber": "2026/BZP 00535376/01",
+  "bzpNumber": "2026/BZP 00535376",
+  "isTenderAmountBelowEU": true,
+  "publicationDate": "2026-11-12T11:43:32.3338005Z",
+  "orderObject": "Przebudowa drogi powiatowej 4798 S – ul. Cmentarna w Rogoźniku",
+  "cpvCode": "45233140-2 (Roboty drogowe)",
+  "organizationName": "Powiatowy Zarząd Dróg w Będzinie z/s w Rogoźniku",
+  "organizationCity": "Rogoźnik",
+  "organizationProvince": "PL24",
+  "organizationNationalId": "6252051129",
+  "organizationId": "8058",
+  "tenderId": "ocds-148610-b70c8b53-ed76-4baa-9531-7ad0c42eb515",
+  "htmlBody": "<html><head><meta></head><body><header><table><tr><td>Ogłoszenie nr 2026/BZP 00535376 z dnia 2026-11-12</td></tr></table></header><main><h1>Ogłoszenie o zmianie umowy<br/> Roboty budowlane<br/> Przebudowa drogi powiatowej 4798 S – ul. Cmentarna w Rogoźniku </h1><h2>SEKCJA I - ZAMAWIAJĄCY</h2><h3>1.1.) Nazwa zamawiającego: <span>Powiatowy Zarząd Dróg w Będzinie z/s w Rogoźniku</span></h3><h3>1.3) Krajowy Numer Identyfikacyjny: <span>REGON 276287370</span></h3><h3>1.5.) Rodzaj zamawiającego: <span>Zamawiający publiczny - inna państwowa jednostka organizacyjna nieposiadająca osobowości prawnej</span></h3><h2>SEKCJA II - INFORMACJE PODSTAWOWE</h2><h3>2.1.) Ogłoszenie dotyczy zmiany: </h3><p> Umowy </p><h3>2.2.) Identyfikator postępowania: <span>ocds-148610-b70c8b53-ed76-4baa-9531-7ad0c42eb515</span></h3><h3>2.3.) Numer ogłoszenia: <span>2026/BZP 00535376</span></h3><h3>2.4.) Wersja ogłoszenia: <span>01</span></h3><h3>2.5.) Data ogłoszenia: <span>2026-11-12</span></h3><h2>SEKCJA III - PODSTAWOWE INFORMACJE O POSTĘPOWANIU W WYNIKU KTÓREGO ZOSTAŁA ZAWARTA UMOWA/UMOWA RAMOWA</h2><h3> 3.1.) Zamówienie/umowa ramowa było poprzedzone ogłoszeniem o zamówieniu/ogłoszeniem o zamiarze zawarcia umowy: <span>Tak</span></h3><h3>3.1.1.) Numer ogłoszenia: <span>2026/BZP 00358303</span></h3><h3> 3.2.) Czy zamówienie albo umowa ramowa dotyczy projektu lub programu współfinansowanego ze środków Unii Europejskiej: <span>Nie</span></h3><h3>3.4.) Tryb udzielenia zamówienia/zawarcia umowy ramowej wraz z podstawą prawną: </h3> Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 2 ustawy <h3>3.5.) Rodzaj zamówienia: </h3> Roboty budowlane <h3>3.6.) Nazwa zamówienia albo umowy ramowej: </h3> Przebudowa drogi powiatowej 4798 S – ul. Cmentarna w Rogoźniku <h3>3.7.) Krótki opis przedmiotu zamówienia: </h3><p>Inwestycja obejmuje przebudowę drogi na długości ok. 797 m wraz z budową kanalizacji deszczowej.</p><h3> 3.8.) Główny kod CPV: <span>45233140-2 - Roboty drogowe</span></h3><h2>SEKCJA IV - PODSTAWOWE INFORMACJE O ZAWARTEJ UMOWIE/UMOWIE RAMOWEJ</h2><h3>4.1.) Data zawarcia umowy/umowy ramowej: <span>2026-09-01</span></h3><h3>4.2.) Okres realizacji zamówienia/umowy ramowej: </h3> 3 miesiące<h3>4.3.) Dane wykonawcy, z którym zawarto umowę/umowę ramową: </h3><h3>4.3.1.) Nazwa (firma) wykonawcy, któremu udzielono zamówienia (w przypadku wykonawców ubiegających się wspólnie o udzielenie zamówienia – dotyczy pełnomocnika, o którym mowa w art. 58 ust. 2 ustawy): <span>WYKONAWCA PRZYKLADOWY</span></h3><h3>4.3.2.) Krajowy Numer Identyfikacyjny: <span>0000000000</span></h3><h3>4.3.4.) Miejscowość: <span>Miejscowosc</span></h3><h3>4.3.6.) Województwo: <span>śląskie</span></h3><h3>4.3.7.) Kraj: <span>Polska</span></h3><h3>4.4.) Wartość umowy/umowy ramowej: <span> 2226630,82 PLN </span></h3><h3>4.5.) Numer ogłoszenia o wyniku postępowania w BZP: <span>2026/BZP 00422218/01</span></h3><h2>SEKCJA V - ZMIANA UMOWY/UMOWY RAMOWEJ</h2><h3>5.1.) Data zmiany umowy/umowy ramowej): <span>2026-11-02</span></h3><h3>5.2.) Podstawa prawna zmiany umowy/umowy ramowej: </h3>art. 455 ust. 1 pkt 3 ustawy <h3>5.3.) Przyczyny dokonania zmian umowy/umowy ramowej: </h3> konieczność realizacji dodatkowych robót <h3>5.4.) Krótki opis zmiany umowy/umowy ramowej: </h3> zwiększenie wynagrodzenia umownego<h3>5.5.) Wartość zmiany umowy</h3><h3>5.5.3.) Wzrost ceny w związku ze zmianą umowy/umowy ramowej: <span>Tak</span></h3><h3> 5.6.) Wcześniejsze zmiany umowy/umowy ramowej, obligujące do zamieszczenia ogłoszenia o zmianie umowy: <span>Nie</span></h3></main><footer><table><tr><td>2026-11-12 Biuletyn Zamówień Publicznych</td><td>Ogłoszenie o zmianie umowy - Zamówienie udzielane jest w trybie podstawowym na podstawie: art. 275 pkt 2 ustawy - Roboty budowlane</td></tr></table></footer></body></html>",
+  "objectId": "08df40b2-2d9e-2a44-c1c5-d50001940f2a"
+ }
+]

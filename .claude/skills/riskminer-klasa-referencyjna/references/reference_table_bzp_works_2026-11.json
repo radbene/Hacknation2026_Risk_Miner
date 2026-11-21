@@ -1,0 +1,435 @@
+{
+ "meta": {
+  "source": "BZP, ogloszenia o wykonaniu umowy, roboty budowlane, opublikowane 2026-11-02..2026-11-13, n=2318 (pobrane 2026-11-16 z API e-Zamowienia)",
+  "n": 2318,
+  "note": "Marginesy by_value policzone jako srednie wazone z by_value_eu (kwantyle przyblizone). Komorki policzone bezposrednio na 2318 umowach.",
+  "bias": "Przekroj z 12 dni publikacji: 82% umow zawarto w 2026 r., wiec dlugie kontrakty sa niedoreprezentowane. Przed uzyciem na powaznie przebuduj tabele z 12-24 miesiecy ogloszen (refclass_build.py).",
+  "definitions": {
+   "late": "zamawiajacy zadeklarowal: umowy nie wykonano w pierwotnie okreslonym terminie (pole 5.3)",
+   "cost_up": "laczna wyplata (5.5) > 101% wartosci umowy (4.4), umowy wykonane",
+   "ratio": "laczna wyplata / wartosc umowy"
+  }
+ },
+ "global": {
+  "n": 2318,
+  "late_pct": 25.4,
+  "cost_up_pct": 26.4,
+  "changed_pct": 39.0,
+  "not_done_pct": 1.0,
+  "ratio_p50": 1.0,
+  "ratio_p80": 1.036,
+  "ratio_p95": 1.166
+ },
+ "by_value": {
+  "1:<200k": {
+   "n": 576,
+   "late_pct": 15.2,
+   "cost_up_pct": 17.0,
+   "changed_pct": 20.6,
+   "not_done_pct": 1.2,
+   "ratio_p50": 1.0,
+   "ratio_p80": 1.0,
+   "ratio_p95": 1.171
+  },
+  "2:200k-1M": {
+   "n": 1162,
+   "late_pct": 20.9,
+   "cost_up_pct": 22.8,
+   "changed_pct": 33.8,
+   "not_done_pct": 1.0,
+   "ratio_p50": 1.0,
+   "ratio_p80": 1.027,
+   "ratio_p95": 1.155
+  },
+  "3:1-5M": {
+   "n": 453,
+   "late_pct": 41.4,
+   "cost_up_pct": 40.1,
+   "changed_pct": 63.6,
+   "not_done_pct": 0.7,
+   "ratio_p50": 1.018,
+   "ratio_p80": 1.062,
+   "ratio_p95": 1.2
+  },
+  "4:>=5M": {
+   "n": 127,
+   "late_pct": 56.7,
+   "cost_up_pct": 53.5,
+   "changed_pct": 81.1,
+   "not_done_pct": 1.6,
+   "ratio_p50": 1.021,
+   "ratio_p80": 1.074,
+   "ratio_p95": 1.195
+  }
+ },
+ "by_period": {
+  "a:<=60d": {
+   "n": 645,
+   "late_pct": 16.9,
+   "cost_up_pct": 19.2,
+   "changed_pct": 26,
+   "not_done_pct": 0.6,
+   "ratio_p50": 1,
+   "ratio_p80": 1.004,
+   "ratio_p95": 1.153
+  },
+  "b:61-120d": {
+   "n": 807,
+   "late_pct": 21,
+   "cost_up_pct": 21.8,
+   "changed_pct": 33.1,
+   "not_done_pct": 1.1,
+   "ratio_p50": 1,
+   "ratio_p80": 1.018,
+   "ratio_p95": 1.149
+  },
+  "c:121-240d": {
+   "n": 562,
+   "late_pct": 26.9,
+   "cost_up_pct": 30.8,
+   "changed_pct": 44,
+   "not_done_pct": 1.2,
+   "ratio_p50": 1,
+   "ratio_p80": 1.051,
+   "ratio_p95": 1.202
+  },
+  "d:241-480d": {
+   "n": 199,
+   "late_pct": 48.7,
+   "cost_up_pct": 48.7,
+   "changed_pct": 70.4,
+   "not_done_pct": 1,
+   "ratio_p50": 1.009,
+   "ratio_p80": 1.1,
+   "ratio_p95": 1.222
+  },
+  "e:>480d": {
+   "n": 104,
+   "late_pct": 60.6,
+   "cost_up_pct": 40.2,
+   "changed_pct": 77.9,
+   "not_done_pct": 1.9,
+   "ratio_p50": 1,
+   "ratio_p80": 1.076,
+   "ratio_p95": 1.237
+  },
+  "x:brak": {
+   "n": 1,
+   "late_pct": 0,
+   "cost_up_pct": 0,
+   "changed_pct": 0,
+   "not_done_pct": 0,
+   "ratio_p50": 1,
+   "ratio_p80": 1,
+   "ratio_p95": 1
+  }
+ },
+ "by_value_period": {
+  "1:<200k|a:<=60d": {
+   "n": 292,
+   "late_pct": 14.4,
+   "cost_up_pct": 18.8,
+   "changed_pct": 20.5,
+   "not_done_pct": 1.4,
+   "ratio_p50": 1,
+   "ratio_p80": 1,
+   "ratio_p95": 1.188
+  },
+  "1:<200k|b:61-120d": {
+   "n": 215,
+   "late_pct": 14.9,
+   "cost_up_pct": 15.9,
+   "changed_pct": 20.5,
+   "not_done_pct": 0.5,
+   "ratio_p50": 1,
+   "ratio_p80": 1,
+   "ratio_p95": 1.16
+  },
+  "1:<200k|c:121-240d": {
+   "n": 60,
+   "late_pct": 20.3,
+   "cost_up_pct": 13.8,
+   "changed_pct": 20,
+   "not_done_pct": 3.3,
+   "ratio_p50": 1,
+   "ratio_p80": 1,
+   "ratio_p95": 1.149
+  },
+  "1:<200k|d:241-480d": {
+   "n": 7,
+   "late_pct": 14.3,
+   "cost_up_pct": 14.3,
+   "changed_pct": 14.3,
+   "not_done_pct": 0,
+   "ratio_p50": 1,
+   "ratio_p80": 1,
+   "ratio_p95": 1
+  },
+  "1:<200k|e:>480d": {
+   "n": 2,
+   "late_pct": 0,
+   "cost_up_pct": 0,
+   "changed_pct": 100,
+   "not_done_pct": 0,
+   "ratio_p50": 1,
+   "ratio_p80": 1,
+   "ratio_p95": 1
+  },
+  "2:200k-1M|a:<=60d": {
+   "n": 321,
+   "late_pct": 19.6,
+   "cost_up_pct": 20,
+   "changed_pct": 29.9,
+   "not_done_pct": 0,
+   "ratio_p50": 1,
+   "ratio_p80": 1,
+   "ratio_p95": 1.15
+  },
+  "2:200k-1M|b:61-120d": {
+   "n": 495,
+   "late_pct": 19.8,
+   "cost_up_pct": 22,
+   "changed_pct": 32.9,
+   "not_done_pct": 1.6,
+   "ratio_p50": 1,
+   "ratio_p80": 1.02,
+   "ratio_p95": 1.147
+  },
+  "2:200k-1M|c:121-240d": {
+   "n": 295,
+   "late_pct": 20,
+   "cost_up_pct": 24,
+   "changed_pct": 35.6,
+   "not_done_pct": 1,
+   "ratio_p50": 1,
+   "ratio_p80": 1.024,
+   "ratio_p95": 1.191
+  },
+  "2:200k-1M|d:241-480d": {
+   "n": 38,
+   "late_pct": 37.8,
+   "cost_up_pct": 40.5,
+   "changed_pct": 60.5,
+   "not_done_pct": 2.6,
+   "ratio_p50": 1,
+   "ratio_p80": 1.132,
+   "ratio_p95": 1.23
+  },
+  "2:200k-1M|e:>480d": {
+   "n": 12,
+   "late_pct": 66.7,
+   "cost_up_pct": 41.7,
+   "changed_pct": 50,
+   "not_done_pct": 0,
+   "ratio_p50": 1,
+   "ratio_p80": 1.036,
+   "ratio_p95": 1.085
+  },
+  "2:200k-1M|x:brak": {
+   "n": 1,
+   "late_pct": 0,
+   "cost_up_pct": 0,
+   "changed_pct": 0,
+   "not_done_pct": 0,
+   "ratio_p50": 1,
+   "ratio_p80": 1,
+   "ratio_p95": 1
+  },
+  "3:1-5M|a:<=60d": {
+   "n": 31,
+   "late_pct": 9.7,
+   "cost_up_pct": 12.9,
+   "changed_pct": 35.5,
+   "not_done_pct": 0,
+   "ratio_p50": 1,
+   "ratio_p80": 1.007,
+   "ratio_p95": 1.034
+  },
+  "3:1-5M|b:61-120d": {
+   "n": 92,
+   "late_pct": 41.3,
+   "cost_up_pct": 34.8,
+   "changed_pct": 60.9,
+   "not_done_pct": 0,
+   "ratio_p50": 1,
+   "ratio_p80": 1.044,
+   "ratio_p95": 1.169
+  },
+  "3:1-5M|c:121-240d": {
+   "n": 196,
+   "late_pct": 38.8,
+   "cost_up_pct": 45.4,
+   "changed_pct": 62.2,
+   "not_done_pct": 1,
+   "ratio_p50": 1,
+   "ratio_p80": 1.071,
+   "ratio_p95": 1.203
+  },
+  "3:1-5M|d:241-480d": {
+   "n": 97,
+   "late_pct": 45.8,
+   "cost_up_pct": 46.9,
+   "changed_pct": 71.1,
+   "not_done_pct": 1,
+   "ratio_p50": 1.007,
+   "ratio_p80": 1.096,
+   "ratio_p95": 1.151
+  },
+  "3:1-5M|e:>480d": {
+   "n": 37,
+   "late_pct": 70.3,
+   "cost_up_pct": 29.7,
+   "changed_pct": 81.1,
+   "not_done_pct": 0,
+   "ratio_p50": 1,
+   "ratio_p80": 1.1,
+   "ratio_p95": 1.309
+  },
+  "4:>=5M|a:<=60d": {
+   "n": 1,
+   "late_pct": 100,
+   "cost_up_pct": 100,
+   "changed_pct": 100,
+   "not_done_pct": 0,
+   "ratio_p50": 1.015,
+   "ratio_p80": 1.015,
+   "ratio_p95": 1.015
+  },
+  "4:>=5M|b:61-120d": {
+   "n": 5,
+   "late_pct": 20,
+   "cost_up_pct": 20,
+   "changed_pct": 80,
+   "not_done_pct": 0,
+   "ratio_p50": 0.894,
+   "ratio_p80": 1,
+   "ratio_p95": 1
+  },
+  "4:>=5M|c:121-240d": {
+   "n": 11,
+   "late_pct": 36.4,
+   "cost_up_pct": 45.5,
+   "changed_pct": 72.7,
+   "not_done_pct": 0,
+   "ratio_p50": 1,
+   "ratio_p80": 1.073,
+   "ratio_p95": 1.137
+  },
+  "4:>=5M|d:241-480d": {
+   "n": 57,
+   "late_pct": 64.9,
+   "cost_up_pct": 61.4,
+   "changed_pct": 82.5,
+   "not_done_pct": 0,
+   "ratio_p50": 1.026,
+   "ratio_p80": 1.097,
+   "ratio_p95": 1.249
+  },
+  "4:>=5M|e:>480d": {
+   "n": 53,
+   "late_pct": 54.7,
+   "cost_up_pct": 49,
+   "changed_pct": 81.1,
+   "not_done_pct": 3.8,
+   "ratio_p50": 1.01,
+   "ratio_p80": 1.063,
+   "ratio_p95": 1.197
+  }
+ },
+ "by_value_eu": {
+  "1:<200k|eu=0": {
+   "n": 524,
+   "late_pct": 14.2,
+   "cost_up_pct": 17.6,
+   "changed_pct": 20,
+   "not_done_pct": 1.3,
+   "ratio_p50": 1,
+   "ratio_p80": 1,
+   "ratio_p95": 1.177
+  },
+  "1:<200k|eu=1": {
+   "n": 52,
+   "late_pct": 25,
+   "cost_up_pct": 11.5,
+   "changed_pct": 26.9,
+   "not_done_pct": 0,
+   "ratio_p50": 1,
+   "ratio_p80": 1,
+   "ratio_p95": 1.115
+  },
+  "2:200k-1M|eu=0": {
+   "n": 1024,
+   "late_pct": 19.7,
+   "cost_up_pct": 21.7,
+   "changed_pct": 31.9,
+   "not_done_pct": 0.6,
+   "ratio_p50": 1,
+   "ratio_p80": 1.018,
+   "ratio_p95": 1.15
+  },
+  "2:200k-1M|eu=1": {
+   "n": 138,
+   "late_pct": 29.7,
+   "cost_up_pct": 31.1,
+   "changed_pct": 47.8,
+   "not_done_pct": 4.3,
+   "ratio_p50": 1,
+   "ratio_p80": 1.093,
+   "ratio_p95": 1.191
+  },
+  "3:1-5M|eu=0": {
+   "n": 342,
+   "late_pct": 41.5,
+   "cost_up_pct": 34.9,
+   "changed_pct": 62,
+   "not_done_pct": 0.3,
+   "ratio_p50": 1,
+   "ratio_p80": 1.057,
+   "ratio_p95": 1.214
+  },
+  "3:1-5M|eu=1": {
+   "n": 111,
+   "late_pct": 40.9,
+   "cost_up_pct": 56,
+   "changed_pct": 68.5,
+   "not_done_pct": 1.8,
+   "ratio_p50": 1.018,
+   "ratio_p80": 1.078,
+   "ratio_p95": 1.155
+  },
+  "4:>=5M|eu=0": {
+   "n": 88,
+   "late_pct": 60.2,
+   "cost_up_pct": 50,
+   "changed_pct": 79.5,
+   "not_done_pct": 2.3,
+   "ratio_p50": 1.01,
+   "ratio_p80": 1.065,
+   "ratio_p95": 1.171
+  },
+  "4:>=5M|eu=1": {
+   "n": 39,
+   "late_pct": 48.7,
+   "cost_up_pct": 61.5,
+   "changed_pct": 84.6,
+   "not_done_pct": 0,
+   "ratio_p50": 1.021,
+   "ratio_p80": 1.093,
+   "ratio_p95": 1.249
+  }
+ },
+ "delay_rel_q_among_late": {
+  "p25": 0.13,
+  "p50": 0.28,
+  "p75": 0.54,
+  "p90": 0.91
+ },
+ "delay_rel_n": 561,
+ "delay_days_q_among_late": {
+  "p10": 7,
+  "p25": 18,
+  "p50": 35,
+  "p75": 76,
+  "p90": 164
+ }
+}

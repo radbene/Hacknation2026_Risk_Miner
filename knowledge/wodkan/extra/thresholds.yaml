@@ -1,0 +1,9 @@
+sector: wodkan
+name: thresholds
+rows:
+- {key: link_auto_confidence, value: 0.9, note: "≥ → link proposed with high confidence (still needs bulk-confirm)"}
+- {key: link_queue_below, value: 0.75, note: "< → goes to the top of the expert queue"}
+- {key: neighbours_k, value: 12}
+- {key: min_n_for_quantiles, value: 8, note: "fewer neighbours → shrink toward the next fallback level"}
+- {key: date_window_days, value: 730, note: "soft window around expected procedure date (linking)"}
+- {key: outlier_percentile, value: 0.9}

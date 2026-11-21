@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #1d4f91;
+  --color-brand-soft: #e8eef7;
+  --color-src: #0f766e;   /* [Dane źródłowe] */
+  --color-calc: #6d28d9;  /* [Obliczenia] */
+  --color-model: #b45309; /* [Wniosek modelu] */
+}
+
+html, body, #root { height: 100%; }
+body { @apply bg-slate-50 text-slate-900 antialiased; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+mark.quote { @apply bg-yellow-200 rounded px-0.5; }

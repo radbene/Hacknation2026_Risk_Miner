@@ -1,0 +1,113 @@
+# RISK MINER – example configuration. Copy to config/settings.yaml (gitignored) and adjust.
+# Secrets never go here: each LLM profile names the ENV VAR holding its key (api_key_env).
+#
+# WHERE DATA IS PROCESSED (data_location per LLM profile):
+#   local  – on our server (Ollama / vLLM / LM Studio, e.g. PLLuM or Bielik)
+#   eu     – inside the EU (Azure OpenAI EU region, Vertex AI europe-*, Mistral EU)
+#   non_eu – outside the EU (first-party Anthropic / OpenAI / Gemini AI Studio APIs; inference_geo global/us)
+#   none   – no LLM; deterministic rules only
+# Data sent to an LLM: public BZP notice fragments, uploaded tender documents (top-k chunks only),
+# the new-investment description. Personal data (natural-person contractors, e-mails, phones) is stripped first.
+#
+# LICENCE: code Apache-2.0; BZP/e-Zamówienia data – public information (ustawa o dostępie do informacji publicznej);
+# Biała lista VAT – public register (KAS); NIK reports – public documents; expert docx – MFiPR materials for HackNation.
+
+sector: wodkan
+knowledge_dir: knowledge
+raw_store_dir: data/raw
+upload_dir: data/uploads
+user_agent: "riskminer-hacknation/0.1 (+https://github.com/hacknation-2026-solutions/risk-miner)"
+licence: Apache-2.0
+data_processing_note: >-
+  Baza (Postgres), pliki i embeddingi przetwarzane na serwerze w UE (Hetzner, DE/FI).
+  Wywołania LLM wg profilu – zob. data_location; domyślny profil demonstracyjny: non_eu (Anthropic API).
+
+connectors:
+  bzp:
+    # HackNation mirror (same API, no rate limit, temporary). Official: https://ezamowienia.gov.pl/mo-board/api/v1/notice
+    base_url: https://bzp.cytr.us/mo-board/api/v1/notice
+    min_interval_s: 0.0      # official API: 2.1 (30 req/min)
+    timeout_s: 60
+    extra:
+      permanent_page: https://ezamowienia.gov.pl/mo-client-board/bzp/notice-details/id/{object_id}
+      permanent_pdf: https://ezamowienia.gov.pl/mo-board/api/v1/Board/GetNoticePdfById?noticeId={object_id}
+      fallback_base_url: https://ezamowienia.gov.pl/mo-board/api/v1/notice
+  bzp_zip:
+    extra:
+      path: data/raw/zip/risk_miner_bzp_kopia/bzp_kopia/notices.jsonl.xz
+      url: https://bzp.cytr.us/paczka/risk_miner_bzp_kopia.zip
+  vat_whitelist:
+    base_url: https://wl-api.mf.gov.pl
+    min_interval_s: 0.5
+  nik:
+    extra:
+      reports: []            # URLs of NIK wod-kan reports (PDF) – filled by S2
+  ted:
+    base_url: https://api.ted.europa.eu/v3
+  krs:
+    base_url: https://api-krs.ms.gov.pl/api/krs
+  kio:
+    base_url: https://orzeczenia.uzp.gov.pl
+  bk2021:
+    base_url: https://bazakonkurencyjnosci.funduszeeuropejskie.gov.pl
+
+embeddings_model: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+embeddings_dim: 384
+
+llm:
+  mode: cache                # live | cache (live + reuse) | replay (cache only, offline)
+  cache_dir: data/llm_cache
+  profiles:
+    rules:
+      provider: none
+      data_location: none
+    claude:
+      provider: anthropic
+      model: claude-opus-5-5
+      api_key_env: ANTHROPIC_API_KEY
+      data_location: non_eu
+      max_tokens: 8000
+      effort: medium
+    claude_fast:
+      provider: anthropic
+      model: claude-haiku-5-5
+      api_key_env: ANTHROPIC_API_KEY
+      data_location: non_eu
+      max_tokens: 4000
+    openai:
+      provider: openai
+      model: ""              # enter the current model id
+      api_key_env: OPENAI_API_KEY
+      data_location: non_eu
+    azure_eu:
+      provider: openai
+      model: ""
+      base_url: https://<resource>.openai.azure.com/openai/v1/
+      api_key_env: AZURE_OPENAI_API_KEY
+      data_location: eu
+    gemini:
+      provider: gemini
+      model: ""              # enter the current model id
+      api_key_env: GEMINI_API_KEY
+      data_location: non_eu
+    gemini_vertex_eu:
+      provider: gemini
+      model: ""
+      data_location: eu
+      extra: { vertexai: true, project: "", location: europe-west4 }
+    local_bielik:
+      provider: openai       # any OpenAI-compatible endpoint
+      model: SpeakLeash/bielik-11b-v2.3-instruct:Q4_K_M
+      base_url: http://localhost:11434/v1
+      api_key_env: OLLAMA_API_KEY
+      data_location: local
+  # ordered fallbacks per task; the last entry should be `rules`
+  tasks:
+    causes: [claude, local_bielik, rules]
+    doc_fragments: [claude, rules]
+    features: [claude_fast, rules]
+    recommendations: [claude, rules]
+    clauses: [claude, rules]
+    category_proposal: [claude, rules]
+    lessons: [claude, rules]
+  default: [rules]

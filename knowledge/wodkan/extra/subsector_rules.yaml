@@ -1,0 +1,27 @@
+sector: wodkan
+name: subsector_rules
+rows:
+- subsector: Sieć wodociągowa
+  cpv: ["45231300", "45232150", "45232151", "45332200", "44161500"]
+  keywords: [wodociąg, sieć wodociągowa, sieci wodociągowej, przyłącza wodociągowe, magistrala wodociągowa]
+  status: draft
+- subsector: Kanalizacja sanitarna
+  cpv: ["45232400", "45232410", "45232411", "45232420", "45232423", "45232440", "45231300"]
+  keywords: [kanalizacja sanitarna, kanalizacji sanitarnej, przepompownia, pompownia ścieków, rurociąg tłoczny, kolektor, przykanalik]
+  status: draft
+- subsector: Oczyszczalnia ścieków
+  cpv: ["45252100", "45252127", "45232421", "45252000", "45252200"]
+  keywords: [oczyszczalnia, oczyszczalni ścieków, oczyszczania ścieków, osadnik, reaktor biologiczny]
+  status: draft
+- subsector: Uzdatnianie i zaopatrzenie w wodę
+  cpv: ["45252120", "45232430", "45247270", "45262220", "45252126"]
+  keywords: [stacja uzdatniania, stacji uzdatniania wody, SUW, ujęcie wody, studnia głębinowa, zbiornik wody, hydrofornia]
+  status: draft
+- subsector: Kanalizacja deszczowa i retencja
+  cpv: ["45232130", "45232452", "45247000", "45240000"]
+  keywords: [kanalizacja deszczowa, kanalizacji deszczowej, wody opadowe, retencja, zbiornik retencyjny, odwodnienie]
+  status: draft
+- subsector: Inne obiekty wod-kan
+  cpv: ["45232000", "45231000"]
+  keywords: []
+  status: draft

@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ryzyka"],
+  "properties": {
+    "ryzyka": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kategoria", "opis", "cytat", "prawdopodobienstwo", "skutek", "mitygacja"],
+        "properties": {
+          "kategoria": {"type": "string", "enum": ["ZAKRES", "PROJEKT", "GRUNT_KOLIZJE", "POGODA", "DECYZJE", "STRONA_TRZECIA", "KADRY", "ROZLICZENIE", "FINANSOWANIE", "PRAWO", "DOSTAWY", "WYKONAWCA", "HARMONOGRAM", "INNE"]},
+          "opis": {"type": "string"},
+          "cytat": {"type": "string"},
+          "prawdopodobienstwo": {"type": "string", "enum": ["niskie", "srednie", "wysokie"]},
+          "skutek": {"type": "string", "enum": ["niskie", "srednie", "wysokie"]},
+          "mitygacja": {"type": "string"}
+        }
+      }
+    }
+  }
+}

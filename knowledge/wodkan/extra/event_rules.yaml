@@ -1,0 +1,19 @@
+# Structured-section event rules (extract/rules.py). Default R-codes are proposals; cause labelling refines them.
+sector: wodkan
+name: event_rules
+rows:
+- {event_type: late, source: ContractPerformingNotice, condition: "realizacja po terminie / data wykonania > termin", default_risk_codes: [R06], status: draft}
+- {event_type: paid_above_value, source: ContractPerformingNotice, condition: "wynagrodzenie wypłacone (5.5) > wartość umowy (4.4)", default_risk_codes: [R07], status: draft}
+- {event_type: change_deadline, source: AgreementUpdateNotice|ContractPerformingNotice, condition: "zmiana terminu", default_risk_codes: [R06], status: draft}
+- {event_type: change_value, source: AgreementUpdateNotice|ContractPerformingNotice, condition: "zmiana wynagrodzenia", default_risk_codes: [R07, R08], status: draft}
+- {event_type: change_scope, source: AgreementUpdateNotice|ContractPerformingNotice, condition: "zmiana zakresu / roboty dodatkowe", default_risk_codes: [R01, R07], status: draft}
+- {event_type: change_contractor, source: AgreementUpdateNotice|ContractPerformingNotice, condition: "zmiana wykonawcy (art. 455 ust. 1 pkt 2)", default_risk_codes: [R12], status: draft}
+- {event_type: not_performed, source: ContractPerformingNotice, condition: "umowa niewykonana", default_risk_codes: [R12], status: draft}
+- {event_type: terminated, source: ContractPerformingNotice, condition: "rozwiązanie / odstąpienie", default_risk_codes: [R12], status: draft}
+- {event_type: improper, source: ContractPerformingNotice, condition: "nienależyte wykonanie / kary umowne (5.6)", default_risk_codes: [R12], status: draft}
+- {event_type: cancelled, source: TenderResultNotice, condition: "unieważnienie postępowania", default_risk_codes: [R11], status: draft}
+- {event_type: cancelled_over_budget, source: TenderResultNotice, condition: "art. 255 pkt 3 – oferty przewyższają kwotę", default_risk_codes: [R13], status: draft}
+- {event_type: repeated, source: ContractNotice, condition: "kolejne postępowanie tego samego zamawiającego o tym samym przedmiocie po unieważnieniu", default_risk_codes: [R11, R13], status: draft}
+- {event_type: single_offer, source: TenderResultNotice, condition: "złożono 1 ofertę", default_risk_codes: [R11], status: draft}
+- {event_type: offers_above_budget, source: TenderResultNotice, condition: "najniższa oferta > kwota na sfinansowanie", default_risk_codes: [R13], status: draft}
+- {event_type: kio_appeal, source: KIO, condition: "odwołanie do KIO", default_risk_codes: [R11], status: draft}
