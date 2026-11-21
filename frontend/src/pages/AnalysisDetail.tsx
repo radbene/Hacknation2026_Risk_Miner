@@ -175,7 +175,7 @@ function useOpen() {
   return { isOpen: (id: string) => open === id, toggle: (id: string) => setOpen((o) => (o === id ? null : id)) }
 }
 
-const Grid = ({ children }: { children: React.ReactNode }) => <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">{children}</ul>
+const Grid = ({ children }: { children: React.ReactNode }) => <ul className="stagger grid gap-3 md:grid-cols-2 xl:grid-cols-3">{children}</ul>
 
 /* ------------------------------------------------------------------ flags */
 

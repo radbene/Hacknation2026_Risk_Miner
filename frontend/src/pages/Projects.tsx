@@ -57,7 +57,7 @@ export default function Projects() {
       <QueryState q={q}>{(d) => (
         <>
           <p className="mb-2 text-xs text-slate-500">Znaleziono: {d.total.toLocaleString('pl-PL')}{d.items.length < d.total ? ` (pokazano ${Math.min(shown, d.items.length)})` : ''}</p>
-          <div className="grid gap-3 lg:grid-cols-2">{d.items.slice(0, shown).map((p) => <ProjectTile key={p.id} p={p} expert={isExpert} />)}</div>
+          <div className="stagger grid gap-3 lg:grid-cols-2">{d.items.slice(0, shown).map((p) => <ProjectTile key={p.id} p={p} expert={isExpert} />)}</div>
           {!d.items.length && <p className="py-8 text-center text-sm text-slate-500">Nic nie znaleziono. Zmień wyszukiwanie lub filtry.</p>}
           {d.items.length > shown && <div className="mt-4 text-center"><Button variant="outline" onClick={() => setShown((x) => x + PAGE)}>Pokaż więcej</Button></div>}
         </>

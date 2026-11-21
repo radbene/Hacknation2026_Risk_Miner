@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate } from '@tanstack/react-router'
+import { Link, Outlet, useNavigate, useRouterState } from '@tanstack/react-router'
 import { LogIn, LogOut, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { api, unwrap } from '@/api/client'
@@ -6,6 +6,7 @@ import { useApi } from '@/api/hooks'
 import { useAuth } from '@/lib/auth'
 import { Button, Dialog, Input, Label } from './ui'
 import { Gem } from './PixelMine'
+import { MineBackdrop } from './MineBackdrop'
 import { DataLocationBanner } from './DataLocationBanner'
 
 const USER_NAV = [
@@ -30,6 +31,7 @@ export function Layout() {
   const [login, setLogin] = useState(false)
   const [menu, setMenu] = useState(false)
   const navigate = useNavigate()
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
   const counts = useApi(['review', 'counts'], async () => unwrap(await api.GET('/api/review/counts')), undefined, { enabled: isExpert })
   const pending = isExpert ? Object.values(counts.data ?? {}).reduce((a, b) => a + b, 0) : 0
   const nav = isExpert ? EXPERT_NAV : USER_NAV
@@ -48,11 +50,13 @@ export function Layout() {
     ? <Button size="sm" variant="outline" onClick={() => { setMenu(false); logout(); navigate({ to: '/' }) }}><LogOut size={13} />Wyjdź z panelu</Button>
     : <Button size="sm" variant="outline" onClick={() => { setMenu(false); setLogin(true) }}><LogIn size={13} />Panel eksperta</Button>
   return (
-    <div className="flex h-full flex-col">
-      <header className="relative z-30 shrink-0 border-b-2 border-ink bg-paper">
+    <>
+    <MineBackdrop />
+    <div className="relative z-10 flex h-full flex-col">
+      <header className="relative z-30 shrink-0 border-b-2 border-ink bg-paper/90 backdrop-blur-sm">
         <div className="flex items-center gap-3 px-4 py-2.5 lg:px-6">
           <Link to="/" className="flex shrink-0 items-center gap-2" onClick={() => setMenu(false)} aria-label="RISK MINER, strona główna">
-            <span className="grid h-9 w-9 place-items-center border-2 border-ink bg-surface shadow-sm"><Gem size={22} /></span>
+            <span className="logo-gem grid h-9 w-9 place-items-center border-2 border-ink bg-surface shadow-sm"><Gem size={22} /></span>
             <span className="font-pixel text-[15px] leading-none text-ink">Risk<br />Miner</span>
           </Link>
           <nav className={`ml-3 hidden items-center gap-1 ${wide.show}`} aria-label={isExpert ? 'Panel eksperta' : 'Menu'}>{links(false)}</nav>
@@ -80,10 +84,11 @@ export function Layout() {
       </header>
       <main className="flex min-h-0 min-w-0 flex-1 flex-col">
         <DataLocationBanner />
-        <div className="min-h-0 flex-1 overflow-auto px-4 py-5 sm:px-6 lg:px-10 lg:py-8"><div className="mx-auto max-w-[1400px]"><Outlet /></div></div>
+        <div className="min-h-0 flex-1 overflow-auto px-4 py-5 sm:px-6 lg:px-10 lg:py-8"><div key={pathname} className="page-in mx-auto max-w-[1400px]"><Outlet /></div></div>
       </main>
       <LoginDialog open={login} onClose={() => setLogin(false)} />
     </div>
+    </>
   )
 }
 

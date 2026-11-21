@@ -24,7 +24,7 @@ export default function Analyses() {
       <QueryState q={q}>{(d) => (
         d.items.length === 0
           ? <p className="py-8 text-center text-sm text-slate-500">Nie ma jeszcze analiz. <Link to="/nowa-inwestycja" className="text-brand hover:underline">Rozpocznij pierwszą</Link>.</p>
-          : <div className="grid gap-3 md:grid-cols-2">{d.items.map((a) => (
+          : <div className="stagger grid gap-3 md:grid-cols-2">{d.items.map((a) => (
             <Link key={a.id} to="/analizy/$analysisId" params={{ analysisId: a.id }} search={{}} className="group">
               <Card className="lift h-full p-4">
                 <h2 className="font-medium">{a.title}</h2>

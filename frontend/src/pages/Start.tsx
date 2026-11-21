@@ -54,7 +54,7 @@ function Hero() {
   return (
     <section className="mb-10 grid items-center gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-12">
       <div className="min-w-0">
-        <h1 className="font-pixel text-[44px] leading-[0.95] text-brand sm:text-[64px] xl:text-[76px]">Risk<br />Miner</h1>
+        <h1 className="font-pixel text-[44px] leading-[0.95] text-brand [text-shadow:4px_4px_0_#c9c5ff] sm:text-[64px] xl:text-[76px]">Risk<br />Miner</h1>
         <p className="mt-4 max-w-xl text-lg font-semibold text-ink sm:text-xl">Baza doświadczeń z inwestycji wodno-kanalizacyjnych: wydobywamy ryzyka z tego, co już się wydarzyło.</p>
         <ul className="mt-4 space-y-1 font-mono text-[13px] text-slate-700">
           <li>&gt; źródło: Biuletyn Zamówień Publicznych i dane MFiPR</li>
@@ -112,7 +112,7 @@ function UserGuide() {
   return (
     <div>
       <PageHeader title="Jak zacząć" description="RISK MINER pokazuje, co poszło nie tak w podobnych zakończonych inwestycjach wodno-kanalizacyjnych, i na tej podstawie ocenia ryzyko planowanej inwestycji. Dane pochodzą z Biuletynu Zamówień Publicznych." />
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="stagger grid gap-4 md:grid-cols-2">
         <Step n={1} title="Opisz planowaną inwestycję" to="/nowa-inwestycja" cta="Nowa analiza">
           Wklej opis albo wgraj dokument (PDF, Word), np. opis z wniosku o dofinansowanie. Podaj zakres, długość sieci, wartość, czas realizacji i stan przygotowania terenu oraz decyzji.
         </Step>
@@ -135,7 +135,7 @@ function ExpertGuide() {
   return (
     <div>
       <PageHeader title="Jak pracować w panelu eksperta" description="Powiązania, zdarzenia, przyczyny i braki danych zbudowane automatycznie są propozycjami. Do bazy jako wiarygodne trafiają po Twojej decyzji, a ponowne przeliczenie ich nie nadpisuje." />
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="stagger grid gap-4 md:grid-cols-2">
         <Step n={1} title="Zatwierdzaj propozycje" to="/kolejka" cta="Do zatwierdzenia">
           Lista zaczyna się od pozycji, których system jest najmniej pewny. Pozycje pewne, np. powiązania po numerze ogłoszenia, zatwierdzisz hurtowo.
         </Step>

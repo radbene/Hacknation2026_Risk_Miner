@@ -68,10 +68,46 @@ body { @apply bg-paper font-sans text-ink antialiased; }
 .rock-chip { animation: rock-chip .6s ease-out forwards; }
 @keyframes gem-reveal { 0% { transform: scale(.4); opacity: 0 } 50% { transform: scale(1.25); opacity: 1 } 100% { transform: scale(1); opacity: 1 } }
 .gem-reveal { animation: gem-reveal .7s steps(7, end) .15s both; }
+/* background (MineBackdrop.tsx): drifting dot grid + small gems floating up; transforms only, so it stays cheap */
+.backdrop-grid {
+  background-image: radial-gradient(color-mix(in srgb, var(--color-ink) 10%, transparent) 1px, transparent 1.3px);
+  background-size: 16px 16px;
+  animation: grid-drift 40s linear infinite;
+  will-change: transform;
+}
+@keyframes grid-drift { to { transform: translate(32px, 32px) } }
+.float-bit { animation-name: float-bit; animation-timing-function: linear; animation-iteration-count: infinite; will-change: transform; }
+@keyframes float-bit {
+  0% { transform: translate(0, 10vh); opacity: 0 }
+  10% { opacity: 1 }
+  50% { transform: translate(14px, -50vh) }
+  90% { opacity: 1 }
+  100% { transform: translate(0, -110vh); opacity: 0 }
+}
+/* page and tile entrance */
+@keyframes rise { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+.page-in { animation: rise .3s ease-out both; }
+.stagger > * { animation: rise .35s ease-out both; }
+.stagger > :nth-child(2) { animation-delay: 40ms } .stagger > :nth-child(3) { animation-delay: 80ms }
+.stagger > :nth-child(4) { animation-delay: 120ms } .stagger > :nth-child(5) { animation-delay: 160ms }
+.stagger > :nth-child(6) { animation-delay: 200ms } .stagger > :nth-child(7) { animation-delay: 240ms }
+.stagger > :nth-child(8) { animation-delay: 280ms } .stagger > :nth-child(9) { animation-delay: 320ms }
+.stagger > :nth-child(10) { animation-delay: 360ms } .stagger > :nth-child(11) { animation-delay: 400ms }
+.stagger > :nth-child(n+12) { animation-delay: 440ms }
+/* pixel accent under page titles: three stepped blocks */
+.title-bar { display: flex; gap: 3px; margin-top: 8px; }
+.title-bar > i { display: block; height: 6px; }
+.title-bar > i:nth-child(1) { width: 40px; background: var(--color-brand); }
+.title-bar > i:nth-child(2) { width: 12px; background: var(--color-ink); }
+.title-bar > i:nth-child(3) { width: 6px; background: #f2a516; }
+.logo-gem:hover svg { animation: twinkle 1.2s steps(2, end) infinite; }
+::selection { background: var(--color-brand-soft); color: var(--color-ink); }
+* { scrollbar-width: thin; scrollbar-color: var(--color-ink) transparent; }
 @media (prefers-reduced-motion: reduce) {
   .press, .lift { transition: none; }
   .press:hover, .lift:hover { transform: none; }
-  .twinkle, .pick-strike, .rock-shake, .rock-chip { animation: none; }
+  .twinkle, .pick-strike, .rock-shake, .rock-chip, .backdrop-grid, .page-in, .stagger > *, .logo-gem:hover svg { animation: none; }
+  .float-bit { display: none; }
 }
 mark.quote { @apply bg-yellow-200 px-0.5; }
 
