@@ -1,0 +1,6 @@
+# Sector profile – a new sector is just a new folder with this file + <table>.yaml files (no code changes).
+code: wodkan
+name: Wodociągi i kanalizacja
+active: true
+# CPV prefixes that put a BZP procedure into this sector (auto tier); details per subsector in extra/subsector_rules.yaml
+cpv_prefixes: ["45231300", "45232100", "45232150", "45232400", "45232410", "45232420", "45232430", "45252", "44161500", "45332"]
