@@ -1,0 +1,96 @@
+rm_id,label,notice_number,notice_type,object_id,ocid,part_no,contractor_id,contractor_id_type,published_at,method_expected,note,hand_verified
+RM-2026-001,link,2022/BZP 00058537/01,ContractNotice,08dc2f58-0052-3135-8219-c30001c86aa1,ocds-148610-386e6a91-8d90-11ec-94c8-de8df8ed9da1,,,,2022-02-16,notice_no,,yes
+RM-2026-001,link,2022/BZP 00115288/01,TenderResultNotice,08dc2f6a-9987-aa10-a270-4c0001bee963,ocds-148610-386e6a91-8d90-11ec-94c8-de8df8ed9da1,,9120005157,NIP,2022-04-08,ocid,,yes
+RM-2026-001,link,2026/BZP 00147223/01,ContractPerformingNotice,08de7e88-bd39-dafb-056e-e50001ac5cf9,ocds-148610-386e6a91-8d90-11ec-94c8-de8df8ed9da1,,9120005157,NIP,2026-03-10,ocid,,yes
+RM-2026-002,link,2026/BZP 00089794/01,ContractNotice,08de6251-d7ab-b2c7-4c32-fc0001f13660,ocds-148610-7ae14583-9ae6-40e4-bbf5-11c0fdbdaff8,,,,2026-02-02,fuzzy,"KPO number absent from all notices – found by NIP + title (fuzzy); CP 4.4 value 5350782,65 = KPO project value",yes
+RM-2026-002,link,2026/BZP 00143366/01,TenderResultNotice,08de7b6b-19d6-a289-056e-e50001ac42fc,ocds-148610-7ae14583-9ae6-40e4-bbf5-11c0fdbdaff8,,8992507768,NIP,2026-03-06,ocid,,yes
+RM-2026-002,link,2026/BZP 00277648/01,ContractPerformingNotice,08dec528-4925-88ea-5fad-9500015c65f4,ocds-148610-7ae14583-9ae6-40e4-bbf5-11c0fdbdaff8,,8992507768,NIP,2026-06-08,ocid,,yes
+RM-2026-002,link,2026/BZP 00285691/01,ContractPerformingNotice,08dec7a5-add3-9ae4-5fad-950001d1b535,ocds-148610-7ae14583-9ae6-40e4-bbf5-11c0fdbdaff8,,8992507768,NIP,2026-06-11,ocid,second ContractPerformingNotice with identical content (re-publication),yes
+RM-2026-002,decoy,2023/BZP 00163924/01,ContractNotice,08db34ff-1d29-8ff0-e1b2-e200101e2923,ocds-148610-0b554813-cf8d-11ed-b70f-ae2d9e28ec7b,,,,2023-04-04,,decoy: 'Budowa oczyszczalni ścieków w Modlikowicach' 2023 (same village),yes
+RM-2026-002,decoy,2023/BZP 00260394/01,TenderResultNotice,08db6d72-74ea-7170-a85e-9800117c488d,ocds-148610-0b554813-cf8d-11ed-b70f-ae2d9e28ec7b,,5542980813,NIP,2023-06-15,,decoy (oczyszczalnia Modlikowice),yes
+RM-2026-002,decoy,2026/BZP 00509330/01,ContractPerformingNotice,08df35b8-f126-b422-cfcf-e60001c0652d,ocds-148610-0b554813-cf8d-11ed-b70f-ae2d9e28ec7b,,5542980813,NIP,2026-10-29,,decoy (oczyszczalnia Modlikowice),yes
+RM-2026-003,link,2024/BZP 00349631/01,ContractNotice,08dc846b-60bd-458e-1a46-3000018a35eb,ocds-148610-6b092479-223f-11ef-87ba-8eb060fd7bb8,,,,2024-06-04,notice_no,,yes
+RM-2026-003,link,2024/BZP 00418711/01,TenderResultNotice,08dca708-fd21-83c3-ba4f-e10001de327b,ocds-148610-6b092479-223f-11ef-87ba-8eb060fd7bb8,,870113012,REGON,2024-07-18,ocid,,yes
+RM-2026-003,link,2024/BZP 00554831/01,AgreementUpdateNotice,08dcf1a8-45f7-79a7-985c-bb0001c794c0,ocds-148610-6b092479-223f-11ef-87ba-8eb060fd7bb8,,870113012,REGON,2024-10-21,ocid,,yes
+RM-2026-003,link,2024/BZP 00618384/01,AgreementUpdateNotice,08dd0ec6-aa87-c6a2-985c-bb0001354954,ocds-148610-6b092479-223f-11ef-87ba-8eb060fd7bb8,,870113012,REGON,2024-11-27,ocid,,yes
+RM-2026-003,link,2026/BZP 00276065/01,ContractPerformingNotice,08dec172-3030-00de-5fad-9500015c599a,ocds-148610-6b092479-223f-11ef-87ba-8eb060fd7bb8,,870113012,REGON,2026-06-03,ocid,,yes
+RM-2026-004,link,2025/BZP 00569258/01,ContractNotice,08de3189-2f42-42d2-0560-490001c5802f,ocds-148610-7a870ddc-987c-458c-b435-1decc430d54b,,,,2025-12-02,notice_no,,yes
+RM-2026-004,link,2026/BZP 00061193/01,TenderResultNotice,08de5a49-38b5-16ef-d6d3-f500016aff87,ocds-148610-7a870ddc-987c-458c-b435-1decc430d54b,,004780325,REGON,2026-01-23,ocid,,yes
+RM-2026-004,link,2026/BZP 00514691/01,ContractPerformingNotice,08df38af-e99d-b27a-e2d6-6b000120bf64,ocds-148610-7a870ddc-987c-458c-b435-1decc430d54b,,004780325,REGON,2026-11-02,ocid,,yes
+RM-2026-005,link,2025/BZP 00245492/01,ContractNotice,08dd99e7-2629-e986-eaaa-350001a4aa3a,ocds-148610-178b5ecf-5d3b-4d67-8a10-2a0d1597c00d,,,,2025-05-23,fuzzy,KPO number absent from all notices – found by NIP + title (fuzzy); title identical,yes
+RM-2026-005,link,2025/BZP 00342797/01,TenderResultNotice,08ddca82-a689-cb77-e769-360001c69fff,ocds-148610-178b5ecf-5d3b-4d67-8a10-2a0d1597c00d,,9670644141,NIP,2025-07-24,ocid,,yes
+RM-2026-005,link,2026/BZP 00021981/01,ContractPerformingNotice,08de51bf-3276-0c10-d6d3-f500016a3271,ocds-148610-178b5ecf-5d3b-4d67-8a10-2a0d1597c00d,,9670644141,NIP,2026-01-12,ocid,,yes
+RM-2026-006,link,2024/BZP 00067908/01,ContractNotice,08dc1da9-9d98-38fc-f72b-3100111c903c,ocds-148610-89142c9f-bb81-11ee-b7da-22bd761ba7f3,,,,2024-01-25,notice_no,,yes
+RM-2026-006,link,2024/BZP 00245620/01,TenderResultNotice,08dc442f-05d5-6d14-5566-8b00013bf2ce,ocds-148610-89142c9f-bb81-11ee-b7da-22bd761ba7f3,,8620002084,NIP,2024-03-14,ocid,,yes
+RM-2026-006,link,2024/BZP 00404273/01,AgreementUpdateNotice,08dca019-f36e-b129-9429-150001f15f12,ocds-148610-89142c9f-bb81-11ee-b7da-22bd761ba7f3,,8620002084,NIP,2024-07-09,ocid,,yes
+RM-2026-006,link,2024/BZP 00452852/01,AgreementUpdateNotice,08dcb868-9bb0-866a-82a9-4300014507d4,ocds-148610-89142c9f-bb81-11ee-b7da-22bd761ba7f3,,8620002084,NIP,2024-08-09,ocid,,yes
+RM-2026-006,link,2024/BZP 00572624/01,ContractPerformingNotice,08dcf8f0-03a6-ed73-985c-bb0001342eb1,ocds-148610-89142c9f-bb81-11ee-b7da-22bd761ba7f3,,8620002084,NIP,2024-10-30,ocid,,yes
+RM-2026-007,link,2026/BZP 00139226/01,ContractNotice,08de79e0-79f4-48f8-056e-e50001ac285b,ocds-148610-54d2a7cc-2602-4beb-a8f1-f165fa9f5643,,,,2026-03-04,kpo_ref,KPO number present in notice text,yes
+RM-2026-007,link,2026/BZP 00204390/01,TenderResultNotice,08de9c7a-ebc5-bea6-5fad-95000119c15f,ocds-148610-54d2a7cc-2602-4beb-a8f1-f165fa9f5643,,9462105181,NIP,2026-04-17,kpo_ref,,yes
+RM-2026-007,link,2026/BZP 00343684/01,ContractPerformingNotice,08dee254-a57d-4c93-ebd1-650001a85cbf,ocds-148610-54d2a7cc-2602-4beb-a8f1-f165fa9f5643,,9462105181,NIP,2026-07-15,kpo_ref,,yes
+RM-2026-008,link,2026/BZP 00084760/01,ContractNotice,08de5ff0-9ccb-b0f1-4c32-fc0001f11cf7,ocds-148610-e7a9ab5f-b563-4052-8061-b7c7f627317f,1,,,2026-01-30,notice_no,ContractNotice for 4 lots (4.1.9 Liczba części: 4),yes
+RM-2026-008,link,2026/BZP 00166534/01,TenderResultNotice,08de88c8-9521-3c8d-056e-e50001aa99c5,ocds-148610-e7a9ab5f-b563-4052-8061-b7c7f627317f,1,7380005265,NIP,2026-03-23,ocid,"one TenderResultNotice for all 4 lots; part 1 = Multikop 1952120,53",yes
+RM-2026-008,link,2026/BZP 00255110/01,ContractPerformingNotice,08deb72a-3c2d-0f0d-5fad-9500012ba59e,ocds-148610-e7a9ab5f-b563-4052-8061-b7c7f627317f,1,7380005265,NIP,2026-05-21,lot,"part 1: NIP 7380005265, 4.4 = 8.2 (part 1) 1952120,53, 4.1 = 8.1 2026-03-12",yes
+RM-2026-008,other_part,2026/BZP 00255135/01,ContractPerformingNotice,08deb72a-eec5-1121-5fad-9500012ba5be,ocds-148610-e7a9ab5f-b563-4052-8061-b7c7f627317f,2,7381000991,NIP,2026-05-21,,"part 2 (POTOK 7381000991, 1200000,00)",yes
+RM-2026-008,other_part,2026/BZP 00255161/01,ContractPerformingNotice,08deb72b-d152-5222-5fad-9500012ba5df,ocds-148610-e7a9ab5f-b563-4052-8061-b7c7f627317f,3,7380005265,NIP,2026-05-21,,"part 3 (Multikop again, 1113623,55, signed 2026-03-19)",yes
+RM-2026-008,other_part,2026/BZP 00255185/01,ContractPerformingNotice,08deb72c-3170-27e7-5fad-9500012ba5fc,ocds-148610-e7a9ab5f-b563-4052-8061-b7c7f627317f,4,7381000991,NIP,2026-05-21,,"part 4 (POTOK, 205000,02)",yes
+RM-2026-009,link,2025/BZP 00307948/01,ContractNotice,08ddba2f-7b38-e9e4-e769-360001c5cc01,ocds-148610-3effd421-a978-4e81-abfa-5fa0743da387,2,,,2025-07-03,notice_no,ContractNotice with 2 lots,yes
+RM-2026-009,link,2025/BZP 00422149/01,TenderResultNotice,08ddf422-20e0-3e31-d903-3900014ec36f,ocds-148610-3effd421-a978-4e81-abfa-5fa0743da387,2,1132855584,NIP,2025-09-15,ocid,"part 2 = AQUA SEEN 1132855584, 1810533,92",yes
+RM-2026-009,link,2025/BZP 00568661/01,ContractPerformingNotice,08de317b-5a9a-356c-0560-490001c57d08,ocds-148610-3effd421-a978-4e81-abfa-5fa0743da387,2,,,2025-12-02,lot,"part 2 by value/date/contractor. ORGANIZER INCONSISTENCY: part 2 is 'modernizacja SUW w Zakrzewie', while the xlsx title ('Budowa sieci wodociągowej') and KPO description (network sections) match part 1",yes
+RM-2026-009,other_part,2025/BZP 00568576/01,ContractPerformingNotice,08de3179-4928-2d45-0560-490001c57c97,ocds-148610-3effd421-a978-4e81-abfa-5fa0743da387,1,,,2025-12-02,,"part 1 (INSBUD-KLWÓW 6010052935, 420935,30) – the water-network lot",yes
+RM-2026-010,link,2025/BZP 00211437/01,ContractNotice,08dd8720-71a0-d40f-eaaa-350001a3d560,ocds-148610-308b01d6-76cd-4660-ac66-193bc03593ae,,,,2025-04-29,fuzzy,KPO number absent from all notices – found by NIP + title (fuzzy); title identical,yes
+RM-2026-010,link,2025/BZP 00347687/01,TenderResultNotice,08ddcdab-7432-3f76-e769-360001c6bd80,ocds-148610-308b01d6-76cd-4660-ac66-193bc03593ae,,8181738304,NIP,2025-07-28,ocid,,yes
+RM-2026-010,link,2026/BZP 00004536/01,ContractPerformingNotice,08de4c49-8c9d-0d40-d6d3-f5000169d778,ocds-148610-308b01d6-76cd-4660-ac66-193bc03593ae,,8181738304,NIP,2026-01-05,ocid,,yes
+RM-2026-010,decoy,2024/BZP 00349336/01,ContractNotice,08dc845f-5f4f-1110-1a46-3000018a3460,ocds-148610-ed7b8caf-2236-11ef-87ba-8eb060fd7bb8,,,,2024-06-04,,decoy: 'Rozbudowa sieci wodno-kanalizacyjnych na terenie gminy Grodzisko Dolne' 2024,yes
+RM-2026-010,decoy,2024/BZP 00407573/01,TenderResultNotice,08dca182-a0cb-c209-9429-150001f17090,ocds-148610-ed7b8caf-2236-11ef-87ba-8eb060fd7bb8,,8191482800,NIP,2024-07-11,,decoy (2024 wod-kan),yes
+RM-2026-010,decoy,2026/BZP 00356848/01,ContractPerformingNotice,08dee7f1-a474-b1de-ebd1-650001da77f1,ocds-148610-ed7b8caf-2236-11ef-87ba-8eb060fd7bb8,,8191482800,NIP,2026-07-22,,decoy (2024 wod-kan),yes
+RM-2026-010,decoy,2025/BZP 00234353/01,ContractNotice,08dd9457-a0b5-d727-eaaa-350001a46549,ocds-148610-1990cc0b-c02f-436e-bfb9-2e41252f1189,,,,2025-05-16,,decoy: 'Rozbudowa sieci kanalizacji sanitarnej i sieci wodociągowej' 2025,yes
+RM-2026-010,decoy,2025/BZP 00303625/01,TenderResultNotice,08ddb93a-e7a5-b934-e769-360001c5b431,ocds-148610-1990cc0b-c02f-436e-bfb9-2e41252f1189,,8151105333,NIP,2025-07-02,,decoy (2025 wod-kan),yes
+RM-2026-011,link,2023/BZP 00271948/01,ContractNotice,08db7316-30e1-6c3d-c22e-ef00102d74d8,ocds-148610-b3207930-10ec-11ee-b70f-ae2d9e28ec7b,,,,2023-06-22,notice_no,,yes
+RM-2026-011,link,2023/BZP 00328063/01,TenderResultNotice,08db8e84-eb3a-6dcb-9bc9-500012d3b59b,ocds-148610-b3207930-10ec-11ee-b70f-ae2d9e28ec7b,,8191004590,NIP,2023-07-27,ocid,,yes
+RM-2026-011,link,2024/BZP 00016072/01,ContractPerformingNotice,08dc102e-138b-e297-bee0-df00121394aa,ocds-148610-b3207930-10ec-11ee-b70f-ae2d9e28ec7b,,8191004590,NIP,2024-01-08,ocid,,yes
+RM-2026-012,link,2025/BZP 00119683/01,ContractNotice,08dd5597-e27c-c00f-8f1b-b600017caaa9,ocds-148610-33255305-30b2-465f-b54f-adc9c07cb712,,,,2025-02-25,notice_no,,yes
+RM-2026-012,link,2025/BZP 00245411/01,TenderResultNotice,08dd99e5-0daa-83ca-eaaa-350001a4a9cc,ocds-148610-33255305-30b2-465f-b54f-adc9c07cb712,,5882257375,NIP,2025-05-23,ocid,,yes
+RM-2026-012,link,2026/BZP 00025187/01,ContractPerformingNotice,08de51f6-f6fb-6bde-d6d3-f500016a40fb,ocds-148610-33255305-30b2-465f-b54f-adc9c07cb712,,5882257375,NIP,2026-01-12,ocid,,yes
+RM-2026-013,link,2023/BZP 00206497/01,ContractNotice,08db5062-dc62-8f53-ad68-5a00103b6865,ocds-148610-d906b948-eb2f-11ed-9355-06954b8c6cb9,,,,2023-05-09,notice_no,,yes
+RM-2026-013,link,2023/BZP 00261764/01,TenderResultNotice,08db6d9c-92ad-b7a1-bcd6-380012b96a6e,ocds-148610-d906b948-eb2f-11ed-9355-06954b8c6cb9,,070448938,REGON,2023-06-15,ocid,,yes
+RM-2026-013,link,2024/BZP 00637524/01,ContractPerformingNotice,08dd15d9-408f-821e-a8d2-3c00015817e0,ocds-148610-d906b948-eb2f-11ed-9355-06954b8c6cb9,,070448938,REGON,2024-12-06,ocid,,yes
+RM-2026-014,link,2026/BZP 00130634/01,ContractNotice,08de7536-dd30-696a-056e-e50001abed37,ocds-148610-ce3ed521-c6ce-45c4-b8af-ec1751be1dde,,,,2026-02-26,notice_no,,yes
+RM-2026-014,link,2026/BZP 00195507/01,TenderResultNotice,08de994f-071b-0980-5fad-9500011988d3,ocds-148610-ce3ed521-c6ce-45c4-b8af-ec1751be1dde,,6250001699,NIP,2026-04-13,ocid,,yes
+RM-2026-014,link,2026/BZP 00331672/01,ContractPerformingNotice,08dedd7c-31fb-7cb3-2028-230001af13fc,ocds-148610-ce3ed521-c6ce-45c4-b8af-ec1751be1dde,,6250001699,NIP,2026-07-09,ocid,,yes
+RM-2026-015,link,2023/BZP 00135041/01,ContractNotice,08db2487-ea23-0129-b3ee-5d00108e628b,ocds-148610-9faadc91-c25f-11ed-8261-62cbbe4d0ca4,,,,2023-03-14,notice_no,,yes
+RM-2026-015,link,2023/BZP 00198087/01,TenderResultNotice,08db47d4-1758-8fd5-ad68-5a00103b5f6d,ocds-148610-9faadc91-c25f-11ed-8261-62cbbe4d0ca4,,5932607246,NIP,2023-04-28,ocid,,yes
+RM-2026-015,link,2025/BZP 00228324/01,AgreementUpdateNotice,08dd9208-4613-aee9-eaaa-350001a43ed9,ocds-148610-9faadc91-c25f-11ed-8261-62cbbe4d0ca4,,5932607246,NIP,2025-05-13,ocid,,yes
+RM-2026-015,link,2025/BZP 00388035/01,AgreementUpdateNotice,08dde179-afc1-9410-e769-360001c7b366,ocds-148610-9faadc91-c25f-11ed-8261-62cbbe4d0ca4,,5932607246,NIP,2025-08-22,ocid,,yes
+RM-2026-015,link,2025/BZP 00494163/01,ContractPerformingNotice,08de12c8-723a-60cb-6f2a-fc0001f5b951,ocds-148610-9faadc91-c25f-11ed-8261-62cbbe4d0ca4,,5932607246,NIP,2025-10-24,ocid,,yes
+RM-2026-016,link,2022/BZP 00308854/01,ContractNotice,08da8050-a0e2-0c11-b465-6a000dcb1fc9,ocds-148610-c271f196-1e1f-11ed-b950-8227d40187e8,,,,2022-08-17,notice_no,,yes
+RM-2026-016,link,2022/BZP 00377000/01,TenderResultNotice,08daa603-ec49-153d-cfe2-65001113fe8f,ocds-148610-c271f196-1e1f-11ed-b950-8227d40187e8,,7440003354,NIP,2022-10-04,ocid,,yes
+RM-2026-016,link,2025/BZP 00183165/01,ContractPerformingNotice,08dd774d-e96b-b627-8f1b-b600017e3834,ocds-148610-c271f196-1e1f-11ed-b950-8227d40187e8,,7440003354,NIP,2025-04-09,ocid,,yes
+RM-2026-017,link,2025/BZP 00358528/01,ContractNotice,08ddd128-7540-0c6c-e769-360001c6fdab,ocds-148610-e7f4b839-309a-4602-99cc-b9799d3465f7,,,,2025-08-01,fuzzy,"KPO number absent from all notices – found by NIP + title (fuzzy); title identical (query by seat 'Kleszczewo', not village)",yes
+RM-2026-017,link,2026/BZP 00000230/01,TenderResultNotice,08de49d2-fcbe-86a3-d6d3-f50001fddd25,ocds-148610-e7f4b839-309a-4602-99cc-b9799d3465f7,,7851634441,NIP,2026-01-02,ocid,,yes
+RM-2026-017,link,2026/BZP 00325837/01,ContractPerformingNotice,08dedb62-9382-4255-2028-230001aeefe8,ocds-148610-e7f4b839-309a-4602-99cc-b9799d3465f7,,7851634441,NIP,2026-07-06,ocid,,yes
+RM-2026-018,link,2025/BZP 00620692/01,ContractNotice,08de4224-9854-9d7c-d6d3-f500016275eb,ocds-148610-7e0ea9c9-6750-4265-9084-990373d449f5,,,,2025-12-23,fuzzy,KPO number absent from all notices – found by NIP + title (fuzzy); title identical incl. 'etap II',yes
+RM-2026-018,link,2026/BZP 00194260/01,TenderResultNotice,08de98d8-0f55-144f-5fad-950001197fcb,ocds-148610-7e0ea9c9-6750-4265-9084-990373d449f5,,6210006578,NIP,2026-04-12,ocid,,yes
+RM-2026-018,link,2026/BZP 00324517/01,ContractPerformingNotice,08dedb3f-426c-687a-2028-230001aee96a,ocds-148610-7e0ea9c9-6750-4265-9084-990373d449f5,,6210006578,NIP,2026-07-06,ocid,,yes
+RM-2026-018,decoy,2023/BZP 00207561/01,ContractNotice,08db5083-4b39-b408-947a-bc0011ceb825,ocds-148610-93576367-ee52-11ed-b70f-ae2d9e28ec7b,,,,2023-05-09,,decoy: earlier Baszków procedure 2023 (same contractor 6210006578),yes
+RM-2026-018,decoy,2023/BZP 00363084/01,TenderResultNotice,08dba34a-0600-71c7-77fc-120011d7a107,ocds-148610-93576367-ee52-11ed-b70f-ae2d9e28ec7b,,6210006578,NIP,2023-08-22,,decoy (Baszków 2023),yes
+RM-2026-018,decoy,2025/BZP 00018283/01,ContractPerformingNotice,08dd309d-f127-d58a-aa0d-d80001d40a2f,ocds-148610-93576367-ee52-11ed-b70f-ae2d9e28ec7b,,6210006578,NIP,2025-01-09,,decoy (Baszków 2023),yes
+RM-2026-019,link,2024/BZP 00354928/01,ContractNotice,08dc8618-7624-069e-1a46-300001ab6d4c,ocds-148610-6e8c2e8c-23dd-11ef-87ba-8eb060fd7bb8,,,,2024-06-06,notice_no,,yes
+RM-2026-019,link,2024/BZP 00451447/01,TenderResultNotice,08dcb83b-5338-6174-82a9-430001450137,ocds-148610-6e8c2e8c-23dd-11ef-87ba-8eb060fd7bb8,,6211268694,NIP,2024-08-09,ocid,,yes
+RM-2026-019,link,2025/BZP 00626318/01,ContractPerformingNotice,08de4786-207b-c083-d6d3-f50001629607,ocds-148610-6e8c2e8c-23dd-11ef-87ba-8eb060fd7bb8,,6211268694,NIP,2025-12-30,ocid,,yes
+RM-2026-020,link,2025/BZP 00113651/01,ContractNotice,08dd51ab-134e-2276-8f1b-b600017c84ad,ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c,,,,2025-02-20,fuzzy,KPO number absent from all notices – found by NIP + title (fuzzy); title identical,yes
+RM-2026-020,link,2025/BZP 00206455/01,TenderResultNotice,08dd83e7-8600-d7d9-eaaa-350001a3b6fb,ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c,,369467516,REGON,2025-04-25,ocid,,yes
+RM-2026-020,link,2025/BZP 00558908/01,AgreementUpdateNotice,08de2d85-d74a-a060-0560-49000118fa8c,ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c,,369467516,REGON,2025-11-27,ocid,change: art. 455 ust. 1 pkt 4 – służebność przesyłu (R03),yes
+RM-2026-020,link,2026/BZP 00280220/01,AgreementUpdateNotice,08dec5fd-7ce8-b24c-5fad-9500015c76a8,ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c,,369467516,REGON,2026-06-09,ocid,change: art. 455 ust. 1 pkt 4 – warunki gruntowe (R02),yes
+RM-2026-020,link,2026/BZP 00291637/01,ContractPerformingNotice,08decb7b-ea1f-9e73-5fad-9500015f50ae,ocds-148610-740158c8-9281-4fe9-9f58-59edc56af25c,,369467516,REGON,2026-06-16,ocid,,yes
+RM-2026-021,link,2025/BZP 00364116/01,ContractNotice,08ddd4d7-052f-144b-e769-360001c721c8,ocds-148610-7724b53b-3893-4de1-8aac-824afe7b77f9,,,,2025-08-06,notice_no,,yes
+RM-2026-021,link,2025/BZP 00434530/01,TenderResultNotice,08ddf9b9-810c-bae9-d903-3900014f109b,ocds-148610-7724b53b-3893-4de1-8aac-824afe7b77f9,,8542420234,NIP,2025-09-22,ocid,,yes
+RM-2026-021,link,2026/BZP 00498398/01,AgreementUpdateNotice,08df2f57-a700-f06f-701a-d0000164ad62,ocds-148610-7724b53b-3893-4de1-8aac-824afe7b77f9,,8542420234,NIP,2026-10-21,ocid,,yes
+RM-2026-021,link,2026/BZP 00498447/01,ContractPerformingNotice,08df2f59-3cff-230a-701a-d0000164ada5,ocds-148610-7724b53b-3893-4de1-8aac-824afe7b77f9,,8542420234,NIP,2026-10-21,ocid,,yes
+RM-2026-022,missing_in_bzp,2023/BZP 00110672/01,,,,,,,,,ORGANIZER ERROR: xlsx BZP number not in BZP (snapshot nor API); referenced only in 3.2.1 of the two ContractPerformingNotices,yes
+RM-2026-022,missing_in_bzp,2023/BZP 00178669/01,,,,,,,,,"TenderResultNotice referenced in 4.5 / 3.1.1, absent from snapshot",yes
+RM-2026-022,link,2023/BZP 00396503/01,AgreementUpdateNotice,08dbb509-9e6b-f6a6-b525-040012ce9d0a,ocds-148610-f193152b-b443-11ed-9236-36fed59ea7dd,,6690503086,NIP,2023-09-14,xref,"AgreementUpdate (art. 455 ust. 1 pkt 3, roboty dodatkowe); contract 1 NIP 6690503086",yes
+RM-2026-022,link,2023/BZP 00580488/01,ContractPerformingNotice,08dc086e-d01e-5f27-b62e-d20011751fa3,ocds-148610-f193152b-b443-11ed-9236-36fed59ea7dd,,6690503086,NIP,2023-12-29,xref,"contract 1: NIP 6690503086, 2230851,00, on time; 3.2.1 → 2023/BZP 00110672",yes
+RM-2026-022,link,2024/BZP 00621519/01,ContractPerformingNotice,08dd0f9a-2990-af9e-985c-bb0001355be0,ocds-148610-f193152b-b443-11ed-9236-36fed59ea7dd,,8570210827,NIP,2024-11-28,xref,"contract 2: NIP 8570210827, 7098002,82, late; same OCID",yes
+RM-2026-022,decoy,2023/BZP 00232972/01,TenderResultNotice,08db5d0b-a5cb-2bd7-a85e-9800117c1e72,ocds-148610-646ba830-e435-11ed-9355-06954b8c6cb9,,384643387,REGON,2023-05-25,,"decoy: 'BUDOWA SIECI WODOCIĄGOWYCH W GMINIE WOLIN,' (other OCID, 2023)",yes
+RM-2026-022,decoy,2023/BZP 00464559/01,ContractPerformingNotice,08dbd624-377a-f930-7d96-c40012609352,ocds-148610-646ba830-e435-11ed-9355-06954b8c6cb9,,384643387,REGON,2023-10-26,,decoy (wodociągi Wolin 2023),yes
