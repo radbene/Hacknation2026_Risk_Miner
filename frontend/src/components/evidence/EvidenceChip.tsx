@@ -20,7 +20,7 @@ export function EvidenceChip({ ids, title, className, label }: { ids?: string[] 
         aria-label={`Pokaż źródła (${list.length})`}>
         <Quote size={11} aria-hidden />{label ?? 'Źródło'}{list.length > 1 ? ` (${list.length})` : ''}
       </button>
-      <Dialog open={open} onClose={() => setOpen(false)} title={title ?? 'Skąd pochodzi ta informacja'} className="w-[min(64rem,calc(100vw-2rem))]"
+      <Dialog open={open} onClose={() => setOpen(false)} title={title ?? 'Skąd pochodzi ta informacja'} className="w-[min(96vw,110rem)] max-h-[96vh] [&>div]:max-h-[94vh]"
         description="Zaznaczone jest miejsce, z którego system odczytał wartość.">
         {open && <EvidenceList ids={list} />}
       </Dialog>

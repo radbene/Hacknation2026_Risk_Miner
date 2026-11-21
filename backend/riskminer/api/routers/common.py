@@ -47,8 +47,14 @@ def evidence_context(evidence_id: uuid.UUID, db: Session = DB) -> dict:
         if ev.raw_record_id and (rr := db.get(RawRecord, ev.raw_record_id)) is not None:
             headers = list((rr.payload or {}).get("headers") or [])
         headers = [h for h in headers if h in cells] + [h for h in cells if h not in headers]
+        # the whole sheet as imported (every project row of the same file), so the UI can show the real file
+        sheet = db.execute(select(Project).where(Project.import_row["file"].astext == str(file))).scalars().all()
+        rows = sorted(({"row": int((x.import_row or {}).get("row") or 0), "cells": (x.import_row or {}).get("cells") or {}}
+                       for x in sheet), key=lambda r: r["row"])
         return {"type": "sheet", "file": file, "sheet": loc.get("sheet"), "row": row, "column": loc.get("column"),
-                "header": loc.get("header"), "cells": [{"header": h, "value": cells.get(h)} for h in headers],
+                "header": loc.get("header"), "headers": headers,
+                "cells": [{"header": h, "value": cells.get(h)} for h in headers],
+                "rows": [{"row": r["row"], "values": [r["cells"].get(h) for h in headers]} for r in rows],
                 "project_id": str(p.id) if p else None, "project_code": p.code if p else None}
     if ev.notice_id:
         return {"type": "notice", "notice_id": str(ev.notice_id), "section": loc.get("section"), "quote": ev.quote,

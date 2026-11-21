@@ -11,7 +11,10 @@ type Doc = Awaited<ReturnType<typeof pdfjs.getDocument>['promise']>
 interface TextItem { str: string; transform: number[]; width: number; height: number }
 
 /** PDF.js viewer: page navigation, zoom, and the quote highlighted on the page (text-layer match). */
-export function PdfViewer({ url, page: initialPage = 1, quote }: { url: string; page?: number; quote?: string }) {
+/** searchAll: look for the quote on every page and open the first page that contains it.
+ *  onError: called when the PDF cannot be loaded (e.g. the source is offline) – the caller shows a fallback. */
+export function PdfViewer({ url, page: initialPage = 1, quote, searchAll, onError, height = 'h-[72vh]' }:
+  { url: string; page?: number; quote?: string; searchAll?: boolean; onError?: (e: unknown) => void; height?: string }) {
   const [doc, setDoc] = useState<Doc | null>(null)
   const [err, setErr] = useState<unknown>(null)
   const [page, setPage] = useState(initialPage)
@@ -26,9 +29,20 @@ export function PdfViewer({ url, page: initialPage = 1, quote }: { url: string; 
     let cancelled = false
     setDoc(null); setErr(null)
     const task = pdfjs.getDocument({ url })
-    task.promise.then((d) => { if (!cancelled) setDoc(d) }, (e) => { if (!cancelled) setErr(e) })
+    task.promise.then(async (d) => {
+      if (cancelled) return
+      if (searchAll && quote) {
+        const needle = normalise(quote).toLowerCase()
+        for (let i = 1; i <= d.numPages; i++) {
+          const tc = await (await d.getPage(i)).getTextContent()
+          const txt = (tc.items as unknown as TextItem[]).map((it) => normalise(it.str)).join(' ').toLowerCase().replace(/\s+/g, ' ')
+          if (txt.includes(needle)) { if (!cancelled) setPage(i); break }
+        }
+      }
+      if (!cancelled) setDoc(d)
+    }, (e) => { if (!cancelled) { setErr(e); onError?.(e) } })
     return () => { cancelled = true; task.destroy() }
-  }, [url])
+  }, [url]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!doc || !canvasRef.current) return
@@ -71,7 +85,7 @@ export function PdfViewer({ url, page: initialPage = 1, quote }: { url: string; 
     return () => { cancelled = true; renderTask?.cancel() }
   }, [doc, page, scale, quote])
 
-  if (err) return <ErrorState error={err} />
+  if (err) return onError ? null : <ErrorState error={err} />
   if (!doc) return <Loading label="Wczytywanie PDF…" />
   return (
     <div className="flex flex-col gap-2">
@@ -84,8 +98,9 @@ export function PdfViewer({ url, page: initialPage = 1, quote }: { url: string; 
         <Button size="icon" variant="outline" onClick={() => setScale((s) => Math.min(2.5, s + 0.2))} aria-label="Powiększ"><ZoomIn size={14} /></Button>
         {quote && found === true && <span className="text-xs text-emerald-700">Cytat znaleziony na stronie {page}.</span>}
         {quote && found === false && <span className="text-xs text-amber-700">Cytatu nie znaleziono na tej stronie.</span>}
+        <a href={url} target="_blank" rel="noreferrer" className="ml-auto text-xs text-brand hover:underline">Pobierz plik</a>
       </div>
-      <div ref={wrapRef} className="max-h-[75vh] overflow-auto rounded border border-slate-200 bg-slate-100 p-2">
+      <div ref={wrapRef} className={`${height} overflow-auto rounded border border-slate-200 bg-slate-100 p-2`}>
         <div className="relative mx-auto w-fit bg-white shadow">
           <canvas ref={canvasRef} aria-label={`Strona ${page} dokumentu`} />
           {boxes.map((b, i) => <div key={i} data-hl className="pointer-events-none absolute rounded-sm bg-yellow-300/50 ring-1 ring-yellow-500"

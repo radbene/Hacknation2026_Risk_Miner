@@ -6,6 +6,7 @@ import DocumentPage from '@/pages/DocumentPage'
 import HowToTest from '@/pages/HowToTest'
 import Knowledge from '@/pages/Knowledge'
 import Models from '@/pages/Models'
+import SourcePage from '@/pages/SourcePage'
 import NewInvestment from '@/pages/NewInvestment'
 import NoticePage from '@/pages/NoticePage'
 import NotFound from '@/pages/NotFound'
@@ -58,6 +59,8 @@ export const opsRoute = createRoute({
   validateSearch: (s: Record<string, unknown>) => ({ tab: str(s.tab) }),
 })
 
+export const sourceRoute = createRoute({ getParentRoute: () => root, path: '/zrodlo/$evidenceId', component: SourcePage })
+
 const routeTree = root.addChildren([
   createRoute({ getParentRoute: () => root, path: '/', component: Start }),
   createRoute({ getParentRoute: () => root, path: '/jak-testowac', component: HowToTest }),
@@ -65,6 +68,7 @@ const routeTree = root.addChildren([
   createRoute({ getParentRoute: () => root, path: '/nowa-inwestycja', component: NewInvestment }),
   analysesRoute, analysisRoute, opsRoute,
   createRoute({ getParentRoute: () => root, path: '/modele', component: Models }),
+  sourceRoute,
 ])
 
 export const router = createRouter({ routeTree, defaultPreload: 'intent', scrollRestoration: true })

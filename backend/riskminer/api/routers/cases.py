@@ -367,6 +367,36 @@ def get_notice(notice_id: uuid.UUID, db: Session = DB):
     return NoticeDetail(**d, canonical_text=n.canonical_text, sections=sections)
 
 
+@router.get("/notices/{notice_id}/pdf")
+def notice_pdf(notice_id: uuid.UUID, db: Session = DB):
+    """The official PDF of the notice from e-Zamówienia (fetched once, cached in data/notice_pdf/)."""
+    import httpx
+    from fastapi.responses import FileResponse
+
+    from riskminer.core.config import get_config, repo_path
+    from riskminer.core.evidence import NOTICE_PDF
+    from riskminer.core.oplog import logged_op
+
+    n = db.get(Notice, notice_id)
+    if not n:
+        raise _404("ogłoszenie")
+    path = repo_path("data/notice_pdf") / f"{n.object_id}.pdf"
+    if not path.exists():
+        url = NOTICE_PDF.format(object_id=n.object_id)
+        try:
+            with logged_op("bzp", "notice_pdf", url, {"notice_number": n.notice_number}) as op:
+                r = httpx.get(url, headers={"User-Agent": get_config().user_agent}, timeout=30, follow_redirects=True)
+                op["status_code"], op["bytes"] = r.status_code, len(r.content)
+                if r.status_code != 200 or not r.content.startswith(b"%PDF"):
+                    raise HTTPException(502, "e-Zamówienia nie zwróciły pliku PDF")
+        except httpx.HTTPError as e:
+            raise HTTPException(502, f"Nie udało się pobrać PDF z e-Zamówień: {type(e).__name__}") from e
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(r.content)
+    return FileResponse(path, media_type="application/pdf", filename=f"{n.notice_number.replace('/', '_')}.pdf",
+                        content_disposition_type="inline")
+
+
 @router.get("/entities/{entity_id}", response_model=EntityOut)
 def get_entity(entity_id: uuid.UUID, db: Session = DB):
     e = db.get(Entity, entity_id)
