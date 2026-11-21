@@ -18,12 +18,32 @@ class CurrentUser:
 
 
 def current_user(authorization: str | None = Header(default=None), x_user: str | None = Header(default=None)) -> CurrentUser:
-    """Phase 0 placeholder. S5 replaces this with real demo-user tokens + roles.
+    """Who is calling (S5).
 
-    Until then: `X-User: <username>` or anonymous expert.
+    1. `Authorization: Bearer <token>` from POST /api/auth/login (signed, 12 h) – the normal path.
+    2. `X-User: <username>` – developer/test shortcut, accepted only when DEMO_MODE is on; demo account names
+       map to their role (admin/ekspert/analityk/gosc), any other name is an expert.
+    3. No header: DEMO_MODE → anonymous expert "ekspert" (jury sandbox works without logging in);
+       otherwise a read-only viewer.
     """
-    name = x_user or "ekspert"
-    return CurrentUser(username=name, role="admin" if name == "admin" else "expert", display_name=name)
+    from riskminer.core.config import get_env
+    from riskminer.review import auth
+
+    if authorization:
+        scheme, _, token = authorization.partition(" ")
+        if scheme.lower() != "bearer" or not token:
+            raise HTTPException(401, "Nieobsługiwany nagłówek Authorization (oczekiwano Bearer)")
+        try:
+            u = auth.parse_token(token.strip())
+        except auth.AuthError as e:
+            raise HTTPException(401, str(e)) from e
+        return CurrentUser(username=u.username, role=u.role, display_name=u.display_name)
+    demo = get_env().demo_mode
+    if x_user and demo:
+        return CurrentUser(username=x_user, role=auth.demo_role(x_user), display_name=x_user)
+    if demo:
+        return CurrentUser(username="ekspert", role="expert", display_name="Ekspert (demo)")
+    return CurrentUser(username="anonim", role="viewer", display_name="Gość")
 
 
 USER = Depends(current_user)
@@ -34,6 +54,8 @@ def not_implemented(owner: str) -> HTTPException:
 
 
 def require_role(*roles: str):
+    """Allow the given roles (admin always passes). Usage: `user: CurrentUser = require_role("expert")`."""
+
     def dep(user: CurrentUser = USER) -> CurrentUser:
         if user.role not in roles and user.role != "admin":
             raise HTTPException(403, "Brak uprawnień")

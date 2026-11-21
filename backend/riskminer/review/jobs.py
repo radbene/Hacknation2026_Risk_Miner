@@ -16,3 +16,11 @@ def run_knowledge_load(ctx: JobContext) -> dict:
         ctx.session.commit()
         ctx.progress((i + 1) / len(sectors), f"wiedza: {s}")
     return {"sectors": {s: {"written": r["written"], "unchanged": r["unchanged"]} for s, r in out.items()}}
+
+
+@job_handler("llm_test")
+def run_llm_test(ctx: JobContext) -> dict:
+    """'Testuj połączenie' from the LLM routing screen."""
+    from riskminer.llm.routing import test_profile
+
+    return test_profile(ctx.params["profile"], model=ctx.params.get("model"))
