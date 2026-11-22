@@ -7,6 +7,7 @@ import { JobRunner } from '@/components/JobRunner'
 import { ExpertOnly } from '@/components/Layout'
 import { PageHeader } from '@/components/PageHeader'
 import { Badge, Button, Card, CardContent, CardHeader, Dialog, Input, Label, QueryState, Select, Textarea, useToast } from '@/components/ui'
+import { HINTS, inferLocation, LocationNote, PROVIDERS, SERVER_URL_HINT } from '@/lib/llmModels'
 import { fmtNum } from '@/lib/utils'
 
 type R = Schemas['LLMRoutingOut']
@@ -111,6 +112,7 @@ function TaskCard({ r, task, chain }: { r: R; task: string; chain: string[] }) {
 }
 
 function ModelCard({ p }: { p: Prof }) {
+  const keyMissing = !p.available && (p.unavailable_reason ?? '').includes('klucz')
   return (
     <Card>
       <CardHeader title={p.display_name ?? p.name}
@@ -121,43 +123,81 @@ function ModelCard({ p }: { p: Prof }) {
         {!p.available && p.unavailable_reason && <p className="text-xs text-amber-800">Dlaczego niedostępny: {p.unavailable_reason}</p>}
         {p.available && <JobRunner label="Sprawdź połączenie" variant="outline"
           start={async () => unwrap(await api.POST('/api/settings/llm/test', { body: { profile: p.name, model: null } }))} />}
+        {p.provider !== 'none' && p.data_location !== 'local' && <KeyPaste profile={p.name} provider={p.provider} open={keyMissing} hasKey={p.has_key} />}
       </CardContent>
     </Card>
   )
 }
 
+/** Paste an API key for an existing model; it is stored on the server and never shown again. */
+function KeyPaste({ profile, provider, open: startOpen, hasKey }: { profile: string; provider: string; open: boolean; hasKey: boolean }) {
+  const { toast } = useToast()
+  const [open, setOpen] = useState(startOpen)
+  const [key, setKey] = useState('')
+  const m = useApiMutation<Schemas['LLMRoutingIn'], R>({
+    fn: async (body) => unwrap(await api.PUT('/api/settings/llm', { body })),
+    invalidate: [['settings', 'llm']],
+    onSuccess: () => { toast({ kind: 'success', title: 'Zapisano klucz API', description: 'Klucz jest na serwerze; nie będzie już wyświetlany.' }); setKey(''); setOpen(false) },
+    onError: (e) => toast({ kind: 'error', title: 'Nie udało się zapisać klucza', description: String(e) }),
+  })
+  if (!open) return <button type="button" className="cursor-pointer text-xs text-brand hover:underline" onClick={() => setOpen(true)}>{hasKey ? 'Zmień klucz API' : 'Wklej klucz API'}</button>
+  return (
+    <form className="flex flex-wrap items-end gap-2 pt-1" onSubmit={(e) => { e.preventDefault(); if (key.trim()) m.mutate({ api_keys: { [profile]: key }, comment: `Klucz API dla ${profile}` }) }}>
+      <div className="min-w-0 flex-1"><Label htmlFor={`k-${profile}`}>Klucz API</Label>
+        <Input id={`k-${profile}`} type="password" autoComplete="off" value={key} onChange={(e) => setKey(e.target.value)} placeholder={HINTS[provider]?.key ?? 'wklej klucz'} /></div>
+      <Button size="sm" type="submit" loading={m.isPending} disabled={!key.trim()}>Zapisz</Button>
+    </form>
+  )
+}
+
 function AddModelDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { toast } = useToast()
-  const [f, setF] = useState({ display_name: '', provider: 'openai_compatible', base_url: 'http://localhost:11434/v1', model: '', api_key_env: '', data_location: 'local', use_everywhere: false, note: '' })
+  const empty = { display_name: '', provider: 'openai_compatible', base_url: '', model: '', api_key: '', api_key_env: '', use_everywhere: false, note: '' }
+  const [useEnv, setUseEnv] = useState(false)
+  const [f, setF] = useState(empty)
   const set = (k: keyof typeof f, v: string | boolean) => setF((x) => ({ ...x, [k]: v }))
   const m = useApiMutation<Schemas['LLMRoutingIn'], R>({
     fn: async (body) => unwrap(await api.PUT('/api/settings/llm', { body })),
     invalidate: [['settings', 'llm']],
-    onSuccess: () => { toast({ kind: 'success', title: 'Model dodany', description: 'Sprawdź połączenie na karcie modelu.' }); onClose() },
+    onSuccess: () => { toast({ kind: 'success', title: 'Model dodany', description: 'Sprawdź połączenie na karcie modelu.' }); setF(empty); onClose() },
     onError: (e) => toast({ kind: 'error', title: 'Nie udało się dodać modelu', description: String(e) }),
   })
+  const compat = f.provider === 'openai_compatible'
+  const h = HINTS[f.provider]
+  const loc = inferLocation(f.provider, f.base_url).loc
+  const ok = f.display_name.trim() && f.model.trim() && (!compat || loc !== '')
   const slug = 'wlasny_' + (f.display_name || f.model).toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 30)
   const submit = () => {
-    const profile = { provider: f.provider, display_name: f.display_name, model: f.model, data_location: f.data_location,
-      ...(f.provider === 'openai_compatible' ? { base_url: f.base_url } : {}), ...(f.api_key_env ? { api_key_env: f.api_key_env } : {}),
-      max_tokens: 2000, extra: f.data_location === 'local' ? { temperature: 0.1, timeout_s: 300 } : {} }
+    if (!ok) return
+    // data_location is not sent: the server decides it from the kind and the address (routing.infer_data_location)
+    const profile = { provider: f.provider, display_name: f.display_name.trim(), model: f.model.trim(),
+      ...(compat ? { base_url: f.base_url.trim() } : {}), ...(useEnv && f.api_key_env.trim() ? { api_key_env: f.api_key_env.trim() } : {}),
+      max_tokens: 2000, extra: loc === 'local' ? { temperature: 0.1, timeout_s: 300 } : {} }
     const tasks = f.use_everywhere ? Object.fromEntries(Object.keys(TASK_PL).map((t) => [t, [slug, 'rules']])) : undefined
-    m.mutate({ profiles: { [slug]: profile }, ...(tasks ? { tasks } : {}), comment: f.note || `Dodano model ${f.display_name}` })
+    m.mutate({ profiles: { [slug]: profile }, ...(!useEnv && f.api_key.trim() ? { api_keys: { [slug]: f.api_key.trim() } } : {}),
+      ...(tasks ? { tasks } : {}), comment: f.note || `Dodano model ${f.display_name}` })
   }
   return (
-    <Dialog open={open} onClose={onClose} title="Dodaj własny model językowy"
-      description="Klucza API nie wpisuj w przeglądarce. Podaj nazwę zmiennej środowiskowej na serwerze, w której zapisał go administrator."
-      footer={<><Button variant="outline" onClick={onClose}>Anuluj</Button><Button loading={m.isPending} disabled={!f.display_name.trim() || !f.model.trim()} onClick={submit}>Dodaj model</Button></>}>
+    <Dialog open={open} onClose={onClose} title="Dodaj model językowy"
+      description="Klucz API zapisujemy na serwerze i nigdy go nie wyświetlamy."
+      footer={<><Button variant="outline" onClick={onClose}>Anuluj</Button><Button loading={m.isPending} disabled={!ok} onClick={submit}>Dodaj model</Button></>}>
       <form className="space-y-3 text-sm" onSubmit={(e) => { e.preventDefault(); submit() }}>
-        <div><Label htmlFor="m-n">Nazwa wyświetlana</Label><Input id="m-n" value={f.display_name} onChange={(e) => set('display_name', e.target.value)} placeholder="np. PLLuM 12B (serwer w ministerstwie)" /></div>
-        <div><Label htmlFor="m-p">Rodzaj</Label><Select id="m-p" value={f.provider} onChange={(e) => set('provider', e.target.value)}
-          options={['openai_compatible', 'anthropic', 'gemini', 'openai'].map((v) => ({ value: v, label: KIND[v] }))} /></div>
-        {f.provider === 'openai_compatible' && <div><Label htmlFor="m-u">Adres serwera</Label><Input id="m-u" value={f.base_url} onChange={(e) => set('base_url', e.target.value)} />
+        <div><Label htmlFor="m-p">Rodzaj</Label><Select id="m-p" value={f.provider} onChange={(e) => set('provider', e.target.value)} options={PROVIDERS} /></div>
+        <div><Label htmlFor="m-n">Nazwa wyświetlana</Label><Input id="m-n" value={f.display_name} onChange={(e) => set('display_name', e.target.value)} placeholder={h.name} /></div>
+        {compat && <div><Label htmlFor="m-u">Adres serwera</Label><Input id="m-u" value={f.base_url} onChange={(e) => set('base_url', e.target.value)} placeholder={SERVER_URL_HINT} />
           <p className="mt-0.5 text-xs text-slate-500">Dla Ollamy na tym samym serwerze: http://localhost:11434/v1 (w kontenerach: http://ollama:11434/v1).</p></div>}
-        <div><Label htmlFor="m-m">Identyfikator modelu</Label><Input id="m-m" value={f.model} onChange={(e) => set('model', e.target.value)} placeholder="np. riskminer-bielik albo SpeakLeash/bielik-11b-v3.0-instruct:Q4_K_M" /></div>
-        <div><Label htmlFor="m-k">Zmienna z kluczem API (jeśli wymagany)</Label><Input id="m-k" value={f.api_key_env} onChange={(e) => set('api_key_env', e.target.value)} placeholder="np. MOJ_MODEL_API_KEY" /></div>
-        <div><Label htmlFor="m-l">Gdzie przetwarzane są dane</Label><Select id="m-l" value={f.data_location} onChange={(e) => set('data_location', e.target.value)}
-          options={[{ value: 'local', label: 'na naszym serwerze' }, { value: 'eu', label: 'w chmurze w UE' }, { value: 'non_eu', label: 'poza UE' }]} /></div>
+        <div><Label htmlFor="m-m">Identyfikator modelu</Label><Input id="m-m" value={f.model} onChange={(e) => set('model', e.target.value)} placeholder={h.model} />
+          {h.modelHelp && <p className="mt-0.5 text-xs text-slate-500">{h.modelHelp}</p>}</div>
+        {!useEnv ? (
+          <div><Label htmlFor="m-k">Klucz API{compat ? ' (jeśli serwer go wymaga)' : ''}</Label>
+            <Input id="m-k" type="password" autoComplete="off" value={f.api_key} onChange={(e) => set('api_key', e.target.value)} placeholder={h.key} />
+            <p className="mt-0.5 text-xs text-slate-500">{h.keyHelp} <button type="button" className="cursor-pointer text-brand hover:underline" onClick={() => setUseEnv(true)}>Klucz jest już w pliku .env na serwerze?</button></p></div>
+        ) : (
+          <div><Label htmlFor="m-k">Nazwa zmiennej z kluczem w pliku .env</Label>
+            <Input id="m-k" value={f.api_key_env} onChange={(e) => set('api_key_env', e.target.value)} placeholder={h.keyEnv} />
+            <p className="mt-0.5 text-xs text-slate-500">Dla administratora serwera. <button type="button" className="cursor-pointer text-brand hover:underline" onClick={() => setUseEnv(false)}>Wolę wkleić klucz</button></p></div>
+        )}
+        <LocationNote provider={f.provider} url={f.base_url} />
         <label className="flex items-center gap-2"><input type="checkbox" className="accent-brand" checked={f.use_everywhere} onChange={(e) => set('use_everywhere', e.target.checked)} />
           Używaj tego modelu jako pierwszego we wszystkich zadaniach</label>
         <div><Label htmlFor="m-c">Uzasadnienie zmiany (do historii)</Label><Textarea id="m-c" rows={2} value={f.note} onChange={(e) => set('note', e.target.value)} /></div>

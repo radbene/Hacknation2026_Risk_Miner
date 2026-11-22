@@ -46,6 +46,7 @@ class Features(BaseModel):
 class FeatureExtractIn(BaseModel):
     text: str | None = None
     document_ids: list[uuid.UUID] = Field(default_factory=list)
+    llm_profile: str | None = None  # user's model choice (profile name, "rules" = no model, None = expert's order)
 
 
 class FeatureExtractOut(BaseModel):

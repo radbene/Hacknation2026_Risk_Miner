@@ -62,6 +62,7 @@ class LLMProfileOut(BaseModel):
     unavailable_reason: str | None = None
     max_tokens: int | None = None
     price_known: bool = False
+    added_by: str | None = None  # set for models a user (not an expert) added for their own analyses
 
 
 class LLMRoutingOut(BaseModel):
@@ -84,7 +85,18 @@ class LLMRoutingIn(BaseModel):
     default: list[str] | None = None
     # profile field overrides or new profiles (no secrets: only api_key_env names the variable)
     profiles: dict[str, dict[str, Any]] | None = None
+    # API keys pasted in the UI, per profile: write-only, stored on the server, never returned
+    api_keys: dict[str, str] | None = None
     comment: str | None = None
+
+
+class UserModelIn(BaseModel):
+    display_name: str
+    provider: str = "openai_compatible"
+    model: str
+    base_url: str | None = None
+    api_key: str | None = None  # write-only: stored on the server, never returned
+    data_location: str | None = None  # ignored: the server infers it from provider + address (infer_data_location)
 
 
 class LLMTestIn(BaseModel):

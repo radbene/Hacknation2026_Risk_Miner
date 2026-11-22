@@ -9,6 +9,7 @@ from fastapi.responses import Response
 from sqlalchemy import func, select
 
 from riskminer.api.deps import DB, USER, CurrentUser, Session
+from riskminer.llm import use_profile
 from riskminer.models import Analysis, AnalysisItem
 from riskminer.schemas.analysis import (
     AnalysisCreateIn,
@@ -39,6 +40,11 @@ def _get(db: Session, analysis_id: uuid.UUID) -> Analysis:
     return a
 
 
+def _choice(a: Analysis) -> str | None:
+    """Model the user picked for this analysis (kept in params, so recomputes use the same model)."""
+    return (a.params or {}).get("llm_profile") or None
+
+
 def _text_of(db: Session, text: str | None, document_ids: list[uuid.UUID]) -> str:
     from riskminer.models import Chunk
 
@@ -56,7 +62,8 @@ def extract_features(body: FeatureExtractIn, db: Session = DB):
     text = _text_of(db, body.text, body.document_ids)
     if not text:
         raise HTTPException(400, "Podaj opis inwestycji albo dokument")
-    return run(text, db, use_llm=True)
+    with use_profile(body.llm_profile):
+        return run(text, db, use_llm=body.llm_profile != "rules")
 
 
 @router.post("/analyses", response_model=AnalysisOut)
@@ -65,9 +72,12 @@ def create_analysis(body: AnalysisCreateIn, db: Session = DB, user: CurrentUser 
 
     if not (body.text or body.document_ids or body.features):
         raise HTTPException(400, "Podaj opis, dokument albo cechy inwestycji")
-    a = create(db, title=body.title, text=body.text,
-               features=body.features.model_dump(mode="json", exclude_none=True) if body.features else None,
-               params=body.params, document_ids=body.document_ids, project_id=body.project_id, actor=user.username)
+    choice = (body.params or {}).get("llm_profile") or None
+    with use_profile(choice):
+        a = create(db, title=body.title, text=body.text,
+                   features=body.features.model_dump(mode="json", exclude_none=True) if body.features else None,
+                   params=body.params, document_ids=body.document_ids, project_id=body.project_id, actor=user.username,
+                   use_llm=choice != "rules")
     db.commit()
     return analysis_out(db, a)
 
@@ -109,7 +119,8 @@ def update_features(analysis_id: uuid.UUID, body: Features, db: Session = DB, us
     before = {"features": a.features}
     a.features = body.model_dump(mode="json", exclude_none=True)
     record(db, "analysis", a, "edit", before, {"features": a.features}, user.username, "Zmiana cech inwestycji")
-    compute(db, a, user.username)
+    with use_profile(_choice(a)):
+        compute(db, a, user.username)
     db.commit()
     return analysis_out(db, a)
 
@@ -119,7 +130,8 @@ def recompute(analysis_id: uuid.UUID, db: Session = DB, user: CurrentUser = USER
     from riskminer.analysis.run import compute
 
     a = _get(db, analysis_id)
-    compute(db, a, user.username)
+    with use_profile(_choice(a)):
+        compute(db, a, user.username)
     db.commit()
     return analysis_out(db, a)
 
@@ -159,7 +171,8 @@ def patch_item(analysis_id: uuid.UUID, item_id: uuid.UUID, body: AnalysisItemPat
            row_dict(it), user.username, body.comment)
     db.flush()
     if recompute_needed:
-        compute(db, a, user.username)
+        with use_profile(_choice(a)):
+            compute(db, a, user.username)
     db.commit()
     db.refresh(it)
     return it

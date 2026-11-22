@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import contextlib
+import contextvars
 import json
 import logging
 import re
@@ -62,9 +64,29 @@ def _log_call(**kw: Any) -> None:
         log.warning("could not log llm_call", exc_info=True)
 
 
+# Model chosen by the user for the current request (e.g. one analysis). Set via `use_profile(...)`.
+_preferred: contextvars.ContextVar[str | None] = contextvars.ContextVar("riskminer_llm_preferred", default=None)
+
+
+@contextlib.contextmanager
+def use_profile(name: str | None):
+    """Within this block every `complete()` tries the user's chosen profile first, then the expert's order.
+    `name="rules"` means no model at all (deterministic rules only); None/'' keeps the expert's order."""
+    token = _preferred.set(name or None)
+    try:
+        yield
+    finally:
+        _preferred.reset(token)
+
+
 def chain_for(task: str) -> list[tuple[str, LLMProfile]]:
     cfg = effective_llm()
-    names = cfg.tasks.get(task) or cfg.default
+    names = list(cfg.tasks.get(task) or cfg.default)
+    pref = _preferred.get()
+    if pref == "rules":
+        names = ["rules"]
+    elif pref and pref in cfg.profiles:
+        names = [pref] + [n for n in names if n != pref]
     return [(n, cfg.profiles[n]) for n in names if n in cfg.profiles]
 
 

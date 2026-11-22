@@ -103,4 +103,29 @@ def repo_path(rel: str) -> Path:
 
 
 def secret(name: str | None) -> str | None:
-    return os.environ.get(name) if name else None
+    """API key by env-var name: process environment first, then the repo `.env` (read on every call, so a key
+    an admin adds to `.env` works for a newly added model without a restart or a code change)."""
+    if not name:
+        return None
+    if name.startswith("db:"):  # key a user typed for a model they added – stored server-side, never sent back
+        return _db_secret(name[3:])
+    if os.environ.get(name):
+        return os.environ[name]
+    from dotenv import dotenv_values
+
+    return dotenv_values(REPO_ROOT / ".env").get(name) or None
+
+
+USER_KEYS_SETTING = "llm.user_keys"
+
+
+def _db_secret(profile: str) -> str | None:
+    try:
+        from riskminer.core.db import SessionLocal
+        from riskminer.models import Setting
+
+        with SessionLocal() as s:
+            row = s.get(Setting, USER_KEYS_SETTING)
+            return ((row.value or {}).get(profile) or None) if row else None
+    except Exception:  # noqa: BLE001
+        return None

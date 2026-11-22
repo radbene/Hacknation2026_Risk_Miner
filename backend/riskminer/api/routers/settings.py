@@ -21,6 +21,7 @@ from riskminer.schemas.ops import (
     LoginIn,
     SandboxStatus,
     TokenOut,
+    UserModelIn,
     UserOut,
 )
 
@@ -39,7 +40,8 @@ def _routing_out(db: Session | None = None) -> LLMRoutingOut:
             name=n, display_name=p.display_name, provider=p.provider, model=p.model, base_url=p.base_url, data_location=p.data_location,
             has_key=reason is None or p.provider == "none", effort=p.effort, available=reason is None,
             unavailable_reason=reason, max_tokens=p.max_tokens,
-            price_known=p.provider == "none" or p.data_location == "local" or price_known(p.model)))
+            price_known=p.provider == "none" or p.data_location == "local" or price_known(p.model),
+            added_by=(p.extra or {}).get("added_by")))
     row = db.get(Setting, routing.SETTING_KEY) if db is not None else None
     return LLMRoutingOut(
         mode=cfg.mode, profiles=profiles, tasks=cfg.tasks, default=cfg.default,
@@ -62,8 +64,16 @@ def get_llm_routing(db: Session = DB):
 @router.put("/settings/llm", response_model=LLMRoutingOut)
 def put_llm_routing(body: LLMRoutingIn, db: Session = DB, user: CurrentUser = EXPERT):
     """Persist routing in the DB (overrides config/settings.yaml); every change is versioned and in the history."""
+    ov = body.model_dump(exclude_none=True, exclude={"comment", "api_keys"})
+    if body.api_keys:
+        known = set(routing.effective_llm().profiles) | set((body.profiles or {}).keys())
+        unknown = [n for n in body.api_keys if n not in known]
+        if unknown:
+            raise HTTPException(422, f"nieznane modele: {unknown}")
+        for n, fields in routing.store_api_keys(db, body.api_keys, user.username).items():
+            ov.setdefault("profiles", {}).setdefault(n, {}).update(fields)
     try:
-        routing.save_override(db, body.model_dump(exclude_none=True, exclude={"comment"}), user.username, body.comment)
+        routing.save_override(db, ov, user.username, body.comment)
     except routing.RoutingError as e:
         raise HTTPException(422, str(e)) from e
     db.commit()
@@ -75,6 +85,30 @@ def put_llm_routing(body: LLMRoutingIn, db: Session = DB, user: CurrentUser = EX
 def reset_llm_routing(db: Session = DB, user: CurrentUser = EXPERT):
     """Drop the UI override – back to config/settings.yaml."""
     routing.reset_override(db, user.username)
+    db.commit()
+    routing.invalidate()
+    return _routing_out(db)
+
+
+@router.post("/settings/llm/user-models", response_model=LLMRoutingOut)
+def add_user_model(body: UserModelIn, db: Session = DB, user: CurrentUser = USER):
+    """Any logged-in user can add a model for their own analyses (own API key, stored server-side)."""
+    try:
+        routing.add_user_model(db, display_name=body.display_name, provider=body.provider, model=body.model,
+                               base_url=body.base_url, api_key=body.api_key, actor=user.username)
+    except routing.RoutingError as e:
+        raise HTTPException(422, str(e)) from e
+    db.commit()
+    routing.invalidate()
+    return _routing_out(db)
+
+
+@router.delete("/settings/llm/user-models/{name}", response_model=LLMRoutingOut)
+def remove_user_model(name: str, db: Session = DB, user: CurrentUser = USER):
+    try:
+        routing.remove_user_model(db, name, user.username, is_expert=user.role in ("expert", "admin"))
+    except routing.RoutingError as e:
+        raise HTTPException(403, str(e)) from e
     db.commit()
     routing.invalidate()
     return _routing_out(db)

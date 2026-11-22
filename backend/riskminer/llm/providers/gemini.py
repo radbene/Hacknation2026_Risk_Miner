@@ -80,8 +80,9 @@ class Provider:
         from google.genai import errors
 
         req = build_request(profile, system=system, messages=messages, schema=schema, max_tokens=max_tokens)
+        client = _client(profile)  # keep a reference: a temporary Client is closed before the request is sent
         try:
-            resp = _client(profile).models.generate_content(**req)
+            resp = client.models.generate_content(**req)
         except errors.APIError as e:
             raise LLMError(f"gemini {getattr(e, 'code', '')}: {getattr(e, 'message', e)}") from e
         return parse_response(resp)
@@ -90,8 +91,9 @@ class Provider:
         from google.genai import errors
 
         model = profile.extra.get("embed_model") or "gemini-embedding-001"
+        client = _client(profile)
         try:
-            res = _client(profile).models.embed_content(model=model, contents=texts)
+            res = client.models.embed_content(model=model, contents=texts)
         except errors.APIError as e:
             raise LLMError(f"gemini embeddings: {e}") from e
         return [list(e.values) for e in res.embeddings]

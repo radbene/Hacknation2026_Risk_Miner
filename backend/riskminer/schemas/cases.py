@@ -219,6 +219,8 @@ class TimelineItem(BaseModel):
     planned: bool = False
     notice_id: uuid.UUID | None = None
     evidence_ids: list[uuid.UUID] = Field(default_factory=list)
+    part_no: int | None = None  # contract lot this item belongs to (contract, deadlines, changes, payment)
+    new_end: dt.date | None = None  # for changes: the deadline after the change
 
 
 class TimelineOut(BaseModel):

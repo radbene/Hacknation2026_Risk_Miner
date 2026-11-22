@@ -247,21 +247,21 @@ def project_timeline(project_id: uuid.UUID, db: Session = DB):
     for c in _contracts(db, project_id):
         if c.signed_at:
             items.append(TimelineItem(date=c.signed_at, kind="contract", label=f"Umowa (część {c.part_no or 1})",
-                                      value=_f(c.value_gross), notice_id=c.result_notice_id))
+                                      value=_f(c.value_gross), notice_id=c.result_notice_id, part_no=c.part_no or 1))
         if c.planned_end:
             items.append(TimelineItem(date=c.planned_end, kind="planned_end", label="Planowany termin wykonania",
-                                      planned=True))
+                                      planned=True, part_no=c.part_no or 1))
         for ch in db.execute(select(ContractChange).where(ContractChange.contract_id == c.id)).scalars():
             items.append(TimelineItem(date=ch.change_date or ch.new_end, kind="change",
                                       label=f"Zmiana umowy nr {ch.change_no}" + (f" → termin {ch.new_end}" if ch.new_end else ""),
-                                      value=_f(ch.new_value), notice_id=ch.notice_id,
+                                      value=_f(ch.new_value), notice_id=ch.notice_id, part_no=c.part_no or 1, new_end=ch.new_end,
                                       evidence_ids=[uuid.UUID(str(x)) for x in (ch.evidence_ids or [])[:3]]))
         if c.actual_end:
             items.append(TimelineItem(date=c.actual_end, kind="actual_end", label="Faktyczne wykonanie",
-                                      notice_id=c.performing_notice_id))
+                                      notice_id=c.performing_notice_id, part_no=c.part_no or 1))
         if c.paid_gross is not None:
             items.append(TimelineItem(date=c.actual_end, kind="paid", label="Wypłacone wynagrodzenie (brutto)",
-                                      value=_f(c.paid_gross), notice_id=c.performing_notice_id))
+                                      value=_f(c.paid_gross), notice_id=c.performing_notice_id, part_no=c.part_no or 1))
         if not pva or (c.value_gross and _f(c.value_gross) > (pva.get("value") or 0)):
             delay = (c.actual_end - c.planned_end).days if c.actual_end and c.planned_end else None
             pva = {"planned_end": c.planned_end, "actual_end": c.actual_end, "delay_days": delay,

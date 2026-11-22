@@ -111,8 +111,9 @@ class Provider:
         import openai
 
         model = profile.extra.get("embed_model") or profile.model
+        client = _client(profile)  # keep a reference while the request runs
         try:
-            res = _client(profile).embeddings.create(model=model, input=texts)
+            res = client.embeddings.create(model=model, input=texts)
         except openai.OpenAIError as e:
             raise LLMError(f"openai embeddings: {e}") from e
         return [d.embedding for d in res.data]

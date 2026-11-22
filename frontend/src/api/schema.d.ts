@@ -281,6 +281,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/notices/{notice_id}/pdf": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Notice Pdf
+         * @description The official PDF of the notice from e-Zamówienia (fetched once, cached in data/notice_pdf/).
+         */
+        get: operations["notice_pdf_api_notices__notice_id__pdf_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/entities/{entity_id}": {
         parameters: {
             query?: never;
@@ -1146,6 +1166,43 @@ export interface paths {
          * @description Drop the UI override – back to config/settings.yaml.
          */
         delete: operations["reset_llm_routing_api_settings_llm_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/settings/llm/user-models": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add User Model
+         * @description Any logged-in user can add a model for their own analyses (own API key, stored server-side).
+         */
+        post: operations["add_user_model_api_settings_llm_user_models_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/settings/llm/user-models/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove User Model */
+        delete: operations["remove_user_model_api_settings_llm_user_models__name__delete"];
         options?: never;
         head?: never;
         patch?: never;
@@ -2236,6 +2293,8 @@ export interface components {
             text?: string | null;
             /** Document Ids */
             document_ids?: string[];
+            /** Llm Profile */
+            llm_profile?: string | null;
         };
         /** FeatureExtractOut */
         FeatureExtractOut: {
@@ -2528,6 +2587,8 @@ export interface components {
              * @default false
              */
             price_known: boolean;
+            /** Added By */
+            added_by?: string | null;
         };
         /** LLMRoutingIn */
         LLMRoutingIn: {
@@ -2544,6 +2605,10 @@ export interface components {
                 [key: string]: {
                     [key: string]: unknown;
                 };
+            } | null;
+            /** Api Keys */
+            api_keys?: {
+                [key: string]: string;
             } | null;
             /** Comment */
             comment?: string | null;
@@ -3612,6 +3677,10 @@ export interface components {
             notice_id?: string | null;
             /** Evidence Ids */
             evidence_ids?: string[];
+            /** Part No */
+            part_no?: number | null;
+            /** New End */
+            new_end?: string | null;
         };
         /** TimelineOut */
         TimelineOut: {
@@ -3632,6 +3701,24 @@ export interface components {
             /** Token */
             token: string;
             user: components["schemas"]["UserOut"];
+        };
+        /** UserModelIn */
+        UserModelIn: {
+            /** Display Name */
+            display_name: string;
+            /**
+             * Provider
+             * @default openai_compatible
+             */
+            provider: string;
+            /** Model */
+            model: string;
+            /** Base Url */
+            base_url?: string | null;
+            /** Api Key */
+            api_key?: string | null;
+            /** Data Location */
+            data_location?: string | null;
         };
         /** UserOut */
         UserOut: {
@@ -4206,6 +4293,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["NoticeDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    notice_pdf_api_notices__notice_id__pdf_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                notice_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Validation Error */
@@ -5950,6 +6068,76 @@ export interface operations {
                 "x-user"?: string | null;
             };
             path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LLMRoutingOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_user_model_api_settings_llm_user_models_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "x-user"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserModelIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LLMRoutingOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_user_model_api_settings_llm_user_models__name__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "x-user"?: string | null;
+            };
+            path: {
+                name: string;
+            };
             cookie?: never;
         };
         requestBody?: never;

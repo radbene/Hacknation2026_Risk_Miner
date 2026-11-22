@@ -949,6 +949,48 @@
     }
    }
   },
+  "/api/notices/{notice_id}/pdf": {
+   "get": {
+    "tags": [
+     "cases"
+    ],
+    "summary": "Notice Pdf",
+    "description": "The official PDF of the notice from e-Zamówienia (fetched once, cached in data/notice_pdf/).",
+    "operationId": "notice_pdf_api_notices__notice_id__pdf_get",
+    "parameters": [
+     {
+      "name": "notice_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Notice Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/api/entities/{entity_id}": {
    "get": {
     "tags": [
@@ -4561,6 +4603,156 @@
     "description": "Drop the UI override – back to config/settings.yaml.",
     "operationId": "reset_llm_routing_api_settings_llm_delete",
     "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "name": "x-user",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-User"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LLMRoutingOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/settings/llm/user-models": {
+   "post": {
+    "tags": [
+     "settings"
+    ],
+    "summary": "Add User Model",
+    "description": "Any logged-in user can add a model for their own analyses (own API key, stored server-side).",
+    "operationId": "add_user_model_api_settings_llm_user_models_post",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "name": "x-user",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-User"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/UserModelIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LLMRoutingOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/settings/llm/user-models/{name}": {
+   "delete": {
+    "tags": [
+     "settings"
+    ],
+    "summary": "Remove User Model",
+    "operationId": "remove_user_model_api_settings_llm_user_models__name__delete",
+    "parameters": [
+     {
+      "name": "name",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Name"
+      }
+     },
      {
       "name": "authorization",
       "in": "header",
@@ -8417,6 +8609,17 @@
       },
       "type": "array",
       "title": "Document Ids"
+     },
+     "llm_profile": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Llm Profile"
      }
     },
     "type": "object",
@@ -9413,6 +9616,17 @@
       "type": "boolean",
       "title": "Price Known",
       "default": false
+     },
+     "added_by": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Added By"
      }
     },
     "type": "object",
@@ -9483,6 +9697,20 @@
        }
       ],
       "title": "Profiles"
+     },
+     "api_keys": {
+      "anyOf": [
+       {
+        "additionalProperties": {
+         "type": "string"
+        },
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Api Keys"
      },
      "comment": {
       "anyOf": [
@@ -12782,6 +13010,29 @@
       },
       "type": "array",
       "title": "Evidence Ids"
+     },
+     "part_no": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Part No"
+     },
+     "new_end": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "New End"
      }
     },
     "type": "object",
@@ -12834,6 +13085,62 @@
      "user"
     ],
     "title": "TokenOut"
+   },
+   "UserModelIn": {
+    "properties": {
+     "display_name": {
+      "type": "string",
+      "title": "Display Name"
+     },
+     "provider": {
+      "type": "string",
+      "title": "Provider",
+      "default": "openai_compatible"
+     },
+     "model": {
+      "type": "string",
+      "title": "Model"
+     },
+     "base_url": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Base Url"
+     },
+     "api_key": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Api Key"
+     },
+     "data_location": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Data Location"
+     }
+    },
+    "type": "object",
+    "required": [
+     "display_name",
+     "model"
+    ],
+    "title": "UserModelIn"
    },
    "UserOut": {
     "properties": {
