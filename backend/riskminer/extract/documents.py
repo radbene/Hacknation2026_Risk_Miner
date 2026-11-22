@@ -311,6 +311,7 @@ def ingest_bytes(session: Session, data: bytes, file_name: str, *, mime: str | N
     session.execute(text("UPDATE chunk SET tsv = to_tsvector('simple', text) WHERE document_id = :d"), {"d": doc_id})
     if fragments and status == "ok":
         extract_fragments(session, doc, use_llm=use_llm)
+        extract_document_effects(session, doc)
     apply_substitute_rule(session, doc)
     session.flush()
     return doc
@@ -441,6 +442,89 @@ def _llm_fragments(session: Session, doc: Document, chunks: list[Chunk]) -> int:
                             confidence=f.confidence, label=res.label)
             n += 1
     return n
+
+
+# ---------------------------------------------------------------- realised effects (protocols, annexes)
+
+_DATE = r"(\d{1,2})\.(\d{1,2})\.(\d{4})"
+_OLD_TERM = re.compile(r"(?:dotychczasow\w*|pierwotn\w*|obecn\w*)\s+termin[^\n]{0,80}?" + _DATE, re.I)
+_NEW_TERM = re.compile(r"now\w*\s+termin[^\n]{0,80}?" + _DATE, re.I)
+_EXTEND = re.compile(r"(?:przedłużeni\w*|wydłużeni\w*|przesunięci\w*)\s+terminu[^.]{0,90}?\so\s+(?:okres\s+)?(\d+|jed\w+)\s+(miesi\w+|dni|tygod\w+)", re.I)
+_COST = re.compile(r"(?:kwot\w*|koszt\w*|wartoś\w*|wynagrodzeni\w*)[^.\n]{0,60}?(\d{1,3}(?:[  .]\d{3})*(?:,\d{2})?)\s*zł", re.I)
+_CAUSE_HEAD = re.compile(r"(?:uzasadnieni\w*|opis\s+okoliczności\w*|przyczyn\w+ zmian\w*)[^:\n]{0,60}[:\n]", re.I)
+_DOC_DATE = re.compile(r"dni(?:a|u)\s+" + _DATE, re.I)
+EFFECT_DOC_TYPES = {"protokół", "aneks"}
+
+
+def _date(m: re.Match, off: int = 1) -> dt.date | None:
+    try:
+        return dt.date(int(m.group(off + 2)), int(m.group(off + 1)), int(m.group(off)))
+    except ValueError:
+        return None
+
+
+def _pln(s: str) -> float:
+    return float(s.replace(" ", "").replace(" ", "").replace(".", "").replace(",", "."))
+
+
+def extract_document_effects(session: Session, doc: Document) -> uuid.UUID | None:
+    """A protocol / annex states what actually happened: new deadline, extension, extra cost, and why.
+    Rules only, every number quoted verbatim from the chunk it was read from → one reviewable event."""
+    chunks = session.execute(select(Chunk).where(Chunk.document_id == doc.id).order_by(Chunk.ord)).scalars().all()
+    if not chunks:
+        return None
+    found: dict[str, tuple[Chunk, re.Match]] = {}
+    for ch in chunks:
+        for key, rx in (("old", _OLD_TERM), ("new", _NEW_TERM), ("extend", _EXTEND), ("cost", _COST), ("cause", _CAUSE_HEAD), ("date", _DOC_DATE)):
+            if key not in found and (m := rx.search(ch.text)):
+                found[key] = (ch, m)
+    days: int | None = None
+    parts: list[str] = []
+    quotes: list[tuple[Chunk, str]] = []
+    if "old" in found and "new" in found:
+        a, b = _date(found["old"][1]), _date(found["new"][1])
+        if a and b and b > a:
+            days = (b - a).days
+            parts.append(f"termin z {a:%d.%m.%Y} na {b:%d.%m.%Y} (+{days} dni)")
+            quotes += [(found["old"][0], found["old"][1].group(0)), (found["new"][0], found["new"][1].group(0))]
+    if days is None and "extend" in found:
+        ch, m = found["extend"]
+        n = 1 if m.group(1).lower().startswith("jed") else int(m.group(1))
+        unit = m.group(2).lower()
+        days = n * (30 if unit.startswith("miesi") else 7 if unit.startswith("tygod") else 1)
+        short = "mies." if unit.startswith("miesi") else "tyg." if unit.startswith("tygod") else "dni"
+        parts.append(f"termin wydłużony o {n} {short} (ok. {days} dni)")
+        quotes.append((ch, m.group(0)))
+    pln: float | None = None
+    if "cost" in found and (doc.doc_type in EFFECT_DOC_TYPES or days is not None):
+        ch, m = found["cost"]
+        pln = _pln(m.group(1))
+        parts.append(f"koszt {m.group(1)} zł{' brutto' if 'brutto' in ch.text[m.end():m.end() + 12].lower() else ''}")
+        quotes.append((ch, m.group(0)))
+    if not parts or (doc.doc_type not in EFFECT_DOC_TYPES and days is None):
+        return None
+    cause, codes = None, []
+    if "cause" in found:
+        ch, m = found["cause"]
+        tail = ch.text[m.end():]
+        cut = tail[:400]
+        end = max(cut.rfind("\n"), cut.rfind(". ") + 1)
+        cause = (cut[:end] if end > 80 else cut).strip(" \n,;–-")
+        if cause:
+            quotes.insert(0, (ch, cause))
+            codes = [h.code for h in classify_signals(ch.text[m.start():m.end() + 1200], session) if h.code.startswith("R")][:3]
+    evidence = [str(chunk_evidence(session, doc, ch, q)) for ch, q in quotes if q]
+    when = _date(found["date"][1]) if "date" in found else None
+    eid = make_id("event", "doc_effect", doc.id)
+    kind = "change_deadline" if days is not None else "change_value"
+    label = {"protokół": "Protokół konieczności", "aneks": "Aneks"}.get(doc.doc_type or "", "Dokument")
+    upsert_reviewable(session, Event, dict(
+        id=eid, project_id=doc.project_id, procedure_id=doc.procedure_id, document_id=doc.id, event_type=kind,
+        event_date=when, risk_codes=codes, title=f"{label}: {', '.join(parts)}"[:300], cause=cause, effect="; ".join(parts),
+        effect_days=days, effect_pln=pln, quote=cause or quotes[0][1], method="rule", confidence=0.7,
+        evidence_ids=evidence, tier="deep"))
+    session.flush()
+    return eid
 
 
 # ---------------------------------------------------------------- PPU/SWU substitute rule
