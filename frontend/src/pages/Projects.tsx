@@ -9,7 +9,7 @@ import { Completeness, LinkStatusBadge } from '@/components/LinkStatusBadge'
 import { PageHeader } from '@/components/PageHeader'
 import { Badge, Button, Card, Dialog, Input, QueryState, Select, useToast } from '@/components/ui'
 import { useAuth } from '@/lib/auth'
-import { SUBSECTORS } from '@/lib/labels'
+import { SUBSECTORS, subsectorLabel } from '@/lib/labels'
 import { projectsRoute } from '@/router'
 
 type P = Schemas['ProjectListItem']
@@ -48,7 +48,7 @@ export default function Projects() {
         <Select aria-label="Która część bazy" value={tier} onChange={(e) => { setShown(PAGE); set({ tier: e.target.value }) }}
           options={[{ value: 'deep', label: 'Projekty z listy organizatora (22)' }, { value: 'auto', label: 'Postępowania pobrane z BZP' }]} className="w-64" />
         <Select aria-label="Podsektor" value={s.subsector ?? ''} onChange={(e) => set({ subsector: e.target.value || undefined })} placeholder="Każdy podsektor"
-          options={SUBSECTORS.map((x) => ({ value: x, label: x }))} className="w-56" />
+          options={SUBSECTORS.map((x) => ({ value: x, label: subsectorLabel(x) }))} className="w-56" />
         {isExpert && tier === 'deep' && (
           <label className="flex h-9 items-center gap-1.5 text-sm"><input type="checkbox" checked={!!s.pending} onChange={(e) => set({ pending: e.target.checked || undefined })} className="accent-brand" />
             Tylko z pozycjami do zatwierdzenia</label>)}
@@ -76,7 +76,7 @@ function ProjectTile({ p, expert }: { p: P; expert: boolean }) {
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
           <span>{p.beneficiary_name ?? '—'}{p.voivodeship ? `, ${p.voivodeship}` : ''}</span>
-          {p.subsector_main && <span>{p.subsector_main}</span>}
+          {p.subsector_main && <span>{subsectorLabel(p.subsector_main)}</span>}
           {p.project_status && <span>{p.project_status}</span>}
           {p.record_scope && p.record_scope !== 'całe postępowanie' && <Badge variant="info">{p.record_scope}</Badge>}
         </div>

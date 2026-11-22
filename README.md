@@ -6,11 +6,13 @@ BZP i dokumentów. Rozwiązanie zadania **RISK MINER** (Ministerstwo Funduszy i 
 
 **Wideo (3 min):** ⟨link do filmu⟩ · **Prezentacja:** [docs/prezentacja.pdf](docs/prezentacja.pdf) · **Działająca wersja:** ⟨link do aplikacji⟩ · **Repozytorium:** https://github.com/radbene/Hacknation2026_Risk_Miner
 
+Film demo i prezentacja wideo (oraz PDF slajdów) są budowane z nagrań działającej aplikacji: [video/README.md](video/README.md).
+
 Konta demonstracyjne: bez logowania pracujesz jako analityk; panel eksperta: `ekspert` / `demo-riskminer` (w wersji demo jednym kliknięciem na stronie startowej). Pozostałe konta: `admin`, `analityk`, `gosc` (tylko odczyt), to samo hasło. Stan demo przywraca `POST /api/admin/reset-demo` (konto `admin`, tryb `DEMO_MODE`).
 
 ## Dla kogo i jaki problem rozwiązuje
 
-- **Użytkownik:** analityk i ekspert instytucji przygotowującej lub oceniającej inwestycję wod-kan (IZ/IP, beneficjent).
+- **Użytkownik:** analityk i ekspert instytucji przygotowującej lub oceniającej inwestycję wodno-kanalizacyjną (IZ/IP, beneficjent).
 - **Problem dziś:** wiedza o opóźnieniach, aneksach i ich przyczynach jest rozproszona w ogłoszeniach o zmianie i o
   wykonaniu umowy w BZP oraz w dokumentach, bez powiązań z projektami i bez kategorii ryzyka.
 - **Co zmienia rozwiązanie:** automatycznie buduje łańcuch projekt → postępowania → ogłoszenia → umowa → zmiany →
@@ -73,7 +75,7 @@ dokumentów po usunięciu danych osobowych; miejsce przetwarzania pokazuje pasek
 
 Co działa, a co jest tylko zaprojektowane: [docs/status.md](docs/status.md) i [docs/opis_rozwiazania.md](docs/opis_rozwiazania.md).
 - Dokumenty z platform zakupowych nie są pobierane automatycznie (logowanie, HTTP 429), więc trzeba je wgrać lub podać URL.
-- OCR skanów oraz źródła TED, Biała lista VAT, KRS, KIO, BK2021 i raporty NIK są zaprojektowane, ale nie wdrożone; skan bez warstwy tekstowej jest zapisywany i oznaczany do OCR.
+- OCR skanów działa (Tesseract, lokalnie; `riskminer ocr` czyta zapisane wcześniej skany). Źródła TED, Biała lista VAT, KRS, KIO, BK2021 i raporty NIK są zaprojektowane, ale nie wdrożone.
 - Zakresy odchyleń dla rzadkich podsektorów mają małe n; system to pokazuje i poszerza przedział.
 
 ## Wdrożenie i koszty

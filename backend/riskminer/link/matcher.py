@@ -113,7 +113,7 @@ def score_candidate(session: Session, project: Project, proc: Procedure, notices
     comps.append(_comp("location", min(1.0, loc), f"Wspólne nazwy: {', '.join(shared) or 'brak'}",
                        _xlsx_ev(project, "title"), WEIGHTS["location"]))
     wk = 1.0 if any(is_wodkan({"cpvCode": n.cpv, "orderObject": n.title}) for n in notices) else 0.0
-    comps.append(_comp("cpv", wk, f"CPV {proc.cpv_main or '?'} – {'wod-kan' if wk else 'poza wod-kan'}",
+    comps.append(_comp("cpv", wk, f"CPV {proc.cpv_main or '?'} – {'roboty wodno-kanalizacyjne' if wk else 'poza robotami wodno-kanalizacyjnymi'}",
                        api_evidence(session, notices[0], "cpvCode", notices[0].cpv) if notices else None, WEIGHTS["cpv"]))
     win = _year_window(project)
     year = proc.first_published_at.year if proc.first_published_at else None

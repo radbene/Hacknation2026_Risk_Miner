@@ -5,7 +5,7 @@
 
 ## 1. Problem i odbiorca (½ strony)
 
-Instytucja zarządzająca i beneficjent planują inwestycję wod-kan, nie widząc doświadczeń podobnych inwestycji. Te
+Instytucja zarządzająca i beneficjent planują inwestycję wodno-kanalizacyjną, nie widząc doświadczeń podobnych inwestycji. Te
 doświadczenia istnieją w danych publicznych: ogłoszenia o zmianie umowy (podstawa i przyczyna z art. 455), ogłoszenia
 o wykonaniu umowy (termin, zapłacona kwota, liczba zmian), wyniki postępowań (liczba ofert, ceny), raporty NIK.
 Brakuje powiązania ich z projektami, skategoryzowania (R01–R15) i udokumentowania, tak aby ekspert mógł
@@ -32,7 +32,7 @@ W kopii BZP z lat 2021–2026 jest 39 094 umów wodno-kanalizacyjnych. 7 719 z n
 | Import i źródła | plik xlsx organizatora z dowodem dla każdej komórki; BZP na żywo przez oficjalne API (156 zapytań, 952 ogłoszenia); kopia BZP 2021–2026 (113 tys. ogłoszeń, 45 tys. postępowań, 39 tys. umów, 27 tys. zmian); dziennik zapytań; ponowne pobranie bez duplikatów | TED, Biała lista VAT, KRS, KIO, BK2021, raporty NIK |
 | Łączenie | po numerze KPO, numerze ogłoszenia, NIP, OCID i odwołaniach między ogłoszeniami; gdy brak klucza: nazwa, miejsce, CPV, data, wartość, z pewnością i listą warunków; 22/22 projektów zgodnie ze zbiorem wzorcowym | – |
 | Zdarzenia i przyczyny | 104 zdarzenia dla 22 projektów: opóźnienia, zmiany umów, wypłaty ponad wartość, kary, powtórzone postępowania; przyczyny R01–R15 z cytatem (Bielik tylko z cytatem sprawdzonym w źródle) | – |
-| Dokumenty | PDF z warstwą tekstową, DOCX, XLSX, CSV, HTML; protokoły i aneksy: nowy termin, koszt, przyczyna; sygnały ryzyka ze stroną lub akapitem; wyszukiwanie pełnotekstowe | OCR skanów (skan jest zapisywany i oznaczany do OCR) |
+| Dokumenty | PDF z warstwą tekstową, **skany PDF przez OCR (Tesseract, lokalnie, pewność rozpoznania przy każdym fragmencie)**, DOCX, XLSX, CSV, HTML; protokoły i aneksy: nowy termin, koszt, przyczyna; sygnały ryzyka ze stroną lub akapitem; wyszukiwanie pełnotekstowe | Formaty .doc/.odt; podświetlanie cytatu na obrazie skanu (dziś otwiera się właściwa strona) |
 | Ekspert | kolejka „Do zatwierdzenia”, akceptuj / popraw / odrzuć / przepnij / wzorcowe, hurtowe zatwierdzanie pewnych pozycji, historia, decyzje odporne na przeliczenie; edytor wiedzy z wersjami | – |
 | Nowa inwestycja | opis lub dokument → cechy z cytatem → 12 najbardziej podobnych z 26 tys. zakończonych umów → częstość i skala opóźnień, wypłata wobec umowy, ocena budżetu i harmonogramu z n i przedziałem → flagi R01–R15 → działania, zapisy umowne, wzorcowe przypadki → eksport Word, JSON, CSV | – |
 | Monitoring | trwające inwestycje: alert o nowym ogłoszeniu i przekroczonym terminie, tryb `as_of` | ponowna analiza uruchamiana automatycznie po alercie |
@@ -63,6 +63,13 @@ przykładowy eksport [exports/przyklad/](../exports/przyklad/).
 ![Wynik analizy: częstość opóźnień, typowe opóźnienie, wypłata wobec umowy, ocena budżetu i flagi](img/analiza.png)
 
 ![Podobne zakończone inwestycje z podobieństwem](img/podobne.png)
+
+**Jak liczymy podobieństwo.** Wynik to średnia ważona cech: podsektor (0,25), skala wartości (0,15), rodzaj robót,
+formuła realizacji, długość sieci (po 0,10), podsektory dodatkowe i województwo (po 0,05) oraz dwie cechy tekstu opisu:
+wspólne rzadkie słowa (TF-IDF, 0,10) i zbieżność znaczenia (embeddingi, 0,10). Embeddingi liczy lokalnie, na CPU,
+wielojęzyczny model paraphrase-multilingual-MiniLM-L12-v2 (fastembed/ONNX, Apache-2.0); wektory ~18 tys. przypadków
+są liczone raz (`riskminer embed`), potem tylko dla nowych. Przy każdym sąsiedzie widać wkład każdej cechy, a wagi
+ekspert zmienia w „Wiedzy eksperckiej”. Bez modelu ta cecha wypada z wyniku, a wagi pozostałych się normalizują.
 
 Źródło każdego faktu otwiera się w oryginale z podświetlonym fragmentem:
 

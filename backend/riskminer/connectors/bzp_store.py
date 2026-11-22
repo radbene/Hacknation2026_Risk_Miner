@@ -37,7 +37,7 @@ LEGAL_FORM_RE = re.compile(r"sp\.|spółk|s\.a\.|z\s*o\.\s*o|\bS\.?A\b|zakład|p
 
 SOURCES = {
     "bzp": ("BZP – API e-Zamówienia (mirror HackNation / oficjalne)", "https://ezamowienia.gov.pl/mo-board/api/v1/notice"),
-    "bzp_zip": ("BZP – kopia ogłoszeń wod-kan (paczka organizatora)", "https://bzp.cytr.us/paczka/risk_miner_bzp_kopia.zip"),
+    "bzp_zip": ("BZP – kopia ogłoszeń wodno-kanalizacyjnych (paczka organizatora)", "https://bzp.cytr.us/paczka/risk_miner_bzp_kopia.zip"),
 }
 LICENCE = "Informacja publiczna (ustawa o dostępie do informacji publicznej); Biuletyn Zamówień Publicznych, UZP"
 

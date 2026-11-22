@@ -14,7 +14,7 @@ import { StatusBadge } from '@/components/StatusBadge'
 import { Fact, Proportion, ScoreBar, Spread } from '@/components/Visual'
 import { Badge, Button, Card, CardContent, CardHeader, QueryState, Tabs, useToast } from '@/components/ui'
 import { useAuth } from '@/lib/auth'
-import { RISK_NAMES } from '@/lib/labels'
+import { RISK_NAMES, subsectorLabel } from '@/lib/labels'
 import { cn, fmtNum, fmtPln } from '@/lib/utils'
 import { analysisRoute } from '@/router'
 
@@ -23,7 +23,7 @@ type Item = Schemas['AnalysisItemOut']
 type P = Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
 
 const SEV: Record<string, { v: 'danger' | 'warning' | 'default'; t: string }> = { wysoka: { v: 'danger', t: 'ważne' }, 'średnia': { v: 'warning', t: 'do sprawdzenia' }, niska: { v: 'default', t: 'informacyjne' } }
-const LEVEL_PL: Record<string, string> = { neighbours: 'najbardziej podobnych inwestycjach', subsector: 'wszystkich inwestycjach z tego podsektora', wodkan: 'wszystkich inwestycjach wod-kan', works: 'wszystkich robotach w bazie' }
+const LEVEL_PL: Record<string, string> = { neighbours: 'najbardziej podobnych inwestycjach', subsector: 'wszystkich inwestycjach z tego podsektora', wodkan: 'wszystkich inwestycjach wodno-kanalizacyjnych', works: 'wszystkich robotach w bazie' }
 const AXIS_PL: Record<string, string> = { realizacja: 'ryzyko w trakcie realizacji', 'postępowanie': 'ryzyko w przetargu', przygotowanie: 'stan przygotowania', dane: 'brakujące informacje' }
 const pct = (x?: number | null) => (x == null ? '—' : `${Math.round(x * 100)}%`)
 
@@ -43,9 +43,9 @@ export default function AnalysisDetail() {
       const sm = a.summary as P
       return (
         <div>
-          <MiningLoader pending={recompute.isPending} failed={recompute.isError} title="Przeliczamy ryzyko" />
+          <MiningLoader pending={recompute.isPending} failed={recompute.isError} title="Przeliczamy ryzyko" withModel={(a.params as P)?.use_llm !== false} />
           <PageHeader back title={a.title}
-            description={<>Porównanie z {Number(sm.n_cases ?? 0).toLocaleString('pl-PL')} zakończonymi inwestycjami</>}
+            description={<>Porównanie z {Number(sm.n_pool ?? sm.n_cases ?? 0).toLocaleString('pl-PL')} zakończonymi inwestycjami wodno-kanalizacyjnymi</>}
             actions={<>
               <Button variant="outline" loading={recompute.isPending} onClick={() => recompute.mutate()}><RefreshCw size={14} aria-hidden />Przelicz</Button>
               <ExportButton id={a.id} format="docx" title={a.title} label="Pobierz kartę (Word)" />
@@ -94,7 +94,10 @@ function ExportButton({ id, format, title, label }: { id: string; format: 'docx'
 
 function Summary({ a }: { a: A }) {
   const s = a.summary as P
-  const pl = s.p_late ?? {}, dd = s.delay_days ?? {}, pr = s.paid_ratio ?? {}, b = s.budget ?? {}
+  const pl = s.p_late ?? {}, pr = s.paid_ratio ?? {}, b = s.budget ?? {}
+  // older analyses have no "if late" block – fall back to the all-contracts figure with an honest label
+  const dl = s.delay_days_if_late?.n ? s.delay_days_if_late : null, dd = s.delay_days ?? {}
+  const units = ((s.unit_costs ?? []) as P[]).filter((u) => u.percentile != null)
   return (
     <Card>
       <CardHeader title="W skrócie" actions={<BlockLabel label="obliczenia" />}
@@ -106,19 +109,28 @@ function Summary({ a }: { a: A }) {
             what="podobnych umów wykonano po terminie" />
         </div>
         <div className="space-y-1">
-          <div className="text-xs font-semibold text-slate-600">O ile dni bywały opóźnione?</div>
-          <Spread p50={dd.p50} p80={dd.p80} p95={dd.p95} unit=" dni" />
-          <div className="text-[11px] text-slate-500"><Term t="P50">typowo</Term> / <Term t="P80">z zapasem</Term>, n = {dd.n ?? '—'}</div>
+          <div className="text-xs font-semibold text-slate-600">{dl ? 'Jeśli było opóźnienie, to jak duże?' : 'Opóźnienie (umowy w terminie = 0 dni)'}</div>
+          <Spread p50={(dl ?? dd).p50} p80={(dl ?? dd).p80} unit=" dni" />
+          <div className="text-[11px] text-slate-500"><Term t="P50">typowo</Term> / <Term t="P80">z zapasem</Term>, n = {(dl ?? dd).n ?? '—'}{dl ? ' opóźnionych umów' : ''}{(dl ?? dd).fallback_level && (dl ?? dd).fallback_level !== 'neighbours' ? ` (${LEVEL_PL[(dl ?? dd).fallback_level] ?? ''})` : ''}</div>
         </div>
         <div className="space-y-1">
           <div className="text-xs font-semibold text-slate-600">Czy wypłata przekracza umowę?</div>
           <p className="text-sm">Typowo wypłacono <b>{pr.p50 != null ? `${Math.round(pr.p50 * 100)}%` : '—'}</b> wartości umowy; w 2 na 10 przypadków ponad <b>{pr.p80 != null ? `${Math.round(pr.p80 * 100)}%` : '—'}</b>.</p>
+          {b.reserve_p80 && b.reserve_p80.total != null && (
+            <p className="text-sm">Rezerwa na zmiany <Term t="rezerwa P80" />: <b>{fmtPln(b.reserve_p80.amount)}</b> ({fmtNum(b.reserve_p80.pct, 1)}% budżetu), razem <b>{fmtPln(b.reserve_p80.total)}</b>.</p>)}
         </div>
         <div className="space-y-1">
-          <div className="text-xs font-semibold text-slate-600">Czy budżet jest realny?</div>
+          <div className="text-xs font-semibold text-slate-600">Czy koszt wygląda realnie?</div>
+          {units.length > 0
+            ? units.map((u) => (
+              <p key={u.metric} className={cn('text-sm', u.percentile <= 0.15 && 'text-rose-800')}>
+                {u.title}: <b>{fmtPln(u.value)}</b>, {u.position} <span className="text-xs text-slate-500">(n = {u.n})</span>
+                {u.percentile <= 0.15 && <> – możliwe niedoszacowanie</>}
+              </p>))
+            : <p className="text-sm text-slate-600">Brak kosztu jednostkowego – podaj skalę (km, RLM) w zakładce „Cechy inwestycji”.</p>}
           {b.percentile != null
-            ? <p className="text-sm">Budżet jest wyższy niż w <b>{Math.round(b.percentile * 100)}</b> na 100 podobnych umów{b.reserve_p80 ? <>; z zapasem warto zarezerwować <b>{fmtPln(b.reserve_p80.amount)}</b> <Term t="rezerwa P80" /></> : null}.</p>
-            : <p className="text-sm text-amber-800">{b.message ?? 'Nie porównano. Uzupełnij wartość i informację netto/brutto w zakładce „Cechy inwestycji”.'}</p>}
+            ? <p className="text-xs text-slate-500">Skala: budżet większy niż {Math.round(b.percentile * 100)} na 100 podobnych umów (to wielkość inwestycji, nie ocena realności).</p>
+            : <p className="text-xs text-amber-800">{b.message ?? 'Nie porównano. Uzupełnij wartość i informację netto/brutto w zakładce „Cechy inwestycji”.'}</p>}
         </div>
       </CardContent>
     </Card>
@@ -298,7 +310,9 @@ function Assessment({ items }: { items: Item[]; a: A }) {
             {p.percentile != null && <ScoreBar value={p.percentile} label={<>Pozycja na tle podobnych: P{Math.round(p.percentile * 100)}</>} detail={p.position} />}
             {p.value != null && <Fact label="Wartość tej inwestycji" value={fmtNum(p.value)} hint={p.basis} />}
             {p.quantiles && <><div className="text-xs text-slate-500">Podobne umowy:</div><Spread p50={p.quantiles.p50} p80={p.quantiles.p80} p95={p.quantiles.p90} third="9 na 10 nie więcej" /></>}
-            {p.reserve_p80 && <p>Z zapasem (jak w 8 na 10 podobnych) warto przewidzieć <b>{fmtPln(p.reserve_p80.amount)}</b>.</p>}
+            {p.reserve_p80 && (p.reserve_p80.total != null
+              ? <p>Rezerwa na zmiany umowy (jak w 8 na 10 podobnych): <b>{fmtPln(p.reserve_p80.amount)}</b> ({fmtNum(p.reserve_p80.pct, 1)}% budżetu); budżet razem z rezerwą: <b>{fmtPln(p.reserve_p80.total)}</b>.</p>
+              : <p>Budżet z zapasem (jak w 8 na 10 podobnych): <b>{fmtPln(p.reserve_p80.amount)}</b>.</p>)}
             {p.note && <p>{p.note}.</p>}
             {p.estimate != null && <Proportion k={p.k} n={p.n} estimate={p.estimate} low={p.ci_low} high={p.ci_high} what="podobnych postępowań" tone="amber" />}
             {(p.p50 != null && p.estimate == null) && <Spread p50={p.p50} p80={p.p80} p95={p.p95} digits={2} />}
@@ -334,18 +348,42 @@ function Ranges({ items, a }: { items: Item[]; a: A }) {
         const p = it.payload as P
         const m = RANGE_Q[p.metric] ?? { q: it.title ?? p.metric, what: '' }
         const isProp = p.estimate !== undefined && p.p50 === undefined
-        const sub = isProp ? (p.n ? <>W <b className="text-slate-700">{p.k}</b> z {p.n} · po wygładzeniu <b className="text-slate-700">{pct(p.estimate)}</b></> : 'brak danych')
+        const sub = isProp ? (p.n ? <>W <b className="text-slate-700">{p.k}</b> z {p.n} (<b className="text-slate-700">{pct(p.k / p.n)}</b>)</> : 'brak danych')
           : p.p50 != null ? <>typowo <b className="text-slate-700">{fmtNum(p.p50, m.digits ?? 0)}{m.unit ?? ''}</b> · z zapasem {fmtNum(p.p80, m.digits ?? 0)}{m.unit ?? ''}</> : 'brak danych'
         return (
           <Tile key={it.id} open={t.isOpen(it.id)} onToggle={() => t.toggle(it.id)} dim={it.status === 'rejected'} title={m.q} sub={sub}>
             <div className="flex justify-end"><BlockLabel label={it.label} /></div>
-            {isProp ? <Proportion k={p.k} n={p.n} estimate={p.estimate} low={p.ci_low} high={p.ci_high} what={m.what} tone={m.tone} />
+            {isProp ? <><Proportion k={p.k} n={p.n} estimate={p.estimate} low={p.ci_low} high={p.ci_high} what={m.what} tone={m.tone} />
+              <SmoothingNote p={p} /></>
               : <Spread p50={p.p50} p80={p.p80} p95={p.p95} unit={m.unit} digits={m.digits ?? 0} />}
             <p className="text-xs text-slate-500">Policzono na <Term t="n">{p.n} przypadkach</Term>: {LEVEL_PL[p.fallback_level] ?? p.fallback_level}{p.period ? `, lata ${p.period}` : ''}.</p>
             {p.formula && <HowCalculated>{p.formula}</HowCalculated>}
             <ItemDecision a={a} it={it} />
           </Tile>)
       })}</Grid>
+    </div>
+  )
+}
+
+/** "Skąd ta liczba?" – the smoothing step written out with this analysis' own numbers. */
+function SmoothingNote({ p }: { p: P }) {
+  const k = p.k as number | undefined, n = p.n as number | undefined, est = p.estimate as number | undefined
+  const par = p.parent as { k?: number; n?: number; level?: string } | undefined
+  if (k == null || !n || est == null) return null
+  const raw = k / n
+  const m = (p.m as number | undefined) ?? 8
+  if (!par?.n) {
+    return <p className="rounded-md bg-slate-50 p-2 text-xs text-slate-600">Wynik to zwykły odsetek: {k} z {n} = <b>{pct(raw)}</b>.</p>
+  }
+  const pp = (par.k ?? 0) / par.n
+  return (
+    <div className="space-y-1 rounded-md bg-slate-50 p-2 text-xs text-slate-600">
+      <div className="font-semibold text-slate-700">Skąd {pct(est)}, a nie {pct(raw)}?</div>
+      <p>Wśród {n} najbardziej podobnych inwestycji: {k} z {n} = <b>{pct(raw)}</b>. To mało przypadków, więc pojedyncze nietypowe inwestycje mocno zmieniają wynik.</p>
+      <p>W szerszej grupie ({LEVEL_PL[par.level ?? ''] ?? par.level}): {par.k} z {par.n} = <b>{pct(pp)}</b>.</p>
+      <p>Dokładamy więc {m} „przeciętnych” przypadków z szerszej grupy:
+        <span className="ml-1 whitespace-nowrap font-mono">({k} + {m} × {fmtNum(pp, 2)}) / ({n} + {m}) = <b>{pct(est)}</b></span>.
+        Gdyby podobnych inwestycji było 200, ten dodatek prawie nic by nie zmienił.</p>
     </div>
   )
 }
@@ -365,7 +403,7 @@ function Neighbours({ items, a }: { items: Item[]; a: A }) {
         const o = p.outcome ?? {}
         return (
           <Tile key={it.id} open={t.isOpen(it.id)} onToggle={() => t.toggle(it.id)} dim={it.excluded} title={p.title}
-            sub={<>{p.subsector_main ?? 'Podsektor nieustalony'} · <span className="whitespace-nowrap">podobieństwo <b className="text-slate-700">{pct(p.score)}</b></span>{it.excluded && ', pominięta'}</>}>
+            sub={<>{p.subsector_main ? subsectorLabel(p.subsector_main) : 'Podsektor nieustalony'} · <span className="whitespace-nowrap">podobieństwo <b className="text-slate-700">{pct(p.score)}</b></span>{it.excluded && ', pominięta'}</>}>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               <Fact label="Wartość umowy" value={fmtPln(o.value_gross)} />
               <Fact label="Opóźnienie" value={o.delay_days == null ? '—' : o.delay_days > 0 ? `${o.delay_days} dni` : 'w terminie'} warn={(o.delay_days ?? 0) > 0} />

@@ -26,7 +26,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name
 app = FastAPI(
     title="RISK MINER API",
     version="0.1.0",
-    description="Inteligentna baza doświadczeń inwestycji publicznych (wod-kan). HackNation 2026 / MFiPR.",
+    description="Inteligentna baza doświadczeń inwestycji publicznych (wodociągi i kanalizacja). HackNation 2026 / MFiPR.",
     openapi_url="/api/openapi.json",
     docs_url="/api/docs",
 )

@@ -21,7 +21,7 @@ DATA_SOURCES = [
      "https://ezamowienia.gov.pl"),
     ("bzp_zip", "Paczka ogłoszeń BZP 2021–2026 (lustro organizatora HackNation)", "jak BZP – informacja publiczna; kopia udostępniona przez organizatora", "https://bzp.cytr.us/paczka/risk_miner_bzp_kopia.zip"),
     ("vat_whitelist", "Biała lista podatników VAT (KAS)", "rejestr publiczny (art. 96b ustawy o VAT), API bezpłatne", "https://wl-api.mf.gov.pl"),
-    ("nik", "Raporty NIK (wod-kan)", "dokumenty publiczne (informacja publiczna)", "https://www.nik.gov.pl"),
+    ("nik", "Raporty NIK (wodociągi i kanalizacja)", "dokumenty publiczne (informacja publiczna)", "https://www.nik.gov.pl"),
     ("ted", "TED – Tenders Electronic Daily", "dane otwarte UE (decyzja Komisji 2011/833/UE – ponowne wykorzystanie)", "https://ted.europa.eu"),
     ("krs", "KRS – API Ministerstwa Sprawiedliwości", "rejestr publiczny", "https://api-krs.ms.gov.pl"),
     ("kio", "Orzeczenia KIO (UZP)", "dokumenty publiczne", "https://orzeczenia.uzp.gov.pl"),
@@ -144,7 +144,7 @@ def models() -> list[Lic]:
         lic = next((v for k, v in OPEN_MODELS.items() if k in low), MODEL_LICENCES.get(p.provider, "?"))
         out.append(Lic(name=f"{name}: {p.provider}/{p.model or '-'}", kind="model", licence=lic,
                        notes=f"przetwarzanie: {p.data_location}"))
-    out.append(Lic(name=cfg.embeddings_model, kind="model", licence="Apache-2.0", notes="embeddingi, lokalnie (opcjonalnie)"))
+    out.append(Lic(name=cfg.embeddings_model, kind="model", licence="Apache-2.0", notes="embeddingi podobieństwa opisów, lokalnie (fastembed/ONNX, CPU)"))
     return out
 
 
@@ -179,6 +179,7 @@ def render_markdown(items: list[Lic]) -> str:
          "",
          "**psycopg (LGPL-3.0)** – sterownik PostgreSQL używany bez modyfikacji, ładowany dynamicznie jako osobny "
          "pakiet; LGPL nie obejmuje kodu aplikacji. Nie używamy PyMuPDF (AGPL), Ghostscript ani ocrmypdf.", "",
+         "**Tesseract OCR 5 (Apache-2.0)** z modelem `pol` (tessdata, Apache-2.0) i Leptonica (BSD-2-Clause) – pakiety systemowe w obrazie (`tesseract-ocr`, `tesseract-ocr-pol`), wywoływane jako osobny program; strony skanu renderuje pypdfium2.", "",
          "## Źródła danych", "", "| Źródło | Licencja / podstawa | URL |", "|---|---|---|"]
     L += [f"| {i.name} | {i.licence} | {i.url or ''} |" for i in items if i.kind == "data"]
     L += ["", "## Modele", "", "| Profil / model | Licencja | Uwagi |", "|---|---|---|"]

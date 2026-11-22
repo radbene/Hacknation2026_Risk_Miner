@@ -12,10 +12,10 @@ export const GLOSSARY: Record<string, string> = {
   'n': 'Liczba przypadków, na których policzono wynik. Przy małym n traktuj wynik ostrożnie.',
   'waga': 'Jak bardzo dana cecha liczy się przy ocenie podobieństwa (suma wag = 100%). Wagi ustawia ekspert w „Wiedzy eksperckiej”.',
   'podobieństwo': 'Od 0% do 100%: jak bardzo inna inwestycja przypomina opisaną. Liczymy je z cech (podsektor, skala, formuła, województwo) i ze słów w opisie.',
-  'wygładzenie': 'Gdy podobnych przypadków jest mało, wynik łączymy z wynikiem szerszej grupy (np. całego podsektora), żeby kilka nietypowych inwestycji nie dawało skrajnych liczb.',
-  'poziom odniesienia': 'Na jakiej grupie policzono wynik: najbardziej podobne inwestycje, a gdy jest ich za mało, cały podsektor albo wszystkie inwestycje wod-kan.',
+  'wygładzenie': 'Gdy podobnych przypadków jest mało, do ich wyniku dokładamy 8 „przeciętnych” przypadków z szerszej grupy (np. całego podsektora). Dzięki temu kilka nietypowych inwestycji nie daje skrajnej liczby, np. 0% albo 100%. Im więcej podobnych przypadków, tym mniejszy wpływ szerszej grupy.',
+  'poziom odniesienia': 'Na jakiej grupie policzono wynik: najbardziej podobne inwestycje, a gdy jest ich za mało, cały podsektor albo wszystkie inwestycje wodno-kanalizacyjne.',
   'pewność': 'Jak bardzo system jest pewny swojej propozycji (0–100%). Pozycje mniej pewne są wyżej w kolejce eksperta.',
-  'rezerwa P80': 'Ile warto zarezerwować, żeby pokryć koszt w 8 na 10 podobnych przypadków: budżet × typowy stosunek wypłaty do wartości umowy (P80).',
+  'rezerwa P80': 'Kwota ponad budżet na zmiany umowy i roboty dodatkowe, wystarczająca w 8 na 10 podobnych przypadków: budżet × (P80 stosunku wypłaty do wartości umowy − 1). Nie obejmuje ryzyka, że oferty w przetargu będą droższe od kosztorysu.',
   'kategoria ryzyka': 'Kod R01–R15 z katalogu ekspertów MFiPR, np. R03: dostęp do terenu, R06: nierealny harmonogram.',
 }
 

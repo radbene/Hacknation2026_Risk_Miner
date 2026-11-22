@@ -16,7 +16,7 @@ const NOTICE_PL: Record<string, string> = {
 }
 const SOURCE_HELP: Record<string, string> = {
   bzp: 'Ogłoszenia o zamówieniach, wynikach, zmianach i wykonaniu umów. Główne źródło danych o przebiegu inwestycji.',
-  bzp_zip: 'Kopia ogłoszeń wod-kan z BZP z lat 2021–2026 od organizatora. Źródło inwestycji do porównań i zapas, gdy BZP nie odpowiada.',
+  bzp_zip: 'Kopia ogłoszeń wodno-kanalizacyjnych z BZP z lat 2021–2026 od organizatora. Źródło inwestycji do porównań i zapas, gdy BZP nie odpowiada.',
   organizer_xlsx: 'Lista 22 projektów przekazana przez organizatora (plik Excel).',
   vat_whitelist: 'Weryfikacja NIP-ów zamawiających i wykonawców.',
   ted: 'Zamówienia powyżej progów unijnych.',

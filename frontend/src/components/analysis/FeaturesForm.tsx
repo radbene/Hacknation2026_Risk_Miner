@@ -1,6 +1,6 @@
 import type { Schemas } from '@/api/client'
 import { Badge, Input, Label, Select } from '@/components/ui'
-import { SUBSECTORS } from '@/lib/labels'
+import { SUBSECTORS, subsectorLabel } from '@/lib/labels'
 
 export type Features = Schemas['Features']
 type FV = Schemas['FeatureValue']
@@ -47,7 +47,7 @@ export function FeaturesForm({ value, onChange, readOnly }: { value: Features; o
             </Label>
             {f.type === 'enum' ? (
               <Select id={id} disabled={readOnly} value={raw == null ? '' : String(raw)} onChange={(e) => set(f.key, e.target.value || null)} placeholder="—"
-                options={(f.options ?? []).map((o) => ({ value: o, label: f.key === 'vat_basis' ? VAT_PL[o] : o }))} />
+                options={(f.options ?? []).map((o) => ({ value: o, label: f.key === 'vat_basis' ? VAT_PL[o] : f.key === 'subsector_main' ? subsectorLabel(o) : o }))} />
             ) : (
               <Input id={id} disabled={readOnly} type={f.type === 'number' ? 'number' : 'text'} step="any" value={raw == null ? '' : String(raw)}
                 onChange={(e) => set(f.key, f.type === 'number' ? (e.target.value === '' ? null : Number(e.target.value)) : e.target.value)} />

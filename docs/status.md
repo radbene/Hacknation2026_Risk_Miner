@@ -83,8 +83,33 @@ committed on their branches first). Main session wired the missing CLI/jobs/rout
   czytelne wyniki analiz; README i opis rozwiązania bez pól `{{…}}`.
 
 **Znane problemy**
-- Pismo Grodzisko (RM-2026-010) to skan bez warstwy tekstowej: zapisany, oznaczony do OCR, bez zdarzeń.
+- ~~Pismo Grodzisko bez OCR~~ – rozwiązane 22.11 ~07:00, zob. niżej.
 - Reguły sygnałów z dokumentów dają szum (nagłówki, dane stron umowy); ekspert je odrzuca, filtr w regułach do zrobienia.
+
+## OCR skanów (22.11 ~07:00)
+**Działa**
+- PDF bez warstwy tekstowej → pypdfium2 renderuje strony (300 dpi) → Tesseract 5 (`pol`) → akapity ze stroną;
+  każdy fragment ma w lokatorze `ocr: true` i pewność rozpoznania, dokument `text_status = ocr` i `meta.ocr`
+  (silnik, język, dpi, średnia i per strona). Dalej to samo co dla PDF z tekstem: sygnały ryzyka, skutki, wyszukiwanie.
+- Silnik jako zewnętrzne polecenie z `ocr.command` (obraz backendu ma `tesseract-ocr-pol`; na hoście bez binarki
+  obraz `deploy/ocr/Dockerfile` → `[docker, run, --rm, -i, riskminer-ocr]`). Bez silnika: jak wcześniej, `ocr_needed`.
+- `riskminer ocr` czyta zapisane skany. Grodzisko (RM-2026-010): 1 strona, 2,6 s, pewność 94,9%, 2 sygnały do eksperta (R04, R01).
+
+**Znane problemy**
+- Cytat z OCR nie jest podświetlany na obrazie skanu (PDF.js nie ma warstwy tekstu) – otwiera się właściwa strona.
+- Upload przez API korzysta z OCR dopiero po restarcie API i workera (nowy kod).
+
+## Embeddingi w podobieństwie (22.11 ~07:30)
+**Działa**
+- `analysis/embeddings.py`: paraphrase-multilingual-MiniLM-L12-v2 przez fastembed (ONNX, CPU, Apache-2.0), model w
+  `data/models/`; wektory 18 068 przypadków wodno-kanalizacyjnych w `data/models/vectors-*.npz` (6,5 min raz; potem tylko nowe/zmienione,
+  do 300 inline). W czasie zapytania model ładowany tylko z plików lokalnych (bez pobierania).
+- Komponent `embedding` (waga 0,10 z `similarity_weights`) w `find_neighbours`; bez modelu wypada z wyniku (wagi się
+  normalizują), powód w `embeddings.note`. Przykład „kanalizacja sanitarna”: 11/12 sąsiadów bez zmian, +0,6 s.
+- `riskminer embed` (pobiera model przy pierwszym uruchomieniu i liczy wektory).
+
+**Znane problemy**
+- Działające API korzysta z embeddingów dopiero po restarcie. Na serwerze trzeba raz uruchomić `riskminer embed`.
 
 ## S1 Acquisition & linking
 ## S2 Extraction & documents

@@ -50,14 +50,14 @@ export default function HowToTest() {
           <CardContent><ol className={STEP}>
             <li>Jako użytkownik: <Link to="/nowa-inwestycja" className="text-brand hover:underline">Nowa analiza</Link>: wklej opis lub wgraj dokument, potem „Odczytaj cechy” (każda z cytatem; pytanie o netto/brutto, gdy nie podano).</li>
             <li>„Analizuj ryzyko” → podsumowanie (czy zdąży na czas, o ile dni bywały opóźnienia, czy budżet jest realny); „Podobne inwestycje” z wyjaśnieniem podobieństwa cecha po cesze; „Pomiń w porównaniu” przelicza wyniki.</li>
-            <li>„Budżet i harmonogram”: percentyl budżetu i czasu na tle sąsiadów, koszt na km / RLM, rezerwa P80; „Zakresy z bazy” z poziomem odniesienia (sąsiedzi → podsektor → wod-kan).</li>
+            <li>„Budżet i harmonogram”: percentyl budżetu i czasu na tle sąsiadów, koszt na km / RLM, rezerwa P80; „Zakresy z bazy” z poziomem odniesienia (sąsiedzi → podsektor → wszystkie wodno-kanalizacyjne).</li>
             <li>„Na co uważać”: każda flaga ma uzasadnienie (historia sąsiadów, zakresy, zdania z opisu, lista kontrolna eksperta) i „Działania i klauzule” (podstawa prawna). Eksport karty: DOCX, JSON, CSV.</li>
           </ol></CardContent>
         </Card>
         <Card>
           <CardHeader title={<>5. Skalowalność <Badge>15%</Badge></>} />
           <CardContent><ul className="list-disc space-y-1.5 pl-5 text-sm">
-            <li>Baza porównawcza: ok. 34 tys. postępowań wod-kan 2021–2026 z kopii BZP (w Bazie przypadków wybierz „Postępowania pobrane z BZP”).</li>
+            <li>Baza porównawcza: ok. 34 tys. postępowań wodno-kanalizacyjnych 2021–2026 z kopii BZP (w Bazie przypadków wybierz „Postępowania pobrane z BZP”).</li>
             <li>Nowy sektor = nowy katalog <code>knowledge/&lt;sektor&gt;/</code> (import z dokumentu eksperta), bez zmian w kodzie; rejestr konektorów; routing modeli z trybem bez modelu.</li>
             <li>Wiersz poleceń: <code>riskminer demo</code> odtwarza cały przebieg od pustej bazy; drugi przebieg nie tworzy duplikatów.</li>
           </ul></CardContent>

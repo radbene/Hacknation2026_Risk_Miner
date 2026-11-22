@@ -28,6 +28,8 @@ export const RISK_NAMES: Record<string, string> = {
 }
 export const SUBSECTORS = ['Sieć wodociągowa', 'Kanalizacja sanitarna', 'Oczyszczalnia ścieków', 'Uzdatnianie i zaopatrzenie w wodę',
   'Kanalizacja deszczowa i retencja', 'Inne obiekty wod-kan']
+/** Display name of a subsector. The stored value (knowledge files, database) keeps the short form; the UI spells it out. */
+export const subsectorLabel = (s: string) => s.replace(/\bwod-kan\b/g, 'wodno-kanalizacyjne')
 export const ISSUE_STATES = ['potwierdzone', 'częściowe', 'brak', 'sprzeczne'] as const
 export const OBJECT_TYPE_LABEL: Record<string, string> = {
   project: 'Projekt', project_procedure: 'Powiązanie', contract: 'Umowa', contract_change: 'Zmiana umowy', fact: 'Fakt', document: 'Dokument',

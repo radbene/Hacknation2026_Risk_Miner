@@ -32,9 +32,11 @@ CUE_RISKS = {
     "pfu": (["R01", "R05", "R09"], "Formuła „zaprojektuj i wybuduj” (PFU): ryzyko zakresu i odpowiedzialności", "średnia"),
     "lump_sum": (["R08"], "Wynagrodzenie ryczałtowe przy niepewnym zakresie", "niska"),
     "startup": (["R10"], "Rozruch / próby / odbiór parametrów", "niska"),
+    # a funding deadline (KPO milestone, eligibility end) turns any delay into a risk of losing the grant
+    "deadline": (["R06", "R13"], "Twardy termin zakończenia narzucony przez finansowanie", "wysoka"),
 }
 SEV_ORDER = {"wysoka": 0, "średnia": 1, "niska": 2}
-LEVEL_PL = {"neighbours": "sąsiedzi", "subsector": "podsektor", "wodkan": "wod-kan", "works": "wszystkie roboty"}
+LEVEL_PL = {"neighbours": "sąsiedzi", "subsector": "podsektor", "wodkan": "wodno-kanalizacyjne", "works": "wszystkie roboty"}
 
 
 def _pct(x: float | None) -> str:
@@ -128,8 +130,10 @@ def build_flags(session: Session, features: dict[str, Any], text: str, neighbour
 
     pl = rng("p_late")
     if (pl.get("estimate") or 0) >= 0.4:
-        add("R-LATE", f"Wysokie prawdopodobieństwo opóźnienia: {pl['estimate']:.0%}", ["R06"],
-            "wysoka" if pl["estimate"] >= 0.55 else "średnia", "realizacja",
+        high = pl["estimate"] >= 0.55
+        add("R-LATE", f"{'Wysokie' if high else 'Podwyższone'} ryzyko opóźnienia: {pl.get('k')} z {pl.get('n')} podobnych umów "
+            f"po terminie (szacunek {pl['estimate']:.0%})", ["R06"],
+            "wysoka" if high else "średnia", "realizacja",
             f"Wśród podobnych zakończonych umów {pl.get('k')} z {pl.get('n')} nie wykonano w pierwotnym terminie "
             f"(poziom: {LEVEL_PL.get(pl.get('fallback_level'), pl.get('fallback_level'))}; 95% CI {_pct(pl.get('ci_low'))}–{_pct(pl.get('ci_high'))}).",
             n=pl.get("n"), k=pl.get("k"), case_ids=pl.get("case_ids", [])[:50], formula=pl.get("formula"))
@@ -161,13 +165,18 @@ def build_flags(session: Session, features: dict[str, Any], text: str, neighbour
                 "przygotowanie", f"Tylko {pct:.0%} umów podobnych inwestycji miało wartość ≤ budżetowi ({a.get('basis')}).",
                 n=a.get("n"), case_ids=a.get("case_ids", [])[:50], formula=a.get("formula"))
         if a.get("metric") == "schedule_percentile" and pct <= 0.25:
-            add("A-SCHEDULE", f"Krótki harmonogram na tle sąsiadów (percentyl {pct:.0%})", ["R06"], "średnia",
-                "przygotowanie", f"Tylko {pct:.0%} podobnych umów miało okres realizacji ≤ planowanemu.",
+            against = "zaplanowany" if a.get("compared_to") == "planned" else "faktyczny"
+            add("A-SCHEDULE", f"Krótki harmonogram na tle sąsiadów (krótszy niż {1 - pct:.0%} podobnych umów)", ["R06"],
+                "wysoka" if pct <= 0.1 and a.get("compared_to") == "planned" else "średnia",
+                "przygotowanie", f"Tylko {pct:.0%} podobnych umów miało {against} okres realizacji ≤ planowanemu tutaj.",
                 n=a.get("n"), case_ids=a.get("case_ids", [])[:50], formula=a.get("formula"))
-        if str(a.get("metric", "")).startswith("unit_cost") and pct <= 0.15:
-            add("A-UNIT", f"Niski koszt jednostkowy ({a.get('title')}, percentyl {pct:.0%})", ["R13", "R01"], "średnia",
-                "przygotowanie", "Koszt na jednostkę skali jest niższy niż w 85% podobnych umów. Sprawdź kompletność zakresu i budżet.",
-                n=a.get("n"), case_ids=a.get("case_ids", [])[:50], formula=a.get("formula"))
+        if a.get("metric") in ("cost_per_km", "cost_per_rlm") and pct <= 0.15:
+            n = a.get("n") or 0
+            add(f"A-UNIT-{a['metric']}", f"Niski koszt jednostkowy: {a.get('title')} niższy niż w {1 - pct:.0%} podobnych umów",
+                ["R13", "R01"], "średnia" if n >= 8 else "niska", "przygotowanie",
+                "Koszt na jednostkę skali jest wyraźnie niższy niż w podobnych umowach – możliwe niedoszacowanie budżetu "
+                "albo niepełny zakres. Sprawdź kosztorys." + (f" Uwaga: tylko {n} umów z podaną skalą." if n < 8 else ""),
+                n=n, case_ids=a.get("case_ids", [])[:50], formula=a.get("formula"))
 
     # 4. description
     value, months = _fv(features, "value"), _fv(features, "duration_months")
@@ -190,8 +199,14 @@ def build_flags(session: Session, features: dict[str, Any], text: str, neighbour
         if cv:
             add(f"D-{key}", title, codes, sev, "przygotowanie", "Opis inwestycji wskazuje ten czynnik.",
                 quote=(cv.get("quote") if isinstance(cv, dict) else None), source="opis")
+    # a "brak …" sentence already quoted by a cue flag above is the same risk – don't show it twice
+    quoted = [norm_ws(f.get("quote") or "") for f in flags if f.get("quote")]
     for key, cv in cues.items():
         if key.startswith("gap_") and isinstance(cv, dict) and cv.get("quote"):
+            q = norm_ws(cv["quote"])
+            if any(_same_sentence(q, x) for x in quoted):
+                continue
+            quoted.append(q)
             codes = _signal_codes(cv["quote"], session) or ["R01"]
             add(f"D-{key}", "Opis wskazuje brak lub niepewność", codes[:3], "średnia", "przygotowanie",
                 "Zdanie z opisu wskazuje brak lub niepewność. Wyjaśnij to przed ogłoszeniem przetargu.", quote=cv["quote"],
@@ -250,6 +265,14 @@ def build_actions(session: Session, flags: list[dict[str, Any]]) -> list[dict[st
                           "mitigation_effect": e.mitigation_effect} for e in exemplary],
         })
     return out
+
+
+def _same_sentence(a: str, b: str, min_len: int = 30) -> bool:
+    """Two quotes cut from the same sentence (windows may differ at the edges) share a long common run."""
+    from difflib import SequenceMatcher
+
+    m = SequenceMatcher(None, a, b, autojunk=False).find_longest_match(0, len(a), 0, len(b))
+    return m.size >= min(min_len, len(a), len(b))
 
 
 def norm_ws(s: str) -> str:
