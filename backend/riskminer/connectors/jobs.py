@@ -25,6 +25,16 @@ def run_enrich(ctx: JobContext) -> dict:
     return rep
 
 
+@job_handler("sources")
+def run_sources(ctx: JobContext) -> dict:
+    """Public sources beyond BZP: KPOŚK, TED, Biała lista VAT, KRS (params: sources, project_ids)."""
+    from riskminer.connectors.public import run
+
+    ids = [uuid.UUID(str(x)) for x in ctx.params.get("project_ids") or []] or None
+    return run(ctx.session, sources=ctx.params.get("sources") or None, project_ids=ids, job_id=ctx.job_id,
+               progress=ctx.progress)
+
+
 @job_handler("harvest")
 def run_harvest(ctx: JobContext) -> dict:
     from riskminer.connectors.bzp_zip import harvest

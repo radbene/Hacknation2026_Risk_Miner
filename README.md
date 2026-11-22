@@ -23,7 +23,7 @@ Konta demonstracyjne: bez logowania pracujesz jako analityk; panel eksperta: `ek
 
 | Kryterium | Waga | Co zrobiliśmy | Gdzie to zobaczyć |
 |---|---|---|---|
-| Pozyskanie i łączenie danych | 20% | import xlsx z dowodem dla każdej komórki; BZP na żywo (oficjalne API, 156 zapytań, 952 ogłoszenia dla 22 projektów) i kopia BZP organizatora (113 tys. ogłoszeń); dopasowanie po kluczach (KPO, BZP, NIP, OCID, odwołania 4.5), częściach i kandydatach z oceną; pułapki pokazane jako alternatywy; dziennik zapytań; wgrywanie dokumentów PDF/DOCX/XLSX/CSV | „Źródła danych”, `GET /api/ops/log`, [raport z testu](docs/raport_z_testu.md) §2, [źródła i dopasowanie](docs/zrodla_i_dopasowanie.md) |
+| Pozyskanie i łączenie danych | 20% | import xlsx z dowodem dla każdej komórki; BZP na żywo (oficjalne API, 156 zapytań, 952 ogłoszenia dla 22 projektów) i kopia BZP organizatora (113 tys. ogłoszeń); KPOŚK (aglomeracja, RLM, skanalizowanie), TED, Biała lista VAT i KRS dla projektów organizatora; dopasowanie po kluczach (KPO, BZP, NIP, OCID, odwołania 4.5), częściach i kandydatach z oceną; pułapki pokazane jako alternatywy; dziennik zapytań; wgrywanie dokumentów PDF/DOCX/XLSX/CSV | „Źródła danych”, `GET /api/ops/log`, [raport z testu](docs/raport_z_testu.md) §2, [źródła i dopasowanie](docs/zrodla_i_dopasowanie.md) |
 | Dokumenty i zdarzenia | 20% | zdarzenia regułowe z pól ogłoszeń; przyczyny zmian umów (art. 455) klasyfikowane przez Bielika tylko z cytatem sprawdzonym w źródle; protokoły i aneksy PDF/DOCX: nowy termin, koszt i przyczyna z cytatem, sygnały ryzyka ze stroną lub akapitem | karta projektu → „Zdarzenia i przyczyny” → „Pokaż w źródle” otwiera oryginał z podświetlonym fragmentem |
 | Nowa inwestycja | 25% | opis lub PDF → cechy z dowodem → podobne projekty z rozbiciem podobieństwa → zakresy kosztu i czasu (n, niepewność) → ocena budżetu i harmonogramu → flagi → działania, klauzule i wzorcowe przypadki zatwierdzone przez eksperta → eksport JSON/CSV/DOCX | „Nowa analiza”, [exports/przyklad/](exports/przyklad/) |
 | Kontrola eksperta, edycja, modułowość | 20% | wszystko startuje jako „proponowane”; akceptuj / popraw / odrzuć / przepnij / oznacz jako wzorcowe; historia zmian; ponowne przetwarzanie nie nadpisuje decyzji; edytor wiedzy (R01–R15, podsektory, wagi) z wersjami; własny model językowy dodawany w konfiguracji | „Do zatwierdzenia”, „Wiedza ekspercka”, „Modele językowe” |
@@ -75,7 +75,7 @@ dokumentów po usunięciu danych osobowych; miejsce przetwarzania pokazuje pasek
 
 Co działa, a co jest tylko zaprojektowane: [docs/status.md](docs/status.md) i [docs/opis_rozwiazania.md](docs/opis_rozwiazania.md).
 - Dokumenty z platform zakupowych nie są pobierane automatycznie (logowanie, HTTP 429), więc trzeba je wgrać lub podać URL.
-- OCR skanów działa (Tesseract, lokalnie; `riskminer ocr` czyta zapisane wcześniej skany). Źródła TED, Biała lista VAT, KRS, KIO, BK2021 i raporty NIK są zaprojektowane, ale nie wdrożone.
+- OCR skanów działa (Tesseract, lokalnie; `riskminer ocr` czyta zapisane wcześniej skany). Poza BZP działają KPOŚK (sprawozdanie z dane.gov.pl), TED (API v3), Biała lista VAT i KRS: `riskminer sources`, wyniki na karcie projektu w „Inne źródła publiczne”. KIO (wyszukiwarka dostępna tylko przez formularz), Baza Konkurencyjności 2021 (API wymaga logowania) i raporty NIK są zaprojektowane, ale nie wdrożone.
 - Zakresy odchyleń dla rzadkich podsektorów mają małe n; system to pokazuje i poszerza przedział.
 
 ## Wdrożenie i koszty

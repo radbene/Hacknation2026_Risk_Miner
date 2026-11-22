@@ -162,7 +162,41 @@ function Overview({ d, expert }: { d: Schemas['ProjectDetail']; expert: boolean 
           </Card>
         </div>
       </div>
+      {d.tier === 'deep' && <PublicSources projectId={d.id} />}
     </div>
+  )
+}
+
+type PublicFact = { source: string; label: string; value: string | null; subject: string | null; subject_type: string; evidence_ids: string[]; fact_type: string }
+const SOURCE_PL: Record<string, string> = { kposk: 'KPOŚK (dane.gov.pl)', ted: 'TED', vat_whitelist: 'Biała lista VAT', krs: 'KRS' }
+
+/** Facts about the project, its beneficiary and contractors from public sources beyond BZP. */
+function PublicSources({ projectId }: { projectId: string }) {
+  const q = useApi(['public-sources', projectId], async () => {
+    const r = await fetch(`/api/projects/${projectId}/public-sources`)
+    if (!r.ok) throw new Error(await r.text())
+    return (await r.json()) as PublicFact[]
+  })
+  const items = q.data ?? []
+  if (!items.length) return null
+  const notices = items.filter((x) => x.fact_type === 'ted_notice')
+  const rest = items.filter((x) => x.fact_type !== 'ted_notice')
+  return (
+    <Card className="mt-4">
+      <CardHeader title="Inne źródła publiczne" description="KPOŚK, TED, Biała lista VAT i KRS – każda wartość z odnośnikiem do źródła." actions={<BlockLabel label="dane_zrodlowe" />} />
+      <CardContent className="space-y-2 text-sm">
+        <div className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+          {rest.map((x, i) => (
+            <div key={i} className="flex items-start justify-between gap-2 border-b border-slate-100 pb-1">
+              <div><div className="text-xs text-slate-500">{x.label}{x.subject ? ` · ${x.subject}` : ''} · <span className="font-mono">{SOURCE_PL[x.source] ?? x.source}</span></div>
+                <div className="text-slate-800">{x.value ?? '—'}</div></div>
+              <EvidenceChip ids={x.evidence_ids} />
+            </div>))}
+        </div>
+        {notices.length > 0 && <details className="text-xs text-slate-600"><summary className="cursor-pointer">Ogłoszenia robót tego zamawiającego w TED ({notices.length})</summary>
+          <ul className="mt-1 space-y-1">{notices.map((x, i) => <li key={i} className="flex items-start justify-between gap-2"><span>{x.value}</span><EvidenceChip ids={x.evidence_ids} /></li>)}</ul></details>}
+      </CardContent>
+    </Card>
   )
 }
 

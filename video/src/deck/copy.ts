@@ -13,14 +13,14 @@ export const D = {
     problem: {
       kicker: 'Problem',
       head: 'Co piąta umowa zmienia termin.',
-      body: '7\u00a0719 z 39\u00a0094 umów w BZP ma ogłoszoną zmianę terminu. Dlaczego, wiemy z aneksów, protokołów i ogłoszeń, ale nikt nie łączy ich z projektami ani nie korzysta z nich przy następnej inwestycji.',
+      body: '7\u00a0719 z 39\u00a0094 umów w BZP ma ogłoszoną zmianę terminu. Przyczyny są opisane w aneksach, protokołach i ogłoszeniach, ale nikt nie łączy ich z projektami ani nie korzysta z nich przy następnej inwestycji.',
       source: 'Źródło: ogłoszenia o zmianie umowy w BZP 2021–2026, policzone w bazie RISK MINER',
     },
     solution: {
       kicker: 'Rozwiązanie',
       title: 'Jedno narzędzie, trzy zadania',
       cards: [
-        ['Buduje bazę sama', 'Z listy projektów odpytuje BZP, łączy postępowania, ogłoszenia, umowy i zmiany, liczy terminy i koszty.'],
+        ['Samo buduje bazę', 'Z listy projektów odpytuje BZP, łączy postępowania, ogłoszenia, umowy i zmiany, liczy terminy i koszty.'],
         ['Znajduje zdarzenia i przyczyny', 'Opóźnienia, aneksy i kary z cytatem i kategorią R01–R15. Każda pozycja czeka na decyzję eksperta.'],
         ['Ocenia nową inwestycję', 'Podobne zakończone inwestycje, zakresy opóźnień i kosztów, czerwone flagi, działania i zapisy umowne.'],
       ] as [string, string][],
@@ -67,9 +67,9 @@ export const D = {
       kicker: 'Ścieżka B · nowa inwestycja',
       title: 'Opis inwestycji, a w wyniku ryzyko na tle podobnych',
       steps: [
-        'Wklej opis albo wgraj dokument z wniosku. Nie musi mieć warstwy tekstowej: skan odczyta OCR.',
+        'Wklej opis albo wgraj dokument z wniosku. System czyta też dokumenty z linku, a skan odczyta OCR.',
         'Popraw cechy, które system odczytał, każdą z cytatem.',
-        'Dostajesz 12 najbardziej podobnych z 12\u00a0943 zakończonych inwestycji, a przy każdej liczbie liczbę przypadków i przedział.',
+        'Dostajesz 12 najbardziej podobnych z 12\u00a0943 zakończonych inwestycji, a przy każdym wyniku liczbę przypadków i przedział.',
       ],
     },
     similar: {
@@ -86,9 +86,9 @@ export const D = {
       kicker: 'Wdrożenie',
       title: 'Co działa i co dalej',
       cards: [
-        ['Działa', ['Obie ścieżki na żywo, z eksportem.', 'Monitoring trwających inwestycji: alert po nowym ogłoszeniu w BZP.', 'Panel eksperta i wiedza ekspercka z wersjami.', 'OCR skanów (Tesseract, lokalnie).']],
+        ['Działa', ['Obie ścieżki na żywo, z eksportem.', 'Monitoring trwających inwestycji: alert po nowym ogłoszeniu w BZP.', 'Źródła publiczne: BZP, KPOŚK, TED, Biała lista VAT, KRS.', 'OCR skanów (Tesseract, lokalnie).']],
         ['Bezpiecznie', ['Bielik 11B na naszym serwerze, dokumenty nie wychodzą na zewnątrz.', 'Model zmieniasz w konfiguracji; bez modelu działają same reguły.', 'Licencja Apache 2.0, bez zależności GPL.']],
-        ['Dalej', ['TED, Biała lista VAT, KRS, KIO i NIK.', 'Pobieranie dokumentów z platform zakupowych.', 'Nowy sektor to nowe pliki wiedzy. Pilotaż na danych CST2021.']],
+        ['Dalej', ['KIO, Baza Konkurencyjności i raporty NIK.', 'Pobieranie dokumentów z platform zakupowych.', 'Nowy sektor to nowe pliki wiedzy. Pilotaż na danych CST2021.']],
       ] as [string, string[]][],
     },
   },

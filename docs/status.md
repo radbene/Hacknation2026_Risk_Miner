@@ -69,7 +69,7 @@ committed on their branches first). Main session wired the missing CLI/jobs/rout
 **Znane problemy / do zrobienia**
 - Przypadki pogłębione nie mają podsektora do czasu `riskminer classify`; P(zmiana) na samych 22 projektach jest
   zawyżone (próba organizatora) – po załadowaniu warstwy automatycznej zakresy liczone z ~20 tys. umów.
-- Biała lista VAT, TED, KRS, KIO – nie zaimplementowane (zaprojektowane).
+- Źródła publiczne poza BZP (22.11): KPOŚK (dane.gov.pl, 19/22 projektów dopasowanych do aglomeracji), TED API v3 (22 zapytania, 73 ogłoszenia robót tych samych zamawiających), Biała lista VAT (41 podmiotów) i KRS (12 odpisów) – `riskminer sources`, zadanie `sources`, karta projektu → „Inne źródła publiczne”, `GET /api/projects/{id}/public-sources`. KIO, Baza Konkurencyjności 2021 i raporty NIK – zaprojektowane, nie wdrożone (KIO: wyniki tylko przez formularz JS; BK2021: API wymaga logowania).
 
 ## Przed zamrożeniem (22.11 ~02:00)
 **Działa**

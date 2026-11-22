@@ -146,6 +146,47 @@ def get_project(project_id: uuid.UUID, db: Session = DB):
     return _detail(db, _project_or_404(db, project_id))
 
 
+PUBLIC_FACT_LABELS = {
+    "kposk_agglomeration": ("kposk", "Aglomeracja (KPOŚK)"), "kposk_rlm": ("kposk", "RLM aglomeracji (KPOŚK)"),
+    "kposk_coverage": ("kposk", "Stopień skanalizowania (KPOŚK)"), "kposk_network_km": ("kposk", "Sieć kanalizacyjna (KPOŚK)"),
+    "kposk_status": ("kposk", "Status aglomeracji (KPOŚK)"), "ted_notices_found": ("ted", "Ogłoszenia w TED"),
+    "ted_notice": ("ted", "Ogłoszenie TED"), "vat_status": ("vat_whitelist", "Status VAT (Biała lista)"),
+    "krs_status": ("krs", "Stan w KRS"),
+}
+
+
+@router.get("/projects/{project_id}/public-sources")
+def project_public_sources(project_id: uuid.UUID, db: Session = DB) -> list[dict[str, Any]]:
+    """Facts from public sources beyond BZP (KPOŚK, TED, Biała lista VAT, KRS) for the project, its beneficiary
+    and the contractors of its linked procedures. Each item carries its evidence ids."""
+    from riskminer.models import Contract, Entity, Fact
+
+    p = _project_or_404(db, project_id)
+    procs = db.execute(select(ProjectProcedure.procedure_id).where(ProjectProcedure.project_id == p.id,
+                                                                   ProjectProcedure.status != "rejected")).scalars().all()
+    ent_ids = {p.beneficiary_id} if p.beneficiary_id else set()
+    if procs:
+        ent_ids |= set(db.execute(select(Contract.contractor_id).where(Contract.procedure_id.in_(procs),
+                                                                        Contract.contractor_id.is_not(None))).scalars())
+    names = {e.id: (None if e.natural_person_flag else e.name)
+             for e in db.execute(select(Entity).where(Entity.id.in_(ent_ids))).scalars()} if ent_ids else {}
+    rows = db.execute(select(Fact).where(Fact.fact_type.in_(list(PUBLIC_FACT_LABELS)), or_(
+        (Fact.subject_type == "project") & (Fact.subject_id == p.id),
+        (Fact.subject_type == "entity") & (Fact.subject_id.in_(list(ent_ids) or [uuid.uuid4()]))))).scalars().all()
+    out = []
+    for f in rows:
+        source, label = PUBLIC_FACT_LABELS[f.fact_type]
+        value = f.value_text if f.value_text is not None else (f"{f.value_num:g} {f.unit or ''}".strip() if f.value_num is not None else None)
+        if f.fact_type == "kposk_coverage" and f.value_num is not None:
+            value = f"{f.value_num:.1f}%"
+        out.append({"source": source, "label": label, "value": value, "subject": names.get(f.subject_id) if f.subject_type == "entity" else None,
+                    "subject_type": f.subject_type, "date": f.value_date, "confidence": f.confidence, "status": f.status,
+                    "evidence_ids": f.evidence_ids, "fact_type": f.fact_type})
+    order = list(PUBLIC_FACT_LABELS)
+    out.sort(key=lambda x: (order.index(x["fact_type"]), str(x["subject"] or ""), str(x["date"] or "")), reverse=False)
+    return out
+
+
 @router.patch("/projects/{project_id}", response_model=ProjectDetail)
 def patch_project(project_id: uuid.UUID, body: ProjectPatch, db: Session = DB, user: CurrentUser = EXPERT):
     from riskminer.review.audit import ReviewError, apply_action

@@ -58,6 +58,15 @@ def register(app: typer.Typer) -> None:
         _dump(rep)
 
     @app.command()
+    def sources(only: list[str] = typer.Option(None, help="kposk | ted | vat_whitelist | krs (default: all)")):
+        """Public sources beyond BZP for the organizer's projects: KPOŚK, TED, Biała lista VAT, KRS."""
+        from riskminer.connectors.public import run
+        from riskminer.core.db import session_scope
+
+        with session_scope() as s:
+            _dump(run(s, sources=only or None))
+
+    @app.command()
     def gold():
         """Link precision/recall vs the hand-verified gold set."""
         from riskminer.core.db import session_scope

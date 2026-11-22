@@ -54,7 +54,9 @@ REGISTRY = {
     "bk2021": ("P2", "Baza Konkurencyjności 2021"),
     "kposk": ("P2", "KPOŚK – krajowy program oczyszczania ścieków"),
 }
-MODULE_FOR = {"bzp_zip": "bzp_zip", "xlsx": "xlsx_import", "files": "files", "vat_whitelist": "vat_whitelist"}
+MODULE_FOR = {"bzp_zip": "bzp_zip", "xlsx": "xlsx_import", "vat_whitelist": "vat_whitelist",
+              # uploads and documents fetched from a URL (e.g. BIP) are handled by the document pipeline
+              "files": "riskminer.extract.documents", "web_doc": "riskminer.extract.documents"}
 
 
 def _count(db: Session, table: str, where: str = "") -> int:
@@ -120,7 +122,8 @@ def op_log(connector: str | None = None, job_id: uuid.UUID | None = None, operat
 
 
 def _module_exists(code: str) -> bool:
-    name = f"riskminer.connectors.{MODULE_FOR.get(code, code)}"
+    mod = MODULE_FOR.get(code, code)
+    name = mod if mod.startswith("riskminer.") else f"riskminer.connectors.{mod}"
     try:
         return importlib.util.find_spec(name) is not None
     except ModuleNotFoundError:
