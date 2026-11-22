@@ -50,9 +50,11 @@ def test_nowogard_showcase(db, nowogard):
         for r in rows:
             if r.kind == "notice_section" and r.locator.get("section") not in ("V/VI", "VI"):
                 assert r.quote_verified is not False, (r.locator, r.quote)
-    # rerun is idempotent
+    # rerun is idempotent; rows an expert already decided on only get a proposal, never an overwrite
+    reviewed = {e.id: e.status for e in _events(db, nowogard["procedure_id"]) if e.status in ("approved", "edited", "rejected")}
     rep2 = extract_procedure(db, nowogard["procedure_id"])
-    assert set(rep2.results.values()) <= {"unchanged", "updated"}
+    assert set(rep2.results.values()) <= {"unchanged", "updated", "proposal"}
+    assert {e.id: e.status for e in _events(db, nowogard["procedure_id"]) if e.id in reviewed} == reviewed
 
 
 def test_rerun_keeps_expert_decision(db, nowogard):

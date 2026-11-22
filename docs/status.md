@@ -71,6 +71,21 @@ committed on their branches first). Main session wired the missing CLI/jobs/rout
   zawyżone (próba organizatora) – po załadowaniu warstwy automatycznej zakresy liczone z ~20 tys. umów.
 - Biała lista VAT, TED, KRS, KIO – nie zaimplementowane (zaprojektowane).
 
+## Przed zamrożeniem (22.11 ~02:00)
+**Działa**
+- Dokumenty organizatora wgrane do projektów: protokół konieczności Zagrodno (RM-2026-002, +1 mies.: kolizja z siecią,
+  wody gruntowe) i Zławieś (RM-2026-005, termin 30.10 → 05.12.2025, roboty dodatkowe 151 481,54 zł); z protokołów i
+  aneksów reguły odczytują nowy termin, koszt i przyczynę z cytatem (`extract_document_effects`).
+- Decyzje eksperta przez API (historia w `review`): 15 powiązań po identyfikatorze zatwierdzonych hurtowo (7 dopasowanych
+  po podobieństwie czeka na jury), 5 zdarzeń zatwierdzonych, 4 wzorcowe (używane w działaniach analizy), 3 poprawione
+  kody ryzyka, 8 szumowych sygnałów z dokumentów odrzuconych z uzasadnieniem.
+- `riskminer report`: ocena wzorcem tylko dla 22 projektów organizatora (P = R = 1,0), sekcja zdarzeń i dokumentów,
+  czytelne wyniki analiz; README i opis rozwiązania bez pól `{{…}}`.
+
+**Znane problemy**
+- Pismo Grodzisko (RM-2026-010) to skan bez warstwy tekstowej: zapisany, oznaczony do OCR, bez zdarzeń.
+- Reguły sygnałów z dokumentów dają szum (nagłówki, dane stron umowy); ekspert je odrzuca, filtr w regułach do zrobienia.
+
 ## S1 Acquisition & linking
 ## S2 Extraction & documents
 ## S3 Analysis

@@ -30,7 +30,8 @@ def comparable_value(value: float | None, vat: str | None, against: str = "gross
     if vat not in ("net", "gross"):
         return None, "nie porównano: nie wiadomo, czy kwota jest netto czy brutto"
     if vat == against:
-        return float(value), f"kwota {vat} porównana z kwotami {against}"
+        pl = {"net": "netto", "gross": "brutto"}
+        return float(value), f"kwota {pl[vat]} porównana z kwotami {pl[against]}"
     if vat == "net" and against == "gross":
         return float(value) * VAT, "kwota netto × 1,23 (ZAŁOŻENIE: VAT 23%) porównana z kwotami brutto"
     return float(value) / VAT, "kwota brutto / 1,23 (ZAŁOŻENIE: VAT 23%) porównana z kwotami netto"

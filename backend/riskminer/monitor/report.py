@@ -36,6 +36,21 @@ COUNT_TABLES = ["project", "procedure", "project_procedure", "notice", "contract
                 "knowledge_table", "review", "op_log", "llm_call", "raw_record"]
 
 
+EVENT_PL = {"late": "opóźnienie", "paid_above_value": "wypłata ponad wartość umowy", "change_deadline": "zmiana terminu",
+            "change_value": "zmiana wynagrodzenia", "change_scope": "zmiana zakresu", "repeated": "powtórzone postępowanie",
+            "improper": "nienależyte wykonanie / kary", "doc_fragment": "sygnał ryzyka w dokumencie"}
+METHOD_PL = {"rule": "reguły", "llm": "Bielik (z cytatem)"}
+STATUS_PL = {"proposed": "czeka na eksperta", "approved": "zatwierdzone", "edited": "poprawione przez eksperta",
+             "rejected": "odrzucone"}
+
+
+KIND_PL = {"neighbour": "podobne inwestycje", "range": "zakresy", "assessment": "oceny", "flag": "flagi", "action": "działania"}
+
+
+def _pln(v) -> str:
+    return "–" if v is None else f"{float(v):,.0f} zł".replace(",", " ")
+
+
 def table_counts(session: Session, tables=COUNT_TABLES) -> dict[str, int]:
     from sqlalchemy import text
 
@@ -81,6 +96,7 @@ def evaluate_links(session: Session, gold: list[dict[str, str]] | None = None) -
                ProjectProcedure.confidence, ProjectProcedure.method, ProjectProcedure.alternatives)
         .join(Project, Project.id == ProjectProcedure.project_id)
         .join(Procedure, Procedure.id == ProjectProcedure.procedure_id)
+        .where(Project.tier == "deep")  # the gold set covers the organizer's projects; the auto tier is 1 procedure = 1 project
     ).all()
     system: dict[str, list] = defaultdict(list)
     for r in rows:
@@ -204,6 +220,9 @@ def build_report(session: Session) -> tuple[str, dict]:
             f"Precyzja: **{_fmt(ev['precision'])}** · kompletność (recall): **{_fmt(ev['recall'])}** · "
             f"precyzja powiązań automatycznych: **{_fmt(ev['auto_precision'])}**.",
             "",
+            "Ocena obejmuje projekty z pliku organizatora (warstwa pogłębiona). Warstwa automatyczna z kopii BZP "
+            "(jedno postępowanie = jedna inwestycja) nie ma wzorca i służy jako tło do porównań w analizie nowej inwestycji.",
+            "",
         ]
         if ev["missing_in_bzp"]:
             L += ["Projekty, dla których wzorzec stwierdza brak ogłoszeń w BZP: " + ", ".join(ev["missing_in_bzp"]) + ".", ""]
@@ -243,26 +262,55 @@ def build_report(session: Session) -> tuple[str, dict]:
             L += [f"- {a.message}" for a in dq]
         L += [""]
 
-    L += ["## 4. Monitoring", ""]
+    L += ["## 4. Zdarzenia i przyczyny (projekty organizatora)", ""]
+    from riskminer.models import Document, Event
+    evrows = session.execute(select(Event.event_type, Event.method, Event.status, func.count())
+                             .where(Event.tier == "deep").group_by(Event.event_type, Event.method, Event.status)
+                             .order_by(Event.event_type)).all()
+    L += [_table(["Rodzaj zdarzenia", "Metoda", "Status", "Liczba"],
+                 [[EVENT_PL.get(t, t), METHOD_PL.get(m, m), STATUS_PL.get(st, st), n] for t, m, st, n in evrows])
+          if evrows else "Brak zdarzeń.", ""]
+    docs = session.execute(select(Document.file_name, Document.doc_type, Document.text_status, Project.code)
+                           .join(Project, Project.id == Document.project_id, isouter=True)
+                           .where(Document.project_id.is_not(None)).order_by(Project.code)).all()
+    if docs:
+        L += ["Dokumenty wgrane do projektów:", "",
+              _table(["Projekt", "Plik", "Rodzaj", "Warstwa tekstowa"],
+                     [[c, f, t, {"ok": "tak", "no_text_layer": "brak (skan, wymaga OCR)"}.get(st, st)] for f, t, st, c in docs]), ""]
+
+    L += ["## 5. Monitoring", ""]
     akinds = session.execute(select(Alert.kind, Alert.severity, func.count()).group_by(Alert.kind, Alert.severity)).all()
     L += [_table(["Rodzaj alertu", "Waga", "Liczba"], [list(r) for r in akinds]) if akinds else "Brak alertów.", ""]
 
-    L += ["## 5. Analizy nowych inwestycji", ""]
+    L += ["## 6. Analizy nowych inwestycji", ""]
     analyses = session.execute(select(Analysis).order_by(Analysis.created_at)).scalars().all()
     if not analyses:
         L += ["Brak analiz w bazie.", ""]
     for a in analyses:
-        items = Counter(k for (k,) in session.execute(select(AnalysisItem.kind).where(AnalysisItem.analysis_id == a.id)))
+        rows = session.execute(select(AnalysisItem.kind, AnalysisItem.label, AnalysisItem.title, AnalysisItem.excluded)
+                               .where(AnalysisItem.analysis_id == a.id).order_by(AnalysisItem.kind, AnalysisItem.ord)).all()
+        items = Counter(r.kind for r in rows if not r.excluded)
         s = a.summary or {}
+        model = any(r.label == "wniosek_modelu" for r in rows)
         L += [f"### {a.title}", "",
-              "- pozycje analizy: " + (", ".join(f"{k}: {n}" for k, n in items.items()) or "brak"),
-              f"- profil LLM: {a.llm_profile or 'reguły (bez LLM)'} · status: {a.status}"]
-        for k in ("budget", "schedule", "cost_range", "time_range", "assessment", "n_neighbours", "headline"):
-            if k in s:
-                L += [f"- {k}: {str(s[k])[:300]}"]
+              "- wynik: " + (", ".join(f"{KIND_PL.get(k, k)}: {n}" for k, n in items.items()) or "brak"),
+              f"- model językowy: {'Bielik (podsumowanie i działania, oznaczone „Wniosek modelu”)' if model else 'nie użyto (same reguły i obliczenia)'}"]
+        b, sch = s.get("budget") or {}, s.get("schedule") or {}
+        if b:
+            if b.get("position"):
+                r = b.get("reserve_p80") or {}
+                L += [f"- budżet: {_pln(b.get('value'))} – {b['position']} ({b.get('basis')})"
+                      + (f"; rezerwa P80: {_pln(r.get('amount'))}" if r.get("amount") else "")]
+            elif b.get("message"):
+                L += [f"- budżet: {b['message']}"]
+        if sch.get("position"):
+            L += [f"- harmonogram: {sch['position']}"]
+        flags = [r.title for r in rows if r.kind == "flag" and not r.excluded][:6]
+        if flags:
+            L += ["- flagi: " + "; ".join(flags)]
         L += [""]
 
-    L += ["## 6. Integracja ze źródłami (op_log)", ""]
+    L += ["## 7. Integracja ze źródłami (op_log)", ""]
     ops = session.execute(select(OpLog.connector, OpLog.operation, func.count(), func.sum(OpLog.n_results),
                                  func.count(OpLog.error), func.max(OpLog.at))
                           .group_by(OpLog.connector, OpLog.operation).order_by(OpLog.connector)).all()
@@ -270,7 +318,7 @@ def build_report(session: Session) -> tuple[str, dict]:
                  [[c, o, n, r, e, (m.strftime("%Y-%m-%d %H:%M") if m else None)] for c, o, n, r, e, m in ops])
           if ops else "Brak zapytań w dzienniku.", ""]
 
-    L += ["## 7. Wywołania modeli językowych", ""]
+    L += ["## 8. Wywołania modeli językowych", ""]
     llm = session.execute(select(LLMCall.task, LLMCall.provider, LLMCall.data_location, func.count(),
                                  func.count().filter(LLMCall.cached.is_(True)),
                                  func.coalesce(func.sum(LLMCall.cost_usd), 0.0))
