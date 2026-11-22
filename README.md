@@ -4,8 +4,9 @@ RISK MINER pozwala analitykowi instytucji wdrażającej w kilka minut zobaczyć,
 wodno-kanalizacyjne przekroczyły koszt i termin oraz dlaczego. Dziś to wymaga ręcznego przeglądania setek ogłoszeń
 BZP i dokumentów. Rozwiązanie zadania **RISK MINER** (Ministerstwo Funduszy i Polityki Regionalnej) na HackNation 2026.
 
-**Film demo (ok. 2 min):** ⟨link do filmu⟩ · **Prezentacja:** [docs/prezentacja.pdf](docs/prezentacja.pdf) ·
-**Działająca wersja:** ⟨link do aplikacji⟩ · **Repozytorium:** https://github.com/radbene/Hacknation2026_Risk_Miner
+**Film demo (ok. 2 min):** https://youtu.be/GTncaZj8qhk · **Prezentacja:** [docs/prezentacja.pdf](docs/prezentacja.pdf) ·
+**Repozytorium:** https://github.com/radbene/Hacknation2026_Risk_Miner · aplikację uruchamia się lokalnie
+(sekcja [Uruchomienie](#uruchomienie)).
 
 Film demo, prezentacja wideo i PDF slajdów powstają z nagrań działającej aplikacji: [video/README.md](video/README.md).
 
@@ -136,7 +137,7 @@ pliki wiedzy (`knowledge/<sektor>/`) generowane z dokumentów eksperta.
 
 ## Zespół
 
-⟨imię i nazwisko⟩: całość (zespół jednoosobowy).
+Radosław Benedykciński: całość (zespół jednoosobowy).
 
 ## Licencja
 
