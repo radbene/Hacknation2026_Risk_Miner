@@ -1,6 +1,6 @@
 import { useNavigate } from '@tanstack/react-router'
 import { FileUp, Plus, Trash2 } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { api, unwrap, type Schemas } from '@/api/client'
 import { useApi, useApiMutation } from '@/api/hooks'
 import { FeaturesForm, type Features } from '@/components/analysis/FeaturesForm'
@@ -113,11 +113,20 @@ const EXAMPLE = `Gmina planuje budowę sieci kanalizacji sanitarnej o długości
 Trasa przebiega w pasie dróg gminnych i powiatowej oraz przez działki prywatne. Formuła: zaprojektuj i wybuduj (PFU).
 Szacunkowa wartość: 9 800 000 zł brutto. Planowany okres realizacji: 18 miesięcy, start II kwartał 2027. Finansowanie: FEnIKS.`
 
+const DRAFT_KEY = 'rm_new_analysis_draft'
+function readDraft(): { title?: string; text?: string } {
+  try { return JSON.parse(localStorage.getItem(DRAFT_KEY) ?? '{}') ?? {} } catch { return {} }
+}
+
 export default function NewInvestment() {
   const navigate = useNavigate()
   const { toast } = useToast()
-  const [title, setTitle] = useState('')
-  const [text, setText] = useState('')
+  // the description survives a page reload (it used to vanish after a hung model call + refresh)
+  const [title, setTitle] = useState(() => readDraft().title ?? '')
+  const [text, setText] = useState(() => readDraft().text ?? '')
+  useEffect(() => {
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ title, text })) } catch { /* private mode – no draft */ }
+  }, [title, text])
   const [docs, setDocs] = useState<Schemas['DocumentOut'][]>([])
   const [fx, setFx] = useState<Schemas['FeatureExtractOut'] | null>(null)
   const [features, setFeatures] = useState<Features | null>(null)
@@ -125,12 +134,31 @@ export default function NewInvestment() {
   const [resultId, setResultId] = useState<string | null>(null)
   const [model, setModel] = useState('')
   const ref = useRef<HTMLInputElement>(null)
+  const abort = useRef<AbortController | null>(null)
+  const [started, setStarted] = useState<number | null>(null)
+  const [now, setNow] = useState(() => Date.now())
 
   const extract = useApiMutation<Schemas['FeatureExtractIn'], Schemas['FeatureExtractOut']>({
-    fn: async (body) => unwrap(await api.POST('/api/analyses/extract-features', { body })),
+    fn: async (body) => {
+      abort.current?.abort()
+      const ac = new AbortController()
+      abort.current = ac
+      setStarted(Date.now())
+      try {
+        return unwrap(await api.POST('/api/analyses/extract-features', { body, signal: ac.signal }))
+      } finally { if (abort.current === ac) setStarted(null) }
+    },
     onSuccess: (r) => { setFx(r); setFeatures(r.features) },
-    onError: (e) => toast({ kind: 'error', title: 'Nie udało się odczytać cech', description: String(e) }),
+    onError: (e) => { if ((e as Error)?.name !== 'AbortError') toast({ kind: 'error', title: 'Nie udało się odczytać cech', description: String(e) }) },
   })
+  useEffect(() => {
+    if (started == null) return
+    const t = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(t)
+  }, [started])
+  const waited = started != null ? Math.max(0, Math.round((now - started) / 1000)) : 0
+  const runExtract = (profile: string) => extract.mutate({ text: text || null, document_ids: docIds, llm_profile: profile || null })
+  const rulesNow = () => { abort.current?.abort(); setModel('rules'); runExtract('rules') }
   const create = useApiMutation<Schemas['AnalysisCreateIn'], Schemas['AnalysisOut']>({
     fn: async (body) => unwrap(await api.POST('/api/analyses', { body })),
     invalidate: [['analyses']],
@@ -160,7 +188,7 @@ export default function NewInvestment() {
   return (
     <div>
       <PageHeader title="Nowa analiza" />
-      <MiningLoader pending={create.isPending} failed={create.isError}
+      <MiningLoader pending={create.isPending} failed={create.isError} withModel={model !== 'rules'}
         onFinished={() => resultId && navigate({ to: '/analizy/$analysisId', params: { analysisId: resultId }, search: {} })} />
       <Intro can={['wkleić opis albo wgrać dokument (PDF, Word)', 'poprawić odczytane cechy', 'zapisać analizę w „Moich analizach”']}>
         Opisz planowaną inwestycję wodno-kanalizacyjną: zakres i skalę, lokalizację, wartość netto lub brutto, czas realizacji, formułę oraz stan przygotowania terenu, decyzji i uzgodnień. Możesz wybrać, który model językowy przeczyta opis. Lokalny model na naszym serwerze potrzebuje 1–2 minut.
@@ -178,8 +206,14 @@ export default function NewInvestment() {
               {docs.map((d) => <Badge key={d.id} variant="info">{d.file_name}</Badge>)}
             </div>
             <ModelPicker value={model} onChange={setModel} />
-            <Button disabled={!canExtract} loading={extract.isPending} onClick={() => extract.mutate({ text: text || null, document_ids: docIds, llm_profile: model || null })}>
-              Odczytaj cechy</Button>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button disabled={!canExtract} loading={extract.isPending} onClick={() => runExtract(model)}>
+                Odczytaj cechy</Button>
+              {extract.isPending && model !== 'rules' && <>
+                <span className="text-xs text-slate-500" aria-live="polite">model czyta opis: {waited} s</span>
+                {waited >= 10 && <Button variant="outline" size="sm" onClick={rulesNow}>Przerwij i odczytaj bez modelu</Button>}
+              </>}
+            </div>
           </CardContent>
         </Card>
         <Card>

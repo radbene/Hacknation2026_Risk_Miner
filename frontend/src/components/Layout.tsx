@@ -101,14 +101,17 @@ export function LoginDialog({ open, onClose }: { open: boolean; onClose: () => v
   const [password, setPassword] = useState('')
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
-  async function submit() {
+  async function submit(u = username, pw = password) {
     setBusy(true); setErr('')
-    try { await login(username, password); onClose(); navigate({ to: '/kolejka' }) } catch (e) { setErr(e instanceof Error ? e.message : String(e)) } finally { setBusy(false) }
+    try { await login(u, pw); onClose(); navigate({ to: '/kolejka' }) } catch (e) { setErr(e instanceof Error ? e.message : String(e)) } finally { setBusy(false) }
   }
   return (
     <Dialog open={open} onClose={onClose} title="Logowanie do panelu eksperta"
       description="Ekspert zatwierdza zdarzenia, przyczyny i powiązania, poprawia dane i prowadzi wiedzę ekspercką."
-      footer={<><Button variant="outline" onClick={onClose}>Anuluj</Button><Button loading={busy} onClick={submit}>Zaloguj</Button></>}>
+      footer={<><Button variant="outline" onClick={onClose}>Anuluj</Button>
+        {/* demo: one click, like the EKSPERT tile on the start page ("panel eksperta otwiera się bez hasła") */}
+        {hint && <Button variant="outline" loading={busy} onClick={() => submit('ekspert', hint)}>Wejdź jako ekspert (demo)</Button>}
+        <Button loading={busy} onClick={() => submit()}>Zaloguj</Button></>}>
       <form className="space-y-3 text-sm" onSubmit={(e) => { e.preventDefault(); submit() }}>
         <div><Label htmlFor="lg-u">Login</Label><Input id="lg-u" value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" /></div>
         <div><Label htmlFor="lg-p">Hasło</Label><Input id="lg-p" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" /></div>

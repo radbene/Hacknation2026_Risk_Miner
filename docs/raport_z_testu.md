@@ -178,7 +178,7 @@ Dokumenty wgrane do projektów:
 |---|---|---|---|
 | RM-2026-002 | Risk_Miner_protokol_konieczności_aneksowania_zagrodno.pdf | protokół | tak |
 | RM-2026-005 | Risk_Miner_protokol_koniecznosci_zławieś.docx | protokół | tak |
-| RM-2026-010 | Risk_Miner_pismo_termin_grodzisko.pdf | – | brak (skan, wymaga OCR) |
+| RM-2026-010 | Risk_Miner_pismo_termin_grodzisko.pdf | – | OCR (Tesseract, pewność 94,9%) |
 
 ## 5. Monitoring
 

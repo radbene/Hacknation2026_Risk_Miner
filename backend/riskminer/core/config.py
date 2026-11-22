@@ -49,6 +49,17 @@ class ConnectorConfig(BaseModel):
     extra: dict[str, Any] = Field(default_factory=dict)
 
 
+class OCRConfig(BaseModel):
+    """OCR of scanned PDFs (Tesseract, external command). `command` may be a container, e.g.
+    ["docker", "run", "--rm", "-i", "riskminer-ocr"]."""
+    enabled: bool = True
+    command: list[str] = Field(default_factory=lambda: ["tesseract"])
+    lang: str = "pol"
+    dpi: int = 300
+    max_pages: int = 30
+    timeout_s: float = 120.0
+
+
 class AppConfig(BaseModel):
     sector: str = "wodkan"
     knowledge_dir: str = "knowledge"
@@ -59,8 +70,11 @@ class AppConfig(BaseModel):
     data_processing_note: str = ""
     connectors: dict[str, ConnectorConfig] = Field(default_factory=dict)
     llm: LLMConfig = Field(default_factory=LLMConfig)
+    ocr: OCRConfig = Field(default_factory=OCRConfig)
     embeddings_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     embeddings_dim: int = 384
+    embeddings_enabled: bool = True
+    embeddings_cache_dir: str = "data/models"
 
 
 class Env(BaseSettings):

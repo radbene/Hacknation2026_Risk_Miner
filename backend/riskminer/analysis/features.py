@@ -46,12 +46,14 @@ CUES = {
     "design_ready": r"projekt\w* budowlan\w*|dokumentacj\w+ projektow\w*|pozwoleni\w+ na budowę z",
     "lump_sum": r"ryczałt\w*",
     "startup": r"rozruch\w*|prób\w* (?:parametrów|technologiczn\w*)|odbi[oó]r\w* końcow\w*",
+    "deadline": r"najpóźniej do|kamie[nń]\w* milow\w*|nieprzekraczaln\w* termin\w*|termin\w* (?:zakończenia|rozliczenia|kwalifikowalnoś\w*) (?:projektu|KPO|inwestycji|wydatków)",
 }
 CUE_LABELS = {"land": "grunty / prawa do nieruchomości", "permits": "decyzje i uzgodnienia",
               "environment": "środowisko / warunki gruntowo-wodne", "operator": "operator / eksploatacja",
               "collisions": "kolizje z infrastrukturą", "existing_asset": "roboty przy czynnym obiekcie",
               "pfu": "PFU (zaprojektuj i wybuduj)", "design_ready": "gotowa dokumentacja projektowa",
-              "lump_sum": "wynagrodzenie ryczałtowe", "startup": "rozruch / próby / odbiór"}
+              "lump_sum": "wynagrodzenie ryczałtowe", "startup": "rozruch / próby / odbiór",
+              "deadline": "twardy termin zakończenia (finansowanie)"}
 KEY_FIELDS = ["subsector_main", "work_type", "formula", "value", "vat_basis", "duration_months", "voivodeship"]
 SIZE_FIELDS = ["length_km", "rlm", "capacity_m3d"]
 
@@ -74,10 +76,30 @@ def to_float(s: str) -> float | None:
         return None
 
 
+# a dot ends a sentence only before whitespace + capital letter (or end of text) and not after an abbreviation –
+# "dla ok. 40 działek", "woj. mazowieckie", "ul. Słoneczna" must not cut the quote in half
+_ABBR = {"ok", "ul", "woj", "gm", "np", "tj", "nr", "m", "mies", "pkt", "ust", "art", "im", "św", "al", "os", "dz",
+         "ha", "tys", "mln", "mld", "zł", "r", "ok", "ww", "jw", "tzw", "dot", "godz", "min", "max", "szt", "mb"}
+_SENT_END = re.compile(r"[.!?](?=\s+[A-ZĄĆĘŁŃÓŚŹŻ„\"(–-]|\s*$)")
+
+
+def _is_boundary(text: str, i: int) -> bool:
+    word = re.search(r"(\w+)$", text[:i])
+    return not (word and word.group(1).lower() in _ABBR and text[i] == ".")
+
+
 def _sentence(text: str, start: int, end: int, pad: int = 90) -> str:
-    a = max(text.rfind(".", 0, start) + 1, start - pad, 0)
-    b_dot = text.find(".", end)
-    b = min(b_dot + 1 if b_dot >= 0 else len(text), end + pad, len(text))
+    a = 0
+    for m in _SENT_END.finditer(text, 0, start):
+        if _is_boundary(text, m.start()):
+            a = m.end()
+    a = max(a, start - pad, 0)
+    b = len(text)
+    for m in _SENT_END.finditer(text, end):
+        if _is_boundary(text, m.start()):
+            b = m.end()
+            break
+    b = min(b, end + pad, len(text))
     return text[a:b].strip()
 
 
@@ -99,6 +121,12 @@ def find_length_km(text: str) -> FeatureValue | None:
             return _fv(round(km, 3), m.group(0), "km", 0.9)
     kms = [x for x in re.finditer(rf"(?<![\d,.])({_NUM})\s*(km|kilometr\w*)\b", text, re.I)
            if not re.search(r"odległoś\w*|oddalon\w*|od granicy|od obszaru", text[max(0, x.start() - 40):x.start()], re.I)]
+    # "na odcinku 1,1 km wzdłuż rzeki", "w tym 3 km …" describe a part of the network, not more network –
+    # summing them double-counts (seen: 12,5 + 3,2 + 1,1 = 16,8 km instead of 15,7)
+    parts = [x for x in kms if re.search(r"(?:na |tym )?odcink\w*\s*(?:o długości\s*)?(?:ok\.\s*|około\s*)?$|w tym\s*(?:ok\.\s*)?$",
+                                         text[max(0, x.start() - 30):x.start()], re.I)]
+    if parts and len(parts) < len(kms):
+        kms = [x for x in kms if x not in parts]
     if kms:
         vals = [to_float(x.group(1)) for x in kms]
         vals = [v for v in vals if v is not None and 0 < v < 500]
@@ -304,11 +332,11 @@ def find_cues(text: str) -> dict[str, FeatureValue]:
         ms = list(re.finditer(pat, text, re.I))
         if ms:
             m = ms[0]
-            out[key] = FeatureValue(value=CUE_LABELS[key], source="regex", quote=_sentence(text, m.start(), m.end(), 80),
+            out[key] = FeatureValue(value=CUE_LABELS[key], source="regex", quote=_sentence(text, m.start(), m.end(), 160),
                                     confidence=0.6, unit=None)
     # explicit negatives that matter for flags ("brak zgód", "nie wydał", "w przygotowaniu")
     for m in re.finditer(r"(brak\w*|nie wydał\w*|nie uzyskan\w*|w przygotowaniu|do ustalenia|w ocenie|nie posiada\w*)", text, re.I):
-        sent = _sentence(text, m.start(), m.end(), 80)
+        sent = _sentence(text, m.start(), m.end(), 160)
         out.setdefault(f"gap_{len([k for k in out if k.startswith('gap_')]) + 1}",
                        FeatureValue(value="sygnał braku / niepewności", source="regex", quote=sent, confidence=0.6))
     return out

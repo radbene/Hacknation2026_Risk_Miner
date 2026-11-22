@@ -8,6 +8,7 @@ the latest update time, so new data (or an expert edit) invalidates it.
 from __future__ import annotations
 
 import datetime as dt
+import re
 import threading
 import uuid
 from dataclasses import dataclass, field
@@ -114,11 +115,44 @@ SELECT (SELECT count(*) FROM project), (SELECT max(updated_at) FROM project),
 """
 
 _lock = threading.Lock()
-_cache: dict[str, Any] = {"key": None, "cases": None}
+# Main object named in the title. Auto-tier subsectors come from title + description, so a sports hall whose
+# description mentions "kanalizacja sanitarna" got that subsector and showed up as an 81% neighbour of a sewer.
+_WODKAN = re.compile(r"kanaliz|wodociąg|wodn\w*-|ściek|oczyszcz|przepomp|pompowni|deszczow|retenc|uzdatn|ujęci\w* wody|"
+                     r"studni|przyłącz|przykanalik|sanitarn|kolektor|rurociąg|zbiornik\w* wody|\bSUW\b|\bwody\b", re.I)
+_OTHER = re.compile(r"boisk|\bhal[aiężo]\b|sportow|szkoł|szkol|przedszkol|żłob|świetlic|remiz|budynk|budynek|termomoderniz|"
+                    r"\bulic|\bdrog|chodnik|ścieżk|parking|oświetl|\bmost|plac\w* zabaw|stadion|basen|kości|cmentarz|"
+                    r"rewitaliz|świetlic|domu kultury|urzęd|ratusz", re.I)
+
+
+def main_object(title: str) -> str:
+    """'wodkan' | 'mixed' (another object first, e.g. road works with a sewer part) | 'other' (no wod-kan object)."""
+    o, w = _OTHER.search(title or ""), _WODKAN.search(title or "")
+    if not o:
+        return "wodkan"
+    if not w:
+        return "other"
+    return "mixed" if o.start() < w.start() else "wodkan"
+
+
+_cache: dict[str, Any] = {"key": None, "cases": None, "wodkan": None}
 
 
 def _f(x: Any) -> float | None:
     return float(x) if x is not None else None
+
+
+def load_wodkan_cases(session: Session) -> list[Case]:
+    """Cases usable as references for a wod-kan investment (see `main_object`); cached with the full list so the
+    TF-IDF index (keyed by list identity) is built once."""
+    cases = load_cases(session)
+    with _lock:
+        hit = _cache.get("wodkan")
+        if hit is not None and hit[0] is cases:
+            return hit[1]
+    out = [c for c in cases if c.tier == "deep" or main_object(c.title) != "other"]
+    with _lock:
+        _cache["wodkan"] = (cases, out)
+    return out
 
 
 def load_cases(session: Session, use_cache: bool = True) -> list[Case]:
@@ -211,4 +245,4 @@ def _build(session: Session) -> list[Case]:
 
 def clear_cache() -> None:
     with _lock:
-        _cache.update(key=None, cases=None)
+        _cache.update(key=None, cases=None, wodkan=None)

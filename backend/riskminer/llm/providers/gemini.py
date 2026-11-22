@@ -18,13 +18,23 @@ from riskminer.llm.base import LLMError, Usage
 from riskminer.llm.providers._common import api_key, strict_schema, text_of
 
 
+def _http_options(profile: LLMProfile):
+    """Bounded wait: without a timeout the SDK can hang for minutes on an overloaded model (seen live: >5 min
+    on 'Odczytaj cechy'). The caller then falls back to the next profile / rules."""
+    from google.genai import types
+
+    timeout_s = float(profile.extra.get("timeout_s") or 90)
+    return types.HttpOptions(timeout=int(min(timeout_s, 120) * 1000),
+                             retry_options=types.HttpRetryOptions(attempts=2))
+
+
 def _client(profile: LLMProfile):
     from google import genai
 
     if profile.extra.get("vertexai"):
         return genai.Client(vertexai=True, project=profile.extra.get("project") or None,
-                            location=profile.extra.get("location") or "europe-west4")
-    return genai.Client(api_key=api_key(profile))
+                            location=profile.extra.get("location") or "europe-west4", http_options=_http_options(profile))
+    return genai.Client(api_key=api_key(profile), http_options=_http_options(profile))
 
 
 def build_request(profile: LLMProfile, *, system: str | None, messages: list[dict[str, Any]],

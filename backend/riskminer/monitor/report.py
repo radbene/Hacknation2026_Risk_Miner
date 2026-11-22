@@ -276,7 +276,7 @@ def build_report(session: Session) -> tuple[str, dict]:
     if docs:
         L += ["Dokumenty wgrane do projektów:", "",
               _table(["Projekt", "Plik", "Rodzaj", "Warstwa tekstowa"],
-                     [[c, f, t, {"ok": "tak", "no_text_layer": "brak (skan, wymaga OCR)"}.get(st, st)] for f, t, st, c in docs]), ""]
+                     [[c, f, t, {"ok": "tak", "ocr": "OCR (Tesseract)", "no_text_layer": "brak (skan, wymaga OCR)"}.get(st, st)] for f, t, st, c in docs]), ""]
 
     L += ["## 5. Monitoring", ""]
     akinds = session.execute(select(Alert.kind, Alert.severity, func.count()).group_by(Alert.kind, Alert.severity)).all()

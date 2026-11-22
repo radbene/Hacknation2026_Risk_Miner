@@ -1,4 +1,4 @@
-"""Explained neighbours: editable weights × structured similarity + TF-IDF (+ embeddings, P1).
+"""Explained neighbours: editable weights × structured similarity + TF-IDF + embeddings (local model).
 
 score = Σ_c w_c · s_c / Σ_c w_c over the components the NEW investment has. A component the neighbour lacks
 counts as 0.5 (neutral) and is listed in `missing`. Weights come from the knowledge table `similarity_weights`
@@ -18,7 +18,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sqlalchemy.orm import Session
 
-from riskminer.analysis.caseset import Case
+from riskminer.analysis.caseset import Case, main_object
 from riskminer.analysis.knowledge import load_table
 
 DEFAULT_WEIGHTS = {"subsector_main": 0.25, "subsector_extra": 0.05, "work_type": 0.10, "formula": 0.10,
@@ -30,6 +30,7 @@ VAT = 1.23
 STOP = set("oraz wraz dla przez przy będzie który która które jest się na w z do od i a o u po pod nad ul gmina gminy "
            "gminie miejscowości miejscowość budowa budowy zadanie zadania ramach realizacja realizacji".split())
 _SIMILAR_WORK = {"przebudowa", "modernizacja", "rozbudowa", "remont", "renowacja"}
+
 
 
 def weights(session: Session | None, override: dict[str, float] | None = None) -> tuple[dict[str, float], str]:
@@ -145,6 +146,8 @@ def components(q: Query, c: Case, tfidf: float, emb: float | None) -> dict[str, 
     if q.subsector_main:
         if not c.subsector_main:
             out["subsector_main"] = (None, "brak podsektora u sąsiada")
+        elif c.subsector_main == q.subsector_main and main_object(c.title) == "mixed":
+            out["subsector_main"] = (0.5, f"{c.subsector_main} – tylko jako część innej inwestycji (np. drogowej)")
         elif c.subsector_main == q.subsector_main:
             out["subsector_main"] = (1.0, c.subsector_main)
         elif q.subsector_main in c.subsector_extra or c.subsector_main in q.subsectors:
@@ -185,7 +188,8 @@ def components(q: Query, c: Case, tfidf: float, emb: float | None) -> dict[str, 
         lvl = "duża" if tfidf >= 0.3 else "średnia" if tfidf >= 0.12 else "mała"
         out["tfidf"] = (float(min(1.0, tfidf)), f"{lvl} zbieżność słów (rzadkie wspólne słowa liczą się bardziej niż częste)")
     if emb is not None:
-        out["embedding"] = (float(emb), "zbieżność znaczenia opisów")
+        lvl = "duża" if emb >= 0.6 else "średnia" if emb >= 0.4 else "mała"
+        out["embedding"] = (float(emb), f"{lvl} zbieżność znaczenia opisów (model językowy lokalnie, cos = {emb:.2f})")
     return out
 
 
@@ -212,6 +216,11 @@ def find_neighbours(cases: list[Case], features: dict[str, Any], text: str, sess
                     pool: str = "completed", embeddings: dict[str, float] | None = None) -> dict[str, Any]:
     """Top-k cases. pool = completed (outcomes for ranges) | all (incl. cancelled procedures)."""
     w, wsrc = weights(session, weight_override)
+    emb_note = None
+    if embeddings is None and w.get("embedding", 0) > 0:
+        from riskminer.analysis.embeddings import similarities
+
+        embeddings, emb_note = similarities(cases, text)
     if not embeddings:
         w = {**w, "embedding": 0.0}
     q = make_query(features, text)
@@ -222,6 +231,8 @@ def find_neighbours(cases: list[Case], features: dict[str, Any], text: str, sess
     for i, c in enumerate(cases):
         if pool == "completed" and not c.completed:
             continue
+        if q.subsector_main and c.tier != "deep" and main_object(c.title) == "other":
+            continue  # not a water/sewer investment at all – never a reference case for one
         s = score_case(q, c, w, float(tf[i]), (embeddings or {}).get(c.code))
         scored.append((s["score"], c.code, i, s))
     scored.sort(key=lambda t: (-t[0], t[1]))
@@ -237,4 +248,4 @@ def find_neighbours(cases: list[Case], features: dict[str, Any], text: str, sess
         if len(out) >= k and len(excluded) >= len(excl):
             break
     return {"neighbours": out, "excluded": excluded, "weights": w, "weights_source": wsrc,
-            "query": q, "n_pool": len(scored)}
+            "query": q, "n_pool": len(scored), "embeddings": {"used": bool(embeddings), "note": emb_note}}

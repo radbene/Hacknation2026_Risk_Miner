@@ -111,7 +111,7 @@ interface Chip { id: number; dx: number; dy: number; c: string }
 const reducedMotion = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 /** Full-screen overlay while `pending`; when it turns false (and not `failed`) the rock shatters, then `onFinished`. */
-export function MiningLoader({ pending, failed, onFinished, title = 'Liczymy ryzyko' }: { pending: boolean; failed?: boolean; onFinished?: () => void; title?: string }) {
+export function MiningLoader({ pending, failed, onFinished, title = 'Liczymy ryzyko', withModel = true }: { pending: boolean; failed?: boolean; onFinished?: () => void; title?: string; withModel?: boolean }) {
   const [phase, setPhase] = useState<'idle' | 'mining' | 'breaking' | 'broken'>('idle')
   const [damage, setDamage] = useState(0)
   const [hits, setHits] = useState(0) // remount key: shakes the rock on every hit
@@ -220,7 +220,7 @@ export function MiningLoader({ pending, failed, onFinished, title = 'Liczymy ryz
         <div className="border-t-2 border-ink px-4 py-3 sm:px-6">
           <p role="status" aria-live="polite" className={cn('font-semibold', broken && 'text-brand')}>{message}{broken ? '' : '…'}</p>
           <p className="mt-1 font-mono text-[11px] text-slate-600">
-            {broken ? 'Pokazujemy wynik.' : <>czas: {secs} s · zwykle do 2 minut, bo podsumowanie pisze model językowy</>}
+            {broken ? 'Pokazujemy wynik.' : <>czas: {secs} s · {withModel ? 'zwykle do 2 minut, bo podsumowanie pisze model językowy' : 'bez modelu językowego zwykle kilkanaście sekund'}</>}
           </p>
         </div>
       </div>

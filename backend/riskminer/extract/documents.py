@@ -180,12 +180,47 @@ def detect_kind(file_name: str, mime: str | None, data: bytes) -> str:
     return "txt"
 
 
-def extract_units(kind: str, data: bytes) -> tuple[list[Unit], int | None, str]:
-    """Returns (units, pages, text_status)."""
+TEXT_OK = ("ok", "ocr")  # text_status values whose chunks feed fragments/effects
+
+
+def _ocr_units(data: bytes) -> tuple[list[Unit], dict[str, Any]] | None:
+    """OCR fallback for a PDF without a text layer. None when OCR is off/unavailable or reads nothing."""
+    from riskminer.extract import ocr
+
+    if not ocr.available():
+        return None
+    try:
+        pages = ocr.ocr_pdf(data)
+    except Exception as e:  # noqa: BLE001 – keep the document, mark it for OCR
+        log.warning("OCR failed: %s", e)
+        return None
+    units: list[Unit] = []
+    for p in pages:
+        for u in _split_page(p.text, p.page):
+            u.locator.update(ocr=True, ocr_confidence=p.confidence)
+            units.append(u)
+    if sum(len(u.text) for u in units) <= 50:
+        return None
+    confs = [p.confidence for p in pages if p.confidence is not None]
+    cfg = get_config().ocr
+    return units, {"engine": "tesseract", "lang": cfg.lang, "dpi": cfg.dpi, "pages": len(pages),
+                   "mean_confidence": round(sum(confs) / len(confs), 1) if confs else None,
+                   "page_confidence": {p.page: p.confidence for p in pages}}
+
+
+def extract_units(kind: str, data: bytes, meta: dict[str, Any] | None = None) -> tuple[list[Unit], int | None, str]:
+    """Returns (units, pages, text_status). Scanned PDFs go through OCR (`ocr` status, details in `meta["ocr"]`)."""
     try:
         if kind == "pdf":
             units, pages = _pdf_units(data)
-            return units, pages, ("ok" if sum(len(u.text) for u in units) > 50 else "no_text_layer")
+            if sum(len(u.text) for u in units) > 50:
+                return units, pages, "ok"
+            got = _ocr_units(data)
+            if got is None:
+                return units, pages, "no_text_layer"
+            if meta is not None:
+                meta["ocr"] = got[1]
+            return got[0], pages, "ocr"
         fn = {"docx": _docx_units, "xlsx": _xlsx_units, "xls": _xls_units, "csv": _csv_units, "html": _html_units,
               "txt": _txt_units}.get(kind)
         if fn is None:
@@ -283,7 +318,8 @@ def ingest_bytes(session: Session, data: bytes, file_name: str, *, mime: str | N
     if existing is not None:
         return existing
     kind = detect_kind(file_name, mime, data)
-    units, pages, status = extract_units(kind, data)
+    extra_meta: dict[str, Any] = {}
+    units, pages, status = extract_units(kind, data, extra_meta)
     chunks = make_chunks(units)
     head = "\n".join(u.text for u in units[:40])
     dtype = doc_type or detect_doc_type(file_name, head)
@@ -300,21 +336,62 @@ def ingest_bytes(session: Session, data: bytes, file_name: str, *, mime: str | N
                    method="rule", status="proposed",
                    meta={"kind": kind, "n_units": len(units), "n_chunks": len(chunks),
                          "doc_type_detected": dtype if not doc_type else None,
-                         **({"ocr_needed": True} if status == "no_text_layer" else {})})
+                         **extra_meta, **({"ocr_needed": True} if status == "no_text_layer" else {})})
     session.add(doc)
     session.flush()
+    _index_chunks(session, doc, chunks, status, fragments=fragments, use_llm=use_llm)
+    return doc
+
+
+def _index_chunks(session: Session, doc: Document, chunks: list[Unit], status: str, *, fragments: bool = True,
+                  use_llm: bool = False) -> None:
+    doc_id = doc.id
     for i, c in enumerate(chunks):
         session.add(Chunk(id=make_id("chunk", doc_id, i), document_id=doc_id, ord=i, page=c.page,
                           paragraph=c.paragraph, section=(c.section or None) and c.section[:32], start=0,
                           end=len(c.text), locator=c.locator, text=c.text))
     session.flush()
     session.execute(text("UPDATE chunk SET tsv = to_tsvector('simple', text) WHERE document_id = :d"), {"d": doc_id})
-    if fragments and status == "ok":
+    if fragments and status in TEXT_OK:
         extract_fragments(session, doc, use_llm=use_llm)
         extract_document_effects(session, doc)
     apply_substitute_rule(session, doc)
     session.flush()
-    return doc
+
+
+def ocr_pending(session: Session, doc_ids: list[uuid.UUID] | None = None, use_llm: bool = False) -> list[dict[str, Any]]:
+    """Re-read stored scans (`no_text_layer`) with OCR: chunks, fragments, effects. Idempotent per document."""
+    q = select(Document).where(Document.text_status == "no_text_layer")
+    if doc_ids:
+        q = q.where(Document.id.in_(doc_ids))
+    out: list[dict[str, Any]] = []
+    for doc in session.execute(q).scalars():
+        data = Path(doc.file_path).read_bytes() if doc.file_path and Path(doc.file_path).exists() else None
+        if data is None:
+            out.append({"id": str(doc.id), "file_name": doc.file_name, "text_status": doc.text_status,
+                        "error": "file missing"})
+            continue
+        meta: dict[str, Any] = {}
+        units, _pages, status = extract_units((doc.meta or {}).get("kind") or "pdf", data, meta)
+        if status != "ocr":
+            out.append({"id": str(doc.id), "file_name": doc.file_name, "text_status": status,
+                        "error": "OCR unavailable or empty"})
+            continue
+        chunks = make_chunks(units)
+        session.query(Chunk).filter(Chunk.document_id == doc.id).delete()
+        doc.text_status = status
+        doc.meta = {**{k: v for k, v in (doc.meta or {}).items() if k != "ocr_needed"}, **meta,
+                    "n_units": len(units), "n_chunks": len(chunks)}
+        if not doc.title or doc.title == doc.file_name:
+            doc.title = next((u.text[:200] for u in units if len(u.text) > 10), doc.file_name)
+        dtype = detect_doc_type(doc.file_name or "", "\n".join(u.text for u in units[:40]))
+        if dtype and not doc.doc_type:
+            doc.doc_type, doc.phase = dtype, detect_phase(dtype, session)
+        session.flush()
+        _index_chunks(session, doc, chunks, status, use_llm=use_llm)
+        out.append({"id": str(doc.id), "file_name": doc.file_name, "text_status": status, "chunks": len(chunks),
+                    "mean_confidence": meta["ocr"]["mean_confidence"]})
+    return out
 
 
 def fetch_url(session: Session, url: str, **kw: Any) -> Document:

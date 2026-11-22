@@ -6,8 +6,9 @@ ENV PYTHONUNBUFFERED=1 \
     UV_LINK_MODE=copy \
     UV_PYTHON_DOWNLOADS=never
 
-# curl: container healthcheck; libpq not needed (psycopg[binary]); no GPL tooling (no ghostscript/ocrmypdf).
-RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates tzdata \
+# curl: container healthcheck; tesseract-ocr(-pol): OCR of scans (Apache-2.0); libpq not needed (psycopg[binary]);
+# no GPL tooling (no ghostscript/ocrmypdf).
+RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates tzdata tesseract-ocr tesseract-ocr-pol \
     && rm -rf /var/lib/apt/lists/*
 ENV TZ=Europe/Warsaw
 

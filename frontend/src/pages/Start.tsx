@@ -5,11 +5,18 @@ import { api, unwrap } from '@/api/client'
 import { useApi } from '@/api/hooks'
 import { PageHeader } from '@/components/PageHeader'
 import { BlockLabel } from '@/components/BlockLabel'
+import { useDefaultModel } from '@/components/DataLocationBanner'
 import { LoginDialog } from '@/components/Layout'
 import { PixelMine } from '@/components/PixelMine'
 import { Card, CardContent } from '@/components/ui'
 import { useAuth } from '@/lib/auth'
 import { cn } from '@/lib/utils'
+
+/** Which model actually answers now – the hero used to claim „Bielik, na naszym serwerze” regardless of the routing. */
+function ModelLine() {
+  const m = useDefaultModel()
+  return <li>&gt; model językowy: {m ? `${m.name}, ${m.where}` : '…'}</li>
+}
 
 function Step({ n, title, children, to, cta }: { n: number; title: string; children: React.ReactNode; to?: string; cta?: string }) {
   return (
@@ -59,7 +66,7 @@ function Hero() {
         <ul className="mt-4 space-y-1 font-mono text-[13px] text-slate-700">
           <li>&gt; źródło: Biuletyn Zamówień Publicznych i dane MFiPR</li>
           <li>&gt; pilotaż: wodociągi i kanalizacja, projekty KPO</li>
-          <li>&gt; model językowy: Bielik, na naszym serwerze</li>
+          <ModelLine />
         </ul>
         <div className="mt-6 max-w-xl border-2 border-ink bg-surface shadow-md">
           <div className="flex items-center gap-3 border-b-2 border-ink px-3 py-1.5">
@@ -101,7 +108,7 @@ function Labels() {
         <ul className="space-y-1.5">
           <li><BlockLabel label="dane_zrodlowe" /> Fakt z dokumentu. „Źródło” otwiera dokument z zaznaczonym miejscem.</li>
           <li><BlockLabel label="obliczenia" /> Wynik policzony z bazy podobnych inwestycji, zawsze z liczbą przypadków.</li>
-          <li><BlockLabel label="wniosek_modelu" /> Propozycja modelu językowego Bielik. Wymaga oceny eksperta.</li>
+          <li><BlockLabel label="wniosek_modelu" /> Propozycja modelu językowego (Bielik, Gemini lub inny wybrany model). Wymaga oceny eksperta.</li>
         </ul>
       </CardContent>
     </Card>
@@ -149,7 +156,7 @@ function ExpertGuide() {
           Pobieranie nowych ogłoszeń z BZP, dziennik zapytań i trafność dopasowania projektów do ogłoszeń.
         </Step>
         <Step n={5} title="Wybieraj modele językowe" to="/modele" cta="Modele językowe">
-          Domyślnie działa Bielik na naszym serwerze. Możesz dodać własny model bez zmian w programie.
+          Ustal kolejność modeli dla zadań: lokalny Bielik (dane zostają na serwerze), model w chmurze albo same reguły. Możesz dodać własny model bez zmian w programie.
         </Step>
       </div>
       <Labels />

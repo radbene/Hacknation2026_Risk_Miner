@@ -1,5 +1,6 @@
 /** Visual building blocks instead of tables: proportions, ranges, score bars, key facts. */
 import type { ReactNode } from 'react'
+import { Term } from '@/components/Explain'
 import { cn, fmtNum } from '@/lib/utils'
 
 const pct = (x?: number | null) => (x == null ? '—' : `${Math.round(x * 100)}%`)
@@ -9,17 +10,21 @@ export function Proportion({ k, n, estimate, low, high, what, tone = 'rose' }:
   { k?: number | null; n?: number | null; estimate?: number | null; low?: number | null; high?: number | null; what: string; tone?: 'rose' | 'amber' | 'brand' }) {
   const fill = { rose: 'bg-rose-500', amber: 'bg-amber-500', brand: 'bg-brand' }[tone]
   const band = { rose: 'bg-rose-200', amber: 'bg-amber-200', brand: 'bg-brand-soft' }[tone]
+  const raw = k != null && n ? k / n : estimate ?? null
   return (
     <div>
+      {/* Lead with the observed share k/n: the 95% band is computed for it, so marker and band agree.
+          The smoothed estimate (pulled towards the wider group) is a secondary, explained figure. */}
       <div className="text-sm">
-        {k != null && n ? <>W <b>{k}</b> z <b>{n}</b> {what}</> : <>Brak danych</>}
-        {estimate != null && <>, po wygładzeniu <b>{pct(estimate)}</b></>}
+        {k != null && n ? <>W <b>{k}</b> z <b>{n}</b> {what} (<b>{pct(raw)}</b>)</> : <>Brak danych</>}
       </div>
       <div className="relative mt-1 h-2.5 w-full rounded-full bg-slate-100" aria-hidden>
         {low != null && high != null && <div className={cn('absolute inset-y-0 rounded-full', band)} style={{ left: `${low * 100}%`, width: `${Math.max(1, (high - low) * 100)}%` }} />}
-        {estimate != null && <div className={cn('absolute inset-y-0 w-1 rounded-full', fill)} style={{ left: `calc(${estimate * 100}% - 2px)` }} />}
+        {raw != null && <div className={cn('absolute inset-y-0 w-1 rounded-full', fill)} style={{ left: `calc(${raw * 100}% - 2px)` }} />}
       </div>
-      {low != null && high != null && <div className="mt-0.5 text-[11px] text-slate-500">prawdopodobnie między {pct(low)} a {pct(high)}</div>}
+      {low != null && high != null && <div className="mt-0.5 text-[11px] text-slate-500"><Term t="przedział 95%">prawdopodobnie</Term> między {pct(low)} a {pct(high)}</div>}
+      {estimate != null && raw != null && Math.round(estimate * 100) !== Math.round(raw * 100) &&
+        <div className="text-[11px] text-slate-500">z uwzględnieniem szerszej grupy (<Term t="wygładzenie">wygładzenie</Term>): {pct(estimate)}</div>}
     </div>
   )
 }

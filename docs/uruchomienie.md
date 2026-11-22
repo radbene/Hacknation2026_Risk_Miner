@@ -81,5 +81,7 @@ docker compose --profile prod logs -f api worker
 docker compose exec api riskminer monitor run --as-of 2026-05-01     # odtworzenie stanu na dzień
 docker compose exec api riskminer snapshot save                      # złoty zrzut (reset piaskownicy)
 docker compose exec api riskminer report                             # docs/raport_z_testu.md
+docker compose exec api riskminer embed                              # wektory opisów (model ~220 MB przy 1. uruchomieniu)
+docker compose exec api riskminer ocr                                # OCR zapisanych skanów bez warstwy tekstowej
 docker compose exec db pg_dump -U riskminer riskminer | gzip > backup.sql.gz
 ```

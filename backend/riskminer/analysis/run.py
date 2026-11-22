@@ -13,7 +13,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from riskminer.analysis.assess import assess
-from riskminer.analysis.caseset import load_cases
+from riskminer.analysis.caseset import load_wodkan_cases
 from riskminer.analysis.flags import build_actions, build_flags
 from riskminer.analysis.knowledge import thresholds
 from riskminer.analysis.ranges import change_basis_distribution, compute_ranges
@@ -59,7 +59,9 @@ def compute(session: Session, a: Analysis, actor: str = "system") -> Analysis:
     min_n = int((a.params or {}).get("min_n") or th.get("min_n_for_quantiles") or 8)
     text = analysis_text(session, a)
     features = a.features or {}
-    cases = load_cases(session)
+    # the base is wod-kan: auto-tier cases whose title names another main object (sports hall, school …) only
+    # inherited a sewer subsector from their description – keep them out of neighbours and reference pools
+    cases = load_wodkan_cases(session)
     if a.project_id:  # analysing an existing project: never compare it with itself
         cases = [c for c in cases if c.project_id != a.project_id]
     excl = {str(x) for x in a.excluded_project_ids or []}
@@ -141,15 +143,18 @@ def _summary(nb, neighbours, ranges, assessment, flags, cases) -> dict[str, Any]
     return {
         "n_cases": len(cases), "cases_by_tier": tiers, "n_pool": nb["n_pool"], "n_neighbours": len(neighbours),
         "weights": nb["weights"], "weights_source": nb["weights_source"],
-        "p_late": r("p_late", "k", "estimate", "ci_low", "ci_high"), "delay_days": r("delay_days", "p50", "p80", "p95"),
+        "p_late": r("p_late", "k", "raw", "estimate", "ci_low", "ci_high"), "delay_days": r("delay_days", "p50", "p80", "p95"),
+        "delay_days_if_late": r("delay_days_if_late", "p50", "p80", "p95"),
         "paid_ratio": r("paid_ratio", "p50", "p80", "p95"), "p_change": r("p_change", "estimate"),
         "share_cancelled_255_3": r("share_cancelled_255_3", "estimate"),
         "n_flags": len(flags), "flags_high": sum(1 for f in flags if f["severity"] == "wysoka"),
         "risk_codes": sorted({c for f in flags for c in f["risk_codes"]}),
         "budget": next(({k: a.get(k) for k in ("percentile", "position", "value", "basis", "message", "reserve_p80")}
                         for a in assessment if a.get("metric") == "budget_percentile"), None),
-        "schedule": next(({k: a.get(k) for k in ("percentile", "position", "value", "message")}
+        "schedule": next(({k: a.get(k) for k in ("percentile", "position", "value", "value_days", "message", "compared_to", "n")}
                           for a in assessment if a.get("metric") == "schedule_percentile"), None),
+        "unit_costs": [{k: a.get(k) for k in ("metric", "title", "value", "percentile", "position", "n", "pool", "message")}
+                       for a in assessment if a.get("metric") in ("cost_per_km", "cost_per_rlm")],
     }
 
 
@@ -165,13 +170,17 @@ def _llm_summary(features: dict, summary: dict, flags: list[dict]) -> dict | Non
 
     facts = {"cechy": {k: (v.get("value") if isinstance(v, dict) else v) for k, v in features.items() if k not in ("cues", "extra")},
              "podsumowanie": {k: summary.get(k) for k in ("n_neighbours", "p_late", "delay_days", "paid_ratio", "p_change",
-                                                          "share_cancelled_255_3", "budget", "schedule")},
+                                                          "share_cancelled_255_3", "budget", "schedule", "unit_costs",
+                                                          "delay_days_if_late")},
              "flagi": [{"tytul": f["title"], "kategorie": f["risk_codes"], "waga": f["severity"]} for f in flags[:12]]}
     try:
         res = complete("recommendations", [{"role": "user", "content": "Dane analizy (JSON):\n" + str(_jsonable(facts))}], Out,
                        system="Jesteś ekspertem ds. inwestycji wodno-kanalizacyjnych. Na podstawie WYŁĄCZNIE podanych liczb i flag "
                               "napisz po polsku 3–5 zdań podsumowania ryzyka i do 5 konkretnych działań zapobiegawczych. "
-                              "Nie wymyślaj liczb.", prompt_version="summary-v1", untrusted=False)
+                              "Nie wymyślaj liczb. Odsetki podawaj w pełnych procentach, kwoty zaokrąglone (np. 2,2 mln zł). "
+                              "budget.reserve_p80.amount to KWOTA REZERWY ponad budżet, a total to budżet razem z rezerwą. "
+                              "percentile budżetu opisuje tylko wielkość inwestycji na tle podobnych, nie jej realność – "
+                              "o realności kosztu mówią unit_costs (koszt na km / RLM).", prompt_version="summary-v2", untrusted=False)
     except Exception:  # noqa: BLE001
         return None
     if res.data is None:

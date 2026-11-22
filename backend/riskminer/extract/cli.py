@@ -44,6 +44,20 @@ def register(app: typer.Typer) -> None:
                                    "text_status": d.text_status}, ensure_ascii=False))
 
     @app.command()
+    def ocr(llm: bool = typer.Option(False, help="LLM fragments on the OCR text (quote-gated)")):
+        """OCR every stored scan without a text layer (Tesseract), then chunks, fragments and effects."""
+        from riskminer.core.db import session_scope
+        from riskminer.extract import ocr as engine
+        from riskminer.extract.documents import ocr_pending
+
+        if not engine.available():
+            typer.echo("OCR unavailable: set `ocr.command` in config/settings.yaml (tesseract or docker image)")
+            raise typer.Exit(1)
+        with session_scope() as s:
+            for row in ocr_pending(s, use_llm=llm):
+                typer.echo(json.dumps(row, ensure_ascii=False))
+
+    @app.command()
     def nik(llm: bool = False):
         """Import NIK audit reports (configured URLs) → lessons."""
         from riskminer.core.db import session_scope

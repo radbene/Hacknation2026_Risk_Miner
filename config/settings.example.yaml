@@ -55,6 +55,16 @@ connectors:
 embeddings_model: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 embeddings_dim: 384
 
+# OCR of scanned PDFs (no text layer): Tesseract (Apache-2.0) as an external command, pages rendered by pypdfium2.
+# The Docker image installs `tesseract-ocr` + `tesseract-ocr-pol`. Without a system binary use a container:
+#   command: [docker, run, --rm, -i, riskminer-ocr]   (image: deploy/ocr/Dockerfile)
+ocr:
+  enabled: true
+  command: [tesseract]
+  lang: pol
+  dpi: 300
+  max_pages: 30
+
 llm:
   mode: cache                # live | cache (live + reuse) | replay (cache only, offline)
   cache_dir: data/llm_cache

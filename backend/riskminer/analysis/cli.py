@@ -8,6 +8,8 @@ import typer
 
 
 def register(app: typer.Typer) -> None:
+    _register_embed(app)
+
     @app.command()
     def analyse(path: Path, title: str = typer.Option(None), llm: bool = typer.Option(False, help="LLM features + summary")):
         """Path B: analyse a new-investment description (.txt/.md/.pdf/.docx) → analysis record."""
@@ -60,3 +62,20 @@ def register(app: typer.Typer) -> None:
         with session_scope() as s:
             data = bundle(s, out)
         typer.echo(f"{out} ({len(data) // 1024} KB zip)")
+
+
+def _register_embed(app: typer.Typer) -> None:
+    @app.command()
+    def embed():
+        """Embed every wod-kan case description (local model; downloads it on first run) for path-B similarity."""
+        import time
+
+        from riskminer.analysis import embeddings
+        from riskminer.analysis.caseset import load_wodkan_cases
+        from riskminer.core.db import session_scope
+
+        t = time.time()
+        with session_scope() as s:
+            cases = load_wodkan_cases(s)
+        n = embeddings.ensure_vectors(cases, download=True)
+        typer.echo(f"embedded {n} of {len(cases)} cases in {time.time() - t:.0f} s → {embeddings._store_path()}")

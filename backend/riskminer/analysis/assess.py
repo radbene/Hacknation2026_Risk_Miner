@@ -41,6 +41,10 @@ def _q(vals: list[float]) -> dict[str, float | None]:
     return {f"p{p}": round(quantile(vals, p / 100), 2) if vals else None for p in (10, 50, 80, 90)}
 
 
+def _round_k(x: float, step: float = 10_000) -> float:
+    return float(round(x / step) * step)
+
+
 def _position(pct: float) -> str:
     if pct < 0.1:
         return "niżej niż 9 na 10 podobnych"
@@ -73,8 +77,12 @@ def assess(features: dict[str, Any], neighbours: list[Case], ranges: dict[str, d
         item.update(value=round(uv, 2), percentile=pct, position=_position(pct), quantiles=_q([v for _, v in nb_vals]))
         pr = ranges.get("paid_ratio") or {}
         if pr.get("p80"):
-            item["reserve_p80"] = {"ratio": pr["p80"], "amount": round(uv * pr["p80"], 2),
-                                   "note": f"budżet × P80(wypłata/wartość) = {uv:,.0f} × {pr['p80']:.3f} (poziom: {pr['fallback_level']}, n={pr['n']})".replace(",", " ")}
+            # `amount` is the reserve itself (budget × (P80 − 1)), `total` the budget including it; both rounded to
+            # 10 000 zł – the ratio comes from a dozen contracts, grosze would suggest false precision.
+            reserve = max(0.0, uv * (pr["p80"] - 1))
+            item["reserve_p80"] = {"ratio": pr["p80"], "amount": _round_k(reserve), "total": _round_k(uv + reserve),
+                                   "pct": round((pr["p80"] - 1) * 100, 1),
+                                   "note": f"rezerwa = budżet × (P80(wypłata/wartość) − 1) = {uv:,.0f} × {pr['p80'] - 1:.3f} (poziom: {pr['fallback_level']}, n={pr['n']})".replace(",", " ")}
     else:
         item["status"] = "not_compared"
         item["message"] = how if uv is None else "podobne inwestycje nie mają wartości umów"
@@ -83,20 +91,29 @@ def assess(features: dict[str, Any], neighbours: list[Case], ranges: dict[str, d
     # 2. schedule: planned duration vs neighbours' planned and actual durations
     pd_ = [c.planned_days for c in neighbours if c.planned_days]
     ad = [c.actual_days for c in neighbours if c.actual_days and c.actual_days > 0]
+    # plan is compared with the neighbours' PLANNED durations (like with like); actual durations already contain
+    # the delays and would make almost every plan look "ambitious". Actual is the fallback when plans are missing.
+    use_planned = len(pd_) >= 5
+    base = pd_ if use_planned else ad
     item = {"metric": "schedule_percentile", "title": "Harmonogram na tle podobnych umów",
-            "n": len(ad), "n_planned": len(pd_), "case_ids": [str(c.project_id) for c in neighbours if c.actual_days],
-            "formula": "Faktyczny czas realizacji podobnej umowy = data wykonania (pkt 5.2) minus data zawarcia (pkt 4.1). Percentyl harmonogramu = jaka część podobnych umów trwała krócej lub tyle samo co planowany czas tej inwestycji; niski percentyl oznacza ambitny harmonogram."}
-    if months and ad:
+            "n": len(base), "n_planned": len(pd_), "n_actual": len(ad), "compared_to": "planned" if use_planned else "actual",
+            "case_ids": [str(c.project_id) for c in neighbours if (c.planned_days if use_planned else c.actual_days)],
+            "formula": ("Planowany czas realizacji podobnej umowy = okres realizacji zapisany w umowie (pkt 4.2 ogłoszenia o wykonaniu umowy) – porównujemy plan z planem. "
+                        if use_planned else
+                        "Faktyczny czas realizacji podobnej umowy = data wykonania (pkt 5.2) minus data zawarcia (pkt 4.1) – podobne umowy nie podają planu, więc porównujemy z faktycznym czasem (zawiera opóźnienia). ")
+                       + "Percentyl harmonogramu = jaka część podobnych umów miała czas krótszy lub równy planowanemu czasowi tej inwestycji; niski percentyl oznacza ambitny harmonogram."}
+    if months and base:
         days = float(months) * 30
-        pct_a = percentile_rank(days, ad)
-        item.update(value_days=round(days), percentile=pct_a, percentile_actual=pct_a, position=_position(pct_a), quantiles=_q(ad),
-                    actual_quantiles=_q(ad), planned_quantiles=_q(pd_) if pd_ else None,
+        pct = percentile_rank(days, base)
+        item.update(value_days=round(days), percentile=pct, position=_position(pct), quantiles=_q(base),
+                    actual_quantiles=_q(ad) if ad else None, planned_quantiles=_q(pd_) if pd_ else None,
+                    percentile_actual=percentile_rank(days, ad) if ad else None,
                     percentile_planned=percentile_rank(days, pd_) if pd_ else None)
         dl = ranges.get("delay_days") or {}
         if dl.get("p80") is not None:
             item["p80_end_days"] = round(days + dl["p80"])
             item["note"] = f"Plan {days:.0f} dni; z opóźnieniem takim jak w 8 na 10 podobnych umów: {days + dl['p80']:.0f} dni"
-        item["tight"] = pct_a < 0.25
+        item["tight"] = pct < 0.25
     else:
         item["status"] = "not_compared"
         item["message"] = "brak planowanego czasu realizacji w opisie" if not months else "podobne inwestycje nie mają dat realizacji"

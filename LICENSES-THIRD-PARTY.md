@@ -2,13 +2,15 @@
 
 Plik generowany: `cd backend && uv run riskminer licences --check` (źródła: `backend/uv.lock`, `frontend/package-lock.json`, `config/settings.example.yaml`). Kod projektu: **Apache-2.0**.
 
-- zależności Python: 150, npm: 227
+- zależności Python: 158, npm: 227
 - **GPL/AGPL: 0** ✓
-- wymagające uwagi (LGPL/MPL): 15 – certifi (Mozilla Public License 2.0 (MPL 2.0)), psycopg (LGPL-3.0-only), psycopg-binary (LGPL-3.0-only), lightningcss (MPL-2.0), lightningcss-android-arm64 (MPL-2.0), lightningcss-darwin-arm64 (MPL-2.0), lightningcss-darwin-x64 (MPL-2.0), lightningcss-freebsd-x64 (MPL-2.0), lightningcss-linux-arm-gnueabihf (MPL-2.0), lightningcss-linux-arm64-gnu (MPL-2.0), lightningcss-linux-arm64-musl (MPL-2.0), lightningcss-linux-x64-gnu (MPL-2.0), lightningcss-linux-x64-musl (MPL-2.0), lightningcss-win32-arm64-msvc (MPL-2.0), lightningcss-win32-x64-msvc (MPL-2.0)
+- wymagające uwagi (LGPL/MPL): 16 – certifi (Mozilla Public License 2.0 (MPL 2.0)), psycopg (LGPL-3.0-only), psycopg-binary (LGPL-3.0-only), tqdm (MPL-2.0 AND MIT), lightningcss (MPL-2.0), lightningcss-android-arm64 (MPL-2.0), lightningcss-darwin-arm64 (MPL-2.0), lightningcss-darwin-x64 (MPL-2.0), lightningcss-freebsd-x64 (MPL-2.0), lightningcss-linux-arm-gnueabihf (MPL-2.0), lightningcss-linux-arm64-gnu (MPL-2.0), lightningcss-linux-arm64-musl (MPL-2.0), lightningcss-linux-x64-gnu (MPL-2.0), lightningcss-linux-x64-musl (MPL-2.0), lightningcss-win32-arm64-msvc (MPL-2.0), lightningcss-win32-x64-msvc (MPL-2.0)
 - bez deklaracji licencji w metadanych: 0
-- tylko w opcjonalnych dodatkach (`embeddings`, `litellm`; nie instalowane w obrazie): 64 – m.in. torch (BSD-3), sentence-transformers (Apache-2.0), transformers (Apache-2.0), biblioteki NVIDIA CUDA (licencja NVIDIA, redystrybucja dozwolona) – sprawdzić przed włączeniem
+- tylko w opcjonalnych dodatkach (`embeddings`, `litellm`; nie instalowane w obrazie): 60 – m.in. torch (BSD-3), sentence-transformers (Apache-2.0), transformers (Apache-2.0), biblioteki NVIDIA CUDA (licencja NVIDIA, redystrybucja dozwolona) – sprawdzić przed włączeniem
 
 **psycopg (LGPL-3.0)** – sterownik PostgreSQL używany bez modyfikacji, ładowany dynamicznie jako osobny pakiet; LGPL nie obejmuje kodu aplikacji. Nie używamy PyMuPDF (AGPL), Ghostscript ani ocrmypdf.
+
+**Tesseract OCR 5 (Apache-2.0)** z modelem `pol` (tessdata, Apache-2.0) i Leptonica (BSD-2-Clause) – pakiety systemowe w obrazie (`tesseract-ocr`, `tesseract-ocr-pol`), wywoływane jako osobny program; strony skanu renderuje pypdfium2.
 
 ## Źródła danych
 
@@ -36,7 +38,7 @@ Plik generowany: `cd backend && uv run riskminer licences --check` (źródła: `
 | gemini: gemini/- | usługa API (Google Gemini API Terms) | przetwarzanie: non_eu |
 | gemini_vertex_eu: gemini/- | usługa API (Google Gemini API Terms) | przetwarzanie: eu |
 | local_bielik: openai_compatible/riskminer-bielik | Apache-2.0 (SpeakLeash Bielik 11B v2.x) | przetwarzanie: local |
-| sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 | Apache-2.0 | embeddingi, lokalnie (opcjonalnie) |
+| sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 | Apache-2.0 | embeddingi podobieństwa opisów, lokalnie (fastembed/ONNX, CPU) |
 
 ## Python (backend/uv.lock)
 
@@ -59,25 +61,34 @@ Plik generowany: `cd backend && uv run riskminer licences --check` (źródła: `
 | docstring-parser | 0.18.0 | MIT License | ok |
 | et-xmlfile | 2.0.0 | MIT License | ok |
 | fastapi | 0.165.0 | MIT | ok |
+| fastembed | 0.9.1 | Apache-2.0 | ok |
+| filelock | 4.2.12 | MIT | ok |
+| flatbuffers | 25.12.19 | Apache Software License | ok |
+| fsspec | 2026.9.0 | BSD-3-Clause | ok |
 | google-auth | 2.63.0 | Apache Software License | ok |
 | google-genai | 3.6.1 | Apache-2.0 | ok |
 | h11 | 0.16.0 | MIT License | ok |
+| hf-xet | 1.8.0 | Apache-2.0 | ok |
 | httpcore | 1.0.9 | BSD-3-Clause | ok |
 | httpcore2 | 2.16.2 | BSD-3-Clause | ok |
 | httptools | 0.9.0 | MIT | ok |
 | httpx | 0.28.1 | BSD License | ok |
 | httpx2 | 2.16.2 | BSD-3-Clause | ok |
+| huggingface-hub | 1.33.0 | Apache Software License | ok |
 | idna | 3.20 | BSD-3-Clause | ok |
 | iniconfig | 2.3.1 | MIT | ok |
 | jiter | 0.19.0 | MIT | ok |
 | joblib | 1.6.0 | BSD-3-Clause | ok |
+| loguru | 0.7.3 | MIT License | ok |
 | lxml | 6.1.3 | BSD-3-Clause | ok |
 | mako | 1.4.3 | MIT | ok |
 | markdown-it-py | 4.3.0 | MIT License | ok |
 | markupsafe | 3.0.4 | BSD-3-Clause | ok |
 | mdurl | 0.1.2 | MIT License | ok |
+| mmh3 | 5.3.1 | MIT License | ok |
 | narwhals | 2.29.0 | MIT | ok |
 | numpy | 2.5.5 | BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0 | ok |
+| onnxruntime | 1.32.0 | MIT License | ok |
 | openai | 3.57.0 | Apache-2.0 | ok |
 | openpyxl | 3.1.5 | MIT License | ok |
 | opentelemetry-api | 1.45.2 | Apache-2.0 | ok |
@@ -87,6 +98,7 @@ Plik generowany: `cd backend && uv run riskminer licences --check` (źródła: `
 | pgvector | 0.5.1 | MIT | ok |
 | pillow | 13.0.0 | MIT-CMU | ok |
 | pluggy | 1.7.0 | MIT License | ok |
+| protobuf | 7.36.2 | 3-Clause BSD License | ok |
 | psycopg | 3.3.9 | LGPL-3.0-only | note |
 | psycopg-binary | 3.3.9 | LGPL-3.0-only | note |
 | pyasn1 | 0.6.5 | BSD-2-Clause | ok |
@@ -117,6 +129,8 @@ Plik generowany: `cd backend && uv run riskminer licences --check` (źródła: `
 | starlette | 1.10.0 | BSD-3-Clause | ok |
 | tenacity | 9.1.4 | Apache Software License | ok |
 | threadpoolctl | 3.8.0 | BSD-3-Clause | ok |
+| tokenizers | 0.23.3 | Apache Software License | ok |
+| tqdm | 4.70.1 | MPL-2.0 AND MIT | note |
 | truststore | 0.10.5 | MIT | ok |
 | typer | 0.29.2 | MIT | ok |
 | typing-extensions | 4.16.0 | PSF-2.0 | ok |
